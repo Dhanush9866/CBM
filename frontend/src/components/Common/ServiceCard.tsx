@@ -16,17 +16,17 @@ export function ServiceCard({ title, description, icon: Icon, link, features, im
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
 
   return (
-    <div className={`card-service${imageUrl ? ' relative overflow-hidden' : ''}`}>
+    <Link to={link} className={`card-service block${imageUrl ? ' relative overflow-hidden' : ''}`}>
       {imageUrl && (
         <>
           <img
             src={imageUrl}
             alt=""
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover pointer-events-none"
             onLoad={() => setImageLoaded(true)}
             onError={() => setImageLoaded(false)}
           />
-          {imageLoaded && <div className="absolute inset-0 bg-black/30" />}
+          {imageLoaded && <div className="absolute inset-0 bg-black/30 pointer-events-none" />}
         </>
       )}
       <div className={`flex items-start space-x-4 mb-4${imageUrl ? ' relative z-10' : ''}`}>
@@ -58,13 +58,12 @@ export function ServiceCard({ title, description, icon: Icon, link, features, im
         </ul>
       )}
 
-      <Link 
-        to={link}
+      <span 
         className={`inline-flex items-center font-medium group${imageLoaded ? ' relative z-10 text-white hover:text-white/90' : ' text-primary hover:text-primary-hover'}`}
       >
         Learn More
         <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-      </Link>
-    </div>
+      </span>
+    </Link>
   );
 }
