@@ -8,89 +8,72 @@ import {
   Lightbulb,
   Settings,
   Globe,
-  Zap
+  Zap,
+  FileText
 } from 'lucide-react';
 
 export const services = [
   {
     id: 1,
-    title: "Testing & Inspection",
-    description: "Comprehensive testing and inspection services to ensure your products meet the highest safety and quality standards worldwide.",
+    title: "Testing (T)",
+    description: "Comprehensive testing services to validate safety, performance, and compliance.",
     icon: Search,
     link: "/services/testing",
     imageUrl: "/testing-inspection-bg.jpg",
     features: [
-      "Product safety testing",
-      "Quality assurance inspections", 
-      "Regulatory compliance verification",
-      "International standards certification"
+      "Non-destructive testing",
+      "Performance & reliability",
+      "Standards compliance",
     ]
   },
   {
     id: 2,
-    title: "Certification Services",
-    description: "Internationally recognized certification services that help you demonstrate compliance and build trust with customers globally.",
-    icon: Award,
-    link: "/services/certification",
+    title: "Condition based Monitoring (CBM)",
+    description: "Predictive maintenance using analytics, sensors, and diagnostics to reduce downtime.",
+    icon: Settings,
+    link: "/services/cbm",
     features: [
-      "ISO certifications",
-      "CE marking support",
-      "Management system certification",
-      "Product certification"
+      "Vibration & acoustic analysis",
+      "Thermography & oil analysis",
+      "Asset health dashboards",
     ]
   },
   {
     id: 3,
-    title: "Risk Management",
-    description: "Identify, assess, and mitigate risks across your operations with our comprehensive risk management solutions.",
+    title: "Inspection (I)",
+    description: "Independent inspection services ensuring quality and regulatory adherence.",
     icon: Shield,
-    link: "/services/risk-management",
+    link: "/services/inspection",
     features: [
-      "Risk assessment & analysis",
-      "Safety management systems",
-      "Compliance monitoring",
-      "Business continuity planning"
+      "Third-party inspection",
+      "Vendor surveillance",
+      "Site & factory audits",
     ]
   },
   {
     id: 4,
-    title: "Training & Education",
-    description: "Professional development programs and training solutions to enhance your team's capabilities and knowledge.",
-    icon: BookOpen,
-    link: "/services/training",
+    title: "Auditing (A)",
+    description: "Process, supplier, and system audits to identify risks and drive improvement.",
+    icon: FileText,
+    link: "/services/auditing",
     features: [
-      "Technical training programs",
-      "Regulatory compliance training",
-      "Safety & quality workshops",
-      "Custom corporate training"
+      "Supplier audits",
+      "Process capability reviews",
+      "Compliance gap analysis",
     ]
   },
   {
     id: 5,
-    title: "Digital Solutions",
-    description: "Innovative digital tools and platforms to streamline your quality, safety, and compliance processes.",
-    icon: Zap,
-    link: "/services/digital",
+    title: "Verification & Certification (VC)",
+    description: "Verification and certification services to demonstrate trust and compliance.",
+    icon: Award,
+    link: "/services/verification-certification",
     features: [
-      "Digital compliance platforms",
-      "Quality management systems",
-      "Data analytics & reporting",
-      "Process automation tools"
+      "Management systems",
+      "Product certification",
+      "Regulatory approvals",
     ]
   },
-  {
-    id: 6,
-    title: "Consulting Services",
-    description: "Expert advisory services to help you navigate complex regulatory landscapes and optimize your operations.",
-    icon: Lightbulb,
-    link: "/services/consulting",
-    features: [
-      "Regulatory strategy consulting",
-      "Process optimization",
-      "Market access support",
-      "Technical advisory services"
-    ]
-  }
 ];
 
 export const featuredServices = [

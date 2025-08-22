@@ -24,20 +24,20 @@ const offices = [
       {
         city: "San Diego, CA",
         address: "10040 Mesa Rim Road, San Diego, CA 92121",
-        phone: "+1 (858) 578-9000",
-        email: "americas@tuvsud.com"
+        phone: "+1 (555) 123-4567",
+        email: "americas@cbm.com"
       },
       {
         city: "Detroit, MI", 
         address: "20245 Farmington Road, Farmington Hills, MI 48336",
-        phone: "+1 (248) 442-8080",
-        email: "automotive@tuvsud.com"
+        phone: "+1 (555) 765-4321",
+        email: "automotive@cbm.com"
       },
       {
         city: "Austin, TX",
         address: "12800 Hill Country Blvd, Austin, TX 78738", 
-        phone: "+1 (512) 833-9820",
-        email: "technology@tuvsud.com"
+        phone: "+1 (555) 246-8100",
+        email: "technology@cbm.com"
       }
     ]
   },
@@ -47,14 +47,14 @@ const offices = [
       {
         city: "Munich, Germany",
         address: "Westendstrasse 199, 80686 Munich, Germany",
-        phone: "+49 (0) 89 5791-0",
-        email: "europe@tuvsud.com"
+        phone: "+49 89 0000-0000",
+        email: "europe@cbm.com"
       },
       {
         city: "London, UK",
         address: "Octagon House, Concorde Way, Manchester M22 0RR",
-        phone: "+44 (0) 161 4998000",
-        email: "uk@tuvsud.com"
+        phone: "+44 161 000000",
+        email: "uk@cbm.com"
       }
     ]
   },
@@ -64,14 +64,14 @@ const offices = [
       {
         city: "Singapore",
         address: "1 Science Park Drive, Singapore 118221",
-        phone: "+65 6778 7777",
-        email: "singapore@tuvsud.com"
+        phone: "+65 6000 0000",
+        email: "singapore@cbm.com"
       },
       {
         city: "Shanghai, China",
         address: "No.151 Heng Tong Road, Shanghai 200070, China",
-        phone: "+86 21 6141 3666", 
-        email: "china@tuvsud.com"
+        phone: "+86 21 6000 0000", 
+        email: "china@cbm.com"
       }
     ]
   }
@@ -271,7 +271,7 @@ export default function Contact() {
                     <p className="text-muted-foreground mb-2">
                       Speak with our customer service team
                     </p>
-                    <p className="font-medium text-primary">+1 (800) TUV-SUD1</p>
+                    <p className="font-medium text-primary">+1 (800) 000-0000</p>
                     <p className="text-sm text-muted-foreground">Mon-Fri: 8:00 AM - 6:00 PM EST</p>
                   </div>
                 </div>
@@ -285,7 +285,7 @@ export default function Contact() {
                     <p className="text-muted-foreground mb-2">
                       Send detailed inquiries and documentation
                     </p>
-                    <p className="font-medium text-primary">contact@tuvsud.com</p>
+                    <p className="font-medium text-primary">contact@cbm.com</p>
                     <p className="text-sm text-muted-foreground">Response within 24 hours</p>
                   </div>
                 </div>
@@ -299,7 +299,7 @@ export default function Contact() {
                     <p className="text-muted-foreground mb-2">
                       24/7 support for urgent certification issues
                     </p>
-                    <p className="font-medium text-primary">+1 (800) TUV-911</p>
+                    <p className="font-medium text-primary">+1 (800) 111-1111</p>
                     <p className="text-sm text-muted-foreground">Available 24/7 for emergencies</p>
                   </div>
                 </div>

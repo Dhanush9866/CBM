@@ -1,5 +1,6 @@
 
 import { HeroSection } from '@/components/Common/HeroSection';
+import { VideoHero } from '@/components/Common/VideoHero';
 import { ServiceCard } from '@/components/Common/ServiceCard';
 import { services } from '@/data/services';
 import { industryStats } from '@/data/industries';
@@ -10,8 +11,8 @@ import { ArrowRight, CheckCircle, Users, Award, Globe } from 'lucide-react';
 export default function Services() {
   return (
     <div>
-      {/* Hero Section */}
-      <HeroSection
+      {/* Video Hero Section (temporary dummy videos) */}
+      <VideoHero
         title="Leading Testing, Inspection & Certification Services"
         subtitle="Trusted Worldwide"
         description="Ensuring safety, security, and sustainability across industries with comprehensive testing, inspection, certification, and advisory services."
@@ -23,6 +24,18 @@ export default function Services() {
           text: "Get Quote",
           href: "/contact"
         }}
+        autoPlaySeconds={7}
+        videoUrls={[
+          // Reliable public sample videos; replace later with originals
+          'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+          'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+          'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
+          'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
+          'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4',
+          'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
+          'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4',
+          'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4',
+        ]}
       />
 
       {/* Trust Indicators */}
