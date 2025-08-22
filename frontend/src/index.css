@@ -1,0 +1,315 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* TÜV SÜD Design System */
+
+@layer base {
+  :root {
+    /* Core Brand Colors */
+    --tuv-blue-900: 220 100% 23%;     /* #003d7a - Primary Brand Blue */
+    --tuv-blue-800: 220 95% 30%;      /* #0d4a8a */
+    --tuv-blue-700: 220 90% 40%;      /* #1a5ba0 */
+    --tuv-blue-600: 220 85% 50%;      /* #2a6db5 */
+    --tuv-blue-500: 220 80% 60%;      /* #4080ca */
+    --tuv-blue-400: 220 70% 70%;      /* #5a93d6 */
+    --tuv-blue-100: 220 50% 95%;      /* #e8f2ff */
+    --tuv-blue-50: 220 30% 98%;       /* #f5f9ff */
+    
+    --tuv-red: 350 85% 50%;            /* #e30613 - Accent Red */
+    --tuv-red-light: 350 70% 95%;     /* #fef2f3 */
+    
+    --tuv-gray-900: 220 10% 15%;      /* #262b33 */
+    --tuv-gray-800: 220 8% 25%;       /* #3d424a */
+    --tuv-gray-700: 220 6% 35%;       /* #545961 */
+    --tuv-gray-600: 220 5% 50%;       /* #767b85 */
+    --tuv-gray-500: 220 4% 65%;       /* #9ca0a8 */
+    --tuv-gray-400: 220 3% 75%;       /* #b8bbc2 */
+    --tuv-gray-300: 220 3% 85%;       /* #d4d6db */
+    --tuv-gray-200: 220 3% 90%;       /* #e4e6ea */
+    --tuv-gray-100: 220 3% 95%;       /* #f0f1f4 */
+    --tuv-gray-50: 220 3% 98%;        /* #f8f9fb */
+
+    /* Semantic Colors */
+    --background: var(--tuv-gray-50);
+    --foreground: var(--tuv-gray-900);
+    --card: 0 0% 100%;
+    --card-foreground: var(--tuv-gray-900);
+    --popover: 0 0% 100%;
+    --popover-foreground: var(--tuv-gray-900);
+    
+    --primary: var(--tuv-blue-900);
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: var(--tuv-blue-800);
+    
+    --secondary: var(--tuv-gray-100);
+    --secondary-foreground: var(--tuv-gray-900);
+    --secondary-hover: var(--tuv-gray-200);
+    
+    --accent: var(--tuv-red);
+    --accent-foreground: 0 0% 100%;
+    --accent-hover: 350 80% 45%;
+    
+    --muted: var(--tuv-gray-100);
+    --muted-foreground: var(--tuv-gray-600);
+    
+    --border: var(--tuv-gray-200);
+    --input: var(--tuv-gray-200);
+    --ring: var(--tuv-blue-600);
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    
+    --radius: 0.5rem;
+
+    /* Typography Scale */
+    --text-xs: 0.75rem;      /* 12px */
+    --text-sm: 0.875rem;     /* 14px */
+    --text-base: 1rem;       /* 16px */
+    --text-lg: 1.125rem;     /* 18px */
+    --text-xl: 1.25rem;      /* 20px */
+    --text-2xl: 1.5rem;      /* 24px */
+    --text-3xl: 1.875rem;    /* 30px */
+    --text-4xl: 2.25rem;     /* 36px */
+    --text-5xl: 3rem;        /* 48px */
+    --text-6xl: 3.75rem;     /* 60px */
+
+    /* Spacing System */
+    --space-xs: 0.25rem;     /* 4px */
+    --space-sm: 0.5rem;      /* 8px */
+    --space-md: 1rem;        /* 16px */
+    --space-lg: 1.5rem;      /* 24px */
+    --space-xl: 2rem;        /* 32px */
+    --space-2xl: 3rem;       /* 48px */
+    --space-3xl: 4rem;       /* 64px */
+    --space-4xl: 6rem;       /* 96px */
+    --space-5xl: 8rem;       /* 128px */
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  }
+
+  .dark {
+    --background: var(--tuv-gray-900);
+    --foreground: var(--tuv-gray-50);
+    --card: var(--tuv-gray-800);
+    --card-foreground: var(--tuv-gray-50);
+    --popover: var(--tuv-gray-800);
+    --popover-foreground: var(--tuv-gray-50);
+    
+    --primary: var(--tuv-blue-600);
+    --primary-foreground: var(--tuv-gray-50);
+    --primary-hover: var(--tuv-blue-700);
+    
+    --secondary: var(--tuv-gray-700);
+    --secondary-foreground: var(--tuv-gray-100);
+    --secondary-hover: var(--tuv-gray-600);
+    
+    --muted: var(--tuv-gray-700);
+    --muted-foreground: var(--tuv-gray-400);
+    
+    --border: var(--tuv-gray-700);
+    --input: var(--tuv-gray-700);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+
+  h1 {
+    @apply text-4xl lg:text-5xl;
+  }
+
+  h2 {
+    @apply text-3xl lg:text-4xl;
+  }
+
+  h3 {
+    @apply text-2xl lg:text-3xl;
+  }
+
+  h4 {
+    @apply text-xl lg:text-2xl;
+  }
+
+  h5 {
+    @apply text-lg lg:text-xl;
+  }
+
+  h6 {
+    @apply text-base lg:text-lg;
+  }
+}
+
+@layer components {
+  /* Button Variants */
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary-hover;
+    @apply px-6 py-3 rounded-md font-medium;
+    @apply transition-all duration-200;
+    @apply shadow-sm hover:shadow-md;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary-hover;
+    @apply px-6 py-3 rounded-md font-medium;
+    @apply transition-all duration-200;
+    @apply border border-border;
+  }
+
+  .btn-accent {
+    @apply bg-accent text-accent-foreground hover:bg-accent-hover;
+    @apply px-6 py-3 rounded-md font-medium;
+    @apply transition-all duration-200;
+    @apply shadow-sm hover:shadow-md;
+  }
+
+  .btn-ghost {
+    @apply text-foreground hover:bg-secondary;
+    @apply px-6 py-3 rounded-md font-medium;
+    @apply transition-all duration-200;
+  }
+
+  /* Card Variants */
+  .card-hover {
+    @apply bg-card border border-border;
+    @apply transition-all duration-300;
+    @apply hover:shadow-lg hover:scale-[1.02];
+  }
+
+  .card-service {
+    @apply card-hover p-6 cursor-pointer;
+  }
+
+  .card-industry {
+    @apply card-hover p-8;
+    @apply text-center;
+  }
+
+  /* Section Layouts */
+  .section {
+    @apply py-16 lg:py-24;
+  }
+
+  .section-sm {
+    @apply py-12 lg:py-16;
+  }
+
+  .container-responsive {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Navigation Styles */
+  .nav-link {
+    @apply text-foreground hover:text-primary;
+    @apply font-medium transition-colors duration-200;
+    @apply relative;
+  }
+
+  .nav-link-active {
+    @apply text-primary;
+  }
+
+  .nav-link::after {
+    @apply content-[''] absolute bottom-0 left-0;
+    @apply w-0 h-0.5 bg-primary;
+    @apply transition-all duration-200;
+  }
+
+  .nav-link:hover::after,
+  .nav-link-active::after {
+    @apply w-full;
+  }
+
+  /* Hero Section */
+  .hero-gradient {
+    background: linear-gradient(135deg, hsl(var(--tuv-blue-900)) 0%, hsl(var(--tuv-blue-700)) 100%);
+  }
+
+  .hero-overlay {
+    background: linear-gradient(rgba(0, 61, 122, 0.8), rgba(26, 91, 160, 0.6));
+  }
+
+  /* Animations */
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+  }
+
+  .animate-slide-in {
+    animation: slideIn 0.8s ease-out forwards;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Grid Layouts */
+  .grid-auto-fit {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .grid-auto-fill {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+}
