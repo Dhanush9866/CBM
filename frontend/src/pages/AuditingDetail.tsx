@@ -1,12 +1,36 @@
 import { useParams, Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { getAuditingItemBySlug } from '@/data/auditing';
+import { imageService, CloudinaryImage } from '@/services/imageService';
+import ImageGallery from '@/components/Common/ImageGallery';
 
 export default function AuditingDetail() {
   const { slug } = useParams();
   const item = slug ? getAuditingItemBySlug(slug) : undefined;
+  const [cloudinaryImages, setCloudinaryImages] = useState<CloudinaryImage[]>([]);
+  const [isLoadingImages, setIsLoadingImages] = useState(true);
+
+  // Fetch Cloudinary images when component mounts
+  useEffect(() => {
+    if (item) {
+      const fetchImages = async () => {
+        try {
+          setIsLoadingImages(true);
+          const images = await imageService.getAuditingImages(item.slug);
+          setCloudinaryImages(images);
+        } catch (error) {
+          console.error('Error fetching images:', error);
+        } finally {
+          setIsLoadingImages(false);
+        }
+      };
+
+      fetchImages();
+    }
+  }, [item]);
 
   if (!item) {
     return (
@@ -79,6 +103,29 @@ export default function AuditingDetail() {
           </div>
         </div>
       </section>
+
+      {/* Cloudinary Images Gallery */}
+      {cloudinaryImages.length > 0 && (
+        <section className="section">
+          <div className="container-responsive">
+            <ImageGallery 
+              images={cloudinaryImages} 
+              title={`${item.title} - Project Images`}
+              className="mt-8"
+            />
+          </div>
+        </section>
+      )}
+
+      {/* Loading State */}
+      {isLoadingImages && (
+        <section className="section">
+          <div className="container-responsive text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Loading project images...</p>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

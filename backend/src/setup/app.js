@@ -11,6 +11,7 @@ const { notFoundHandler, errorHandler } = require('../utils/error');
 const { uploadsDir } = require('../utils/paths');
 const sectionRoutes = require('../routes/section.routes');
 const translateRoutes = require('../routes/translate.routes');
+const imageRoutes = require('../routes/image.routes');
 
 function createApp() {
   const app = express();
@@ -39,6 +40,7 @@ function createApp() {
   app.get('/health', (req, res) => res.json({ ok: true }));
   app.use('/api/sections', sectionRoutes);
   app.use('/api/translate', translateRoutes);
+  app.use('/api/images', imageRoutes);
 
   // 404 and error handler
   app.use(notFoundHandler);
