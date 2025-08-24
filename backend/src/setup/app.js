@@ -10,6 +10,7 @@ const rateLimit = require('express-rate-limit');
 const { notFoundHandler, errorHandler } = require('../utils/error');
 const { uploadsDir } = require('../utils/paths');
 const sectionRoutes = require('../routes/section.routes');
+const pageRoutes = require('../routes/page.routes');
 const translateRoutes = require('../routes/translate.routes');
 const imageRoutes = require('../routes/image.routes');
 
@@ -39,6 +40,7 @@ function createApp() {
   // Routes
   app.get('/health', (req, res) => res.json({ ok: true }));
   app.use('/api/sections', sectionRoutes);
+  app.use('/api/pages', pageRoutes);
   app.use('/api/translate', translateRoutes);
   app.use('/api/images', imageRoutes);
 
