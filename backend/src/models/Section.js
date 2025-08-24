@@ -20,6 +20,7 @@ const SectionSchema = new mongoose.Schema(
     language: { type: String, enum: SupportedLanguages, default: 'en', index: true },
     pageNumber: { type: Number, index: true },
     sectionId: { type: String, index: true },
+    page: { type: String, index: true }, // Page slug (e.g., 'cbm', 'testing', 'inspection')
     isActive: { type: Boolean, default: true, index: true },
     translations: {
       // Pre-stored translations for static content
@@ -32,6 +33,7 @@ const SectionSchema = new mongoose.Schema(
 );
 
 SectionSchema.index({ pageNumber: 1, sectionId: 1 });
+SectionSchema.index({ page: 1, sectionId: 1 });
 SectionSchema.index({ createdAt: -1 });
 SectionSchema.index({ title: 'text', bodyText: 'text' });
 
