@@ -20,6 +20,7 @@ const SectionSchema = new mongoose.Schema(
     language: { type: String, enum: SupportedLanguages, default: 'en', index: true },
     pageNumber: { type: Number, index: true },
     sectionId: { type: String, index: true },
+    isActive: { type: Boolean, default: true, index: true },
     translations: {
       // Pre-stored translations for static content
       type: Map,

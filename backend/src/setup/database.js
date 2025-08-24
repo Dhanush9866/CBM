@@ -8,7 +8,7 @@ let isConnected = false;
 
 async function connectToDatabase() {
   if (isConnected) return;
-  const uri = process.env.MONGODB_URI;
+  const uri = "mongodb+srv://cbm360tiv:MiiFze4xYGr6XNji@cluster0.sf6iagh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
   if (!uri) {
     throw new Error('MONGODB_URI is not set');
   }
