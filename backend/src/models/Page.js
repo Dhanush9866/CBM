@@ -40,8 +40,6 @@ const PageSchema = new mongoose.Schema(
 );
 
 // Indexes for better query performance
-PageSchema.index({ slug: 1 });
-PageSchema.index({ pageNumber: 1 });
 PageSchema.index({ language: 1, isActive: 1 });
 PageSchema.index({ createdAt: -1 });
 PageSchema.index({ title: 'text', description: 'text' });

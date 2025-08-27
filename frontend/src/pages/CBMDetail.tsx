@@ -4,35 +4,43 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbS
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { getCbmItemBySlug } from '@/data/cbm';
+import { getPageWithSections, PageDto, SectionDto } from '@/utils/api';
 import { imageService, CloudinaryImage } from '@/services/imageService';
 import ImageGallery from '@/components/Common/ImageGallery';
 
 export default function CBMDetail() {
   const { slug } = useParams();
   const item = slug ? getCbmItemBySlug(slug) : undefined;
+  const [dynamicPage, setDynamicPage] = useState<PageDto | null>(null);
+  const [dynamicSection, setDynamicSection] = useState<SectionDto | null>(null);
   const [cloudinaryImages, setCloudinaryImages] = useState<CloudinaryImage[]>([]);
   const [isLoadingImages, setIsLoadingImages] = useState(true);
 
-  // Fetch Cloudinary images when component mounts
+  // Fetch dynamic content from backend and Cloudinary images when component mounts
   useEffect(() => {
-    if (item) {
-      const fetchImages = async () => {
-        try {
-          setIsLoadingImages(true);
-          const images = await imageService.getCBMImages(item.slug);
-          setCloudinaryImages(images);
-        } catch (error) {
-          console.error('Error fetching images:', error);
-        } finally {
-          setIsLoadingImages(false);
-        }
-      };
+    const fetchData = async () => {
+      if (!slug) return;
+      try {
+        setIsLoadingImages(true);
+        // Dynamic page/section
+        const page = await getPageWithSections('cbm', slug);
+        setDynamicPage(page);
+        const firstSection = (page.sections && page.sections[0]) || null;
+        setDynamicSection(firstSection);
+        // Images
+        const images = await imageService.getCBMImages(slug);
+        setCloudinaryImages(images);
+      } catch (error) {
+        console.error('Error fetching CBM detail:', error);
+      } finally {
+        setIsLoadingImages(false);
+      }
+    };
 
-      fetchImages();
-    }
-  }, [item]);
+    fetchData();
+  }, [slug]);
 
-  if (!item) {
+  if (!item && !dynamicSection) {
     return (
       <div className="section">
         <div className="container-responsive text-center">
@@ -67,65 +75,70 @@ export default function CBMDetail() {
         </div>
       </section>
 
-      <section className="section pt-6">
-        <div className="container-responsive">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="rounded-xl overflow-hidden">
-              <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
-            </div>
-            <div>
-              <h1 className="text-3xl lg:text-4xl font-bold mb-4">{item.title}</h1>
-              <p className="text-lg text-muted-foreground mb-6">{item.description}</p>
+      
 
-              <Card>
-                <CardContent className="pt-6">
-                  <h2 className="text-xl font-semibold mb-4">What we provide</h2>
-                  <ul className="space-y-2">
-                    {item.details.map((d) => (
-                      <li key={d} className="flex items-start">
-                        <span className="mt-2 mr-3 h-2 w-2 rounded-full bg-primary" />
-                        <span className="text-muted-foreground">{d}</span>
-                      </li>
+      {/* Blog-style interleaved content */}
+      {(dynamicSection?.bodyText || item.description || cloudinaryImages.length > 0) && (
+        <section className="section pt-0">
+          <div className="container-responsive max-w-4xl mx-auto">
+            {(() => {
+              const paragraphs = (dynamicSection?.bodyText || item.description || '')
+                .split(/\n{2,}/)
+                .map((p) => p.trim())
+                .filter(Boolean);
+              const imageUrls: string[] = [];
+              
+              // Prioritize dynamicSection images, fallback to Cloudinary images only if needed
+              if (dynamicSection?.images && dynamicSection.images.length > 0) {
+                imageUrls.push(...dynamicSection.images);
+              } else if (cloudinaryImages && cloudinaryImages.length > 0) {
+                imageUrls.push(...cloudinaryImages.map((img) => img.url));
+              }
+              
+              const maxLen = Math.max(paragraphs.length, imageUrls.length);
+              const blocks = [] as JSX.Element[];
+              for (let i = 0; i < maxLen; i++) {
+                if (i < paragraphs.length) {
+                  blocks.push(
+                    <div key={`p-${i}`} className="prose prose-lg prose-slate max-w-none mb-4 text-muted-foreground leading-relaxed">
+                      <p className="text-base md:text-lg leading-6 text-gray-700 dark:text-gray-300">{paragraphs[i]}</p>
+                    </div>
+                  );
+                }
+                if (i < imageUrls.length) {
+                  blocks.push(
+                    <div key={`img-${i}`} className="rounded-2xl overflow-hidden mb-6 shadow-lg">
+                      <img
+                        src={imageUrls[i]}
+                        alt={(dynamicSection?.title) || item.title}
+                        className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300"
+                      />
+                    </div>
+                  );
+                }
+              }
+              if (blocks.length === 0 && paragraphs.length === 0 && imageUrls.length > 0) {
+                return (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {imageUrls.map((u, idx) => (
+                      <div key={idx} className="rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <img 
+                          src={u} 
+                          alt={(dynamicSection?.title) || item.title} 
+                          className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300" 
+                        />
+                      </div>
                     ))}
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <div className="mt-6 flex gap-3">
-                <Button className="btn-primary" asChild>
-                  <Link to="/contact">Request Quote</Link>
-                </Button>
-                <Button variant="outline" asChild>
-                  <Link to="/services/cbm">Back to all</Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Cloudinary Images Gallery */}
-      {cloudinaryImages.length > 0 && (
-        <section className="section">
-          <div className="container-responsive">
-            <ImageGallery 
-              images={cloudinaryImages} 
-              title={`${item.title} - Project Images`}
-              className="mt-8"
-            />
+                  </div>
+                );
+              }
+              return <div className="space-y-4">{blocks}</div>;
+            })()}
           </div>
         </section>
       )}
 
-      {/* Loading State */}
-      {isLoadingImages && (
-        <section className="section">
-          <div className="container-responsive text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-muted-foreground">Loading project images...</p>
-          </div>
-        </section>
-      )}
+
     </div>
   );
 }
