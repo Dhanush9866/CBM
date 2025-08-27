@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Layout } from "@/components/Layout/Layout";
+import { TranslationProvider } from "@/contexts/TranslationContext";
 import Services from "./pages/Services";
 import Industries from "./pages/Industries";
 import About from "./pages/About";
@@ -27,34 +28,36 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Navigate to="/services" replace />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/services/testing" element={<TestingInspection />} />
-            <Route path="/services/testing/:slug" element={<TestingDetail />} />
-            <Route path="/services/cbm" element={<CBMMonitoring />} />
-            <Route path="/services/cbm/:slug" element={<CBMDetail />} />
-            <Route path="/services/inspection" element={<Inspection />} />
-            <Route path="/services/inspection/:slug" element={<InspectionDetail />} />
-            <Route path="/services/auditing" element={<Auditing />} />
-            <Route path="/services/auditing/:slug" element={<AuditingDetail />} />
-            <Route path="/services/verification-certification" element={<VerificationCertification />} />
-            <Route path="/services/verification-certification/:slug" element={<VerificationCertificationDetail />} />
-            <Route path="/industries" element={<Industries />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/careers" element={<Careers />} />
-            <Route path="/resources" element={<Resources />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Layout>
-      </BrowserRouter>
-    </TooltipProvider>
+    <TranslationProvider defaultLanguage="en">
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Navigate to="/services" replace />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/services/testing" element={<TestingInspection />} />
+              <Route path="/services/testing/:slug" element={<TestingDetail />} />
+              <Route path="/services/cbm" element={<CBMMonitoring />} />
+              <Route path="/services/cbm/:slug" element={<CBMDetail />} />
+              <Route path="/services/inspection" element={<Inspection />} />
+              <Route path="/services/inspection/:slug" element={<InspectionDetail />} />
+              <Route path="/services/auditing" element={<Auditing />} />
+              <Route path="/services/auditing/:slug" element={<AuditingDetail />} />
+              <Route path="/services/verification-certification" element={<VerificationCertification />} />
+              <Route path="/services/verification-certification/:slug" element={<VerificationCertificationDetail />} />
+              <Route path="/industries" element={<Industries />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/careers" element={<Careers />} />
+              <Route path="/resources" element={<Resources />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Layout>
+        </BrowserRouter>
+      </TooltipProvider>
+    </TranslationProvider>
   </QueryClientProvider>
 );
 

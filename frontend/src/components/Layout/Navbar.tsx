@@ -9,15 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-
-const navigation = [
-  { name: 'Services', href: '/services' },
-  { name: 'Industries', href: '/industries' },
-  { name: 'About', href: '/about' },
-  { name: 'Careers', href: '/careers' },
-  { name: 'Resources', href: '/resources' },
-  { name: 'Contact', href: '/contact' },
-];
+import { useTranslation } from '@/contexts/TranslationContext';
 
 const languages = [
   { code: 'en', name: 'English', flag: '🇺🇸' },
@@ -29,13 +21,40 @@ const languages = [
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
+  const { 
+    currentLanguage, 
+    translations, 
+    isLoading, 
+    error, 
+    changeLanguage 
+  } = useTranslation();
 
-  const handleLanguageChange = (language: typeof languages[0]) => {
-    setSelectedLanguage(language);
-    // TODO: Implement actual language change logic here
-    console.log(`Language changed to: ${language.name} (${language.code})`);
+  const selectedLanguage = languages.find(lang => lang.code === currentLanguage) || languages[0];
+
+  const handleLanguageChange = async (language: typeof languages[0]) => {
+    try {
+      await changeLanguage(language.code);
+      console.log(`Language changed to: ${language.name} (${language.code})`);
+    } catch (err) {
+      console.error('Failed to change language:', err);
+    }
   };
+
+  // Get translated navigation items
+  const getNavigationItems = () => {
+    if (!translations) return [];
+    
+    return [
+      { name: translations.navbar.services, href: '/services' },
+      { name: translations.navbar.industries, href: '/industries' },
+      { name: translations.navbar.about, href: '/about' },
+      { name: translations.navbar.careers, href: '/careers' },
+      { name: translations.navbar.resources, href: '/resources' },
+      { name: translations.navbar.contact, href: '/contact' },
+    ];
+  };
+
+  const navigation = getNavigationItems();
 
   return (
     <>
@@ -64,11 +83,16 @@ export function Navbar() {
                     variant="ghost"
                     size="sm"
                     className="text-tuv-gray-400 hover:text-white hover:bg-tuv-gray-800 h-8 px-3"
+                    disabled={isLoading}
                   >
                     <Globe className="h-4 w-4 mr-2" />
                     <span className="mr-1">{selectedLanguage.flag}</span>
                     <span className="text-xs">{selectedLanguage.code.toUpperCase()}</span>
-                    <ChevronDown className="h-3 w-3 ml-1" />
+                    {isLoading ? (
+                      <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin ml-1" />
+                    ) : (
+                      <ChevronDown className="h-3 w-3 ml-1" />
+                    )}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
@@ -81,6 +105,7 @@ export function Navbar() {
                           ? 'bg-primary/10 text-primary'
                           : ''
                       }`}
+                      disabled={isLoading}
                     >
                       <span className="text-lg">{language.flag}</span>
                       <span className="flex-1">{language.name}</span>
@@ -109,9 +134,9 @@ export function Navbar() {
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-8">
-              {navigation.map((item) => (
+              {navigation.map((item, index) => (
                 <NavLink
-                  key={item.name}
+                  key={index}
                   to={item.href}
                   className={({ isActive }) =>
                     `nav-link ${isActive ? 'nav-link-active' : ''}`
@@ -125,10 +150,14 @@ export function Navbar() {
             {/* CTA Button */}
             <div className="hidden lg:flex items-center space-x-4">
               <Button variant="outline" size="sm" asChild>
-                <Link to="/contact">Get Quote</Link>
+                <Link to="/contact">
+                  {translations?.navbar.getQuote || 'Get Quote'}
+                </Link>
               </Button>
               <Button className="btn-primary" asChild>
-                <Link to="/contact">Contact Us</Link>
+                <Link to="/contact">
+                  {translations?.navbar.contactUs || 'Contact Us'}
+                </Link>
               </Button>
             </div>
 
@@ -155,9 +184,9 @@ export function Navbar() {
           <div className="lg:hidden bg-white border-t border-border">
             <div className="container-responsive py-4">
               <div className="flex flex-col space-y-4">
-                {navigation.map((item) => (
+                {navigation.map((item, index) => (
                   <NavLink
-                    key={item.name}
+                    key={index}
                     to={item.href}
                     className={({ isActive }) =>
                       `nav-link ${isActive ? 'nav-link-active' : ''} py-2`
@@ -180,14 +209,18 @@ export function Navbar() {
                             handleLanguageChange(language);
                             setIsOpen(false);
                           }}
+                          disabled={isLoading}
                           className={`flex items-center space-x-2 p-3 rounded-lg border transition-colors ${
                             selectedLanguage.code === language.code
                               ? 'border-primary bg-primary/5 text-primary'
                               : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-                          }`}
+                          } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                         >
                           <span className="text-lg">{language.flag}</span>
                           <span className="text-sm font-medium">{language.name}</span>
+                          {isLoading && selectedLanguage.code === language.code && (
+                            <div className="w-3 h-3 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                          )}
                         </button>
                       ))}
                     </div>
@@ -196,12 +229,12 @@ export function Navbar() {
                   <div className="flex flex-col space-y-2">
                     <Button variant="outline" asChild>
                       <Link to="/contact" onClick={() => setIsOpen(false)}>
-                        Get Quote
+                        {translations?.navbar.getQuote || 'Get Quote'}
                       </Link>
                     </Button>
                     <Button className="btn-primary" asChild>
                       <Link to="/contact" onClick={() => setIsOpen(false)}>
-                        Contact Us
+                        {translations?.navbar.contactUs || 'Contact Us'}
                       </Link>
                     </Button>
                   </div>
@@ -211,6 +244,13 @@ export function Navbar() {
           </div>
         )}
       </nav>
+
+      {/* Error Toast */}
+      {error && (
+        <div className="fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-md shadow-lg z-50">
+          {error}
+        </div>
+      )}
     </>
   );
 }

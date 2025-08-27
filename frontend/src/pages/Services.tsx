@@ -7,26 +7,29 @@ import { industryStats } from '@/data/industries';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle, Users, Award, Globe } from 'lucide-react';
+import { useTranslation } from '@/contexts/TranslationContext';
 
 export default function Services() {
+  const { translations } = useTranslation();
+  const hero = translations?.pages?.services?.hero;
+
   return (
     <div>
-      {/* Video Hero Section (temporary dummy videos) */}
+      {/* Video Hero Section */}
       <VideoHero
-        title="Leading Testing, Inspection & Certification Services"
-        subtitle="Trusted Worldwide"
-        description="Ensuring safety, security, and sustainability across industries with comprehensive testing, inspection, certification, and advisory services."
+        title={hero?.title || "Leading Testing, Inspection & Certification Services"}
+        subtitle={hero?.subtitle || "Trusted Worldwide"}
+        description={hero?.description || "Ensuring safety, security, and sustainability across industries with comprehensive testing, inspection, certification, and advisory services."}
         primaryCTA={{
-          text: "Explore Services",
+          text: hero?.primaryCTAText || "Explore Services",
           href: "#services"
         }}
         secondaryCTA={{
-          text: "Get Quote",
+          text: hero?.secondaryCTAText || "Get Quote",
           href: "/contact"
         }}
         autoPlaySeconds={7}
         videoUrls={[
-          // Reliable public sample videos; replace later with originals
           'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
           'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
           'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
@@ -59,8 +62,6 @@ export default function Services() {
         </div>
       </section>
 
-      
-
       {/* All Services */}
       <section className="section" id="services">
         <div className="container-responsive">
@@ -79,8 +80,6 @@ export default function Services() {
           </div>
         </div>
       </section>
-
-    
 
       {/* CTA Section */}
       <section className="section bg-tuv-gray-50">

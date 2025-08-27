@@ -1,0 +1,142 @@
+import axios from 'axios';
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+
+export interface StaticTranslations {
+  navbar: {
+    services: string;
+    industries: string;
+    about: string;
+    careers: string;
+    resources: string;
+    contact: string;
+    getQuote: string;
+    contactUs: string;
+  };
+  footer: {
+    company: string;
+    description: string;
+    services: {
+      title: string;
+      list: string[];
+    };
+    industries: {
+      title: string;
+      list: string[];
+    };
+    contact: {
+      title: string;
+      address: string;
+      phone: string;
+      email: string;
+    };
+    newsletter: string;
+    placeholderEmail: string;
+  };
+  pages?: {
+    services?: {
+      hero?: {
+        title: string;
+        subtitle: string;
+        description: string;
+        primaryCTAText: string;
+        secondaryCTAText: string;
+      };
+    };
+  };
+}
+
+export interface TranslationResponse {
+  success: boolean;
+  data: {
+    language: string;
+    translations: StaticTranslations;
+    timestamp: string;
+  };
+}
+
+export interface AllTranslationsResponse {
+  success: boolean;
+  data: {
+    supportedLanguages: string[];
+    translations: Record<string, StaticTranslations>;
+    timestamp: string;
+  };
+}
+
+class TranslationService {
+  private cache = new Map<string, { data: StaticTranslations; timestamp: number }>();
+  private readonly CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
+
+  async getStaticTranslations(language: string): Promise<StaticTranslations> {
+    const cacheKey = `static_${language}`;
+    const cached = this.cache.get(cacheKey);
+    
+    // Check if cached data is still valid
+    if (cached && Date.now() - cached.timestamp < this.CACHE_DURATION) {
+      return cached.data;
+    }
+
+    try {
+      const response = await axios.get<TranslationResponse>(
+        `${API_BASE_URL}/translate/static/${language}`
+      );
+      
+      if (response.data.success) {
+        // Cache the response
+        this.cache.set(cacheKey, {
+          data: response.data.data.translations,
+          timestamp: Date.now()
+        });
+        
+        return response.data.data.translations;
+      } else {
+        throw new Error('Failed to fetch translations');
+      }
+    } catch (error) {
+      console.error(`Error fetching translations for ${language}:`, error);
+      throw error;
+    }
+  }
+
+  async getAllStaticTranslations(): Promise<Record<string, StaticTranslations>> {
+    try {
+      const response = await axios.get<AllTranslationsResponse>(
+        `${API_BASE_URL}/translate/static`
+      );
+      
+      if (response.data.success) {
+        // Cache all translations
+        Object.entries(response.data.data.translations).forEach(([lang, translations]) => {
+          this.cache.set(`static_${lang}`, {
+            data: translations,
+            timestamp: Date.now()
+          });
+        });
+        
+        return response.data.data.translations;
+      } else {
+        throw new Error('Failed to fetch all translations');
+      }
+    } catch (error) {
+      console.error('Error fetching all translations:', error);
+      throw error;
+    }
+  }
+
+  clearCache(): void {
+    this.cache.clear();
+  }
+
+  getCachedTranslations(language: string): StaticTranslations | null {
+    const cached = this.cache.get(`static_${language}`);
+    if (cached && Date.now() - cached.timestamp < this.CACHE_DURATION) {
+      return cached.data;
+    }
+    return null;
+  }
+}
+
+export const translationService = new TranslationService();
+export default translationService;
+
