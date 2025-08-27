@@ -77,7 +77,10 @@ async function getPageBySlug(req, res, next) {
     const { slug } = req.params;
     const { populate = 'true', lang } = req.query;
     
-    let query = Page.findOne({ slug, isActive: true });
+    
+    const normalizedSlug = String(slug || '').trim();
+
+    let query = Page.findOne({ slug: normalizedSlug, isActive: true }).collation({ locale: 'en', strength: 2 });
     
     if (populate === 'true') {
       query = query.populate({
@@ -87,7 +90,12 @@ async function getPageBySlug(req, res, next) {
       });
     }
 
-    const page = await query;
+    let page = await query;
+    if (!page) {
+      const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const pattern = `^\\s*${escapeRegex(normalizedSlug)}\\s*$`;
+      page = await Page.findOne({ slug: { $regex: pattern, $options: 'i' }, isActive: true });
+    }
     if (!page) {
       throw new ApiError(404, 'Page not found');
     }
@@ -329,12 +337,9 @@ async function getPageWithSectionsByName(req, res, next) {
     const { pageName, sectionName } = req.params;
     const { lang } = req.query;
 
-    // Find page by name (title or slug)
+    // Find page by slug only (case-insensitive)
     let page = await Page.findOne({
-      $or: [
-        { title: { $regex: pageName, $options: 'i' } },
-        { slug: { $regex: pageName, $options: 'i' } }
-      ],
+      slug: { $regex: pageName, $options: 'i' },
       isActive: true
     }).populate({
       path: 'sections',
@@ -351,6 +356,7 @@ async function getPageWithSectionsByName(req, res, next) {
         section.title.toLowerCase().includes(sectionName.toLowerCase()) ||
         section.sectionId.toLowerCase().includes(sectionName.toLowerCase())
       );
+      
     }
 
     // Handle language translation

@@ -8,7 +8,7 @@ let isConnected = false;
 
 async function connectToDatabase() {
   if (isConnected) return;
-  const uri = "mongodb+srv://cbm360tiv:MiiFze4xYGr6XNji@cluster0.sf6iagh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+  const uri = process.env.MONGODB_URI || "mongodb+srv://cbm360tiv:MiiFze4xYGr6XNji@cluster0.sf6iagh.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster";
   if (!uri) {
     throw new Error('MONGODB_URI is not set');
   }
@@ -18,11 +18,13 @@ async function connectToDatabase() {
   await mongoose.connect(uri, {
     maxPoolSize: 20,
     serverSelectionTimeoutMS: 15000,
-    dbName: process.env.MONGODB_DB || undefined,
+    // Prefer DB name from the URI; avoid separate dbName to prevent mismatches
+    dbName: undefined,
   });
 
   isConnected = true;
-  logger.info('Connected to MongoDB');
+  const usedDb = (mongoose.connection && mongoose.connection.name) || 'unknown';
+  logger.info(`Connected to MongoDB (db: ${usedDb})`);
 }
 
 module.exports = { connectToDatabase };

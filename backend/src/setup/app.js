@@ -27,8 +27,20 @@ function createApp() {
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ extended: true }));
 
-  // Logging
-  app.use(morgan('combined'));
+  // Logging: METHOD PATH STATUS(response code colored) DURATION
+  const colorizeStatus = (status) => {
+    if (status >= 500) return `\x1b[31m${status}\x1b[0m`; // red
+    if (status >= 400) return `\x1b[33m${status}\x1b[0m`; // yellow
+    if (status >= 300) return `\x1b[36m${status}\x1b[0m`; // cyan
+    return `\x1b[32m${status}\x1b[0m`; // green
+  };
+  app.use(morgan((tokens, req, res) => {
+    const method = tokens.method(req, res);
+    const url = tokens.url(req, res);
+    const status = Number(tokens.status(req, res)) || 0;
+    const time = tokens['response-time'](req, res) || '0.0';
+    return `${method} ${url} ${colorizeStatus(status)} ${time} ms`;
+  }));
 
   // Rate limiting basic safe defaults
   const limiter = rateLimit({ windowMs: 60 * 1000, max: 120 });
