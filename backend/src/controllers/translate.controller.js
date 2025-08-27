@@ -3,6 +3,7 @@
 const Section = require('../models/Section');
 const { ApiError } = require('../utils/error');
 const { translateText } = require('../services/translation');
+const translations = require('../transalations/static.transalations.js');
 
 async function translateSection(req, res, next) {
   try {
@@ -36,6 +37,48 @@ async function translateSection(req, res, next) {
   }
 }
 
-module.exports = { translateSection };
+async function getStaticTranslations(req, res, next) {
+  try {
+    console.log(req.params.lang);
+    const lang = req.params.lang || 'en';
+    
+    if (!['en', 'fr', 'pt', 'es', 'ru'].includes(lang)) {
+      throw new ApiError(400, 'Unsupported language. Supported languages: en, fr, pt, es, ru');
+    }
+
+    const staticTexts = translations[lang];
+    if (!staticTexts) {
+      throw new ApiError(404, 'Translations not found for the specified language');
+    }
+
+    res.json({
+      success: true,
+      data: {
+        language: lang,
+        translations: staticTexts,
+        timestamp: new Date().toISOString()
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function getAllStaticTranslations(req, res, next) {
+  try {
+    res.json({
+      success: true,
+      data: {
+        supportedLanguages: ['en', 'fr', 'pt', 'es', 'ru'],
+        translations: translations,
+        timestamp: new Date().toISOString()
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { translateSection, getStaticTranslations, getAllStaticTranslations };
 
 
