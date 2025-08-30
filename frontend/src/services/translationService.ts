@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+import { apiClient } from '@/utils/api';
 
 export interface StaticTranslations {
   navbar: {
@@ -78,8 +76,8 @@ class TranslationService {
     }
 
     try {
-      const response = await axios.get<TranslationResponse>(
-        `${API_BASE_URL}/translate/static/${language}`
+      const response = await apiClient.get<TranslationResponse>(
+        `/api/translate/static/${language}`
       );
       
       if (response.data.success) {
@@ -101,13 +99,13 @@ class TranslationService {
 
   async getAllStaticTranslations(): Promise<Record<string, StaticTranslations>> {
     try {
-      const response = await axios.get<AllTranslationsResponse>(
-        `${API_BASE_URL}/translate/static`
+      const response = await apiClient.get<AllTranslationsResponse>(
+        `/api/translate/static`
       );
       
       if (response.data.success) {
         // Cache all translations
-        Object.entries(response.data.data.translations).forEach(([lang, translations]) => {
+        Object.entries(response.data.data.translations).forEach(([lang, translations]: [string, StaticTranslations]) => {
           this.cache.set(`static_${lang}`, {
             data: translations,
             timestamp: Date.now()

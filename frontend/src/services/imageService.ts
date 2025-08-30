@@ -1,3 +1,5 @@
+import { apiClient } from '@/utils/api';
+
 export interface CloudinaryImage {
   url: string;
   public_id: string;
@@ -19,8 +21,6 @@ export interface ImageResponse {
 }
 
 class ImageService {
-  private baseUrl = 'http://localhost:5000/api/images';
-  
   // Fallback Cloudinary URLs for Testing services
   private fallbackTestingImages: { [key: string]: CloudinaryImage[] } = {
     'visual-testing': [
@@ -1525,18 +1525,12 @@ class ImageService {
    */
   async getImages(serviceType: string, subService: string, maxResults: number = 50): Promise<CloudinaryImage[]> {
     try {
-      const response = await fetch(
-        `${this.baseUrl}/${serviceType}/${subService}/images?maxResults=${maxResults}`
+      const response = await apiClient.get(
+        `/api/images/${serviceType}/${subService}/images?maxResults=${maxResults}`
       );
       
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      const data: ImageResponse = await response.json();
-      
-      if (data.success) {
-        return data.data.images;
+      if (response.data.success) {
+        return response.data.data.images;
       } else {
         throw new Error('Failed to fetch images');
       }
