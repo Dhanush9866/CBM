@@ -10,7 +10,7 @@ export const verificationCertificationItems: VerificationCertificationItem[] = [
   {
     slug: 'production-import-export-verification-certification',
     title: 'Production Import / Export Verification & Certification',
-    image: 'https://picsum.photos/id/1060/1200/675',
+    image: 'https://res.cloudinary.com/docyipoze/image/upload/v1756657806/cbm/verification-certification/production-import-export-verification-certification/cbm/verification-certification/production-import-export-verification-certification/cover-photo.jpg',
     description: 'Verification and certification of production processes and import/export compliance.',
     details: [
       'Production process verification',
@@ -21,7 +21,7 @@ export const verificationCertificationItems: VerificationCertificationItem[] = [
   {
     slug: 'asset-integrity-fitness-verification-certification',
     title: 'Asset Integrity & Fitness Verification & Certification',
-    image: 'https://picsum.photos/id/1061/1200/675',
+    image: 'https://res.cloudinary.com/docyipoze/image/upload/v1756657807/cbm/verification-certification/asset-integrity-fitness-verification-certification/cbm/verification-certification/asset-integrity-fitness-verification-certification/cover-photo.jpg',
     description: 'Comprehensive assessment of asset integrity and fitness for continued operation.',
     details: [
       'Structural integrity evaluation',
@@ -32,7 +32,7 @@ export const verificationCertificationItems: VerificationCertificationItem[] = [
   {
     slug: 'environmental-damage-verification-certification',
     title: 'Environmental Damage Verification & Certification',
-    image: 'https://picsum.photos/id/1062/1200/675',
+    image: 'https://res.cloudinary.com/docyipoze/image/upload/v1756657809/cbm/verification-certification/environmental-damage-verification-certification/cbm/verification-certification/environmental-damage-verification-certification/cover-photo.jpg',
     description: 'Assessment and certification of environmental impact and damage mitigation.',
     details: [
       'Environmental impact assessment',
@@ -43,7 +43,7 @@ export const verificationCertificationItems: VerificationCertificationItem[] = [
   {
     slug: 'pressure-vessels-boilers-verification-certification',
     title: 'Pressure Vessels and Boilers Verification & Certification',
-    image: 'https://picsum.photos/id/1063/1200/675',
+    image: 'https://res.cloudinary.com/docyipoze/image/upload/v1756657810/cbm/verification-certification/pressure-vessels-boilers-verification-certification/cbm/verification-certification/pressure-vessels-boilers-verification-certification/cover-photo.jpg',
     description: 'Safety verification and certification of pressure vessels and boiler systems.',
     details: [
       'Pressure vessel integrity checks',
@@ -54,7 +54,7 @@ export const verificationCertificationItems: VerificationCertificationItem[] = [
   {
     slug: 'turbines-generators-engines-compressors-verification-certification',
     title: 'Turbines, Generators, Engines & Compressors Verification & Certification',
-    image: 'https://picsum.photos/id/1064/1200/675',
+    image: 'https://res.cloudinary.com/docyipoze/image/upload/v1756657812/cbm/verification-certification/turbines-generators-engines-compressors-verification-certification/cbm/verification-certification/turbines-generators-engines-compressors-verification-certification/cover-photo.jpg',
     description: 'Performance and safety verification of rotating equipment and power generation systems.',
     details: [
       'Performance testing and certification',
@@ -65,7 +65,7 @@ export const verificationCertificationItems: VerificationCertificationItem[] = [
   {
     slug: 'lifting-gear-load-verification-certification',
     title: 'Lifting Gear and Load Verification & Certification',
-    image: 'https://picsum.photos/id/1065/1200/675',
+    image: 'https://res.cloudinary.com/docyipoze/image/upload/v1756657813/cbm/verification-certification/lifting-gear-load-verification-certification/cbm/verification-certification/lifting-gear-load-verification-certification/cover-photo.jpg',
     description: 'Safety verification and certification of lifting equipment and load handling systems.',
     details: [
       'Lifting equipment safety checks',
@@ -76,7 +76,7 @@ export const verificationCertificationItems: VerificationCertificationItem[] = [
   {
     slug: 'pipeline-integrity-verification-certification',
     title: 'Pipeline Integrity Verification & Certification',
-    image: 'https://picsum.photos/id/1066/1200/675',
+    image: 'https://res.cloudinary.com/docyipoze/image/upload/v1756657814/cbm/verification-certification/pipeline-integrity-verification-certification/cbm/verification-certification/pipeline-integrity-verification-certification/cover-photo.jpg',
     description: 'Comprehensive pipeline integrity assessment and certification services.',
     details: [
       'Pipeline integrity evaluation',
@@ -87,7 +87,7 @@ export const verificationCertificationItems: VerificationCertificationItem[] = [
   {
     slug: 'industrial-structural-health-monitoring-fitness-verification-certification',
     title: 'Industrial Structural Health Monitoring and Fitness Verification & Certification',
-    image: 'https://picsum.photos/id/1067/1200/675',
+    image: 'https://res.cloudinary.com/docyipoze/image/upload/v1756657816/cbm/verification-certification/industrial-structural-health-monitoring-fitness-verification-certification/cbm/verification-certification/industrial-structural-health-monitoring-fitness-verification-certification/cover-photo.jpg',
     description: 'Continuous monitoring and fitness verification of industrial structures.',
     details: [
       'Structural health monitoring',
@@ -98,7 +98,7 @@ export const verificationCertificationItems: VerificationCertificationItem[] = [
   {
     slug: 'storage-tank-facilities-verification-certification',
     title: 'Storage Tank Facilities Verification & Certification',
-    image: 'https://picsum.photos/id/1068/1200/675',
+    image: 'https://res.cloudinary.com/docyipoze/image/upload/v1756657817/cbm/verification-certification/storage-tank-facilities-verification-certification/cbm/verification-certification/storage-tank-facilities-verification-certification/cover-photo.jpg',
     description: 'Safety and integrity verification of storage tank facilities and systems.',
     details: [
       'Tank integrity assessment',

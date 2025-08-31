@@ -4,12 +4,21 @@ import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getPageWithSections, SectionDto } from '@/utils/api';
+import { verificationCertificationItems } from '@/data/verification-certification';
 
 export default function VerificationCertification() {
   const navigate = useNavigate();
   const [sections, setSections] = useState<SectionDto[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Create cover photo mapping from frontend data
+  const coverPhotoMap: Record<string, string> = {};
+  verificationCertificationItems.forEach(section => {
+    if (section.image && section.image.includes('res.cloudinary.com')) {
+      coverPhotoMap[section.slug] = section.image;
+    }
+  });
 
   useEffect(() => {
     let isMounted = true;
@@ -81,7 +90,7 @@ export default function VerificationCertification() {
                 }}
               >
                 <div className="aspect-video w-full overflow-hidden">
-                  <img src={(item.images && item.images[0]) || '/placeholder.svg'} alt={item.title} className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-300" />
+                  <img src={coverPhotoMap[item.sectionId] || (item.images && item.images[0]) || '/placeholder.svg'} alt={item.title} className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-300" />
                 </div>
                 <CardHeader>
                   <CardTitle className="text-xl">{item.title}</CardTitle>
