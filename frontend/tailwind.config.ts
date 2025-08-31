@@ -56,7 +56,21 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// TÜV SÜD Brand Colors
+				// TÜV SÜD Brand Colors - Lavender Theme
+				'tuv-lavender': {
+					50: 'hsl(var(--tuv-blue-50))',
+					100: 'hsl(var(--tuv-blue-100))',
+					200: 'hsl(var(--tuv-lavender-pale))',
+					300: 'hsl(var(--tuv-lavender-light))',
+					400: 'hsl(var(--tuv-blue-400))',
+					500: 'hsl(var(--tuv-blue-500))',
+					600: 'hsl(var(--tuv-blue-600))',
+					700: 'hsl(var(--tuv-blue-700))',
+					800: 'hsl(var(--tuv-blue-800))',
+					900: 'hsl(var(--tuv-blue-900))',
+					deep: 'hsl(var(--tuv-lavender-deep))',
+				},
+				// Keep the old name for backward compatibility
 				'tuv-blue': {
 					50: 'hsl(var(--tuv-blue-50))',
 					100: 'hsl(var(--tuv-blue-100))',

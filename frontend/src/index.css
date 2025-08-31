@@ -7,15 +7,20 @@
 
 @layer base {
   :root {
-    /* Core Brand Colors */
-    --tuv-blue-900: 220 100% 23%;     /* #003d7a - Primary Brand Blue */
-    --tuv-blue-800: 220 95% 30%;      /* #0d4a8a */
-    --tuv-blue-700: 220 90% 40%;      /* #1a5ba0 */
-    --tuv-blue-600: 220 85% 50%;      /* #2a6db5 */
-    --tuv-blue-500: 220 80% 60%;      /* #4080ca */
-    --tuv-blue-400: 220 70% 70%;      /* #5a93d6 */
-    --tuv-blue-100: 220 50% 95%;      /* #e8f2ff */
-    --tuv-blue-50: 220 30% 98%;       /* #f5f9ff */
+    /* Core Brand Colors - Lavender Theme */
+    --tuv-blue-900: 280 85% 35%;      /* #8B5CF6 - Primary Brand Lavender */
+    --tuv-blue-800: 280 80% 40%;      /* #A78BFA */
+    --tuv-blue-700: 280 75% 45%;      /* #C084FC */
+    --tuv-blue-600: 280 70% 50%;      /* #CB94F7 - Main Lavender */
+    --tuv-blue-500: 280 65% 55%;      /* #D6A4F8 */
+    --tuv-blue-400: 280 60% 60%;      /* #E1B4F9 */
+    --tuv-blue-100: 280 50% 95%;      /* #F8F4FF */
+    --tuv-blue-50: 280 30% 98%;       /* #FDFBFF */
+    
+    /* Additional Lavender Accent Colors */
+    --tuv-lavender-light: 280 60% 90%;  /* #F0E7FF */
+    --tuv-lavender-pale: 280 40% 95%;  /* #F8F4FF */
+    --tuv-lavender-deep: 280 90% 30%;  /* #7C3AED */
     
     --tuv-red: 350 85% 50%;            /* #e30613 - Accent Red */
     --tuv-red-light: 350 70% 95%;     /* #fef2f3 */
@@ -180,6 +185,22 @@
     @apply shadow-sm hover:shadow-md;
   }
 
+  .btn-lavender {
+    @apply bg-tuv-lavender-600 text-white hover:bg-tuv-lavender-700;
+    @apply px-6 py-3 rounded-md font-medium;
+    @apply transition-all duration-200;
+    @apply shadow-sm hover:shadow-md;
+    @apply border-0;
+  }
+
+  .btn-lavender-outline {
+    @apply bg-transparent text-tuv-lavender-600 hover:bg-tuv-lavender-50;
+    @apply px-6 py-3 rounded-md font-medium;
+    @apply transition-all duration-200;
+    @apply border-2 border-tuv-lavender-600;
+    @apply hover:border-tuv-lavender-700;
+  }
+
   .btn-ghost {
     @apply text-foreground hover:bg-secondary;
     @apply px-6 py-3 rounded-md font-medium;
@@ -200,6 +221,21 @@
   .card-industry {
     @apply card-hover p-8;
     @apply text-center;
+  }
+
+  .card-lavender {
+    @apply card-hover p-6;
+    @apply border-l-4 border-tuv-lavender-600;
+    @apply hover:border-tuv-lavender-700;
+    @apply lavender-shadow;
+  }
+
+  .card-lavender-soft {
+    @apply bg-tuv-lavender-50 border-tuv-lavender-200;
+    @apply p-6 rounded-lg;
+    @apply transition-all duration-300;
+    @apply hover:bg-tuv-lavender-100;
+    @apply hover:shadow-md;
   }
 
   /* Section Layouts */
@@ -237,13 +273,50 @@
     @apply w-full;
   }
 
+  .nav-link-lavender {
+    @apply text-tuv-lavender-600 hover:text-tuv-lavender-700;
+    @apply font-medium transition-colors duration-200;
+    @apply relative;
+  }
+
+  .nav-link-lavender::after {
+    @apply content-[''] absolute bottom-0 left-0;
+    @apply w-0 h-0.5 bg-tuv-lavender-600;
+    @apply transition-all duration-200;
+  }
+
+  .nav-link-lavender:hover::after {
+    @apply w-full;
+  }
+
   /* Hero Section */
   .hero-gradient {
     background: linear-gradient(135deg, hsl(var(--tuv-blue-900)) 0%, hsl(var(--tuv-blue-700)) 100%);
   }
 
   .hero-overlay {
-    background: linear-gradient(rgba(0, 61, 122, 0.8), rgba(26, 91, 160, 0.6));
+    background: linear-gradient(rgba(139, 92, 246, 0.8), rgba(192, 132, 252, 0.6));
+  }
+
+  /* Lavender Theme Specific Styles */
+  .lavender-gradient {
+    background: linear-gradient(135deg, hsl(var(--tuv-blue-900)) 0%, hsl(var(--tuv-blue-600)) 50%, hsl(var(--tuv-blue-400)) 100%);
+  }
+
+  .lavender-soft-gradient {
+    background: linear-gradient(135deg, hsl(var(--tuv-lavender-pale)) 0%, hsl(var(--tuv-lavender-light)) 100%);
+  }
+
+  .lavender-border {
+    border-color: hsl(var(--tuv-blue-600));
+  }
+
+  .lavender-shadow {
+    box-shadow: 0 4px 14px 0 rgba(203, 148, 247, 0.15);
+  }
+
+  .lavender-glow {
+    box-shadow: 0 0 20px rgba(203, 148, 247, 0.3);
   }
 
   /* Animations */
@@ -311,5 +384,30 @@
 
   .text-pretty {
     text-wrap: pretty;
+  }
+
+  /* Lavender Theme Utilities */
+  .bg-lavender-gradient {
+    background: linear-gradient(135deg, hsl(var(--tuv-blue-900)) 0%, hsl(var(--tuv-blue-600)) 50%, hsl(var(--tuv-blue-400)) 100%);
+  }
+
+  .bg-lavender-soft {
+    background: hsl(var(--tuv-lavender-pale));
+  }
+
+  .text-lavender {
+    color: hsl(var(--tuv-blue-600));
+  }
+
+  .text-lavender-dark {
+    color: hsl(var(--tuv-blue-900));
+  }
+
+  .border-lavender {
+    border-color: hsl(var(--tuv-blue-600));
+  }
+
+  .hover-lavender {
+    @apply hover:bg-tuv-lavender-50 hover:text-tuv-lavender-700;
   }
 }
