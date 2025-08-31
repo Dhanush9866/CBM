@@ -14,21 +14,17 @@ import Resources from "./pages/Resources";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import TestingInspection from "./pages/TestingInspection";
-import TestingDetail from "./pages/TestingDetail";
 import CBMMonitoring from "./pages/CBMMonitoring";
-import CBMDetail from "./pages/CBMDetail";
 import Inspection from "./pages/Inspection";
-import InspectionDetail from "./pages/InspectionDetail";
 import Auditing from "./pages/Auditing";
-import AuditingDetail from "./pages/AuditingDetail";
 import VerificationCertification from "./pages/VerificationCertification";
-import VerificationCertificationDetail from "./pages/VerificationCertificationDetail";
+import ServiceDetail from "./pages/ServiceDetail";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TranslationProvider defaultLanguage="en">
+    <TranslationProvider>
       <TooltipProvider>
         <Toaster />
         <Sonner />
@@ -38,15 +34,12 @@ const App = () => (
               <Route path="/" element={<Navigate to="/services" replace />} />
               <Route path="/services" element={<Services />} />
               <Route path="/services/testing" element={<TestingInspection />} />
-              <Route path="/services/testing/:slug" element={<TestingDetail />} />
               <Route path="/services/cbm" element={<CBMMonitoring />} />
-              <Route path="/services/cbm/:slug" element={<CBMDetail />} />
               <Route path="/services/inspection" element={<Inspection />} />
-              <Route path="/services/inspection/:slug" element={<InspectionDetail />} />
               <Route path="/services/auditing" element={<Auditing />} />
-              <Route path="/services/auditing/:slug" element={<AuditingDetail />} />
               <Route path="/services/verification-certification" element={<VerificationCertification />} />
-              <Route path="/services/verification-certification/:slug" element={<VerificationCertificationDetail />} />
+              {/* Unified detail route for all services */}
+              <Route path="/services/:serviceType/:slug" element={<ServiceDetail />} />
               <Route path="/industries" element={<Industries />} />
               <Route path="/about" element={<About />} />
               <Route path="/careers" element={<Careers />} />
