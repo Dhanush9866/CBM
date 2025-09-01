@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiBaseURL = import.meta.env.VITE_API_BASE_URL || "https://cbm-backend-e1rq.onrender.com" || 'http://localhost:8000';
+const apiBaseURL =  'http://localhost:8000';
 
 export const apiClient = axios.create({
   baseURL: apiBaseURL,
@@ -82,6 +82,37 @@ export async function getPageWithSections(pageName: string, sectionName?: string
     const { data } = await apiClient.get(searchUrl, { params });
     return data.data as PageDto;
   }
+}
+
+export type JobApplicationData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  position: string;
+  department: string;
+  experience: string;
+  coverLetter: string;
+};
+
+export async function submitJobApplication(applicationData: JobApplicationData, resumeFile: File): Promise<any> {
+  const formData = new FormData();
+  
+  // Append all form data
+  Object.entries(applicationData).forEach(([key, value]) => {
+    formData.append(key, value);
+  });
+  
+  // Append resume file
+  formData.append('resume', resumeFile);
+  
+  const { data } = await apiClient.post('/api/careers/apply', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  
+  return data;
 }
 
 
