@@ -13,6 +13,7 @@ const sectionRoutes = require('../routes/section.routes');
 const pageRoutes = require('../routes/page.routes');
 const translateRoutes = require('../routes/translate.routes');
 const imageRoutes = require('../routes/image.routes');
+const careerRoutes = require('../routes/career.routes');
 
 function createApp() {
   const app = express();
@@ -55,6 +56,7 @@ function createApp() {
   app.use('/api/pages', pageRoutes);
   app.use('/api/translate', translateRoutes);
   app.use('/api/images', imageRoutes);
+  app.use('/api/careers', careerRoutes);
 
   // 404 and error handler
   app.use(notFoundHandler);

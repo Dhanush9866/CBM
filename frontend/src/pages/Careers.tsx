@@ -1,5 +1,7 @@
 
 import { HeroSection } from '@/components/Common/HeroSection';
+import { JobApplicationDialog } from '@/components/Common/JobApplicationDialog';
+import { GeneralApplicationDialog } from '@/components/Common/GeneralApplicationDialog';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { 
@@ -258,10 +260,14 @@ export default function Careers() {
                   </div>
                   
                   <div className="mt-4 lg:mt-0 lg:ml-6">
-                    <Button className="w-full lg:w-auto">
-                      Apply Now
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
+                    <JobApplicationDialog job={job}>
+                      <Button 
+                        className="w-full lg:w-auto"
+                      >
+                        Apply Now
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </JobApplicationDialog>
                   </div>
                 </div>
               </div>
@@ -272,9 +278,14 @@ export default function Careers() {
             <p className="text-muted-foreground mb-6">
               Don't see the right role? We're always looking for talented individuals.
             </p>
-            <Button variant="outline" size="lg">
-              Submit General Application
-            </Button>
+            <GeneralApplicationDialog>
+              <Button 
+                variant="outline" 
+                size="lg"
+              >
+                Submit General Application
+              </Button>
+            </GeneralApplicationDialog>
           </div>
         </div>
       </section>
@@ -336,7 +347,11 @@ export default function Careers() {
             more secure, and sustainable. Your career growth starts here.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="btn-primary">
+            <Button 
+              size="lg" 
+              className="btn-primary"
+              onClick={() => document.getElementById('jobs')?.scrollIntoView({ behavior: 'smooth' })}
+            >
               Browse All Positions
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>

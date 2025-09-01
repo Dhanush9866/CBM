@@ -106,6 +106,18 @@ export const verificationCertificationItems: VerificationCertificationItem[] = [
       'Operational certification',
     ],
   },
+  {
+    slug: 'fitness-verification-certification-for-heavy-mining-equipment',
+    title: 'Fitness Verification & Certification for Heavy Mining Equipment',
+    image: 'https://res.cloudinary.com/docyipoze/image/upload/v1756719170/image51_wqv9pk.jpg',
+    description: 'Safety and integrity verification of storage tank facilities and systems.',
+    details: [
+      'Tank integrity assessment',
+      'Safety system verification',
+      'Operational certification',
+    ],
+  },
+
 ];
 
 export function getVerificationCertificationItemBySlug(slug: string): VerificationCertificationItem | undefined {
