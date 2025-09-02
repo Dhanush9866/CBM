@@ -11,6 +11,101 @@ import { getCbmItemBySlug } from '@/data/cbm';
 import { getAuditingItemBySlug } from '@/data/auditing';
 import { getInnovationRDItemBySlug } from '@/data/innovation-rd';
 
+// Lightweight Markdown-like parser supporting H1/H2/H3, paragraphs and bullets
+function parseContentToBlocks(raw: string): Array<{ type: string; content: JSX.Element; props?: any }> {
+  const lines = raw.replace(/\r\n/g, '\n').split('\n');
+  const blocks: Array<{ type: string; content: JSX.Element; props?: any }> = [];
+  let paragraphBuffer: string[] = [];
+  let listBuffer: string[] = [];
+
+  const flushParagraph = () => {
+    if (paragraphBuffer.length > 0) {
+      const text = paragraphBuffer.join(' ').trim();
+      if (text) {
+        blocks.push({
+          type: 'p',
+          content: (
+            <div key={`p-${blocks.length}`} className="prose prose-lg prose-slate max-w-none mb-4 text-muted-foreground leading-relaxed">
+              <p className="text-base md:text-lg leading-6 text-gray-700 dark:text-gray-300">{text}</p>
+            </div>
+          )
+        });
+      }
+      paragraphBuffer = [];
+    }
+  };
+
+  const flushList = () => {
+    if (listBuffer.length > 0) {
+      blocks.push({
+        type: 'ul',
+        content: (
+          <ul key={`ul-${blocks.length}`} className="list-disc pl-6 space-y-2 text-gray-700 dark:text-gray-300">
+            {listBuffer.map((li, i) => (
+              <li key={i}>{li}</li>
+            ))}
+          </ul>
+        )
+      });
+      listBuffer = [];
+    }
+  };
+
+  const startNewBlock = () => {
+    flushParagraph();
+    flushList();
+  };
+
+  lines.forEach((line) => {
+    const trimmed = line.trim();
+    if (!trimmed) {
+      // Blank line separates blocks
+      startNewBlock();
+      return;
+    }
+
+    // Bullets: -, *, •, – or numbered like 1.
+    if (/^(\-|\*|•|–)\s+/.test(trimmed)) {
+      flushParagraph();
+      listBuffer.push(trimmed.replace(/^(\-|\*|•|–)\s+/, ''));
+      return;
+    }
+    if (/^\d+\.[\)\.]?\s+/.test(trimmed)) {
+      flushParagraph();
+      listBuffer.push(trimmed.replace(/^(\-|\*|•|–)\s+/, ''));
+      return;
+    }
+
+    // Headings: #, ##, ### or Title Case line followed by colon patterns
+    const hMatch = trimmed.match(/^(#{1,3})\s+(.*)$/);
+    if (hMatch) {
+      startNewBlock();
+      const level = hMatch[1].length;
+      const text = hMatch[2].trim();
+      const Tag = (level === 1 ? 'h1' : level === 2 ? 'h2' : 'h3') as keyof JSX.IntrinsicElements;
+      const sizeClass = level === 1 ? 'text-3xl md:text-4xl' : level === 2 ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl';
+      blocks.push({
+        type: level === 1 ? 'h1' : level === 2 ? 'h2' : 'h3',
+        content: (
+          <Tag key={`h-${blocks.length}`} className={`${sizeClass} font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3`}>
+            {text}
+          </Tag>
+        ),
+        props: { children: text }
+      });
+      return;
+    }
+
+    // Fallback: treat as paragraph text; will be merged until blank line
+    paragraphBuffer.push(trimmed);
+  });
+
+  // Flush any remaining buffers
+  startNewBlock();
+
+  return blocks;
+}
+
 // Service configuration interface
 interface ServiceConfig {
   type: string;
@@ -207,17 +302,14 @@ export default function ServiceDetail() {
         </div>
       </section>
 
-      {/* Blog-style interleaved content */}
+      {/* Content with strategic image placement based on content structure */}
       {(dynamicSection?.bodyText || item?.description || cloudinaryImages.length > 0) && (
         <section className="section pt-0">
-          <div className="container-responsive max-w-4xl mx-auto">
+          <div className="container-responsive max-w-6xl mx-auto">
             {(() => {
               // Prioritize backend data, fallback to static data
               const content = dynamicSection?.bodyText || item?.content || item?.description || '';
-              const paragraphs = content
-                .split(/\n{2,}/)
-                .map((p: string) => p.trim())
-                .filter(Boolean);
+              const textBlocks = parseContentToBlocks(content);
               const imageUrls: string[] = [];
               
               // Prioritize dynamicSection images, fallback to Cloudinary images only if needed
@@ -227,31 +319,88 @@ export default function ServiceDetail() {
                 imageUrls.push(...cloudinaryImages.map((img) => img.url));
               }
               
-              const maxLen = Math.max(paragraphs.length, imageUrls.length);
-              const blocks = [] as JSX.Element[];
+              // Determine main title from first H1
+              const mainTitle = (textBlocks.find((b) => b.type === 'h1')?.props?.children) as string | undefined;
               
-              for (let i = 0; i < maxLen; i++) {
-                if (i < paragraphs.length) {
-                  blocks.push(
-                    <div key={`p-${i}`} className="prose prose-lg prose-slate max-w-none mb-4 text-muted-foreground leading-relaxed">
-                      <p className="text-base md:text-lg leading-6 text-gray-700 dark:text-gray-300">{paragraphs[i]}</p>
-                    </div>
-                  );
-                }
-                if (i < imageUrls.length) {
-                  blocks.push(
-                    <div key={`img-${i}`} className="rounded-2xl overflow-hidden mb-6 shadow-lg">
-                      <img
-                        src={imageUrls[i]}
-                        alt={(dynamicSection?.title) || item?.title || 'Service Image'}
-                        className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300"
-                      />
-                    </div>
-                  );
-                }
-              }
+              // Strategic image placement based on content structure
+              const blocks: JSX.Element[] = [];
+              let imageIndex = 0;
               
-              if (blocks.length === 0 && paragraphs.length === 0 && imageUrls.length > 0) {
+              textBlocks.forEach((block, blockIndex) => {
+                // Skip H2 that duplicates main H1 text
+                if (block.type === 'h2' && mainTitle && block.props?.children === mainTitle) {
+                  return;
+                }
+                
+                // Add text block
+                blocks.push(
+                  <div key={`txt-${blockIndex}`} className="mb-4">
+                    {block.content}
+                  </div>
+                );
+                
+                // Strategic image placement based on content
+                if (imageUrls.length > 0) {
+                  // First image after main title (H1)
+                  if (blockIndex === 0 && block.type === 'h1' && imageIndex < imageUrls.length) {
+                    blocks.push(
+                      <div key={`img-${imageIndex}`} className="rounded-2xl overflow-hidden mb-6 shadow-lg md:max-w-3xl mx-auto">
+                        <img
+                          src={imageUrls[imageIndex]}
+                          alt="Borescope inspection in action"
+                          className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300"
+                        />
+                      </div>
+                    );
+                    imageIndex++;
+                  }
+                  
+                  // Second image after "Why Choose..." heading
+                  if (block.type === 'h2' && 
+                      block.props?.children?.includes('Why Choose') && 
+                      imageIndex < imageUrls.length) {
+                    blocks.push(
+                      <div key={`img-${imageIndex}`} className="rounded-2xl overflow-hidden mb-6 shadow-lg md:max-w-2xl mx-auto">
+                        <img
+                          src={imageUrls[imageIndex]}
+                          alt="Professional borescope inspection"
+                          className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300"
+                        />
+                      </div>
+                    );
+                    imageIndex++;
+                  }
+                  
+                  // Third image alongside "Ready to Inspect" section (if available)
+                  if (block.type === 'h2' && 
+                      block.props?.children?.includes('Ready to Inspect') && 
+                      imageIndex < imageUrls.length) {
+                    // Create a two-column layout for this section
+                    const nextBlock = textBlocks[blockIndex + 1];
+                    if (nextBlock && nextBlock.type === 'p') {
+                      blocks.push(
+                        <div key={`img-text-${imageIndex}`} className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                          <div className="space-y-4">
+                            <div className="mb-4">{nextBlock.content}</div>
+                          </div>
+                          <div className="rounded-2xl overflow-hidden shadow-lg">
+                            <img
+                              src={imageUrls[imageIndex]}
+                              alt="Robotic inspection device"
+                              className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300"
+                            />
+                          </div>
+                        </div>
+                      );
+                      imageIndex++;
+                      // Skip the next paragraph since we've already rendered it
+                      return;
+                    }
+                  }
+                }
+              });
+              
+              if (blocks.length === 0 && textBlocks.length === 0 && imageUrls.length > 0) {
                 return (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {imageUrls.map((url, idx) => (
