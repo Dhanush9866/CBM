@@ -9,7 +9,8 @@ import {
   Settings,
   Globe,
   Zap,
-  FileText
+  FileText,
+  Brain
 } from 'lucide-react';
 
 export const services = [
@@ -72,6 +73,18 @@ export const services = [
       "Management systems",
       "Product certification",
       "Regulatory approvals",
+    ]
+  },
+  {
+    id: 6,
+    title: "Innovation & R&D",
+    description: "Next-generation solutions powered by IoT, AI, Robotics, and Industry 4.0 technologies.",
+    icon: Brain,
+    link: "/services/innovation-rd",
+    features: [
+      "IoT & AI monitoring",
+      "Robotic inspection",
+      "Digital twin technology",
     ]
   },
 ];
