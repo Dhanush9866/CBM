@@ -10,7 +10,9 @@
     "seed": "node src/scripts/seed-data.js",
     "seed:cbm": "node src/scripts/seed-cbm-data.js",
     "seed:cbm:clear": "node src/scripts/seed-cbm-data.js clear",
-    "seed:clear": "node -e \"require('./src/scripts/seed-data.js').clearAllData()\""
+    "seed:clear": "node -e \"require('./src/scripts/seed-data.js').clearAllData()\"",
+    "seed:page": "node src/scripts/seed-page-with-sections.js",
+    "seed:page:clear": "node src/scripts/seed-page-with-sections.js clear"
   },
   "engines": {
     "node": ">=18.0.0"

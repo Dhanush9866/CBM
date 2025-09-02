@@ -9,6 +9,7 @@ import { getTestingSectionBySlug } from '@/data/testing';
 import { getInspectionItemBySlug } from '@/data/inspection';
 import { getCbmItemBySlug } from '@/data/cbm';
 import { getAuditingItemBySlug } from '@/data/auditing';
+import { getInnovationRDItemBySlug } from '@/data/innovation-rd';
 
 // Service configuration interface
 interface ServiceConfig {
@@ -55,6 +56,13 @@ const serviceConfigs: Record<string, ServiceConfig> = {
     route: '/services/auditing',
     getItemBySlug: getAuditingItemBySlug,
     getImages: (slug: string) => imageService.getAuditingImages(slug)
+  },
+  'innovation-rd': {
+    type: 'innovation-rd',
+    displayName: 'Innovation & R&D',
+    route: '/services/innovation-rd',
+    getItemBySlug: getInnovationRDItemBySlug,
+    getImages: (slug: string) => Promise.resolve([]) // No specific images for innovation-rd yet
   }
 };
 
@@ -77,15 +85,63 @@ export default function ServiceDetail() {
       try {
         setIsLoadingImages(true);
         
-        // Get static item data
+        // Get static item data as fallback
         const staticItem = serviceConfig.getItemBySlug(slug);
         setItem(staticItem);
         
-        // Dynamic page/section
-        const page = await getPageWithSections(serviceConfig.type, slug);
-        setDynamicPage(page);
-        const firstSection = (page.sections && page.sections[0]) || null;
-        setDynamicSection(firstSection);
+        // Try to fetch dynamic page/section from backend first
+        try {
+          const page = await getPageWithSections(serviceConfig.type);
+          setDynamicPage(page);
+          
+          // Find the specific section by slug or sectionId
+          let targetSection = null;
+          if (page.sections && page.sections.length > 0) {
+            targetSection = page.sections.find(s => 
+              s.sectionId === slug || 
+              s.title?.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-') === slug
+            );
+          }
+          
+          if (targetSection) {
+            setDynamicSection(targetSection);
+          } else if (staticItem) {
+            // If no backend section found, use static item
+            setDynamicSection({
+              _id: staticItem.id,
+              title: staticItem.title,
+              bodyText: staticItem.content,
+              images: staticItem.image ? [staticItem.image] : [],
+              sectionId: staticItem.id,
+              page: serviceConfig.type,
+              language: 'en',
+              pageNumber: 1,
+              isActive: true,
+              translations: {},
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString()
+            } as SectionDto);
+          }
+        } catch (backendError) {
+          console.warn('Backend fetch failed, using static data:', backendError);
+          // If backend fails, use static item
+          if (staticItem) {
+            setDynamicSection({
+              _id: staticItem.id,
+              title: staticItem.title,
+              bodyText: staticItem.content,
+              images: staticItem.image ? [staticItem.image] : [],
+              sectionId: staticItem.id,
+              page: serviceConfig.type,
+              language: 'en',
+              pageNumber: 1,
+              isActive: true,
+              translations: {},
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString()
+            } as SectionDto);
+          }
+        }
         
         // Images
         const images = await serviceConfig.getImages(slug);
@@ -143,7 +199,7 @@ export default function ServiceDetail() {
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbLink href={`${serviceConfig.route}/${item?.slug || slug}`}>
-                  {item?.title || dynamicSection?.title || 'Detail'}
+                  {dynamicSection?.title || item?.title || 'Detail'}
                 </BreadcrumbLink>
               </BreadcrumbItem>
             </BreadcrumbList>
@@ -156,7 +212,9 @@ export default function ServiceDetail() {
         <section className="section pt-0">
           <div className="container-responsive max-w-4xl mx-auto">
             {(() => {
-              const paragraphs = (dynamicSection?.bodyText || item?.description || '')
+              // Prioritize backend data, fallback to static data
+              const content = dynamicSection?.bodyText || item?.content || item?.description || '';
+              const paragraphs = content
                 .split(/\n{2,}/)
                 .map((p: string) => p.trim())
                 .filter(Boolean);

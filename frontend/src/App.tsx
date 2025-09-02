@@ -18,6 +18,7 @@ import CBMMonitoring from "./pages/CBMMonitoring";
 import Inspection from "./pages/Inspection";
 import Auditing from "./pages/Auditing";
 import VerificationCertification from "./pages/VerificationCertification";
+import InnovationRD from "./pages/InnovationRD";
 import ServiceDetail from "./pages/ServiceDetail";
 
 const queryClient = new QueryClient();
@@ -38,6 +39,7 @@ const App = () => (
               <Route path="/services/inspection" element={<Inspection />} />
               <Route path="/services/auditing" element={<Auditing />} />
               <Route path="/services/verification-certification" element={<VerificationCertification />} />
+              <Route path="/services/innovation-rd" element={<InnovationRD />} />
               {/* Unified detail route for all services */}
               <Route path="/services/:serviceType/:slug" element={<ServiceDetail />} />
               <Route path="/industries" element={<Industries />} />
