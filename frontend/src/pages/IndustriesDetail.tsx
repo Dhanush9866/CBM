@@ -84,18 +84,48 @@ export default function IndustriesDetail() {
       </section>
 
       <section className="section pt-0">
-        <div className="container-responsive max-w-4xl mx-auto">
+        <div className="container-responsive max-w-6xl mx-auto">
           <h1 className="text-3xl lg:text-4xl font-bold mb-6">{section.title}</h1>
-          {section.images && section.images.length > 0 && (
-            <div className="rounded-2xl overflow-hidden mb-8 shadow-lg">
-              <img src={section.images[0]} alt={section.title} className="w-full h-auto object-cover" />
+
+          {/* Layout: first image | content | second image */}
+          {section.images && section.images.length >= 2 ? (
+            <div className="grid grid-cols-3 gap-6 items-start">
+              <div className="rounded-2xl overflow-hidden shadow-lg">
+                <img
+                  src={section.images[0]}
+                  alt={`${section.title} 1`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              <div className="space-y-4 md:px-2">
+                {paragraphs.map((p, idx) => (
+                  <p key={idx} className="text-base md:text-lg leading-7 text-gray-700 dark:text-gray-300">{p}</p>
+                ))}
+              </div>
+
+              <div className="rounded-2xl overflow-hidden shadow-lg">
+                <img
+                  src={section.images[1]}
+                  alt={`${section.title} 2`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
             </div>
+          ) : (
+            <>
+              {section.images && section.images.length === 1 && (
+                <div className="rounded-2xl overflow-hidden mb-8 shadow-lg">
+                  <img src={section.images[0]} alt={section.title} className="w-full h-auto object-cover" />
+                </div>
+              )}
+              <div className="space-y-4">
+                {paragraphs.map((p, idx) => (
+                  <p key={idx} className="text-base md:text-lg leading-7 text-gray-700 dark:text-gray-300">{p}</p>
+                ))}
+              </div>
+            </>
           )}
-          <div className="space-y-4">
-            {paragraphs.map((p, idx) => (
-              <p key={idx} className="text-base md:text-lg leading-7 text-gray-700 dark:text-gray-300">{p}</p>
-            ))}
-          </div>
         </div>
       </section>
     </div>

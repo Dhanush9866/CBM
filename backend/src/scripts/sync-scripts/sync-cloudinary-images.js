@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
 const cloudinary = require('cloudinary').v2;
+const fs = require('fs');
+const path = require('path');
+const vm = require('vm');
 require('dotenv').config();
 
 // Import models
-const Section = require('./src/models/Section');
+const Section = require('../../models/Section');
 
 // Configure Cloudinary
 cloudinary.config({
@@ -13,7 +16,7 @@ cloudinary.config({
 });
 
 // Configure MongoDB connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/cbm';
+const MONGODB_URI = "mongodb+srv://cbm360tiv:MiiFze4xYGr6XNji@cluster0.sf6iagh.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster" ||  process.env.MONGODB_URI || 'mongodb://localhost:27017/cbm';
 
 /**
  * Get the page slug for a given section ID from database
@@ -295,6 +298,131 @@ async function syncAllSections() {
 
   } catch (error) {
     console.error('❌ Fatal error during sync:', error.message);
+    process.exit(1);
+  }
+}
+
+/**
+ * Sync sections for a specific page slug (e.g., 'industries')
+ * @param {string} pageSlug - The page slug to filter sections by
+ */
+async function syncSectionsByPage(pageSlug) {
+  try {
+    console.log(`🚀 Starting Cloudinary image sync for page: ${pageSlug}\n`);
+
+    // Get all unique section IDs for the given page
+    const sections = await Section.find({ page: pageSlug }).distinct('sectionId');
+    console.log(`📊 Found ${sections.length} unique section IDs for page '${pageSlug}':\n`);
+
+    let successCount = 0;
+    let errorCount = 0;
+    let totalImages = 0;
+
+    // Special handling for industries: pull URLs from frontend/src/images.js instead of Cloudinary
+    if (pageSlug === 'industries') {
+      const imagesFilePath = path.resolve(__dirname, '../../../../frontend/src/images.js');
+      let industryMap = {};
+      try {
+        const fileContent = fs.readFileSync(imagesFilePath, 'utf8');
+        // Transform ESM export to CommonJS for evaluation
+        const transformed = fileContent
+          .replace(/export\s+const\s+industryImages\s*=\s*/m, 'const industryImages = ')
+          .replace(/export\s+default\s+industryImages\s*;?/m, 'module.exports = industryImages;');
+
+        const sandbox = { module: { exports: {} } };
+        vm.createContext(sandbox);
+        vm.runInContext(transformed, sandbox, { filename: 'images.js' });
+        industryMap = sandbox.module.exports || {};
+      } catch (e) {
+        console.error('❌ Failed to read/parse frontend images file:', e.message);
+      }
+
+      for (const sectionId of sections) {
+        console.log(`\n🔄 Processing section: ${sectionId}`);
+        try {
+          let keyUsed = sectionId;
+          let entry = industryMap[sectionId];
+
+          if (!entry) {
+            // Fuzzy match against available keys from images.js
+            const keys = Object.keys(industryMap);
+            let best = null;
+            let bestScore = 0;
+            for (const k of keys) {
+              const score = calculateSimilarity(sectionId, k);
+              if (score > bestScore) {
+                best = k;
+                bestScore = score;
+              }
+            }
+            if (best && bestScore > 0.5) {
+              console.log(`🎯 Images mapping: ${sectionId} → ${best} (similarity ${(bestScore * 100).toFixed(1)}%)`);
+              entry = industryMap[best];
+              keyUsed = best;
+            }
+          }
+
+          if (entry && Array.isArray(entry.images) && entry.images.length > 0) {
+            const imageUrls = entry.images.map(img => img.url).filter(Boolean);
+            if (imageUrls.length > 0) {
+              const success = await updateSectionImages(sectionId, imageUrls);
+              if (success) {
+                successCount++;
+                totalImages += imageUrls.length;
+              } else {
+                errorCount++;
+              }
+            } else {
+              console.log(`ℹ️  No valid URLs for section ${sectionId} (key '${keyUsed}') in images.js`);
+            }
+          } else {
+            console.log(`ℹ️  Section ${sectionId} not found in images.js or has no images`);
+          }
+        } catch (error) {
+          console.error(`❌ Error processing section ${sectionId}:`, error.message);
+          errorCount++;
+        }
+      }
+    } else {
+      // Default behavior for other pages: search Cloudinary
+      for (const sectionId of sections) {
+        console.log(`\n🔄 Processing section: ${sectionId}`);
+        try {
+          const cloudinaryResult = await findCorrectCloudinaryPath(sectionId, pageSlug);
+          if (cloudinaryResult && cloudinaryResult.images.length > 0) {
+            const imageUrls = cloudinaryResult.images;
+            if (cloudinaryResult.actualSectionId && cloudinaryResult.actualSectionId !== sectionId) {
+              console.log(`🔄 Path corrected: ${sectionId} → ${cloudinaryResult.actualSectionId}`);
+            }
+            const success = await updateSectionImages(sectionId, imageUrls);
+            if (success) {
+              successCount++;
+              totalImages += imageUrls.length;
+            } else {
+              errorCount++;
+            }
+          } else {
+            console.log(`ℹ️  Section ${sectionId} has no images in Cloudinary for page '${pageSlug}'`);
+          }
+        } catch (error) {
+          console.error(`❌ Error processing section ${sectionId}:`, error.message);
+          errorCount++;
+        }
+      }
+    }
+
+    // Summary
+    console.log('\n' + '='.repeat(60));
+    console.log(`📋 SYNC SUMMARY — page: ${pageSlug}`);
+    console.log('='.repeat(60));
+    console.log(`✅ Successfully processed: ${successCount} sections`);
+    console.log(`❌ Errors encountered: ${errorCount} sections`);
+    console.log(`🖼️  Total images synced: ${totalImages}`);
+    console.log(`📊 Total sections found: ${sections.length}`);
+    console.log('='.repeat(60));
+
+  } catch (error) {
+    console.error('❌ Fatal error during sync by page:', error.message);
     process.exit(1);
   }
 }
@@ -654,6 +782,17 @@ async function main() {
     if (args.length === 0) {
       // No arguments - sync all sections
       await syncAllSections();
+    } else if (args[0] === '--industries') {
+      // Convenience flag to sync only industries page
+      await syncSectionsByPage('industries');
+    } else if (args[0] === '--page' || args[0] === '-p') {
+      // Sync sections by page slug
+      if (args[1]) {
+        await syncSectionsByPage(args[1]);
+      } else {
+        console.log('❌ Please provide a page slug after --page flag');
+        console.log('Usage: node sync-cloudinary-images.js --page <slug>');
+      }
     } else if (args[0] === '--list' || args[0] === '-l') {
       // List sections status
       await listSectionsStatus();
@@ -710,6 +849,8 @@ async function main() {
       console.log('🆘 Cloudinary Image Sync Script Help\n');
       console.log('Usage:');
       console.log('  node sync-cloudinary-images.js                    # Sync all sections');
+      console.log('  node sync-cloudinary-images.js --industries       # Sync only industries page');
+      console.log('  node sync-cloudinary-images.js --page <slug>      # Sync by page slug');
       console.log('  node sync-cloudinary-images.js --list            # List sections status');
       console.log('  node sync-cloudinary-images.js --section <id>    # Sync specific section');
       console.log('  node sync-cloudinary-images.js --test            # Test Cloudinary structure');
@@ -719,6 +860,8 @@ async function main() {
       console.log('  node sync-cloudinary-images.js --help            # Show this help\n');
       console.log('Examples:');
       console.log('  node sync-cloudinary-images.js');
+      console.log('  node sync-cloudinary-images.js --industries');
+      console.log('  node sync-cloudinary-images.js --page industries');
       console.log('  node sync-cloudinary-images.js --list');
       console.log('  node sync-cloudinary-images.js --section vibration-analysis-balancing');
       console.log('  node sync-cloudinary-images.js --test');
@@ -748,6 +891,7 @@ if (require.main === module) {
 
 module.exports = {
   syncAllSections,
+  syncSectionsByPage,
   syncSpecificSection,
   listSectionsStatus,
   testCloudinaryStructure,
