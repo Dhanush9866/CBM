@@ -3,13 +3,42 @@ import { HeroSection } from '@/components/Common/HeroSection';
 import { IndustryCard } from '@/components/Common/IndustryCard';
 import { industries, industryStats } from '@/data/industries';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Target, TrendingUp, Shield } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { getPageWithSections, SectionDto } from '@/utils/api';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function Industries() {
+  const navigate = useNavigate();
+  const [sections, setSections] = useState<SectionDto[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    const load = async () => {
+      try {
+        setLoading(true);
+        const page = await getPageWithSections('industries');
+        if (isMounted) setSections(page.sections || []);
+      } catch (e) {
+        if (isMounted) setError('Failed to load industries');
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+    load();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const toSlug = (text: string) =>
+    text.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
   return (
     <div>
-      {/* Hero Section */}
+      {/* Hero Section
       <HeroSection
         title="Industry Expertise Across All Sectors"
         subtitle="Specialized Solutions"
@@ -25,7 +54,7 @@ export default function Industries() {
       />
 
       {/* Industry Overview */}
-      <section className="section">
+      {/* <section className="section">
         <div className="container-responsive">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-16">
             <div className="lg:col-span-2">
@@ -85,9 +114,9 @@ export default function Industries() {
             </div>
           </div>
         </div>
-      </section>
+      </section>  */}
 
-      {/* Industries Grid */}
+      {/* Industries Grid (from backend) */}
       <section className="section bg-tuv-gray-50" id="industries">
         <div className="container-responsive">
           <div className="text-center mb-16">
@@ -99,14 +128,47 @@ export default function Industries() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {industries.map((industry) => (
-              <IndustryCard key={industry.id} {...industry} />
+            {loading && (
+              <div className="col-span-full text-center text-muted-foreground">Loading...</div>
+            )}
+            {error && !loading && (
+              <div className="col-span-full text-center text-destructive">{error}</div>
+            )}
+            {!loading && !error && sections.map((s) => (
+              <Card
+                key={s._id}
+                className="overflow-hidden group hover:shadow-tuv-md transition-all cursor-pointer"
+                onClick={() => navigate(`/industries/${s.sectionId || toSlug(s.title)}`, { state: { section: s } })}
+                role="link"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    navigate(`/industries/${s.sectionId || toSlug(s.title)}`, { state: { section: s } });
+                  }
+                }}
+              >
+                <div className="aspect-video w-full overflow-hidden">
+                  <img src={(s.images && s.images[0]) || '/placeholder.svg'} alt={s.title} className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-300" />
+                </div>
+                <CardHeader>
+                  <CardTitle className="text-xl">{s.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{s.bodyText?.slice(0, 140) || ''}</p>
+                </CardContent>
+                <CardFooter>
+                  <Button asChild variant="outline" className="w-full">
+                    <Link to={`/industries/${s.sectionId || toSlug(s.title)}`} state={{ section: s }}>View Details</Link>
+                  </Button>
+                </CardFooter>
+              </Card>
             ))}
           </div>
         </div>
       </section>
-
-      {/* Industry Benefits */}
+{/* 
+      Industry Benefits
       <section className="section">
         <div className="container-responsive">
           <div className="text-center mb-16">
@@ -152,10 +214,10 @@ export default function Industries() {
             ))}
           </div>
         </div>
-      </section>
+      </section> 
 
       {/* CTA Section */}
-      <section className="section bg-primary text-white">
+      {/* <section className="section bg-primary text-white">
         <div className="container-responsive text-center">
           <h2 className="text-3xl lg:text-4xl font-bold mb-6">
             Ready to Advance Your Industry Leadership?
@@ -178,7 +240,7 @@ export default function Industries() {
             </Button>
           </div>
         </div>
-      </section>
+      </section> */} 
     </div>
   );
 }

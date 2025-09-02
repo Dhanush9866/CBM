@@ -20,6 +20,7 @@ import Auditing from "./pages/Auditing";
 import VerificationCertification from "./pages/VerificationCertification";
 import InnovationRD from "./pages/InnovationRD";
 import ServiceDetail from "./pages/ServiceDetail";
+import IndustriesDetail from "./pages/IndustriesDetail";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ const App = () => (
               {/* Unified detail route for all services */}
               <Route path="/services/:serviceType/:slug" element={<ServiceDetail />} />
               <Route path="/industries" element={<Industries />} />
+              <Route path="/industries/:slug" element={<IndustriesDetail />} />
               <Route path="/about" element={<About />} />
               <Route path="/careers" element={<Careers />} />
               <Route path="/resources" element={<Resources />} />
