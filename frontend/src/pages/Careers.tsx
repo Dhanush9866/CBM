@@ -79,7 +79,7 @@ export default function Careers() {
   return (
     <div>
       {/* Hero Section */}
-      <HeroSection
+      {/* <HeroSection
         title="Build Your Career with Global Impact"
         subtitle="Join Our Team"
         description="Advance your career with a world leader in testing, inspection, and certification. Make a difference in safety, security, and sustainability."
@@ -91,10 +91,10 @@ export default function Careers() {
           text: "Learn About Culture",
           href: "#culture"
         }}
-      />
+      /> */}
 
-      {/* Why CBM */}
-      <section className="section">
+      {/* Why CBM */} 
+      {/* <section className="section">
         <div className="container-responsive">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold mb-4">
@@ -149,10 +149,10 @@ export default function Careers() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Culture & Values */}
-      <section className="section bg-primary text-white" id="culture">
+      {/* <section className="section bg-primary text-white" id="culture">
         <div className="container-responsive">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -216,7 +216,7 @@ export default function Careers() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Open Positions */}
       <section className="section" id="jobs">
@@ -337,7 +337,7 @@ export default function Careers() {
       </section>
 
       {/* CTA Section */}
-      <section className="section">
+      {/* <section className="section">
         <div className="container-responsive text-center">
           <h2 className="text-3xl lg:text-4xl font-bold mb-6">
             Ready to Make Your Impact?
@@ -362,7 +362,7 @@ export default function Careers() {
             </Button>
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }
