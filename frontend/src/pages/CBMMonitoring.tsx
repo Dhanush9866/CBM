@@ -59,8 +59,11 @@ export default function CBMMonitoring() {
 
           <div className="mt-6 text-center">
             <h1 className="text-3xl lg:text-4xl font-bold mb-3">Condition based Monitoring (CBM)</h1>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Enhance reliability with predictive insights from sensors, analytics, and expert diagnostics.
+            <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-none leading-relaxed md:leading-8 whitespace-pre-line text-justify">
+                           
+            Our Condition-Based Monitoring (CBM) services provide real-time insights into the health and performance of critical assets, enabling predictive maintenance, reduced downtime, and extended equipment life. By integrating IoT, AI, and advanced sensor technologies, we help industries move from reactive and scheduled maintenance to a datadriven, proactive approach.     
+             “Smart Monitoring. Predictive Insights. Reliable Assets.”                        
+            
             </p>
           </div>
         </div>
