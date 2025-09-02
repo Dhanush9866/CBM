@@ -16,6 +16,7 @@ const PageSchema = new mongoose.Schema(
   {
     title: { type: String, required: true, index: true },
     description: { type: String },
+    category: { type: String, index: true },
     slug: { type: String, required: true, unique: true, index: true },
     language: { type: String, enum: SupportedLanguages, default: 'en', index: true },
     pageNumber: { type: Number, index: true },
@@ -42,7 +43,7 @@ const PageSchema = new mongoose.Schema(
 // Indexes for better query performance
 PageSchema.index({ language: 1, isActive: 1 });
 PageSchema.index({ createdAt: -1 });
-PageSchema.index({ title: 'text', description: 'text' });
+PageSchema.index({ title: 'text', description: 'text', category: 'text' });
 
 // Virtual for getting sections count
 PageSchema.virtual('sectionsCount').get(function() {
