@@ -13,7 +13,11 @@
     "seed:clear": "node -e \"require('./src/scripts/seed-data.js').clearAllData()\"",
     "seed:page": "node src/scripts/seed-page-with-sections.js",
     "seed:page:clear": "node src/scripts/seed-page-with-sections.js clear",
-    "upload:frontend-images": "node src/scripts/upload-frontend-images-to-cloudinary.js"
+    "upload:frontend-images": "node src/scripts/upload-frontend-images-to-cloudinary.js",
+    "create:cover-folders": "node src/scripts/create-industry-cover-folders.js",
+    "upload:industry-covers": "node src/scripts/upload-industry-covers-and-update-images.js",
+    "generate:industry-covers": "node src/scripts/generate-industry-covers-file.js",
+    "strip:covers-from-images": "node src/scripts/strip-cover-from-images.js"
   },
   "engines": {
     "node": ">=18.0.0"
