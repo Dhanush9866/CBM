@@ -59,8 +59,10 @@ export default function VerificationCertification() {
 
           <div className="mt-6 text-center">
             <h1 className="text-3xl lg:text-4xl font-bold mb-3">Verification & Certification (VC)</h1>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Independent verification and certification services to ensure compliance, safety, and operational excellence.
+            <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-none leading-relaxed md:leading-8 whitespace-pre-line text-justify">
+            Our Verification & Certification Services provide independent assurance that industrial assets, processes, and products meet international standards, client specifications, and regulatory requirements. Leveraging a global network of certified inspectors and auditors, we deliver trusted third-party verification and certification to enhance safety, reliability, and operational excellence. 
+ 
+            “Trusted Verification & Certification – Ensuring Compliance, Quality, and Safety Across Industries.” 
             </p>
           </div>
         </div>

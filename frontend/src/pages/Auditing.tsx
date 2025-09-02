@@ -59,8 +59,10 @@ export default function Auditing() {
 
           <div className="mt-6 text-center">
             <h1 className="text-3xl lg:text-4xl font-bold mb-3">Auditing (A)</h1>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Comprehensive audit services to assess compliance, efficiency, and risk management across your operations.
+            <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-none leading-relaxed md:leading-8 whitespace-pre-line text-justify">
+            Our Auditing Services provide independent, systematic, and comprehensive evaluations to ensure compliance, efficiency, and safety across industrial operations. With certified auditors and global expertise, we help organizations identify gaps, mitigate risks, and enhance operational performance in line with international standards and regulatory requirements. 
+ 
+            “Independent Auditing Services – Driving Compliance, Safety, and Operational Excellence.” 
             </p>
           </div>
         </div>

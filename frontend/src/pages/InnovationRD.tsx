@@ -60,8 +60,8 @@ export default function InnovationRD() {
 
           <div className="mt-6 text-center">
             <h1 className="text-3xl lg:text-4xl font-bold mb-3">Innovation & Research and Development (R&D)</h1>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              We are pioneers in Condition-Based Monitoring (CBM), Technical Industrial Verification (TIV), and advanced R&D services, delivering next-generation solutions powered by IoT, AI, Robotics, and Industry 4.0 technologies.
+            <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-none leading-relaxed md:leading-8 whitespace-pre-line text-justify">
+            We are pioneers in Condition-Based Monitoring (CBM), Technical Industrial Verification (TIV), and advanced R&D services, delivering next-generation solutions powered by IoT, AI, Robotics, and Industry 4.0 technologies. Our mission is to enhance safety, reliability, and sustainability across industries through intelligent monitoring, inspection, and verification systems. 
             </p>
           </div>
         </div>

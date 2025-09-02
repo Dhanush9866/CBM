@@ -59,8 +59,12 @@ export default function Inspection() {
 
           <div className="mt-6 text-center">
             <h1 className="text-3xl lg:text-4xl font-bold mb-3">Inspection (I)</h1>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Professional inspection services covering assets, projects, quality, and safety.
+            <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-none leading-relaxed md:leading-8 whitespace-pre-line text-justify">
+            Our Inspection Services ensure the safety, reliability, and compliance of industrial assets throughout their lifecycle. With a team of certified inspectors, advanced tools, and global expertise, we deliver independent, third-party inspections that meet international codes and client specifications across multiple industries. 
+ 
+             “Trusted Inspection Services – Ensuring Safety, Compliance, and 
+             Performance Worldwide.” 
+              
             </p>
           </div>
         </div>

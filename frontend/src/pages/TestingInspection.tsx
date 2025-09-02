@@ -59,9 +59,12 @@ export default function TestingInspection() {
 
           <div className="mt-6 text-center">
             <h1 className="text-3xl lg:text-4xl font-bold mb-3">Testing & Inspection</h1>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Explore our comprehensive portfolio of non-destructive testing and inspection services.
-            </p>
+            <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-none leading-relaxed md:leading-8 whitespace-pre-line text-justify">
+            Our Testing Services provide precise, reliable, and globally recognized solutions to ensure the safety, quality, and compliance of critical assets across industries. Backed by advanced laboratories, certified professionals, and innovative technologies, we deliver end-to-end testing support tailored to client requirements and international standards. 
+ 
+ “Delivering Trusted Testing Services – Ensuring Safety, Quality, and 
+ Compliance Across Global Industries.” 
+ </p>
           </div>
         </div>
       </section>
