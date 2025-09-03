@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const apiBaseURL = 'http://localhost:8080/' ;
+const apiBaseURL = "https://cbm-backend-e1rq.onrender.com" ;
+
+//https://cbm-backend-e1rq.onrender.com
 
 export const apiClient = axios.create({
   baseURL: apiBaseURL,
