@@ -87,14 +87,14 @@ export default function IndustriesDetail() {
         <div className="container-responsive max-w-6xl mx-auto">
           <h1 className="text-3xl lg:text-4xl font-bold mb-6">{section.title}</h1>
 
-          {/* Layout: first image | content | second image */}
+          {/* Layout: top image | middle content | bottom image */}
           {section.images && section.images.length >= 2 ? (
-            <div className="grid grid-cols-3 gap-6 items-start">
+            <div className="flex flex-col gap-6">
               <div className="rounded-2xl overflow-hidden shadow-lg">
                 <img
                   src={section.images[0]}
                   alt={`${section.title} 1`}
-                  className="w-full h-full object-cover"
+                  className="w-full h-auto object-cover"
                 />
               </div>
 
@@ -108,7 +108,7 @@ export default function IndustriesDetail() {
                 <img
                   src={section.images[1]}
                   alt={`${section.title} 2`}
-                  className="w-full h-full object-cover"
+                  className="w-full h-auto object-cover"
                 />
               </div>
             </div>

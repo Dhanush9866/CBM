@@ -104,6 +104,8 @@ export default function ServiceDetail() {
           }
           
           if (targetSection) {
+            console.log('targetSection', targetSection);
+            
             setDynamicSection(targetSection);
           } else if (staticItem) {
             // If no backend section found, use static item
