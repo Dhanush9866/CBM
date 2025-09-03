@@ -17,7 +17,8 @@
     "create:cover-folders": "node src/scripts/create-industry-cover-folders.js",
     "upload:industry-covers": "node src/scripts/upload-industry-covers-and-update-images.js",
     "generate:industry-covers": "node src/scripts/generate-industry-covers-file.js",
-    "strip:covers-from-images": "node src/scripts/strip-cover-from-images.js"
+    "strip:covers-from-images": "node src/scripts/strip-cover-from-images.js",
+    "append:sections": "node src/scripts/append-missing-section-bodytext.js --mapping src/scripts/append-input.sample.json --dry-run"
   },
   "engines": {
     "node": ">=18.0.0"
