@@ -26,6 +26,8 @@ export default function Inspection() {
       try {
         setLoading(true);
         const page = await getPageWithSections('inspection');
+        console.log("page", page);
+        
         if (isMounted) setSections(page.sections || []);
       } catch (e) {
         if (isMounted) setError('Failed to load inspection sections');
