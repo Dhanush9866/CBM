@@ -16,6 +16,7 @@ const imageRoutes = require('../routes/image.routes');
 const careerRoutes = require('../routes/career.routes');
 const contactRoutes = require('../routes/contact.routes');
 const inquiryRoutes = require('../routes/inquiry.routes');
+const adminAuthRoutes = require('../routes/admin-auth.routes');
 
 function createApp() {
   const app = express();
