@@ -4,6 +4,7 @@ import { VideoHero } from '@/components/Common/VideoHero';
 import { ServiceCard } from '@/components/Common/ServiceCard';
 import { services } from '@/data/services';
 import { industryStats } from '@/data/industries';
+import CountUp from '@/components/Common/CountUp';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle, Users, Award, Globe } from 'lucide-react';
@@ -45,11 +46,18 @@ export default function Services() {
       <section className="section bg-white">
         <div className="container-responsive">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {industryStats.map((stat, index) => (
+            {industryStats.map((stat, index) => {
+              const raw = String(stat.number).replace(/\+/g, '').replace(/,/g, '');
+              const isNumeric = /^\d+$/.test(raw);
+              const end = isNumeric ? parseInt(raw, 10) : 0;
+              const suffix = String(stat.number).includes('+') ? '+' : '';
+              return (
               <div key={index} className="text-center animate-fade-in-up">
-                <div className="text-3xl lg:text-4xl font-bold text-primary mb-2">
-                  {stat.number}
-                </div>
+                <CountUp
+                  end={end}
+                  suffix={suffix}
+                  className="text-3xl lg:text-4xl font-bold text-primary mb-2"
+                />
                 <div className="font-semibold text-foreground mb-1">
                   {stat.label}
                 </div>
@@ -57,7 +65,7 @@ export default function Services() {
                   {stat.description}
                 </div>
               </div>
-            ))}
+            )})}
           </div>
         </div>
       </section>
