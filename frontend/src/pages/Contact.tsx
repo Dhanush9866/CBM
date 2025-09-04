@@ -16,68 +16,20 @@ import {
   Users,
   ArrowRight
 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { fetchContactOffices } from '@/services/contactOffices';
 
-const offices = [
-  {
-    region: "North America",
-    locations: [
-      {
-        city: "San Diego, CA",
-        address: "10040 Mesa Rim Road, San Diego, CA 92121",
-        phone: "+1 (555) 123-4567",
-        email: "americas@cbm.com"
-      },
-      {
-        city: "Detroit, MI", 
-        address: "20245 Farmington Road, Farmington Hills, MI 48336",
-        phone: "+1 (555) 765-4321",
-        email: "automotive@cbm.com"
-      },
-      {
-        city: "Austin, TX",
-        address: "12800 Hill Country Blvd, Austin, TX 78738", 
-        phone: "+1 (555) 246-8100",
-        email: "technology@cbm.com"
-      }
-    ]
-  },
-  {
-    region: "Europe",
-    locations: [
-      {
-        city: "Munich, Germany",
-        address: "Westendstrasse 199, 80686 Munich, Germany",
-        phone: "+49 89 0000-0000",
-        email: "europe@cbm.com"
-      },
-      {
-        city: "London, UK",
-        address: "Octagon House, Concorde Way, Manchester M22 0RR",
-        phone: "+44 161 000000",
-        email: "uk@cbm.com"
-      }
-    ]
-  },
-  {
-    region: "Asia Pacific",
-    locations: [
-      {
-        city: "Singapore",
-        address: "1 Science Park Drive, Singapore 118221",
-        phone: "+65 6000 0000",
-        email: "singapore@cbm.com"
-      },
-      {
-        city: "Shanghai, China",
-        address: "No.151 Heng Tong Road, Shanghai 200070, China",
-        phone: "+86 21 6000 0000", 
-        email: "china@cbm.com"
-      }
-    ]
-  }
-];
+// Using dynamic offices data from contact-offices.ts
 
 export default function Contact() {
+  const [groups, setGroups] = useState<{ region_name: string; offices: any[] }[]>([]);
+  useEffect(() => {
+    fetchContactOffices()
+      .then(setGroups)
+      .catch(() => {
+        setGroups([]);
+      });
+  }, []);
   return (
     <div>
       {/* Hero Section */}
@@ -339,35 +291,48 @@ export default function Contact() {
           </div>
           
           <div className="space-y-12">
-            {offices.map((region, index) => (
+            {groups.map((group, index) => (
               <div key={index}>
-                <h3 className="text-2xl font-bold mb-8 text-center">{region.region}</h3>
+                <h3 className="text-2xl font-bold mb-8 text-center">{group.region_name}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {region.locations.map((office, officeIndex) => (
-                    <div key={officeIndex} className="bg-white border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
-                      <h4 className="text-xl font-semibold mb-4">{office.city}</h4>
-                      
-                      <div className="space-y-3">
-                        <div className="flex items-start space-x-3">
-                          <MapPin className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                          <p className="text-muted-foreground">{office.address}</p>
+                  {group.offices.map((office, officeIndex) => (
+                    <div key={officeIndex} className="bg-white border border-border rounded-lg p-0 hover:shadow-lg transition-shadow overflow-hidden">
+                      {/* Header like small tab */}
+                      <div className="px-4 py-3 bg-tuv-gray-50 border-b flex items-center justify-between gap-4">
+                        <div>
+                          <h4 className="text-base font-semibold">{office.office_name}</h4>
+                          {office.is_lab_facility && (
+                            <p className="text-xs text-primary mt-1">laboratory facility</p>
+                          )}
                         </div>
-                        
-                        <div className="flex items-center space-x-3">
-                          <Phone className="h-5 w-5 text-primary flex-shrink-0" />
+                        {office.image_url && (
+                          <img
+                            src={office.image_url}
+                            alt={office.office_name}
+                            className="h-14 w-24 object-cover rounded-md border"
+                            loading="lazy"
+                          />
+                        )}
+                      </div>
+                      {/* Body rows */}
+                      <div className="p-4 space-y-3 text-sm">
+                        <div className="flex items-start gap-2">
+                          <MapPin className="h-4 w-4 text-primary mt-0.5" />
+                          <p className="text-muted-foreground leading-6">{office.address}</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Phone className="h-4 w-4 text-primary" />
                           <p className="text-muted-foreground">{office.phone}</p>
                         </div>
-                        
-                        <div className="flex items-center space-x-3">
-                          <Mail className="h-5 w-5 text-primary flex-shrink-0" />
-                          <p className="text-muted-foreground">{office.email}</p>
+                        <div className="flex items-start gap-2">
+                          <Mail className="h-4 w-4 text-primary mt-0.5" />
+                          <div className="space-y-1">
+                            {office.emails.map((e, i) => (
+                              <p key={i} className="text-muted-foreground">{e}</p>
+                            ))}
+                          </div>
                         </div>
                       </div>
-                      
-                      <Button variant="outline" className="w-full mt-6">
-                        Get Directions
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
                     </div>
                   ))}
                 </div>

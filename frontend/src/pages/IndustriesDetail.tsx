@@ -96,8 +96,8 @@ export default function IndustriesDetail() {
           {/* Layout: top image | middle content | bottom image */}
           {section.images && section.images.length >= 2 ? (
             <div className="flex flex-col gap-8">
-              {/* Reduced image size with better styling */}
-              <div className="rounded-xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-700">
+              {/* Images without borders or rounded corners */}
+              <div className="overflow-hidden">
                 <img
                   src={section.images[0]}
                   alt={`${section.title} 1`}
@@ -127,8 +127,8 @@ export default function IndustriesDetail() {
                 })}
               </div>
 
-              {/* Reduced second image size */}
-              <div className="rounded-xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-700">
+              {/* Reduced second image size - no border/radius */}
+              <div className="overflow-hidden">
                 <img
                   src={section.images[1]}
                   alt={`${section.title} 2`}
@@ -139,7 +139,7 @@ export default function IndustriesDetail() {
           ) : (
             <>
               {section.images && section.images.length === 1 && (
-                <div className="rounded-xl overflow-hidden mb-10 shadow-xl border border-gray-200 dark:border-gray-700">
+                <div className="overflow-hidden mb-10">
                   <img src={section.images[0]} alt={section.title} className="w-full h-64 md:h-80 object-cover" />
                 </div>
               )}
