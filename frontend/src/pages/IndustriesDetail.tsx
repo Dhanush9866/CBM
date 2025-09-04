@@ -84,45 +84,85 @@ export default function IndustriesDetail() {
       </section>
 
       <section className="section pt-0">
-        <div className="container-responsive max-w-6xl mx-auto">
-          <h1 className="text-3xl lg:text-4xl font-bold mb-6">{section.title}</h1>
+        <div className="container-responsive max-w-5xl mx-auto">
+          {/* Enhanced heading with better visual hierarchy */}
+          <div className="text-center mb-12">
+            <h1 className="text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+              {section.title}
+            </h1>
+            <div className="w-24 h-1 bg-gradient-to-r from-primary to-primary/60 mx-auto rounded-full"></div>
+          </div>
 
           {/* Layout: top image | middle content | bottom image */}
           {section.images && section.images.length >= 2 ? (
-            <div className="flex flex-col gap-6">
-              <div className="rounded-2xl overflow-hidden shadow-lg">
+            <div className="flex flex-col gap-8">
+              {/* Reduced image size with better styling */}
+              <div className="rounded-xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-700">
                 <img
                   src={section.images[0]}
                   alt={`${section.title} 1`}
-                  className="w-full h-auto object-cover"
+                  className="w-full h-64 md:h-80 object-cover"
                 />
               </div>
 
-              <div className="space-y-4 md:px-2">
-                {paragraphs.map((p, idx) => (
-                  <p key={idx} className="text-base md:text-lg leading-7 text-gray-700 dark:text-gray-300">{p}</p>
-                ))}
+              {/* Enhanced content styling */}
+              <div className="space-y-6 md:px-4">
+                {paragraphs.map((p, idx) => {
+                  // Check if paragraph contains a heading pattern
+                  const isHeading = p.length < 100 && (p.includes(':') || p.includes('Focus') || p.includes('Benefits') || p.includes('Industry'));
+                  
+                  if (isHeading) {
+                    return (
+                      <h2 key={idx} className="text-2xl md:text-3xl font-semibold text-gray-900 dark:text-gray-100 mb-4 mt-8 first:mt-0">
+                        {p}
+                      </h2>
+                    );
+                  }
+                  
+                  return (
+                    <p key={idx} className="text-lg leading-8 text-gray-700 dark:text-gray-300 text-justify">
+                      {p}
+                    </p>
+                  );
+                })}
               </div>
 
-              <div className="rounded-2xl overflow-hidden shadow-lg">
+              {/* Reduced second image size */}
+              <div className="rounded-xl overflow-hidden shadow-xl border border-gray-200 dark:border-gray-700">
                 <img
                   src={section.images[1]}
                   alt={`${section.title} 2`}
-                  className="w-full h-auto object-cover"
+                  className="w-full h-64 md:h-80 object-cover"
                 />
               </div>
             </div>
           ) : (
             <>
               {section.images && section.images.length === 1 && (
-                <div className="rounded-2xl overflow-hidden mb-8 shadow-lg">
-                  <img src={section.images[0]} alt={section.title} className="w-full h-auto object-cover" />
+                <div className="rounded-xl overflow-hidden mb-10 shadow-xl border border-gray-200 dark:border-gray-700">
+                  <img src={section.images[0]} alt={section.title} className="w-full h-64 md:h-80 object-cover" />
                 </div>
               )}
-              <div className="space-y-4">
-                {paragraphs.map((p, idx) => (
-                  <p key={idx} className="text-base md:text-lg leading-7 text-gray-700 dark:text-gray-300">{p}</p>
-                ))}
+              {/* Enhanced content styling for single image layout */}
+              <div className="space-y-6">
+                {paragraphs.map((p, idx) => {
+                  // Check if paragraph contains a heading pattern
+                  const isHeading = p.length < 100 && (p.includes(':') || p.includes('Focus') || p.includes('Benefits') || p.includes('Industry'));
+                  
+                  if (isHeading) {
+                    return (
+                      <h2 key={idx} className="text-2xl md:text-3xl font-semibold text-gray-900 dark:text-gray-100 mb-4 mt-8 first:mt-0">
+                        {p}
+                      </h2>
+                    );
+                  }
+                  
+                  return (
+                    <p key={idx} className="text-lg leading-8 text-gray-700 dark:text-gray-300 text-justify">
+                      {p}
+                    </p>
+                  );
+                })}
               </div>
             </>
           )}
