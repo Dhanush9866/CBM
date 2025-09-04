@@ -100,21 +100,12 @@ async function getPageBySlug(req, res, next) {
       throw new ApiError(404, 'Page not found');
     }
 
-    // Handle language translation
+    // Handle language translation with English fallback (no dynamic translation)
     if (lang && lang !== 'en' && lang !== page.language) {
       const fromDb = page.translations && page.translations[lang];
       if (fromDb && (fromDb.title || fromDb.description)) {
         page.title = fromDb.title || page.title;
         page.description = fromDb.description || page.description;
-        page.language = lang;
-      } else {
-        // Dynamic translation
-        const [tTitle, tDescription] = await Promise.all([
-          translateText(page.title, lang),
-          translateText(page.description || '', lang)
-        ]);
-        page.title = tTitle;
-        page.description = tDescription;
         page.language = lang;
       }
 
@@ -125,14 +116,6 @@ async function getPageBySlug(req, res, next) {
           if (sectionFromDb && (sectionFromDb.title || sectionFromDb.bodyText)) {
             section.title = sectionFromDb.title || section.title;
             section.bodyText = sectionFromDb.bodyText || section.bodyText;
-            section.language = lang;
-          } else {
-            const [sTitle, sBody] = await Promise.all([
-              translateText(section.title, lang),
-              translateText(section.bodyText, lang)
-            ]);
-            section.title = sTitle;
-            section.bodyText = sBody;
             section.language = lang;
           }
         }
@@ -175,21 +158,13 @@ async function getPages(req, res, next) {
       Page.countDocuments(filter)
     ]);
 
-    // Handle language translation for list
+    // Handle language translation for list using stored translations only
     if (lang && lang !== 'en') {
       for (const item of items) {
         const fromDb = item.translations && item.translations[lang];
         if (fromDb && (fromDb.title || fromDb.description)) {
           item.title = fromDb.title || item.title;
           item.description = fromDb.description || item.description;
-          item.language = lang;
-        } else {
-          const [tTitle, tDescription] = await Promise.all([
-            translateText(item.title, lang),
-            translateText(item.description || '', lang)
-          ]);
-          item.title = tTitle;
-          item.description = tDescription;
           item.language = lang;
         }
       }
@@ -359,37 +334,21 @@ async function getPageWithSectionsByName(req, res, next) {
       
     }
 
-    // Handle language translation
+    // Handle language translation with English fallback (no dynamic translation)
     if (lang && lang !== 'en' && lang !== page.language) {
       const fromDb = page.translations && page.translations[lang];
       if (fromDb && (fromDb.title || fromDb.description)) {
         page.title = fromDb.title || page.title;
         page.description = fromDb.description || page.description;
         page.language = lang;
-      } else {
-        const [tTitle, tDescription] = await Promise.all([
-          translateText(page.title, lang),
-          translateText(page.description || '', lang)
-        ]);
-        page.title = tTitle;
-        page.description = tDescription;
-        page.language = lang;
       }
 
-      // Translate sections
+      // Translate sections using stored translations only
       for (const section of page.sections) {
         const sectionFromDb = section.translations && section.translations[lang];
         if (sectionFromDb && (sectionFromDb.title || sectionFromDb.bodyText)) {
           section.title = sectionFromDb.title || section.title;
           section.bodyText = sectionFromDb.bodyText || section.bodyText;
-          section.language = lang;
-        } else {
-          const [sTitle, sBody] = await Promise.all([
-            translateText(section.title, lang),
-            translateText(section.bodyText, lang)
-          ]);
-          section.title = sTitle;
-          section.bodyText = sBody;
           section.language = lang;
         }
       }
