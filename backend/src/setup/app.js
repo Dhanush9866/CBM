@@ -15,6 +15,7 @@ const translateRoutes = require('../routes/translate.routes');
 const imageRoutes = require('../routes/image.routes');
 const careerRoutes = require('../routes/career.routes');
 const contactRoutes = require('../routes/contact.routes');
+const inquiryRoutes = require('../routes/inquiry.routes');
 
 function createApp() {
   const app = express();
@@ -59,6 +60,7 @@ function createApp() {
   app.use('/api/images', imageRoutes);
   app.use('/api/careers', careerRoutes);
   app.use('/api/contact-offices', contactRoutes);
+  app.use('/api', inquiryRoutes);
 
   // 404 and error handler
   app.use(notFoundHandler);

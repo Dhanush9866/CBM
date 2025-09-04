@@ -9,6 +9,130 @@ class EmailService {
     this.initializeTransporter();
   }
 
+  /**
+   * Send contact inquiry to admin
+   * @param {Object} inquiryData - Contact form data
+   * @returns {Promise<Object>} Email send result
+   */
+  async sendContactInquiry(inquiryData) {
+    try {
+      const adminEmail = process.env.ADMIN_EMAIL || 'admin@cbm.com';
+
+      const emailContent = this.generateContactEmail(inquiryData);
+
+      const mailOptions = {
+        from: `"CBM Contact" <${process.env.SMTP_USER}>`,
+        to: adminEmail,
+        replyTo: inquiryData.email,
+        subject: `New Contact Inquiry from ${inquiryData.firstName} ${inquiryData.lastName} (${inquiryData.company})`,
+        html: emailContent,
+      };
+
+      const result = await this.transporter.sendMail(mailOptions);
+      logger.info('Contact inquiry email sent successfully', {
+        messageId: result.messageId,
+        from: inquiryData.email,
+      });
+
+      return { success: true, messageId: result.messageId };
+    } catch (error) {
+      logger.error('Failed to send contact inquiry email:', error);
+      throw new Error('Failed to send contact inquiry email');
+    }
+  }
+
+  /**
+   * Generate HTML email content for contact inquiry
+   * @param {Object} inquiryData - Contact form data
+   * @returns {string} HTML email content
+   */
+  generateContactEmail(inquiryData) {
+    const safe = (v) => (v ? String(v) : '—');
+    return `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <title>New Contact Inquiry</title>
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.7; color: #0f172a; background: #f8fafc; }
+          .container { max-width: 680px; margin: 24px auto; padding: 0; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(2, 6, 23, 0.08); }
+          .header { background: linear-gradient(135deg, #1e40af, #3b82f6); color: #ffffff; padding: 28px 32px; }
+          .header h1 { margin: 0; font-size: 22px; letter-spacing: 0.3px; }
+          .meta { color: #e2e8f0; font-size: 13px; margin-top: 6px; }
+          .content { padding: 28px 32px; background: #ffffff; }
+          .grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+          .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+          .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 16px; }
+          .label { font-size: 12px; color: #475569; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; }
+          .value { font-size: 15px; color: #0f172a; font-weight: 600; }
+          .message { background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #1e40af; border-radius: 8px; padding: 16px; white-space: pre-wrap; color: #0f172a; }
+          .footer { background: #f1f5f9; color: #475569; font-size: 12px; padding: 20px 28px; text-align: center; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>New Contact Inquiry</h1>
+            <div class="meta">Submitted on ${new Date().toLocaleString()}</div>
+          </div>
+          <div class="content">
+            <div class="grid">
+              <div class="row">
+                <div class="card">
+                  <div class="label">First Name</div>
+                  <div class="value">${safe(inquiryData.firstName)}</div>
+                </div>
+                <div class="card">
+                  <div class="label">Last Name</div>
+                  <div class="value">${safe(inquiryData.lastName)}</div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="card">
+                  <div class="label">Email</div>
+                  <div class="value">${safe(inquiryData.email)}</div>
+                </div>
+                <div class="card">
+                  <div class="label">Phone</div>
+                  <div class="value">${safe(inquiryData.phone)}</div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="card">
+                  <div class="label">Company</div>
+                  <div class="value">${safe(inquiryData.company)}</div>
+                </div>
+                <div class="card">
+                  <div class="label">Industry</div>
+                  <div class="value">${safe(inquiryData.industry)}</div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="card">
+                  <div class="label">Service Needed</div>
+                  <div class="value">${safe(inquiryData.service)}</div>
+                </div>
+                <div class="card">
+                  <div class="label">Consent Given</div>
+                  <div class="value">${inquiryData.consent ? 'Yes' : 'No'}</div>
+                </div>
+              </div>
+              <div>
+                <div class="label">Message</div>
+                <div class="message">${safe(inquiryData.message)}</div>
+              </div>
+            </div>
+          </div>
+          <div class="footer">
+            This inquiry was submitted from the CBM website contact form. Please respond directly to the sender by replying to this email.
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+  }
+
   initializeTransporter() {
     // Create transporter using environment variables
     this.transporter = nodemailer.createTransport({
