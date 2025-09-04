@@ -11,10 +11,11 @@ export interface OfficeData {
   image_url?: string;
 }
 
+import { apiClient } from '@/utils/api';
+
 export async function fetchContactOffices(): Promise<{ region_name: string; offices: OfficeData[] }[]> {
-  const res = await fetch('/api/contact-offices');
-  if (!res.ok) throw new Error('Failed to load contact offices');
-  return res.json();
+  const { data } = await apiClient.get('/api/contact-offices');
+  return data;
 }
 
 
