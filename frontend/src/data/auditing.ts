@@ -52,7 +52,7 @@ export const auditingItems: AuditingItem[] = [
     ],
   },
   {
-    slug: 'asset-integrity-management-audit',
+    slug: 'asset-integrity-management-aim-audit',
     title: 'Asset Integrity Management Audit',
     image: 'https://res.cloudinary.com/docyipoze/image/upload/v1756657802/cbm/auditing/asset-integrity-management-audit/cbm/auditing/asset-integrity-management-audit/cover-photo.jpg',
     description: 'Evaluation of systems and processes for maintaining the integrity of physical assets.',
