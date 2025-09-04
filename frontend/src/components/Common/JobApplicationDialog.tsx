@@ -11,7 +11,6 @@ import { ArrowRight, Upload, X } from 'lucide-react';
 
 interface JobApplicationDialogProps {
   job: {
-    id: number;
     title: string;
     department: string;
     location: string;

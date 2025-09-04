@@ -2,7 +2,15 @@
 
 const express = require('express');
 const multer = require('multer');
-const { submitJobApplication, getApplicationStatus } = require('../controllers/career.controller');
+const {
+  submitJobApplication,
+  getApplicationStatus,
+  listCareers,
+  getCareerById,
+  createCareer,
+  updateCareer,
+  deleteCareer
+} = require('../controllers/career.controller');
 
 const router = express.Router();
 
@@ -67,5 +75,40 @@ router.post('/apply', (req, res, next) => {
  * @access Public
  */
 router.get('/status', getApplicationStatus);
+
+/**
+ * @route GET /api/careers
+ * @desc List careers
+ * @access Public
+ */
+router.get('/', listCareers);
+
+/**
+ * @route GET /api/careers/:id
+ * @desc Get one career by id
+ * @access Public
+ */
+router.get('/:id', getCareerById);
+
+/**
+ * @route POST /api/careers
+ * @desc Create a career (admin usage)
+ * @access Public for now (consider auth later)
+ */
+router.post('/', createCareer);
+
+/**
+ * @route PUT /api/careers/:id
+ * @desc Update a career (admin usage)
+ * @access Public for now (consider auth later)
+ */
+router.put('/:id', updateCareer);
+
+/**
+ * @route DELETE /api/careers/:id
+ * @desc Delete a career (admin usage)
+ * @access Public for now (consider auth later)
+ */
+router.delete('/:id', deleteCareer);
 
 module.exports = router;
