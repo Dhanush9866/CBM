@@ -61,6 +61,7 @@ function createApp() {
   app.use('/api/careers', careerRoutes);
   app.use('/api/contact-offices', contactRoutes);
   app.use('/api', inquiryRoutes);
+    app.use('/api/admin/auth', adminAuthRoutes);
 
   // 404 and error handler
   app.use(notFoundHandler);
