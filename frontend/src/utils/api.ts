@@ -1,6 +1,7 @@
 import axios from 'axios';
+const isDev = true;
 
-const apiBaseURL = "https://cbm-backend-e1rq.onrender.com" ;
+const apiBaseURL = isDev ? "http://localhost:8080" : "https://cbm-backend-e1rq.onrender.com" ;
 //http://localhost:8080/
 //https://cbm-backend-e1rq.onrender.com
 

@@ -1,303 +1,267 @@
-
-import { HeroSection } from '@/components/Common/HeroSection';
-import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
-import { 
-  ArrowRight, 
-  Users, 
-  Globe, 
-  Award, 
-  Target, 
-  Heart, 
-  Eye,
-  TrendingUp,
-  Calendar,
-  MapPin
-} from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from '@/contexts/TranslationContext';
+import { getPageWithSections, PageDto } from '@/utils/api';
 
 export default function About() {
+  const { currentLanguage } = useTranslation();
+  const [page, setPage] = useState<PageDto | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Lightweight Markdown-like parser supporting H1/H2/H3, paragraphs and bullets
+  function parseContentToBlocks(raw: string): Array<{ type: string; content: JSX.Element; props?: any }> {
+    const lines = raw.replace(/\r\n/g, '\n').split('\n');
+    const blocks: Array<{ type: string; content: JSX.Element; props?: any }> = [];
+    let paragraphBuffer: string[] = [];
+    let listBuffer: string[] = [];
+
+    const flushParagraph = () => {
+      if (paragraphBuffer.length > 0) {
+        const text = paragraphBuffer.join(' ').trim();
+        if (text) {
+          blocks.push({
+            type: 'p',
+            content: (
+              <div key={`p-${blocks.length}`} className="prose prose-lg prose-slate max-w-none mb-4 text-muted-foreground leading-relaxed">
+                <p className="text-base md:text-lg leading-6 text-gray-700 dark:text-gray-300">{text}</p>
+              </div>
+            )
+          });
+        }
+        paragraphBuffer = [];
+      }
+    };
+
+    const flushList = () => {
+      if (listBuffer.length > 0) {
+        blocks.push({
+          type: 'ul',
+          content: (
+            <ul key={`ul-${blocks.length}`} className="list-disc pl-6 space-y-2 text-gray-700 dark:text-gray-300">
+              {listBuffer.map((li, i) => (
+                <li key={i}>{li}</li>
+              ))}
+            </ul>
+          )
+        });
+        listBuffer = [];
+      }
+    };
+
+    const startNewBlock = () => {
+      flushParagraph();
+      flushList();
+    };
+
+    lines.forEach((line) => {
+      const trimmed = line.trim();
+      if (!trimmed) {
+        startNewBlock();
+        return;
+      }
+
+      // Bullets: -, *, •, – or numbered like 1.
+      if (/^(\-|\*|•|–)\s+/.test(trimmed)) {
+        flushParagraph();
+        const bulletContent = trimmed.replace(/^(\-|\*|•|–)\s+/, '');
+
+        // Check if bullet content starts with **text** pattern -> treat as heading
+        const boldMatch = bulletContent.match(/^\*\*(.*?)\*\*:?\s*(.*)$/);
+        if (boldMatch) {
+          const headingText = boldMatch[1].trim();
+          const remainingText = boldMatch[2].trim();
+          const Tag = 'h3' as keyof JSX.IntrinsicElements;
+          const sizeClass = 'text-xl md:text-2xl';
+          blocks.push({
+            type: 'h3',
+            content: (
+              <Tag key={`h-${blocks.length}`} className={`${sizeClass} font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3`}>
+                {headingText}
+              </Tag>
+            ),
+            props: { children: headingText }
+          });
+          if (remainingText) {
+            blocks.push({
+              type: 'p',
+              content: (
+                <div key={`p-${blocks.length}`} className="prose prose-lg prose-slate max-w-none mb-4 text-muted-foreground leading-relaxed">
+                  <p className="text-base md:text-lg leading-6 text-gray-700 dark:text-gray-300">{remainingText}</p>
+                </div>
+              )
+            });
+          }
+          return;
+        }
+        listBuffer.push(bulletContent);
+        return;
+      }
+      if (/^\d+\.[\)\.]?\s+/.test(trimmed)) {
+        flushParagraph();
+        const bulletContent = trimmed.replace(/^\d+\.[\)\.]?\s+/, '');
+        const boldMatch = bulletContent.match(/^\*\*(.*?)\*\*:?\s*(.*)$/);
+        if (boldMatch) {
+          const headingText = boldMatch[1].trim();
+          const remainingText = boldMatch[2].trim();
+          const Tag = 'h4' as keyof JSX.IntrinsicElements;
+          const sizeClass = 'text-xl md:text-2xl';
+          blocks.push({
+            type: 'h3',
+            content: (
+              <Tag key={`h-${blocks.length}`} className={`${sizeClass} font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3`}>
+                {headingText}
+              </Tag>
+            ),
+            props: { children: headingText }
+          });
+          if (remainingText) {
+            blocks.push({
+              type: 'p',
+              content: (
+                <div key={`p-${blocks.length}`} className="prose prose-lg prose-slate max-w-none mb-4 text-muted-foreground leading-relaxed">
+                  <p className="text-base md:text-lg leading-6 text-gray-700 dark:text-gray-300">{remainingText}</p>
+                </div>
+              )
+            });
+          }
+          return;
+        }
+        listBuffer.push(bulletContent);
+        return;
+      }
+
+      // Headings: #, ##, ### or **text** patterns
+      const hMatch = trimmed.match(/^(#{1,3})\s+(.*)$/);
+      if (hMatch) {
+        startNewBlock();
+        const level = hMatch[1].length;
+        const text = hMatch[2].trim();
+        const Tag = (level === 1 ? 'h1' : level === 2 ? 'h2' : 'h3') as keyof JSX.IntrinsicElements;
+        const sizeClass = level === 1 ? 'text-3xl md:text-4xl' : level === 2 ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl';
+        blocks.push({
+          type: level === 1 ? 'h1' : level === 2 ? 'h2' : 'h3',
+          content: (
+            <Tag key={`h-${blocks.length}`} className={`${sizeClass} font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3`}>
+              {text}
+            </Tag>
+          ),
+          props: { children: text }
+        });
+        return;
+      }
+
+      const boldMatch = trimmed.match(/^\*\*(.*?)\*\*:?\s*$/);
+      if (boldMatch) {
+        startNewBlock();
+        const text = boldMatch[1].trim();
+        const Tag = 'h3' as keyof JSX.IntrinsicElements;
+        const sizeClass = 'text-xl md:text-2xl';
+        blocks.push({
+          type: 'h3',
+          content: (
+            <Tag key={`h-${blocks.length}`} className={`${sizeClass} font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3`}>
+              {text}
+            </Tag>
+          ),
+          props: { children: text }
+        });
+        return;
+      }
+
+      // Fallback paragraph
+      paragraphBuffer.push(trimmed);
+    });
+
+    // Flush remaining
+    startNewBlock();
+    return blocks;
+  }
+
+  useEffect(() => {
+    let mounted = true;
+    setLoading(true);
+    setError(null);
+    getPageWithSections('about', undefined, currentLanguage)
+      .then((data) => {
+        if (mounted) {console.log("data", data);setPage(data);}
+      })
+      .catch((err) => {
+        console.error('Failed to load About page:', err);
+        if (mounted) setError('Failed to load content');
+      })
+      .finally(() => mounted && setLoading(false));
+    return () => {
+      mounted = false;
+    };
+  }, [currentLanguage]);
+
+  const mainSection = useMemo(() => {
+    const sections = page?.sections || [];
+    return sections.find((s) => s.sectionId === 'about-main') || sections[0];
+  }, [page]);
+
+  const blocks = useMemo(() => {
+    return mainSection?.bodyText ? parseContentToBlocks(mainSection.bodyText) : [];
+  }, [mainSection]);
+
+  if (loading) {
   return (
-    <div>
-      {/* Hero Section */}
-      <HeroSection
-        title="CBM 360° TIV™ - Global Leader in Testing, Inspection & Verification"
-        subtitle="Since 1992"
-        description="Founded in the United Kingdom, CBM 360 TIV has grown into a trusted global partner in Testing, Inspection, Certification, Condition-Based Monitoring, and Verification services across 72 countries."
-        primaryCTA={{
-          text: "Our Story",
-          href: "#story"
-        }}
-        secondaryCTA={{
-          text: "Join Our Team",
-          href: "/careers"
-        }}
-      />
-
-      {/* Company Story */}
-      <section className="section" id="story">
-        <div className="container-responsive">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="inline-block bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6">
-                Our Heritage
+      <div className="container-responsive py-16">
+        <p>Loading...</p>
               </div>
-              <h2 className="text-3xl lg:text-4xl font-bold mb-6">
-                A Legacy of Trust and Innovation
-              </h2>
-              <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-                Founded in 1992 in the United Kingdom, CBM 360 TIV has grown into a trusted global partner 
-                in Testing, Inspection, Certification, Condition-Based Monitoring, and Verification services. 
-                With regional headquarters in Dubai (Middle East & Africa), Hong Kong (Asia), and Brazil 
-                (North & South America), we support industries across 72 countries, driven by a commitment 
-                to safety, quality, and sustainability.
-              </p>
-              
-              <div className="grid grid-cols-2 gap-6 mb-8">
-                {[
-                  { icon: Calendar, label: "Founded", value: "1992" },
-                  { icon: MapPin, label: "Countries", value: "72" },
-                  { icon: Users, label: "Professionals", value: "7,000+" },
-                  { icon: Globe, label: "Branch Offices", value: "72" }
-                ].map((item, index) => (
-                  <div key={index} className="text-center">
-                    <div className="inline-flex p-3 bg-primary/10 rounded-full mb-3">
-                      <item.icon className="h-6 w-6 text-primary" />
-                    </div>
-                    <div className="text-2xl font-bold text-primary">{item.value}</div>
-                    <div className="text-sm text-muted-foreground">{item.label}</div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container-responsive py-16">
+        <p className="text-destructive">{error}</p>
+          </div>
+    );
+  }
+
+  return (
+    <div className="container-responsive py-12">
+      <article className="prose max-w-none">
+        {(!blocks.some(b => b.type === 'h1')) && (
+          <h1 className="text-3xl lg:text-5xl font-bold mb-4">{page?.title || 'About'}</h1>
+        )}
+        {/* Hero banner after first heading */}
+        {mainSection?.images && mainSection.images[0] && (
+          <div className="mb-8 max-w-3xl mx-auto">
+            <img
+              src={mainSection.images[0]}
+              alt="About hero image"
+              className="w-full h-auto object-contain"
+              loading="eager"
+            />
+          </div>
+        )}
+        {page?.description && (
+          <p className="text-lg text-muted-foreground mb-8">{page.description}</p>
+        )}
+        <div className="space-y-2">
+          {(() => {
+            const insertIndex = Math.floor(blocks.length / 2);
+            const midImage = mainSection?.images && mainSection.images[1];
+            return blocks.map((b, i) => (
+              <div key={i}>
+                {midImage && i === insertIndex && (
+                  <div className="my-8">
+                    <img
+                      src={midImage}
+                      alt="About mid content image"
+                      className="w-full h-48 md:h-60 object-cover"
+                      loading="lazy"
+                    />
                   </div>
-                ))}
+                )}
+                {b.content}
               </div>
-              
-              <Button size="lg" className="btn-primary" asChild>
-                <Link to="/services">
-                  Explore Our Services
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-            </div>
-            
-            <div className="bg-tuv-gray-50 rounded-2xl p-8">
-              <h3 className="text-2xl font-bold mb-6">Key Milestones</h3>
-              <div className="space-y-6">
-                {[
-                  {
-                    year: "1992",
-                    title: "Foundation",
-                    description: "Established in the United Kingdom as a testing and inspection company"
-                  },
-                  {
-                    year: "2000s",
-                    title: "Regional Expansion", 
-                    description: "Opened regional headquarters in Dubai, Hong Kong, and Brazil"
-                  },
-                  {
-                    year: "2010s",
-                    title: "Global Network",
-                    description: "Expanded to 72 countries with 72 branch offices worldwide"
-                  },
-                  {
-                    year: "2020s",
-                    title: "Advanced Capabilities",
-                    description: "Built 23 advanced laboratories and 7,000+ professional team"
-                  },
-                  {
-                    year: "Today",
-                    title: "Industry Leadership",
-                    description: "Leading provider across oil & gas, mining, power, and infrastructure sectors"
-                  }
-                ].map((milestone, index) => (
-                  <div key={index} className="flex space-x-4">
-                    <div className="flex-shrink-0 w-16 text-sm font-bold text-primary">
-                      {milestone.year}
-                    </div>
-                    <div>
-                      <h4 className="font-semibold mb-1">{milestone.title}</h4>
-                      <p className="text-sm text-muted-foreground">{milestone.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+            ));
+          })()}
         </div>
-      </section>
-
-      {/* Mission, Vision, Values */}
-      <section className="section bg-tuv-gray-50">
-        <div className="container-responsive">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Our Purpose & Values</h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Our brand is built on trust, integrity, and technical excellence. By combining global expertise with local presence, we help organizations achieve the highest standards of quality, safety, environmental protection, and social responsibility.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            {[
-              {
-                icon: Target,
-                title: "Mission",
-                description: "To deliver innovative solutions that address the evolving challenges of industries including oil & gas, mining, power generation, petrochemicals, manufacturing, marine, and infrastructure development.",
-                color: "bg-primary"
-              },
-              {
-                icon: Eye,
-                title: "Vision", 
-                description: "To be the global leader in Testing, Inspection, Certification, Condition-Based Monitoring, and Verification services, ensuring reliability, driving innovation, and building confidence worldwide.",
-                color: "bg-accent"
-              },
-              {
-                icon: Heart,
-                title: "Values",
-                description: "Trust, integrity, and technical excellence guide everything we do. We go beyond compliance to deliver innovative solutions that enhance operational performance and extend asset life.",
-                color: "bg-tuv-blue-600"
-              }
-            ].map((item, index) => (
-              <div key={index} className="text-center">
-                <div className={`inline-flex p-6 ${item.color} rounded-full mb-6`}>
-                  <item.icon className="h-12 w-12 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold mb-4">{item.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Leadership & Expertise */}
-      <section className="section">
-        <div className="container-responsive">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="bg-primary text-white rounded-2xl p-12">
-              <h2 className="text-3xl font-bold mb-6">
-                Global Leadership Team
-              </h2>
-              <p className="text-white/90 mb-8 text-lg">
-                Our team of 7,000 professionals, backed by a network of 23 advanced laboratories 
-                and 72 branch offices worldwide, works closely with clients to enhance operational 
-                performance, extend asset life, and ensure compliance with international standards 
-                and regulations.
-              </p>
-              
-              <div className="space-y-6">
-                {[
-                  "Regional headquarters in Dubai, Hong Kong, and Brazil",
-                  "Advanced laboratories and testing facilities", 
-                  "Global market expertise across 72 countries",
-                  "Innovative solutions beyond compliance"
-                ].map((item, index) => (
-                  <div key={index} className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-white rounded-full" />
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </div>
-              
-              <Button size="lg" className="mt-8 bg-white text-primary hover:bg-white/90">
-                Meet Our Leaders
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </div>
-            
-            <div>
-              <h2 className="text-3xl font-bold mb-6">
-                Expertise That Drives Innovation
-              </h2>
-              <p className="text-lg text-muted-foreground mb-8">
-                At CBM 360 TIV, we go beyond compliance—delivering innovative solutions that address 
-                the evolving challenges of industries including oil & gas (onshore/offshore), mining, 
-                power generation, petrochemicals, manufacturing, marine, and infrastructure development.
-              </p>
-              
-              <div className="grid grid-cols-2 gap-6">
-                {[
-                  { number: "7,000+", label: "Professionals", description: "Expert technical team" },
-                  { number: "23", label: "Advanced Labs", description: "State-of-the-art facilities" },
-                  { number: "72", label: "Countries", description: "Global presence" },
-                  { number: "72", label: "Branch Offices", description: "Local expertise" }
-                ].map((stat, index) => (
-                  <div key={index} className="text-center p-6 bg-tuv-gray-50 rounded-lg">
-                    <div className="text-2xl font-bold text-primary mb-1">{stat.number}</div>
-                    <div className="font-medium mb-1">{stat.label}</div>
-                    <div className="text-sm text-muted-foreground">{stat.description}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Sustainability & Innovation */}
-      <section className="section bg-tuv-blue-50">
-        <div className="container-responsive">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-              Commitment to Sustainability
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              We're not just testing for today's standards – we're helping shape 
-              tomorrow's sustainable future through innovation and responsibility.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: TrendingUp,
-                title: "Carbon Neutral Operations",
-                description: "Committed to achieving carbon neutrality across all operations by 2030 through renewable energy and efficiency improvements."
-              },
-              {
-                icon: Globe,
-                title: "Sustainable Innovation",
-                description: "Developing new testing methods and certification schemes that support the transition to a sustainable economy."
-              },
-              {
-                icon: Users,
-                title: "Social Responsibility",
-                description: "Investing in communities, education, and diversity initiatives to create positive social impact worldwide."
-              }
-            ].map((item, index) => (
-              <div key={index} className="bg-white p-8 rounded-lg">
-                <div className="inline-flex p-4 bg-primary/10 rounded-full mb-6">
-                  <item.icon className="h-8 w-8 text-primary" />
-                </div>
-                <h3 className="text-xl font-bold mb-4">{item.title}</h3>
-                <p className="text-muted-foreground">{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="section">
-        <div className="container-responsive text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold mb-6">
-            CBM 360 TIV – Ensuring Reliability. Driving Innovation. Building Confidence.
-          </h2>
-          <p className="text-xl text-muted-foreground mb-10 max-w-3xl mx-auto">
-            Join thousands of companies worldwide who trust CBM 360 TIV for their 
-            testing, inspection, certification, condition-based monitoring, and verification needs.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="btn-primary" asChild>
-              <Link to="/contact">
-                Start Your Project
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
-            <Button size="lg" variant="outline" asChild>
-              <Link to="/careers">
-                Join Our Team
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+      </article>
     </div>
   );
 }
