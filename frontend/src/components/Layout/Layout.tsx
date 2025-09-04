@@ -1,6 +1,7 @@
 
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
+import ScrollReveal from '../Common/ScrollReveal';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -9,6 +10,7 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   return (
     <div className="min-h-screen flex flex-col">
+      <ScrollReveal />
       <Navbar />
       <main className="flex-1">
         {children}
