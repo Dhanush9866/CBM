@@ -33,7 +33,7 @@ export default function Contact() {
   return (
     <div>
       {/* Hero Section */}
-      <HeroSection
+{/*       <HeroSection
         title="Get in Touch with Our Experts"
         subtitle="Contact Us"
         description="Ready to discuss your testing, inspection, or certification needs? Our global team of experts is here to help you succeed."
@@ -45,11 +45,11 @@ export default function Contact() {
           text: "Find Office",
           href: "#offices"
         }}
-      />
+      /> */}
 
       {/* Contact Methods */}
-      <section className="section">
-        <div className="container-responsive">
+{/*        <section className="section">
+       <div className="container-responsive">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold mb-4">How Can We Help You?</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
@@ -103,8 +103,71 @@ export default function Contact() {
           </div>
         </div>
       </section>
+ */}
+      {/* Global Offices */}
+      <section className="section" id="offices">
+        <div className="container-responsive">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Our Global Offices</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              With locations worldwide, we're always close to you. Find your nearest 
+              CBM office for local support and services.
+            </p>
+          </div>
+          
+          <div className="space-y-12">
+            {groups.map((group, index) => (
+              <div key={index}>
+                <h3 className="text-2xl font-bold mb-8 text-center">{group.region_name}</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {group.offices.map((office, officeIndex) => (
+                    <div key={officeIndex} className="bg-white border border-border rounded-lg p-0 hover:shadow-lg transition-shadow overflow-hidden">
+                      {/* Header like small tab */}
+                      <div className="px-4 py-3 bg-tuv-gray-50 border-b flex items-center justify-between gap-4">
+                        <div>
+                          <h4 className="text-base font-semibold">{office.office_name}</h4>
+                          {office.is_lab_facility && (
+                            <p className="text-xs text-primary mt-1">laboratory facility</p>
+                          )}
+                        </div>
+                        {office.image_url && (
+                          <img
+                            src={office.image_url}
+                            alt={office.office_name}
+                            className="h-14 w-24 object-cover rounded-md border"
+                            loading="lazy"
+                          />
+                        )}
+                      </div>
+                      {/* Body rows */}
+                      <div className="p-4 space-y-3 text-sm">
+                        <div className="flex items-start gap-2">
+                          <MapPin className="h-4 w-4 text-primary mt-0.5" />
+                          <p className="text-muted-foreground leading-6">{office.address}</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Phone className="h-4 w-4 text-primary" />
+                          <p className="text-muted-foreground">{office.phone}</p>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <Mail className="h-4 w-4 text-primary mt-0.5" />
+                          <div className="space-y-1">
+                            {office.emails.map((e, i) => (
+                              <p key={i} className="text-muted-foreground">{e}</p>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      {/* Contact Form */}
+            {/* Contact Form */}
       <section className="section bg-tuv-gray-50" id="contact-form">
         <div className="container-responsive">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -279,68 +342,7 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Global Offices */}
-      <section className="section" id="offices">
-        <div className="container-responsive">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Our Global Offices</h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              With locations worldwide, we're always close to you. Find your nearest 
-              CBM office for local support and services.
-            </p>
-          </div>
-          
-          <div className="space-y-12">
-            {groups.map((group, index) => (
-              <div key={index}>
-                <h3 className="text-2xl font-bold mb-8 text-center">{group.region_name}</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {group.offices.map((office, officeIndex) => (
-                    <div key={officeIndex} className="bg-white border border-border rounded-lg p-0 hover:shadow-lg transition-shadow overflow-hidden">
-                      {/* Header like small tab */}
-                      <div className="px-4 py-3 bg-tuv-gray-50 border-b flex items-center justify-between gap-4">
-                        <div>
-                          <h4 className="text-base font-semibold">{office.office_name}</h4>
-                          {office.is_lab_facility && (
-                            <p className="text-xs text-primary mt-1">laboratory facility</p>
-                          )}
-                        </div>
-                        {office.image_url && (
-                          <img
-                            src={office.image_url}
-                            alt={office.office_name}
-                            className="h-14 w-24 object-cover rounded-md border"
-                            loading="lazy"
-                          />
-                        )}
-                      </div>
-                      {/* Body rows */}
-                      <div className="p-4 space-y-3 text-sm">
-                        <div className="flex items-start gap-2">
-                          <MapPin className="h-4 w-4 text-primary mt-0.5" />
-                          <p className="text-muted-foreground leading-6">{office.address}</p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Phone className="h-4 w-4 text-primary" />
-                          <p className="text-muted-foreground">{office.phone}</p>
-                        </div>
-                        <div className="flex items-start gap-2">
-                          <Mail className="h-4 w-4 text-primary mt-0.5" />
-                          <div className="space-y-1">
-                            {office.emails.map((e, i) => (
-                              <p key={i} className="text-muted-foreground">{e}</p>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+
     </div>
   );
 }
