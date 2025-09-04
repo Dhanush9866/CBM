@@ -400,13 +400,32 @@ export default function ServiceDetail() {
               // Prioritize backend data, fallback to static data
               const content = dynamicSection?.bodyText || item?.content || item?.description || '';
               const textBlocks = parseContentToBlocks(content);
-              const imageUrls: string[] = [];
+              let imageUrls: string[] = [];
               
               // Prioritize dynamicSection images, fallback to Cloudinary images only if needed
-              if (dynamicSection?.images && dynamicSection.images.length > 0) {
-                imageUrls.push(...dynamicSection.images);
-              } else if (cloudinaryImages && cloudinaryImages.length > 0) {
-                imageUrls.push(...cloudinaryImages.map((img) => img.url));
+              const fromSection = (dynamicSection?.images && dynamicSection.images.length > 0)
+                ? [...dynamicSection.images]
+                : [];
+              const fromCloud = (cloudinaryImages && cloudinaryImages.length > 0)
+                ? cloudinaryImages.map((img) => img.url)
+                : [];
+
+              // Enforce image count: default 3, except Phased Array Ultrasonic Testing = 4
+              const titleForCount = (dynamicSection?.title || item?.title || '').trim().toLowerCase();
+              const isPAUT = (slug === 'phased-array-ut') || titleForCount.includes('phased array');
+              const desiredCount = isPAUT ? Number.MAX_SAFE_INTEGER : 3;
+
+              // Start with backend section images, then top-up from Cloudinary to reach desired count
+              imageUrls = [...fromSection];
+              if (imageUrls.length < desiredCount && fromCloud.length > 0) {
+                for (const url of fromCloud) {
+                  if (imageUrls.length >= desiredCount) break;
+                  if (!imageUrls.includes(url)) imageUrls.push(url);
+                }
+              }
+              // If still more than desired (e.g., section had many), trim for non-PAUT only
+              if (!isPAUT && imageUrls.length > desiredCount) {
+                imageUrls = imageUrls.slice(0, desiredCount);
               }
               
               // Determine main title from first H1
@@ -434,7 +453,7 @@ export default function ServiceDetail() {
                   // First image after main title (H1)
                   if (blockIndex === 0 && block.type === 'h1' && imageIndex < imageUrls.length) {
                     blocks.push(
-                      <div key={`img-${imageIndex}`} className="rounded-2xl overflow-hidden mb-6 shadow-lg md:max-w-3xl mx-auto">
+                      <div key={`img-${imageIndex}`} className="overflow-hidden mb-6 md:max-w-3xl mx-auto">
                         <img
                           src={imageUrls[imageIndex]}
                           alt="Borescope inspection in action"
@@ -450,7 +469,7 @@ export default function ServiceDetail() {
                       block.props?.children?.includes('Why Choose') && 
                       imageIndex < imageUrls.length) {
                     blocks.push(
-                      <div key={`img-${imageIndex}`} className="rounded-2xl overflow-hidden mb-6 shadow-lg md:max-w-2xl mx-auto">
+                      <div key={`img-${imageIndex}`} className="overflow-hidden mb-6 md:max-w-2xl mx-auto">
                         <img
                           src={imageUrls[imageIndex]}
                           alt="Professional borescope inspection"
@@ -473,7 +492,7 @@ export default function ServiceDetail() {
                           <div className="space-y-4">
                             <div className="mb-4">{nextBlock.content}</div>
                           </div>
-                          <div className="rounded-2xl overflow-hidden shadow-lg">
+                          <div className="overflow-hidden">
                             <img
                               src={imageUrls[imageIndex]}
                               alt="Robotic inspection device"
@@ -489,12 +508,30 @@ export default function ServiceDetail() {
                   }
                 }
               });
+
+              // Render any remaining images that were not placed by the strategic rules
+              if (imageIndex < imageUrls.length) {
+                const remaining = imageUrls.slice(imageIndex);
+                blocks.push(
+                  <div key={`remaining-${imageIndex}`} className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    {remaining.map((url, idx) => (
+                      <div key={`rem-${idx}`} className="overflow-hidden">
+                        <img
+                          src={url}
+                          alt={(dynamicSection?.title) || item?.title || 'Service Image'}
+                          className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                );
+              }
               
               if (blocks.length === 0 && textBlocks.length === 0 && imageUrls.length > 0) {
                 return (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {imageUrls.map((url, idx) => (
-                      <div key={idx} className="rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                      <div key={idx} className="overflow-hidden">
                         <img 
                           src={url} 
                           alt={(dynamicSection?.title) || item?.title || 'Service Image'} 
