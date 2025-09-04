@@ -168,38 +168,64 @@
   .btn-primary {
     @apply bg-primary text-primary-foreground hover:bg-primary-hover;
     @apply px-6 py-3 rounded-md font-medium;
-    @apply transition-all duration-200;
-    @apply shadow-sm hover:shadow-md;
+    @apply transition-all duration-300;
+    @apply shadow-sm hover:shadow-lg;
+    transform: translateZ(0);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -10px rgba(139, 92, 246, 0.45), 0 6px 10px -8px rgba(0,0,0,0.25);
   }
 
   .btn-secondary {
     @apply bg-secondary text-secondary-foreground hover:bg-secondary-hover;
     @apply px-6 py-3 rounded-md font-medium;
-    @apply transition-all duration-200;
+    @apply transition-all duration-300;
     @apply border border-border;
+  }
+
+  .btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -10px rgba(139, 92, 246, 0.25), 0 6px 10px -8px rgba(0,0,0,0.15);
   }
 
   .btn-accent {
     @apply bg-accent text-accent-foreground hover:bg-accent-hover;
     @apply px-6 py-3 rounded-md font-medium;
-    @apply transition-all duration-200;
-    @apply shadow-sm hover:shadow-md;
+    @apply transition-all duration-300;
+    @apply shadow-sm hover:shadow-lg;
+  }
+
+  .btn-accent:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -10px rgba(227, 6, 19, 0.35), 0 6px 10px -8px rgba(0,0,0,0.2);
   }
 
   .btn-lavender {
     @apply bg-tuv-lavender-600 text-white hover:bg-tuv-lavender-700;
     @apply px-6 py-3 rounded-md font-medium;
-    @apply transition-all duration-200;
-    @apply shadow-sm hover:shadow-md;
+    @apply transition-all duration-300;
+    @apply shadow-sm hover:shadow-lg;
     @apply border-0;
+  }
+
+  .btn-lavender:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px -12px rgba(155, 109, 198, 0.55), 0 6px 12px -8px rgba(0,0,0,0.25);
   }
 
   .btn-lavender-outline {
     @apply bg-transparent text-tuv-lavender-600 hover:bg-tuv-lavender-50;
     @apply px-6 py-3 rounded-md font-medium;
-    @apply transition-all duration-200;
+    @apply transition-all duration-300;
     @apply border-2 border-tuv-lavender-600;
     @apply hover:border-tuv-lavender-700;
+  }
+
+  .btn-lavender-outline:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -12px rgba(155, 109, 198, 0.4);
   }
 
   .btn-ghost {
@@ -212,7 +238,13 @@
   .card-hover {
     @apply bg-card border border-border;
     @apply transition-all duration-300;
-    @apply hover:shadow-lg hover:scale-[1.02];
+    @apply hover:shadow-xl hover:scale-[1.02];
+    will-change: transform, box-shadow;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 18px 50px -15px rgba(155, 109, 198, 0.25), 0 12px 25px -18px rgba(0,0,0,0.2);
   }
 
   .card-service {
@@ -229,6 +261,10 @@
     @apply border-l-4 border-tuv-lavender-600;
     @apply hover:border-tuv-lavender-700;
     @apply lavender-shadow;
+  }
+
+  .card-lavender:hover {
+    box-shadow: 0 20px 55px -20px rgba(155, 109, 198, 0.35), 0 14px 30px -18px rgba(0,0,0,0.25);
   }
 
   .card-lavender-soft {
@@ -293,6 +329,12 @@
   /* Hero Section */
   .hero-gradient {
     background: linear-gradient(135deg, hsl(var(--tuv-blue-900)) 0%, hsl(var(--tuv-blue-700)) 100%);
+  }
+
+  .parallax-hero {
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
   }
 
   .hero-overlay {
@@ -376,6 +418,68 @@
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 1.5rem;
   }
+
+  /* Scroll reveal base states */
+  .reveal-up {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 600ms ease-out, transform 600ms ease-out;
+    will-change: opacity, transform;
+  }
+
+  .reveal-up.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Rich effects */
+  .hover-royal-glow:hover {
+    box-shadow: 0 18px 45px -18px rgba(139, 92, 246, 0.35), 0 10px 18px -14px rgba(0,0,0,0.25);
+  }
+
+  .hover-raise:hover {
+    transform: translateY(-4px);
+  }
+
+  .shine-on-hover {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shine-on-hover::after {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 -150%;
+    width: 120%;
+    transform: skewX(-20deg);
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.35) 50%, rgba(255,255,255,0) 100%);
+    opacity: 0;
+    transition: transform 700ms ease, opacity 400ms ease;
+    pointer-events: none;
+  }
+
+  .shine-on-hover:hover::after {
+    transform: translateX(220%) skewX(-20deg);
+    opacity: 1;
+  }
+
+  .image-zoom-hover {
+    overflow: hidden;
+  }
+
+  .image-zoom-hover img {
+    transition: transform 600ms ease;
+    will-change: transform;
+  }
+
+  .image-zoom-hover:hover img {
+    transform: scale(1.06);
+  }
+
+  .divider-gradient {
+    height: 1px;
+    background: linear-gradient(90deg, rgba(155,109,198,0) 0%, rgba(155,109,198,0.6) 50%, rgba(155,109,198,0) 100%);
+  }
 }
 
 @layer utilities {
@@ -410,5 +514,23 @@
 
   .hover-lavender {
     @apply hover:bg-tuv-lavender-50 hover:text-tuv-lavender-700;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-up,
+    .reveal-up.revealed,
+    .hover-raise:hover,
+    .shine-on-hover::after,
+    .image-zoom-hover img,
+    .card-hover:hover,
+    .btn-primary:hover,
+    .btn-secondary:hover,
+    .btn-accent:hover,
+    .btn-lavender:hover,
+    .btn-lavender-outline:hover {
+      transition: none !important;
+      transform: none !important;
+      box-shadow: none !important;
+    }
   }
 }
