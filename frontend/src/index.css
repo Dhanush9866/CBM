@@ -7,20 +7,21 @@
 
 @layer base {
   :root {
-    /* Core Brand Colors - Lavender Theme */
-    --tuv-blue-900: 280 85% 35%;      /* #8B5CF6 - Primary Brand Lavender */
-    --tuv-blue-800: 280 80% 40%;      /* #A78BFA */
-    --tuv-blue-700: 280 75% 45%;      /* #C084FC */
-    --tuv-blue-600: 280 70% 50%;      /* #CB94F7 - Main Lavender */
-    --tuv-blue-500: 280 65% 55%;      /* #D6A4F8 */
-    --tuv-blue-400: 280 60% 60%;      /* #E1B4F9 */
-    --tuv-blue-100: 280 50% 95%;      /* #F8F4FF */
-    --tuv-blue-50: 280 30% 98%;       /* #FDFBFF */
-    
-    /* Additional Lavender Accent Colors */
-    --tuv-lavender-light: 280 60% 90%;  /* #F0E7FF */
-    --tuv-lavender-pale: 280 40% 95%;  /* #F8F4FF */
-    --tuv-lavender-deep: 280 90% 30%;  /* #7C3AED */
+    /* Core Brand Colors - Lavender Theme (Rebased to #9b6dc6) */
+    /* Base HEX: #9b6dc6 -> hsl(271, 44%, 60%) */
+    --tuv-blue-900: 271 44% 35%;
+    --tuv-blue-800: 271 44% 40%;
+    --tuv-blue-700: 271 44% 45%;
+    --tuv-blue-600: 271 44% 50%;
+    --tuv-blue-500: 271 44% 55%;
+    --tuv-blue-400: 271 44% 60%; /* ≈ #9b6dc6 */
+    --tuv-blue-100: 271 30% 95%;
+    --tuv-blue-50: 271 20% 98%;
+
+    /* Additional Lavender Accent Colors (derived from base) */
+    --tuv-lavender-light: 271 44% 90%;
+    --tuv-lavender-pale: 271 30% 95%;
+    --tuv-lavender-deep: 271 50% 30%;
     
     --tuv-red: 350 85% 50%;            /* #e30613 - Accent Red */
     --tuv-red-light: 350 70% 95%;     /* #fef2f3 */
