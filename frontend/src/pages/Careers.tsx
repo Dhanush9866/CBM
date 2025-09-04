@@ -4,6 +4,8 @@ import { JobApplicationDialog } from '@/components/Common/JobApplicationDialog';
 import { GeneralApplicationDialog } from '@/components/Common/GeneralApplicationDialog';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { listCareers, CareerDto } from '@/services/careersService';
 import { 
   ArrowRight, 
   Users, 
@@ -18,64 +20,26 @@ import {
   Briefcase
 } from 'lucide-react';
 
-const jobListings = [
-  {
-    id: 1,
-    title: "Senior Test Engineer - Automotive",
-    department: "Engineering",
-    location: "Detroit, MI",
-    type: "Full-time",
-    level: "Senior Level",
-    description: "Lead automotive testing projects for major OEMs. Experience with crash testing and vehicle safety systems required."
-  },
-  {
-    id: 2,
-    title: "Medical Device Certification Specialist",
-    department: "Healthcare",
-    location: "San Diego, CA", 
-    type: "Full-time",
-    level: "Mid Level",
-    description: "Support medical device manufacturers through FDA and international certification processes."
-  },
-  {
-    id: 3,
-    title: "Cybersecurity Consultant",
-    department: "Technology",
-    location: "Austin, TX",
-    type: "Full-time",
-    level: "Senior Level", 
-    description: "Provide cybersecurity assessments and consulting for enterprise clients across industries."
-  },
-  {
-    id: 4,
-    title: "Quality Assurance Inspector",
-    department: "Manufacturing",
-    location: "Phoenix, AZ",
-    type: "Full-time",
-    level: "Entry Level",
-    description: "Conduct quality inspections and audits for manufacturing facilities. Travel required."
-  },
-  {
-    id: 5,
-    title: "Environmental Testing Technician",
-    department: "Environmental",
-    location: "Seattle, WA",
-    type: "Full-time", 
-    level: "Mid Level",
-    description: "Perform environmental testing and analysis for compliance with environmental regulations."
-  },
-  {
-    id: 6,
-    title: "Business Development Manager",
-    department: "Sales",
-    location: "New York, NY",
-    type: "Full-time",
-    level: "Senior Level",
-    description: "Drive new business growth in the Northeast region. Technical background preferred."
-  }
-];
-
 export default function Careers() {
+  const [jobs, setJobs] = useState<CareerDto[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    (async () => {
+      try {
+        const data = await listCareers({ active: true });
+        if (isMounted) setJobs(data);
+      } catch (err: any) {
+        if (isMounted) setError(err?.message || 'Failed to load careers');
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    })();
+    return () => { isMounted = false; };
+  }, []);
+
   return (
     <div>
       {/* Hero Section */}
@@ -229,9 +193,16 @@ export default function Careers() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 gap-6">
-            {jobListings.map((job) => (
-              <div key={job.id} className="bg-white border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
+          {loading && (
+            <div className="text-center text-muted-foreground">Loading careers...</div>
+          )}
+          {error && (
+            <div className="text-center text-destructive">{error}</div>
+          )}
+          {!loading && !error && (
+            <div className="grid grid-cols-1 gap-6">
+            {jobs.map((job) => (
+              <div key={job._id} className="bg-white border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
                 <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
                   <div className="flex-1">
                     <div className="flex flex-wrap items-center gap-3 mb-3">
@@ -272,7 +243,8 @@ export default function Careers() {
                 </div>
               </div>
             ))}
-          </div>
+            </div>
+          )}
           
           <div className="text-center mt-12">
             <p className="text-muted-foreground mb-6">

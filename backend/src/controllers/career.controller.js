@@ -2,6 +2,7 @@
 
 const emailService = require('../services/email');
 const { logger } = require('../setup/logger');
+const Career = require('../models/Career');
 
 /**
  * Submit a job application
@@ -136,7 +137,71 @@ async function getApplicationStatus(req, res) {
 
 module.exports = {
   submitJobApplication,
-  getApplicationStatus
+  getApplicationStatus,
+  // List all active careers (with optional filters)
+  async listCareers(req, res) {
+    try {
+      const { department, location, level, type, active } = req.query;
+      const query = {};
+      if (department) query.department = department;
+      if (location) query.location = location;
+      if (level) query.level = level;
+      if (type) query.type = type;
+      if (typeof active !== 'undefined') query.isActive = active === 'true';
+      const careers = await Career.find(query).sort({ postedAt: -1, createdAt: -1 });
+      res.json({ success: true, data: careers });
+    } catch (error) {
+      logger.error('Error listing careers:', error);
+      res.status(500).json({ success: false, message: 'Failed to fetch careers' });
+    }
+  },
+  // Get a single career by id
+  async getCareerById(req, res) {
+    try {
+      const { id } = req.params;
+      const career = await Career.findById(id);
+      if (!career) return res.status(404).json({ success: false, message: 'Career not found' });
+      res.json({ success: true, data: career });
+    } catch (error) {
+      logger.error('Error getting career:', error);
+      res.status(500).json({ success: false, message: 'Failed to fetch career' });
+    }
+  },
+  // Create a new career
+  async createCareer(req, res) {
+    try {
+      const payload = req.body;
+      const created = await Career.create(payload);
+      res.status(201).json({ success: true, data: created });
+    } catch (error) {
+      logger.error('Error creating career:', error);
+      res.status(400).json({ success: false, message: error.message || 'Failed to create career' });
+    }
+  },
+  // Update a career
+  async updateCareer(req, res) {
+    try {
+      const { id } = req.params;
+      const updated = await Career.findByIdAndUpdate(id, req.body, { new: true });
+      if (!updated) return res.status(404).json({ success: false, message: 'Career not found' });
+      res.json({ success: true, data: updated });
+    } catch (error) {
+      logger.error('Error updating career:', error);
+      res.status(400).json({ success: false, message: error.message || 'Failed to update career' });
+    }
+  },
+  // Delete a career
+  async deleteCareer(req, res) {
+    try {
+      const { id } = req.params;
+      const deleted = await Career.findByIdAndDelete(id);
+      if (!deleted) return res.status(404).json({ success: false, message: 'Career not found' });
+      res.json({ success: true, data: { id } });
+    } catch (error) {
+      logger.error('Error deleting career:', error);
+      res.status(400).json({ success: false, message: error.message || 'Failed to delete career' });
+    }
+  }
 };
 
 

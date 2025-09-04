@@ -18,6 +18,7 @@ const contactRoutes = require('../routes/contact.routes');
 const inquiryRoutes = require('../routes/inquiry.routes');
 const adminAuthRoutes = require('../routes/admin-auth.routes');
 
+
 function createApp() {
   const app = express();
 
@@ -63,6 +64,7 @@ function createApp() {
   app.use('/api/contact-offices', contactRoutes);
   app.use('/api', inquiryRoutes);
     app.use('/api/admin/auth', adminAuthRoutes);
+
 
   // 404 and error handler
   app.use(notFoundHandler);
