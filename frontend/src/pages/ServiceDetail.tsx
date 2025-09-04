@@ -67,16 +67,84 @@ function parseContentToBlocks(raw: string): Array<{ type: string; content: JSX.E
     // Bullets: -, *, •, – or numbered like 1.
     if (/^(\-|\*|•|–)\s+/.test(trimmed)) {
       flushParagraph();
-      listBuffer.push(trimmed.replace(/^(\-|\*|•|–)\s+/, ''));
+      const bulletContent = trimmed.replace(/^(\-|\*|•|–)\s+/, '');
+      
+      // Check if bullet content starts with **text** pattern
+      const boldMatch = bulletContent.match(/^\*\*(.*?)\*\*:?\s*(.*)$/);
+      if (boldMatch) {
+        // Treat as a heading instead of a bullet point
+        const headingText = boldMatch[1].trim();
+        const remainingText = boldMatch[2].trim();
+        const Tag = 'h3' as keyof JSX.IntrinsicElements;
+        const sizeClass = 'text-xl md:text-2xl';
+        blocks.push({
+          type: 'h3',
+          content: (
+            <Tag key={`h-${blocks.length}`} className={`${sizeClass} font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3`}>
+              {headingText}
+            </Tag>
+          ),
+          props: { children: headingText }
+        });
+        
+        // If there's remaining text after the heading, add it as a paragraph
+        if (remainingText) {
+          blocks.push({
+            type: 'p',
+            content: (
+              <div key={`p-${blocks.length}`} className="prose prose-lg prose-slate max-w-none mb-4 text-muted-foreground leading-relaxed">
+                <p className="text-base md:text-lg leading-6 text-gray-700 dark:text-gray-300">{remainingText}</p>
+              </div>
+            )
+          });
+        }
+        return;
+      }
+      
+      listBuffer.push(bulletContent);
       return;
     }
     if (/^\d+\.[\)\.]?\s+/.test(trimmed)) {
       flushParagraph();
-      listBuffer.push(trimmed.replace(/^(\-|\*|•|–)\s+/, ''));
+      const bulletContent = trimmed.replace(/^\d+\.[\)\.]?\s+/, '');
+      
+      // Check if bullet content starts with **text** pattern
+      const boldMatch = bulletContent.match(/^\*\*(.*?)\*\*:?\s*(.*)$/);
+      if (boldMatch) {
+        // Treat as a heading instead of a bullet point
+        const headingText = boldMatch[1].trim();
+        const remainingText = boldMatch[2].trim();
+        const Tag = 'h4' as keyof JSX.IntrinsicElements;
+        const sizeClass = 'text-xl md:text-2xl';
+        blocks.push({
+          type: 'h3',
+          content: (
+            <Tag key={`h-${blocks.length}`} className={`${sizeClass} font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3`}>
+              {headingText}
+            </Tag>
+          ),
+          props: { children: headingText }
+        });
+        
+        // If there's remaining text after the heading, add it as a paragraph
+        if (remainingText) {
+          blocks.push({
+            type: 'p',
+            content: (
+              <div key={`p-${blocks.length}`} className="prose prose-lg prose-slate max-w-none mb-4 text-muted-foreground leading-relaxed">
+                <p className="text-base md:text-lg leading-6 text-gray-700 dark:text-gray-300">{remainingText}</p>
+              </div>
+            )
+          });
+        }
+        return;
+      }
+      
+      listBuffer.push(bulletContent);
       return;
     }
 
-    // Headings: #, ##, ### or Title Case line followed by colon patterns
+    // Headings: #, ##, ### or **text** patterns
     const hMatch = trimmed.match(/^(#{1,3})\s+(.*)$/);
     if (hMatch) {
       startNewBlock();
@@ -86,6 +154,26 @@ function parseContentToBlocks(raw: string): Array<{ type: string; content: JSX.E
       const sizeClass = level === 1 ? 'text-3xl md:text-4xl' : level === 2 ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl';
       blocks.push({
         type: level === 1 ? 'h1' : level === 2 ? 'h2' : 'h3',
+        content: (
+          <Tag key={`h-${blocks.length}`} className={`${sizeClass} font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3`}>
+            {text}
+          </Tag>
+        ),
+        props: { children: text }
+      });
+      return;
+    }
+
+    // Bold text as headings: **text** patterns
+    const boldMatch = trimmed.match(/^\*\*(.*?)\*\*:?\s*$/);
+    if (boldMatch) {
+      startNewBlock();
+      const text = boldMatch[1].trim();
+      // Determine heading level based on context or use h3 as default
+      const Tag = 'h3' as keyof JSX.IntrinsicElements;
+      const sizeClass = 'text-xl md:text-2xl';
+      blocks.push({
+        type: 'h3',
         content: (
           <Tag key={`h-${blocks.length}`} className={`${sizeClass} font-semibold text-gray-900 dark:text-gray-100 mt-6 mb-3`}>
             {text}

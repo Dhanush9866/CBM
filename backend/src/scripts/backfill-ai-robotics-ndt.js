@@ -9,28 +9,36 @@ const Page = require('../models/Page');
 const MONGODB_URI = "mongodb+srv://cbm360tiv:MiiFze4xYGr6XNji@cluster0.sf6iagh.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster" || 'mongodb://localhost:27017/cbm';
 
 const PAGE_SLUG = 'innovation-rd';
-const SECTION_ID = 'section-1';
+const SECTION_ID = 'section-3';
 
 const DATA = {
-  service: 'Innovation & Research and Development (R&D)',
+  service: 'Future Roadmap – Smart Industry 4.0 Transformation',
   sections: [
     {
-      heading: 'Innovation & Research and Development (R&D)',
-      content: 'We are pioneers in Condition-Based Monitoring (CBM), Technical Industrial Verification (TIV), and advanced R&D services, delivering next-generation solutions powered by IoT, AI, Robotics, and Industry 4.0 technologies. Our mission is to enhance safety, reliability, and sustainability across industries through intelligent monitoring, inspection, and verification systems.'
+      heading: 'Future Roadmap – Smart Industry 4.0 Transformation',
+      content: 'We continuously invest in R&D and emerging technologies to stay ahead of industrial challenges.'
     },
     {
-      heading: 'CBM 360° – IoT & AI Condition Monitoring Systems',
-      content: 'Our Condition-Based Monitoring (CBM 360°) solutions provide real-time asset health insights for rotating machinery, pipelines, offshore structures, and civil infrastructure.'
-    },
-    {
-      heading: 'Capabilities',
+      heading: 'Our Focus Areas',
       content: [
-        '**Wireless CBM Sensor Nodes:** Designed with Wi-Fi 6 & Bluetooth 6.0 for industrial rotating equipment & structural health monitoring.',
-        '**Smart Sensor Integration:** Embedded vibration, thermal, strain, and acoustic sensors with microcontrollers (ESP32, STM32, nRF).',
-        '**Edge Computing & AI:** Deployed AI models directly on sensors for anomaly detection & predictive maintenance.',
-        '**Cloud-Based IoT Pipeline:** Implemented MQTT + database infrastructure for remote monitoring, reporting, and trend analysis.',
-        '**Applications:** Power plants, refineries, FPSOs, offshore jackets, mining equipment, and bridges.'
+        '**5G-Enabled Remote Monitoring:** Ultra-fast, low-latency inspection networks.',
+        '**Digital Twin Ecosystems:** Advanced asset lifecycle & failure prediction.',
+        '**Smart Factories:** End-to-end IoT integration for predictive maintenance.',
+        '**Green Energy & Sustainability:** CBM solutions for wind, solar, and hydrogen plants.'
       ]
+    },
+    {
+      heading: 'Value Proposition',
+      content: [
+        '**24/7 Global Reach:** Inspectors & Experts across all continents.',
+        '**Certified Professionals:** Compliance with ISO, ASME, API, ASTM, EN standards.',
+        '**Industry Coverage:** Oil & Gas (Onshore/Offshore), Mining, Marine, FPSO/FSO, Power, and Infrastructure.',
+        '**Innovation Driven:** IoT, AI, Robotics, Digital Twin, and Industry 4.0.'
+      ]
+    },
+    {
+      heading: 'Tagline',
+      content: '"360° Worldwide – Redefining Testing, Inspection, and Monitoring through IoT, AI & Robotics."'
     }
   ]
 };
@@ -54,7 +62,7 @@ function toMarkdown(data) {
 async function ensurePage() {
   let page = await Page.findOne({ slug: PAGE_SLUG });
   if (!page) {
-    page = await Page.create({ title: 'CBM', slug: PAGE_SLUG, language: 'en', isActive: true });
+    page = await Page.create({ title: 'Innovation & R&D', slug: PAGE_SLUG, language: 'en', isActive: true });
   }
   return page;
 }
@@ -107,5 +115,3 @@ if (require.main === module) {
 }
 
 module.exports = { main };
-
-
