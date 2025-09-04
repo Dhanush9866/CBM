@@ -20,9 +20,9 @@ export default function About() {
     <div>
       {/* Hero Section */}
       <HeroSection
-        title="150+ Years of Excellence in Safety & Quality"
-        subtitle="Since 1866"
-        description="From our founding in Germany to our global presence today, CBM has been at the forefront of safety, security, and sustainability."
+        title="CBM 360° TIV™ - Global Leader in Testing, Inspection & Verification"
+        subtitle="Since 1992"
+        description="Founded in the United Kingdom, CBM 360 TIV has grown into a trusted global partner in Testing, Inspection, Certification, Condition-Based Monitoring, and Verification services across 72 countries."
         primaryCTA={{
           text: "Our Story",
           href: "#story"
@@ -45,19 +45,19 @@ export default function About() {
                 A Legacy of Trust and Innovation
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-                Founded in 1866 as a steam boiler inspection company in Munich, Germany, 
-                CBM has evolved into one of the world's leading technical service 
-                organizations. Our journey from local inspector to global partner reflects 
-                our commitment to adapting with the times while maintaining unwavering 
-                standards of excellence.
+                Founded in 1992 in the United Kingdom, CBM 360 TIV has grown into a trusted global partner 
+                in Testing, Inspection, Certification, Condition-Based Monitoring, and Verification services. 
+                With regional headquarters in Dubai (Middle East & Africa), Hong Kong (Asia), and Brazil 
+                (North & South America), we support industries across 72 countries, driven by a commitment 
+                to safety, quality, and sustainability.
               </p>
               
               <div className="grid grid-cols-2 gap-6 mb-8">
                 {[
-                  { icon: Calendar, label: "Founded", value: "1866" },
-                  { icon: MapPin, label: "Countries", value: "150+" },
-                  { icon: Users, label: "Employees", value: "25,000+" },
-                  { icon: Globe, label: "Locations", value: "1,000+" }
+                  { icon: Calendar, label: "Founded", value: "1992" },
+                  { icon: MapPin, label: "Countries", value: "72" },
+                  { icon: Users, label: "Professionals", value: "7,000+" },
+                  { icon: Globe, label: "Branch Offices", value: "72" }
                 ].map((item, index) => (
                   <div key={index} className="text-center">
                     <div className="inline-flex p-3 bg-primary/10 rounded-full mb-3">
@@ -82,29 +82,29 @@ export default function About() {
               <div className="space-y-6">
                 {[
                   {
-                    year: "1866",
+                    year: "1992",
                     title: "Foundation",
-                    description: "Established as steam boiler inspection association in Munich"
-                  },
-                  {
-                    year: "1960s",
-                    title: "International Expansion", 
-                    description: "Began global expansion with focus on automotive testing"
-                  },
-                  {
-                    year: "1990s",
-                    title: "Service Diversification",
-                    description: "Expanded into IT, telecommunications, and management systems"
+                    description: "Established in the United Kingdom as a testing and inspection company"
                   },
                   {
                     year: "2000s",
-                    title: "Digital Innovation",
-                    description: "Pioneered digital solutions and Industry 4.0 services"
+                    title: "Regional Expansion", 
+                    description: "Opened regional headquarters in Dubai, Hong Kong, and Brazil"
+                  },
+                  {
+                    year: "2010s",
+                    title: "Global Network",
+                    description: "Expanded to 72 countries with 72 branch offices worldwide"
+                  },
+                  {
+                    year: "2020s",
+                    title: "Advanced Capabilities",
+                    description: "Built 23 advanced laboratories and 7,000+ professional team"
                   },
                   {
                     year: "Today",
-                    title: "Global Leadership",
-                    description: "Leading provider across all major industry sectors worldwide"
+                    title: "Industry Leadership",
+                    description: "Leading provider across oil & gas, mining, power, and infrastructure sectors"
                   }
                 ].map((milestone, index) => (
                   <div key={index} className="flex space-x-4">
@@ -129,7 +129,7 @@ export default function About() {
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold mb-4">Our Purpose & Values</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Guided by our mission to add tangible value to society, business, and the environment.
+              Our brand is built on trust, integrity, and technical excellence. By combining global expertise with local presence, we help organizations achieve the highest standards of quality, safety, environmental protection, and social responsibility.
             </p>
           </div>
           
@@ -138,19 +138,19 @@ export default function About() {
               {
                 icon: Target,
                 title: "Mission",
-                description: "To add tangible value to society, business, and the environment by enabling progress through testing, inspection, certification, and knowledge services.",
+                description: "To deliver innovative solutions that address the evolving challenges of industries including oil & gas, mining, power generation, petrochemicals, manufacturing, marine, and infrastructure development.",
                 color: "bg-primary"
               },
               {
                 icon: Eye,
                 title: "Vision", 
-                description: "To be recognized as the global partner of choice for safety, security, and sustainability solutions that add tangible value.",
+                description: "To be the global leader in Testing, Inspection, Certification, Condition-Based Monitoring, and Verification services, ensuring reliability, driving innovation, and building confidence worldwide.",
                 color: "bg-accent"
               },
               {
                 icon: Heart,
                 title: "Values",
-                description: "Excellence, Independence, Passion, and Honesty guide everything we do, ensuring we deliver services with integrity and commitment.",
+                description: "Trust, integrity, and technical excellence guide everything we do. We go beyond compliance to deliver innovative solutions that enhance operational performance and extend asset life.",
                 color: "bg-tuv-blue-600"
               }
             ].map((item, index) => (
@@ -175,17 +175,18 @@ export default function About() {
                 Global Leadership Team
               </h2>
               <p className="text-white/90 mb-8 text-lg">
-                Our experienced leadership team brings together decades of industry expertise, 
-                technical knowledge, and strategic vision to guide CBM's continued growth 
-                and innovation.
+                Our team of 7,000 professionals, backed by a network of 23 advanced laboratories 
+                and 72 branch offices worldwide, works closely with clients to enhance operational 
+                performance, extend asset life, and ensure compliance with international standards 
+                and regulations.
               </p>
               
               <div className="space-y-6">
                 {[
-                  "Strategic vision and direction",
-                  "Technical excellence and innovation", 
-                  "Global market understanding",
-                  "Sustainable business practices"
+                  "Regional headquarters in Dubai, Hong Kong, and Brazil",
+                  "Advanced laboratories and testing facilities", 
+                  "Global market expertise across 72 countries",
+                  "Innovative solutions beyond compliance"
                 ].map((item, index) => (
                   <div key={index} className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-white rounded-full" />
@@ -205,17 +206,17 @@ export default function About() {
                 Expertise That Drives Innovation
               </h2>
               <p className="text-lg text-muted-foreground mb-8">
-                With 25,000+ experts across diverse disciplines, we combine deep technical 
-                knowledge with practical experience to solve complex challenges and drive 
-                innovation in every industry we serve.
+                At CBM 360 TIV, we go beyond compliance—delivering innovative solutions that address 
+                the evolving challenges of industries including oil & gas (onshore/offshore), mining, 
+                power generation, petrochemicals, manufacturing, marine, and infrastructure development.
               </p>
               
               <div className="grid grid-cols-2 gap-6">
                 {[
-                  { number: "1,000+", label: "PhD Holders", description: "Advanced technical expertise" },
-                  { number: "500+", label: "Industry Sectors", description: "Comprehensive coverage" },
-                  { number: "50+", label: "Service Categories", description: "Complete solutions" },
-                  { number: "99%", label: "Client Satisfaction", description: "Proven excellence" }
+                  { number: "7,000+", label: "Professionals", description: "Expert technical team" },
+                  { number: "23", label: "Advanced Labs", description: "State-of-the-art facilities" },
+                  { number: "72", label: "Countries", description: "Global presence" },
+                  { number: "72", label: "Branch Offices", description: "Local expertise" }
                 ].map((stat, index) => (
                   <div key={index} className="text-center p-6 bg-tuv-gray-50 rounded-lg">
                     <div className="text-2xl font-bold text-primary mb-1">{stat.number}</div>
@@ -276,11 +277,11 @@ export default function About() {
       <section className="section">
         <div className="container-responsive text-center">
           <h2 className="text-3xl lg:text-4xl font-bold mb-6">
-            Ready to Partner with Excellence?
+            CBM 360 TIV – Ensuring Reliability. Driving Innovation. Building Confidence.
           </h2>
           <p className="text-xl text-muted-foreground mb-10 max-w-3xl mx-auto">
-            Join thousands of companies worldwide who trust CBM for their 
-            testing, inspection, and certification needs.
+            Join thousands of companies worldwide who trust CBM 360 TIV for their 
+            testing, inspection, certification, condition-based monitoring, and verification needs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="btn-primary" asChild>
