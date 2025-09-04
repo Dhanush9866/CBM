@@ -16,13 +16,39 @@ import {
   Users,
   ArrowRight
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { fetchContactOffices } from '@/services/contactOffices';
+import { useEffect, useMemo, useState } from 'react';
+import { fetchContactOffices, sendContactInquiry } from '@/services/contactOffices';
+import { useToast } from '@/hooks/use-toast';
 
 // Using dynamic offices data from contact-offices.ts
 
 export default function Contact() {
   const [groups, setGroups] = useState<{ region_name: string; offices: any[] }[]>([]);
+  const { toast } = useToast();
+
+  const [form, setForm] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    company: '',
+    industry: '',
+    service: '',
+    message: '',
+    consent: false,
+  });
+
+  const [submitting, setSubmitting] = useState(false);
+  const isValid = useMemo(() => {
+    return (
+      form.firstName.trim() !== '' &&
+      form.lastName.trim() !== '' &&
+      /.+@.+\..+/.test(form.email) &&
+      form.company.trim() !== '' &&
+      form.message.trim() !== '' &&
+      form.consent === true
+    );
+  }, [form]);
   useEffect(() => {
     fetchContactOffices()
       .then(setGroups)
@@ -178,38 +204,65 @@ export default function Contact() {
                 Fill out the form below and our experts will get back to you within 24 hours.
               </p>
               
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={async (e) => {
+                e.preventDefault();
+                if (!isValid) {
+                  toast({ title: 'Please complete required fields', description: 'First name, last name, email, company, message, and consent are required.' });
+                  return;
+                }
+                try {
+                  setSubmitting(true);
+                  await sendContactInquiry({
+                    firstName: form.firstName.trim(),
+                    lastName: form.lastName.trim(),
+                    email: form.email.trim(),
+                    phone: form.phone.trim() || undefined,
+                    company: form.company.trim(),
+                    industry: form.industry || undefined,
+                    service: form.service || undefined,
+                    message: form.message.trim(),
+                    consent: form.consent,
+                  });
+                  toast({ title: 'Message sent', description: 'Thanks! Our team will get back to you within 24 hours.' });
+                  setForm({ firstName: '', lastName: '', email: '', phone: '', company: '', industry: '', service: '', message: '', consent: false });
+                } catch (err: any) {
+                  const description = err?.response?.data?.error?.message || 'Failed to send your message. Please try again later.';
+                  toast({ title: 'Sending failed', description });
+                } finally {
+                  setSubmitting(false);
+                }
+              }}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
                     <Label htmlFor="firstName">First Name *</Label>
-                    <Input id="firstName" placeholder="John" className="mt-2" />
+                    <Input id="firstName" placeholder="John" className="mt-2" value={form.firstName} onChange={(e) => setForm((f) => ({ ...f, firstName: e.target.value }))} />
                   </div>
                   <div>
                     <Label htmlFor="lastName">Last Name *</Label>
-                    <Input id="lastName" placeholder="Doe" className="mt-2" />
+                    <Input id="lastName" placeholder="Doe" className="mt-2" value={form.lastName} onChange={(e) => setForm((f) => ({ ...f, lastName: e.target.value }))} />
                   </div>
                 </div>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
                     <Label htmlFor="email">Email Address *</Label>
-                    <Input id="email" type="email" placeholder="john.doe@company.com" className="mt-2" />
+                    <Input id="email" type="email" placeholder="john.doe@company.com" className="mt-2" value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} />
                   </div>
                   <div>
                     <Label htmlFor="phone">Phone Number</Label>
-                    <Input id="phone" type="tel" placeholder="+1 (555) 123-4567" className="mt-2" />
+                    <Input id="phone" type="tel" placeholder="+1 (555) 123-4567" className="mt-2" value={form.phone} onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))} />
                   </div>
                 </div>
                 
                 <div>
                   <Label htmlFor="company">Company *</Label>
-                  <Input id="company" placeholder="Your Company Name" className="mt-2" />
+                  <Input id="company" placeholder="Your Company Name" className="mt-2" value={form.company} onChange={(e) => setForm((f) => ({ ...f, company: e.target.value }))} />
                 </div>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
                     <Label htmlFor="industry">Industry</Label>
-                    <Select>
+                    <Select value={form.industry} onValueChange={(v) => setForm((f) => ({ ...f, industry: v }))}>
                       <SelectTrigger className="mt-2">
                         <SelectValue placeholder="Select Industry" />
                       </SelectTrigger>
@@ -228,7 +281,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <Label htmlFor="service">Service Needed</Label>
-                    <Select>
+                    <Select value={form.service} onValueChange={(v) => setForm((f) => ({ ...f, service: v }))}>
                       <SelectTrigger className="mt-2">
                         <SelectValue placeholder="Select Service" />
                       </SelectTrigger>
@@ -250,19 +303,21 @@ export default function Contact() {
                     id="message" 
                     placeholder="Please describe your requirements, timeline, and any specific questions you have..."
                     className="mt-2 min-h-[120px]"
+                    value={form.message}
+                    onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
                   />
                 </div>
                 
                 <div className="flex items-start space-x-2">
-                  <input type="checkbox" id="consent" className="mt-1" />
+                  <input type="checkbox" id="consent" className="mt-1" checked={form.consent} onChange={(e) => setForm((f) => ({ ...f, consent: e.target.checked }))} />
                   <Label htmlFor="consent" className="text-sm text-muted-foreground">
                     I agree to CBM processing my personal data for the purpose of responding to my inquiry. 
                     I understand I can withdraw consent at any time.
                   </Label>
                 </div>
                 
-                <Button size="lg" className="w-full btn-primary">
-                  Send Message
+                <Button size="lg" className="w-full btn-primary" type="submit" disabled={!isValid || submitting}>
+                  {submitting ? 'Sending...' : 'Send Message'}
                   <Send className="ml-2 h-5 w-5" />
                 </Button>
               </form>

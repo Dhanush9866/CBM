@@ -18,4 +18,21 @@ export async function fetchContactOffices(): Promise<{ region_name: string; offi
   return data;
 }
 
+export type ContactInquiry = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+  company: string;
+  industry?: string;
+  service?: string;
+  message: string;
+  consent: boolean;
+};
+
+export async function sendContactInquiry(payload: ContactInquiry): Promise<{ success: boolean; message: string }>{
+  const { data } = await apiClient.post('/api/contact', payload);
+  return data;
+}
+
 
