@@ -101,7 +101,7 @@ export default function IndustriesDetail() {
                 <img
                   src={section.images[0]}
                   alt={`${section.title} 1`}
-                  className="w-full h-64 md:h-80 object-cover"
+                  className="w-full h-64 md:h-80 object-cover rounded-lg"
                 />
               </div>
 
@@ -132,7 +132,7 @@ export default function IndustriesDetail() {
                 <img
                   src={section.images[1]}
                   alt={`${section.title} 2`}
-                  className="w-full h-64 md:h-80 object-cover"
+                  className="w-full h-64 md:h-80 object-cover rounded-lg"
                 />
               </div>
             </div>
@@ -140,7 +140,7 @@ export default function IndustriesDetail() {
             <>
               {section.images && section.images.length === 1 && (
                 <div className="overflow-hidden mb-10">
-                  <img src={section.images[0]} alt={section.title} className="w-full h-64 md:h-80 object-cover" />
+                  <img src={section.images[0]} alt={section.title} className="w-full h-64 md:h-80 object-cover rounded-lg" />
                 </div>
               )}
               {/* Enhanced content styling for single image layout */}

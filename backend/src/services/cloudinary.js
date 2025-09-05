@@ -53,6 +53,45 @@ class CloudinaryService {
   }
 
   /**
+   * Upload image from buffer (for multer memory storage)
+   * @param {Buffer} buffer - Image buffer
+   * @param {Object} options - Upload options
+   * @returns {Promise<Object>} Upload result with URL and public_id
+   */
+  async uploadFromBuffer(buffer, options = {}) {
+    try {
+      const result = await cloudinary.uploader.upload(
+        `data:image/jpeg;base64,${buffer.toString('base64')}`,
+        {
+          folder: options.folder || 'cbm/contact-offices',
+          public_id: options.public_id,
+          resource_type: 'auto',
+          transformation: options.transformation || [
+            { quality: 'auto:good' },
+            { fetch_format: 'auto' }
+          ],
+          tags: options.tags || ['contact-offices', 'cbm']
+        }
+      );
+
+      logger.info(`Image uploaded from buffer successfully: ${result.secure_url}`);
+      
+      return {
+        success: true,
+        url: result.secure_url,
+        public_id: result.public_id,
+        width: result.width,
+        height: result.height,
+        format: result.format,
+        size: result.bytes
+      };
+    } catch (error) {
+      logger.error(`Image upload from buffer failed: ${error.message}`);
+      throw new Error(`Image upload from buffer failed: ${error.message}`);
+    }
+  }
+
+  /**
    * Upload multiple images for a service
    * @param {Array} files - Array of file objects
    * @param {string} serviceType - Main service

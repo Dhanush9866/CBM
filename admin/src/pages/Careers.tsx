@@ -1,6 +1,5 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { Career, listCareers, createCareer, updateCareer, deleteCareer } from '@/services/careers';
-import { useNavigate } from 'react-router-dom';
 
 const emptyCareer: Career = {
   title: '',
@@ -18,7 +17,6 @@ export default function Careers() {
   const [error, setError] = useState<string | null>(null);
   const [editing, setEditing] = useState<Career | null>(null);
   const [form, setForm] = useState<Career>(emptyCareer);
-  const navigate = useNavigate();
 
   const load = async () => {
     setLoading(true);
@@ -75,16 +73,16 @@ export default function Careers() {
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('admin_token');
-    navigate('/login', { replace: true });
-  };
 
   return (
-    <div style={{ maxWidth: 1000, margin: '32px auto', padding: 16 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-        <h1 style={{ fontSize: 22, fontWeight: 700 }}>Careers</h1>
-        <button onClick={logout} style={{ padding: '8px 12px', border: '1px solid #d1d5db', borderRadius: 6 }}>Logout</button>
+    <div>
+      <div style={{ marginBottom: '24px' }}>
+        <h1 style={{ fontSize: '28px', fontWeight: '700', margin: '0 0 8px 0', color: '#111827' }}>
+          Careers
+        </h1>
+        <p style={{ color: '#6b7280', margin: 0 }}>
+          Manage job postings and career opportunities.
+        </p>
       </div>
 
       <div style={{ border: '1px solid #e5e7eb', borderRadius: 8, padding: 16, marginBottom: 24 }}>

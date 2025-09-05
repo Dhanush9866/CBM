@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiBaseURL = import.meta.env.VITE_API_BASE_URL || (window.location.hostname === 'localhost' ? 'http://localhost:8080' : 'https://cbm-backend-e1rq.onrender.com');
+const apiBaseURL = import.meta.env.VITE_API_BASE_URL || (window.location.hostname === 'localhost' ? 'http://localhost:8000' : 'https://cbm-backend-e1rq.onrender.com');
 
 export const api = axios.create({
   baseURL: apiBaseURL,
