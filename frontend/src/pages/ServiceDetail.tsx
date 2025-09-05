@@ -457,7 +457,7 @@ export default function ServiceDetail() {
                         <img
                           src={imageUrls[imageIndex]}
                           alt="Borescope inspection in action"
-                          className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-lg"
+                          className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
                         />
                       </div>
                     );
@@ -473,7 +473,7 @@ export default function ServiceDetail() {
                         <img
                           src={imageUrls[imageIndex]}
                           alt="Professional borescope inspection"
-                          className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-lg"
+                          className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
                         />
                       </div>
                     );
@@ -496,7 +496,7 @@ export default function ServiceDetail() {
                             <img
                               src={imageUrls[imageIndex]}
                               alt="Robotic inspection device"
-                              className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-lg"
+                              className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
                             />
                           </div>
                         </div>
@@ -519,7 +519,7 @@ export default function ServiceDetail() {
                         <img
                           src={url}
                           alt={(dynamicSection?.title) || item?.title || 'Service Image'}
-                          className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-lg"
+                          className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
                         />
                       </div>
                     ))}
@@ -535,7 +535,7 @@ export default function ServiceDetail() {
                         <img 
                           src={url} 
                           alt={(dynamicSection?.title) || item?.title || 'Service Image'} 
-                          className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-lg" 
+                          className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl" 
                         />
                       </div>
                     ))}
