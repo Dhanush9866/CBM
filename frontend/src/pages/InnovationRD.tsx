@@ -5,10 +5,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getPageWithSections, SectionDto } from '@/utils/api';
 import { innovationRDSections } from '@/data/innovation-rd';
+import { useTranslation } from '@/contexts/TranslationContext';
 
 export default function InnovationRD() {
   const navigate = useNavigate();
+  const { currentLanguage } = useTranslation();
   const [sections, setSections] = useState<SectionDto[]>([]);
+  const [pageData, setPageData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -24,10 +27,22 @@ export default function InnovationRD() {
     let isMounted = true;
     const load = async () => {
       try {
+        console.log('Loading innovation R&D sections for language:', currentLanguage);
         setLoading(true);
-        const page = await getPageWithSections('innovation-rd');
-        if (isMounted) setSections(page.sections || []);
+        setError(null);
+        const page = await getPageWithSections('innovation-rd', undefined, currentLanguage);
+        console.log('Received page data:', page);
+        if (isMounted) {
+          setSections(page.sections || []);
+          setPageData(page);
+        }
       } catch (e) {
+        console.error('Error loading innovation R&D sections:', e);
+        console.error('Error details:', {
+          message: e instanceof Error ? e.message : 'Unknown error',
+          stack: e instanceof Error ? e.stack : undefined,
+          response: (e as any)?.response?.data
+        });
         if (isMounted) setError('Failed to load innovation & R&D sections');
       } finally {
         if (isMounted) setLoading(false);
@@ -37,7 +52,7 @@ export default function InnovationRD() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [currentLanguage]);
 
   const toSlug = (text: string) =>
     text.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
@@ -59,10 +74,23 @@ export default function InnovationRD() {
           </Breadcrumb>
 
           <div className="mt-6 text-center">
-            <h1 className="text-3xl lg:text-4xl font-bold mb-3">Innovation & Research and Development (R&D)</h1>
-            <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-none leading-relaxed md:leading-8 whitespace-pre-line text-justify">
-            We are pioneers in Condition-Based Monitoring (CBM), Technical Industrial Verification (TIV), and advanced R&D services, delivering next-generation solutions powered by IoT, AI, Robotics, and Industry 4.0 technologies. Our mission is to enhance safety, reliability, and sustainability across industries through intelligent monitoring, inspection, and verification systems. 
-            </p>
+            {loading ? (
+              <div className="animate-pulse">
+                <div className="h-10 bg-gray-200 rounded mb-3 mx-auto max-w-md"></div>
+                <div className="h-6 bg-gray-200 rounded mb-2 mx-auto max-w-4xl"></div>
+                <div className="h-6 bg-gray-200 rounded mb-2 mx-auto max-w-4xl"></div>
+                <div className="h-6 bg-gray-200 rounded mx-auto max-w-3xl"></div>
+              </div>
+            ) : (
+              <>
+                <h1 className="text-3xl lg:text-4xl font-bold mb-3">
+                  {pageData?.title || 'Innovation & Research and Development (R&D)'}
+                </h1>
+                <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-none leading-relaxed md:leading-8 whitespace-pre-line text-justify">
+                  {pageData?.description || 'We are pioneers in Condition-Based Monitoring (CBM), Technical Industrial Verification (TIV), and advanced R&D services, delivering next-generation solutions powered by IoT, AI, Robotics, and Industry 4.0 technologies. Our mission is to enhance safety, reliability, and sustainability across industries through intelligent monitoring, inspection, and verification systems.'}
+                </p>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -80,13 +108,17 @@ export default function InnovationRD() {
               <Card
                 key={s._id}
                 className="overflow-hidden group hover:shadow-tuv-md transition-all cursor-pointer"
-                onClick={() => navigate(`/services/innovation-rd/${s.sectionId || toSlug(s.title)}`)}
+                onClick={() => navigate(`/services/innovation-rd/${s.sectionId || toSlug(s.title)}`, { 
+                  state: { sectionData: s, serviceType: 'innovation-rd', serviceDisplayName: 'Innovation & R&D' } 
+                })}
                 role="link"
                 tabIndex={0}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
-                    navigate(`/services/innovation-rd/${s.sectionId || toSlug(s.title)}`);
+                    navigate(`/services/innovation-rd/${s.sectionId || toSlug(s.title)}`, { 
+                      state: { sectionData: s, serviceType: 'innovation-rd', serviceDisplayName: 'Innovation & R&D' } 
+                    });
                   }
                 }}
               >
@@ -101,7 +133,12 @@ export default function InnovationRD() {
                 </CardContent>
                 <CardFooter>
                   <Button asChild variant="outline" className="w-full">
-                    <Link to={`/services/innovation-rd/${s.sectionId || toSlug(s.title)}`}>View Details</Link>
+                    <Link 
+                      to={`/services/innovation-rd/${s.sectionId || toSlug(s.title)}`}
+                      state={{ sectionData: s, serviceType: 'innovation-rd', serviceDisplayName: 'Innovation & R&D' }}
+                    >
+                      View Details
+                    </Link>
                   </Button>
                 </CardFooter>
               </Card>

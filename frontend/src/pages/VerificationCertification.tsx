@@ -5,10 +5,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getPageWithSections, SectionDto } from '@/utils/api';
 import { verificationCertificationItems } from '@/data/verification-certification';
+import { useTranslation } from '@/contexts/TranslationContext';
 
 export default function VerificationCertification() {
   const navigate = useNavigate();
+  const { currentLanguage } = useTranslation();
   const [sections, setSections] = useState<SectionDto[]>([]);
+  const [pageData, setPageData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -24,10 +27,22 @@ export default function VerificationCertification() {
     let isMounted = true;
     const load = async () => {
       try {
+        console.log('Loading verification sections for language:', currentLanguage);
         setLoading(true);
-        const page = await getPageWithSections('verification');
-        if (isMounted) setSections(page.sections || []);
+        setError(null);
+        const page = await getPageWithSections('verification', undefined, currentLanguage);
+        console.log('Received page data:', page);
+        if (isMounted) {
+          setSections(page.sections || []);
+          setPageData(page);
+        }
       } catch (e) {
+        console.error('Error loading verification sections:', e);
+        console.error('Error details:', {
+          message: e instanceof Error ? e.message : 'Unknown error',
+          stack: e instanceof Error ? e.stack : undefined,
+          response: (e as any)?.response?.data
+        });
         if (isMounted) setError('Failed to load verification & certification sections');
       } finally {
         if (isMounted) setLoading(false);
@@ -37,7 +52,7 @@ export default function VerificationCertification() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [currentLanguage]);
 
   const toSlug = (text: string) =>
     text.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
@@ -58,12 +73,23 @@ export default function VerificationCertification() {
           </Breadcrumb>
 
           <div className="mt-6 text-center">
-            <h1 className="text-3xl lg:text-4xl font-bold mb-3">Verification & Certification (VC)</h1>
+            {loading ? (
+              <div className="animate-pulse">
+                <div className="h-10 bg-gray-200 rounded mb-3 mx-auto max-w-md"></div>
+                <div className="h-6 bg-gray-200 rounded mb-2 mx-auto max-w-4xl"></div>
+                <div className="h-6 bg-gray-200 rounded mb-2 mx-auto max-w-4xl"></div>
+                <div className="h-6 bg-gray-200 rounded mx-auto max-w-3xl"></div>
+              </div>
+            ) : (
+              <>
+                <h1 className="text-3xl lg:text-4xl font-bold mb-3">
+                  {pageData?.title || 'Verification & Certification (VC)'}
+                </h1>
             <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-none leading-relaxed md:leading-8 whitespace-pre-line text-justify">
-            Our Verification & Certification Services provide independent assurance that industrial assets, processes, and products meet international standards, client specifications, and regulatory requirements. Leveraging a global network of certified inspectors and auditors, we deliver trusted third-party verification and certification to enhance safety, reliability, and operational excellence. 
- 
-            “Trusted Verification & Certification – Ensuring Compliance, Quality, and Safety Across Industries.” 
+                  {pageData?.description || 'Our Verification & Certification Services provide independent assurance that industrial assets, processes, and products meet international standards, client specifications, and regulatory requirements. Leveraging a global network of certified inspectors and auditors, we deliver trusted third-party verification and certification to enhance safety, reliability, and operational excellence. "Trusted Verification & Certification – Ensuring Compliance, Quality, and Safety Across Industries."'}
             </p>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -81,13 +107,17 @@ export default function VerificationCertification() {
               <Card
                 key={item._id}
                 className="overflow-hidden group hover:shadow-tuv-md transition-all cursor-pointer"
-                onClick={() => navigate(`/services/verification-certification/${item.sectionId || toSlug(item.title)}`)}
+                onClick={() => navigate(`/services/verification-certification/${item.sectionId || toSlug(item.title)}`, { 
+                  state: { sectionData: item, serviceType: 'verification-certification', serviceDisplayName: 'Verification & Certification (VC)' } 
+                })}
                 role="link"
                 tabIndex={0}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
-                    navigate(`/services/verification-certification/${item.sectionId || toSlug(item.title)}`);
+                    navigate(`/services/verification-certification/${item.sectionId || toSlug(item.title)}`, { 
+                      state: { sectionData: item, serviceType: 'verification-certification', serviceDisplayName: 'Verification & Certification (VC)' } 
+                    });
                   }
                 }}
               >
@@ -102,7 +132,12 @@ export default function VerificationCertification() {
                 </CardContent>
                 <CardFooter>
                   <Button asChild variant="outline" className="w-full">
-                    <Link to={`/services/verification-certification/${item.sectionId || toSlug(item.title)}`}>View Details</Link>
+                    <Link 
+                      to={`/services/verification-certification/${item.sectionId || toSlug(item.title)}`}
+                      state={{ sectionData: item, serviceType: 'verification-certification', serviceDisplayName: 'Verification & Certification (VC)' }}
+                    >
+                      View Details
+                    </Link>
                   </Button>
                 </CardFooter>
               </Card>

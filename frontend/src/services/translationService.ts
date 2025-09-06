@@ -6,7 +6,7 @@ export interface StaticTranslations {
     industries: string;
     about: string;
     careers: string;
-    resources: string;
+    blog: string;
     contact: string;
     getQuote: string;
     contactUs: string;

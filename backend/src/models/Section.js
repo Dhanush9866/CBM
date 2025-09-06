@@ -36,6 +36,8 @@ SectionSchema.index({ pageNumber: 1, sectionId: 1 });
 SectionSchema.index({ page: 1, sectionId: 1 });
 SectionSchema.index({ createdAt: -1 });
 SectionSchema.index({ title: 'text', bodyText: 'text' });
+SectionSchema.index({ isActive: 1, pageNumber: 1 }); // For populate queries
+SectionSchema.index({ isActive: 1, page: 1 }); // For page-based section queries
 
 module.exports = mongoose.model('Section', SectionSchema);
 

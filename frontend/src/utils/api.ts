@@ -64,7 +64,9 @@ export type PageDto = {
 };
 
 export async function getPageWithSections(pageName: string, sectionName?: string, lang?: string): Promise<PageDto> {
-  const params = lang ? { lang } : undefined;
+  // Get language from localStorage if not provided
+  const language = lang || localStorage.getItem('preferredLanguage') || 'en';
+  const params = { lang: language };
 
   // If a section name is provided, use the search endpoint which supports server-side section filtering
   if (sectionName) {

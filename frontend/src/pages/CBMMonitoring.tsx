@@ -5,10 +5,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getPageWithSections, SectionDto } from '@/utils/api';
 import { cbmItems } from '@/data/cbm';
+import { useTranslation } from '@/contexts/TranslationContext';
 
 export default function CBMMonitoring() {
   const navigate = useNavigate();
+  const { currentLanguage } = useTranslation();
   const [sections, setSections] = useState<SectionDto[]>([]);
+  const [pageData, setPageData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -24,10 +27,22 @@ export default function CBMMonitoring() {
     let isMounted = true;
     const load = async () => {
       try {
+        console.log('Loading CBM sections for language:', currentLanguage);
         setLoading(true);
-        const page = await getPageWithSections('cbm');
-        if (isMounted) setSections(page.sections || []);
+        setError(null);
+        const page = await getPageWithSections('cbm', undefined, currentLanguage);
+        console.log('Received page data:', page);
+        if (isMounted) {
+          setSections(page.sections || []);
+          setPageData(page);
+        }
       } catch (e) {
+        console.error('Error loading CBM sections:', e);
+        console.error('Error details:', {
+          message: e instanceof Error ? e.message : 'Unknown error',
+          stack: e instanceof Error ? e.stack : undefined,
+          response: (e as any)?.response?.data
+        });
         if (isMounted) setError('Failed to load CBM sections');
       } finally {
         if (isMounted) setLoading(false);
@@ -37,7 +52,7 @@ export default function CBMMonitoring() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [currentLanguage]);
 
   const toSlug = (text: string) =>
     text.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
@@ -58,13 +73,23 @@ export default function CBMMonitoring() {
           </Breadcrumb>
 
           <div className="mt-6 text-center">
-            <h1 className="text-3xl lg:text-4xl font-bold mb-3">Condition based Monitoring (CBM)</h1>
-            <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-none leading-relaxed md:leading-8 whitespace-pre-line text-justify">
-                           
-            Our Condition-Based Monitoring (CBM) services provide real-time insights into the health and performance of critical assets, enabling predictive maintenance, reduced downtime, and extended equipment life. By integrating IoT, AI, and advanced sensor technologies, we help industries move from reactive and scheduled maintenance to a datadriven, proactive approach.     
-             “Smart Monitoring. Predictive Insights. Reliable Assets.”                        
-            
-            </p>
+            {loading ? (
+              <div className="animate-pulse">
+                <div className="h-10 bg-gray-200 rounded mb-3 mx-auto max-w-md"></div>
+                <div className="h-6 bg-gray-200 rounded mb-2 mx-auto max-w-4xl"></div>
+                <div className="h-6 bg-gray-200 rounded mb-2 mx-auto max-w-4xl"></div>
+                <div className="h-6 bg-gray-200 rounded mx-auto max-w-3xl"></div>
+              </div>
+            ) : (
+              <>
+                <h1 className="text-3xl lg:text-4xl font-bold mb-3">
+                  {pageData?.title || 'Condition based Monitoring (CBM)'}
+                </h1>
+                <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-none leading-relaxed md:leading-8 whitespace-pre-line text-justify">
+                  {pageData?.description || 'Our Condition-Based Monitoring (CBM) services provide real-time insights into the health and performance of critical assets, enabling predictive maintenance, reduced downtime, and extended equipment life. By integrating IoT, AI, and advanced sensor technologies, we help industries move from reactive and scheduled maintenance to a datadriven, proactive approach. "Smart Monitoring. Predictive Insights. Reliable Assets."'}
+                </p>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -82,13 +107,17 @@ export default function CBMMonitoring() {
               <Card
                 key={item._id}
                 className="overflow-hidden group hover:shadow-tuv-md transition-all cursor-pointer"
-                onClick={() => navigate(`/services/cbm/${item.sectionId || toSlug(item.title)}`)}
+                onClick={() => navigate(`/services/cbm/${item.sectionId || toSlug(item.title)}`, { 
+                  state: { sectionData: item, serviceType: 'cbm', serviceDisplayName: 'Condition based Monitoring (CBM)' } 
+                })}
                 role="link"
                 tabIndex={0}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
-                    navigate(`/services/cbm/${item.sectionId || toSlug(item.title)}`);
+                    navigate(`/services/cbm/${item.sectionId || toSlug(item.title)}`, { 
+                      state: { sectionData: item, serviceType: 'cbm', serviceDisplayName: 'Condition based Monitoring (CBM)' } 
+                    });
                   }
                 }}
               >
@@ -103,7 +132,12 @@ export default function CBMMonitoring() {
                 </CardContent>
                 <CardFooter>
                   <Button asChild variant="outline" className="w-full">
-                    <Link to={`/services/cbm/${item.sectionId || toSlug(item.title)}`}>View Details</Link>
+                    <Link 
+                      to={`/services/cbm/${item.sectionId || toSlug(item.title)}`}
+                      state={{ sectionData: item, serviceType: 'cbm', serviceDisplayName: 'Condition based Monitoring (CBM)' }}
+                    >
+                      View Details
+                    </Link>
                   </Button>
                 </CardFooter>
               </Card>
