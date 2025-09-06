@@ -6,30 +6,48 @@ require('dotenv').config();
 const Section = require('../models/Section');
 const Page = require('../models/Page');
 
-const MONGODB_URI = "mongodb+srv://cbm360tiv:MiiFze4xYGr6XNji@cluster0.sf6iagh.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster" || 'mongodb://localhost:27017/cbm';
+const MONGODB_URI = "mongodb+srv://cbm360tiv_db_user:ghtVDlZZEZRwzGOW@cluster0.wizvkjv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0" || 'mongodb://localhost:27017/cbm';
 
-const PAGE_SLUG = 'innovation-rd';
-const SECTION_ID = 'section-1';
+const PAGE_SLUG = 'service';
+const SECTION_ID = 'Recruitment & Selection';
 
-const DATA = {
-  service: 'Innovation & Research and Development (R&D)',
+const RECRUITMENT_SELECTION = {
+  service: 'Recruitment & Selection',
   sections: [
     {
-      heading: 'Innovation & Research and Development (R&D)',
-      content: 'We are pioneers in Condition-Based Monitoring (CBM), Technical Industrial Verification (TIV), and advanced R&D services, delivering next-generation solutions powered by IoT, AI, Robotics, and Industry 4.0 technologies. Our mission is to enhance safety, reliability, and sustainability across industries through intelligent monitoring, inspection, and verification systems.'
+      heading: 'INSPECTORS 360 – Global Inspector Recruitment & Selection Services',
+      content: 'At INSPECTORS 360 we specialize in providing highly qualified and experienced inspectors for the world\'s most demanding industries. Our recruitment and selection process ensures that every professional we place is equipped with the skills, certifications, and field experience to deliver exceptional inspection services, even in the most challenging environments.'
     },
     {
-      heading: 'CBM 360° – IoT & AI Condition Monitoring Systems',
-      content: 'Our Condition-Based Monitoring (CBM 360°) solutions provide real-time asset health insights for rotating machinery, pipelines, offshore structures, and civil infrastructure.'
+      heading: 'Our Approach',
+      content: 'We understand that inspection is more than just compliance—it\'s about ensuring safety, reliability, and operational excellence. That\'s why we connect clients with inspectors who not only meet international standards but also have hands-on expertise with state-of-the-art working equipment.'
     },
     {
-      heading: 'Capabilities',
+      heading: 'Industries We Serve',
       content: [
-        '**Wireless CBM Sensor Nodes:** Designed with Wi-Fi 6 & Bluetooth 6.0 for industrial rotating equipment & structural health monitoring.',
-        '**Smart Sensor Integration:** Embedded vibration, thermal, strain, and acoustic sensors with microcontrollers (ESP32, STM32, nRF).',
-        '**Edge Computing & AI:** Deployed AI models directly on sensors for anomaly detection & predictive maintenance.',
-        '**Cloud-Based IoT Pipeline:** Implemented MQTT + database infrastructure for remote monitoring, reporting, and trend analysis.',
-        '**Applications:** Power plants, refineries, FPSOs, offshore jackets, mining equipment, and bridges.'
+        'Oil & Gas – Onshore and Offshore',
+        'FPSO / FSO Vessels',
+        'Mining & Metals'
+      ]
+    },
+    {
+      heading: 'Inspection Roles We Provide',
+      content: [
+        'Import / Export Audit – Ensuring quality, compliance, and documentation for global trade.',
+        'Asset Integrity Audit (Topside) – Evaluating structural, mechanical, and operational integrity for offshore and industrial assets.',
+        'NDT/Mechanical Audit Inspectors – Assessing machinery, rotating equipment, and critical components for performance and safety.',
+        'Welding Inspectors – Certified experts for weld quality control, testing, and compliance with global welding codes.',
+        'Paint Inspectors – Coating and corrosion control specialists to ensure protective systems meet specifications.',
+        'Electrical & Instrumentation Inspectors – Verifying electrical systems, instrumentation, and automation for reliability and safety.'
+      ]
+    },
+    {
+      heading: 'Why Choose INSPECTORS 360?',
+      content: [
+        'Global talent pool of certified inspectors.',
+        'Experience across diverse industries and harsh environments.',
+        'Commitment to safety, quality, and compliance.',
+        'Fast and reliable recruitment process.'
       ]
     }
   ]
@@ -63,8 +81,8 @@ async function upsertSection() {
   await ensurePage();
   const existing = await Section.findOne({ sectionId: SECTION_ID, language: 'en' });
   const update = {
-    title: DATA.service,
-    bodyText: toMarkdown(DATA),
+    title: RECRUITMENT_SELECTION.service,
+    bodyText: toMarkdown(RECRUITMENT_SELECTION),
     page: PAGE_SLUG,
     isActive: true
   };
@@ -92,7 +110,7 @@ async function main() {
   try {
     const sectionId = await upsertSection();
     await linkSectionToPage(sectionId);
-    console.log(`✅ ${DATA.service} section upserted`);
+    console.log(`✅ ${RECRUITMENT_SELECTION.service} section upserted`);
   } catch (e) {
     console.error('❌ Error:', e.message);
     process.exitCode = 1;

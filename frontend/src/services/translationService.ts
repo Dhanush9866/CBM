@@ -41,7 +41,36 @@ export interface StaticTranslations {
         secondaryCTAText: string;
       };
     };
+    about?: {
+      title: string;
+      breadcrumb: {
+        home: string;
+        about: string;
+      };
+      loading: string;
+      error: string;
+    };
   };
+  services?: {
+    completeServicePortfolio: {
+      heading: string;
+      subheading: string;
+    };
+    servicesList: Array<{
+      id: number;
+      title: string;
+      description: string;
+      icon: any;
+      link: string;
+      imageUrl: string;
+      features: string[];
+    }>;
+  };
+  industryStats?: Array<{
+    number: string;
+    label: string;
+    description: string;
+  }>;
 }
 
 export interface TranslationResponse {
