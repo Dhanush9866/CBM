@@ -1,15 +1,28 @@
 import { Link, useLocation, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
 import { getPageWithSections, PageDto, SectionDto } from '@/utils/api';
+import { useTranslation } from '@/contexts/TranslationContext';
 
 export default function IndustriesDetail() {
   const { slug } = useParams();
   const location = useLocation() as { state?: { section?: SectionDto } };
+  const { currentLanguage } = useTranslation();
+  const prevLanguageRef = useRef(currentLanguage);
   const [page, setPage] = useState<PageDto | null>(null);
   const [section, setSection] = useState<SectionDto | null>(location.state?.section || null);
   const [loading, setLoading] = useState<boolean>(!location.state?.section);
+
+  // Redirect to parent page when language changes
+  useEffect(() => {
+    // Only redirect if language actually changed and we have a valid slug
+    if (prevLanguageRef.current !== currentLanguage && slug) {
+      window.location.href = '/industries';
+    }
+    // Update the ref to current language
+    prevLanguageRef.current = currentLanguage;
+  }, [currentLanguage, slug]);
 
   useEffect(() => {
     let isMounted = true;
@@ -17,7 +30,7 @@ export default function IndustriesDetail() {
       if (!slug || section) return;
       try {
         setLoading(true);
-        const p = await getPageWithSections('industries');
+        const p = await getPageWithSections('industries', undefined, currentLanguage);
         if (!isMounted) return;
         setPage(p);
         const target = p.sections?.find(s => s.sectionId === slug || s.title?.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-') === slug) || null;
@@ -32,7 +45,7 @@ export default function IndustriesDetail() {
     return () => {
       isMounted = false;
     };
-  }, [slug]);
+  }, [slug, currentLanguage]);
 
   if (!slug) return null;
 

@@ -8,10 +8,13 @@ import { ArrowRight, Target, TrendingUp, Shield } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { getPageWithSections, SectionDto } from '@/utils/api';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { useTranslation } from '@/contexts/TranslationContext';
 
 export default function Industries() {
   const navigate = useNavigate();
+  const { currentLanguage } = useTranslation();
   const [sections, setSections] = useState<SectionDto[]>([]);
+  const [pageData, setPageData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -19,11 +22,23 @@ export default function Industries() {
     let isMounted = true;
     const load = async () => {
       try {
+        console.log('Loading industries sections for language:', currentLanguage);
         setLoading(true);
-        const page = await getPageWithSections('industries');
-        if (isMounted) setSections(page.sections || []);
+        setError(null);
+        const page = await getPageWithSections('industries', undefined, currentLanguage);
+        console.log('Received page data:', page);
+        if (isMounted) {
+          setSections(page.sections || []);
+          setPageData(page);
+        }
       } catch (e) {
-        if (isMounted) setError('Failed to load industries');
+        console.error('Error loading industries sections:', e);
+        console.error('Error details:', {
+          message: e instanceof Error ? e.message : 'Unknown error',
+          stack: e instanceof Error ? e.stack : undefined,
+          response: (e as any)?.response?.data
+        });
+        if (isMounted) setError('Failed to load industries sections');
       } finally {
         if (isMounted) setLoading(false);
       }
@@ -32,26 +47,35 @@ export default function Industries() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [currentLanguage]);
 
   const toSlug = (text: string) =>
     text.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
   return (
     <div>
-      {/* Hero Section
-      <HeroSection
-        title="Industry Expertise Across All Sectors"
-        subtitle="Specialized Solutions"
-        description="Deep industry knowledge and specialized services tailored to meet the unique challenges and regulatory requirements of your sector."
-        primaryCTA={{
-          text: "Find Your Industry",
-          href: "#industries"
-        }}
-        secondaryCTA={{
-          text: "Contact Expert",
-          href: "/contact"
-        }}
-      />
+      <section className="section pb-2">
+        <div className="container-responsive">
+          <div className="mt-6 text-center">
+            {loading ? (
+              <div className="animate-pulse">
+                <div className="h-10 bg-gray-200 rounded mb-3 mx-auto max-w-md"></div>
+                <div className="h-6 bg-gray-200 rounded mb-2 mx-auto max-w-4xl"></div>
+                <div className="h-6 bg-gray-200 rounded mb-2 mx-auto max-w-4xl"></div>
+                <div className="h-6 bg-gray-200 rounded mx-auto max-w-3xl"></div>
+              </div>
+            ) : (
+              <>
+                <h1 className="text-3xl lg:text-4xl font-bold mb-3">
+                  {pageData?.title || 'Industries We Serve'}
+                </h1>
+                <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-none leading-relaxed md:leading-8 whitespace-pre-line text-justify">
+                  {pageData?.description || 'From automotive to aerospace, healthcare to energy - we provide specialized services across all major industry sectors. Our deep industry knowledge and specialized services are tailored to meet the unique challenges and regulatory requirements of your sector.'}
+                </p>
+              </>
+            )}
+          </div>
+        </div>
+      </section>
 
       {/* Industry Overview */}
       {/* <section className="section">
@@ -117,17 +141,10 @@ export default function Industries() {
       </section>  */}
 
       {/* Industries Grid (from backend) */}
-      <section className="section bg-tuv-gray-50" id="industries">
+      <section className="section pt-6 bg-tuv-gray-50" id="industries">
         <div className="container-responsive">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Industries We Serve</h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              From automotive to aerospace, healthcare to energy - we provide specialized 
-              services across all major industry sectors.
-            </p>
-          </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {loading && (
               <div className="col-span-full text-center text-muted-foreground">Loading...</div>
             )}
