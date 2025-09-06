@@ -1,15 +1,16 @@
-import { useParams, Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
-import { getPageWithSections, PageDto, SectionDto } from '@/utils/api';
-import { imageService, CloudinaryImage } from '@/services/imageService';
-import { getVerificationCertificationItemBySlug } from '@/data/verification-certification';
-import { getTestingSectionBySlug } from '@/data/testing';
-import { getInspectionItemBySlug } from '@/data/inspection';
-import { getCbmItemBySlug } from '@/data/cbm';
-import { getAuditingItemBySlug } from '@/data/auditing';
-import { getInnovationRDItemBySlug } from '@/data/innovation-rd';
+import { SectionDto } from '@/utils/api';
+import { useTranslation } from '@/contexts/TranslationContext';
+
+// Props interface for ServiceDetail
+interface ServiceDetailProps {
+  sectionData?: SectionDto;
+  serviceType?: string;
+  serviceDisplayName?: string;
+}
 
 // Lightweight Markdown-like parser supporting H1/H2/H3, paragraphs and bullets
 function parseContentToBlocks(raw: string): Array<{ type: string; content: JSX.Element; props?: any }> {
@@ -194,155 +195,62 @@ function parseContentToBlocks(raw: string): Array<{ type: string; content: JSX.E
   return blocks;
 }
 
-// Service configuration interface
-interface ServiceConfig {
-  type: string;
-  displayName: string;
-  route: string;
-  getItemBySlug: (slug: string) => any;
-  getImages: (slug: string) => Promise<CloudinaryImage[]>;
-}
-
-// Service configurations
-const serviceConfigs: Record<string, ServiceConfig> = {
+// Service type mapping for display names and routes
+const serviceTypeMap: Record<string, { displayName: string; route: string }> = {
   'verification-certification': {
-    type: 'verification-certification',
     displayName: 'Verification & Certification (VC)',
-    route: '/services/verification-certification',
-    getItemBySlug: getVerificationCertificationItemBySlug,
-    getImages: (slug: string) => imageService.getVerificationCertificationImages(slug)
+    route: '/services/verification-certification'
   },
   'testing': {
-    type: 'testing',
     displayName: 'Testing & Inspection',
-    route: '/services/testing',
-    getItemBySlug: getTestingSectionBySlug,
-    getImages: (slug: string) => imageService.getTestingImages(slug)
+    route: '/services/testing'
   },
   'inspection': {
-    type: 'inspection',
     displayName: 'Inspection (I)',
-    route: '/services/inspection',
-    getItemBySlug: getInspectionItemBySlug,
-    getImages: (slug: string) => imageService.getInspectionImages(slug)
+    route: '/services/inspection'
   },
   'cbm': {
-    type: 'cbm',
     displayName: 'Condition based Monitoring (CBM)',
-    route: '/services/cbm',
-    getItemBySlug: getCbmItemBySlug,
-    getImages: (slug: string) => imageService.getCBMImages(slug)
+    route: '/services/cbm'
   },
   'auditing': {
-    type: 'auditing',
     displayName: 'Auditing (A)',
-    route: '/services/auditing',
-    getItemBySlug: getAuditingItemBySlug,
-    getImages: (slug: string) => imageService.getAuditingImages(slug)
+    route: '/services/auditing'
   },
   'innovation-rd': {
-    type: 'innovation-rd',
     displayName: 'Innovation & R&D',
-    route: '/services/innovation-rd',
-    getItemBySlug: getInnovationRDItemBySlug,
-    getImages: (slug: string) => Promise.resolve([]) // No specific images for innovation-rd yet
+    route: '/services/innovation-rd'
   }
 };
 
-export default function ServiceDetail() {
-  const { serviceType, slug } = useParams();
-  const [dynamicPage, setDynamicPage] = useState<PageDto | null>(null);
-  const [dynamicSection, setDynamicSection] = useState<SectionDto | null>(null);
-  const [cloudinaryImages, setCloudinaryImages] = useState<CloudinaryImage[]>([]);
-  const [isLoadingImages, setIsLoadingImages] = useState(true);
-  const [item, setItem] = useState<any>(null);
+export default function ServiceDetail({ sectionData, serviceType, serviceDisplayName }: ServiceDetailProps) {
+  const { serviceType: urlServiceType, slug } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { currentLanguage } = useTranslation();
+  const prevLanguageRef = useRef(currentLanguage);
+  
+  // Get service info from props or URL params
+  const currentServiceType = serviceType || urlServiceType;
+  const serviceInfo = currentServiceType ? serviceTypeMap[currentServiceType] : null;
+  const displayName = serviceDisplayName || serviceInfo?.displayName || 'Service';
+  const serviceRoute = serviceInfo?.route || '/services';
+  
+  // Get section data from props or location state
+  const section = sectionData || location.state?.sectionData;
 
-  // Get service configuration
-  const serviceConfig = serviceType ? serviceConfigs[serviceType] : null;
-
-  // Fetch dynamic content from backend and Cloudinary images when component mounts
+  // Redirect to parent page when language changes
   useEffect(() => {
-    const fetchData = async () => {
-      if (!slug || !serviceConfig) return;
-      
-      try {
-        setIsLoadingImages(true);
-        
-        // Get static item data as fallback
-        const staticItem = serviceConfig.getItemBySlug(slug);
-        setItem(staticItem);
-        
-        // Try to fetch dynamic page/section from backend first
-        try {
-          const page = await getPageWithSections(serviceConfig.type);
-          setDynamicPage(page);
-          
-          // Find the specific section by slug or sectionId
-          let targetSection = null;
-          if (page.sections && page.sections.length > 0) {
-            targetSection = page.sections.find(s => 
-              s.sectionId === slug || 
-              s.title?.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-') === slug
-            );
-          }
-          
-          if (targetSection) {
-            console.log('targetSection', targetSection);
-            
-            setDynamicSection(targetSection);
-          } else if (staticItem) {
-            // If no backend section found, use static item
-            setDynamicSection({
-              _id: staticItem.id,
-              title: staticItem.title,
-              bodyText: staticItem.content,
-              images: staticItem.image ? [staticItem.image] : [],
-              sectionId: staticItem.id,
-              page: serviceConfig.type,
-              language: 'en',
-              pageNumber: 1,
-              isActive: true,
-              translations: {},
-              createdAt: new Date().toISOString(),
-              updatedAt: new Date().toISOString()
-            } as SectionDto);
-          }
-        } catch (backendError) {
-          console.warn('Backend fetch failed, using static data:', backendError);
-          // If backend fails, use static item
-          if (staticItem) {
-            setDynamicSection({
-              _id: staticItem.id,
-              title: staticItem.title,
-              bodyText: staticItem.content,
-              images: staticItem.image ? [staticItem.image] : [],
-              sectionId: staticItem.id,
-              page: serviceConfig.type,
-              language: 'en',
-              pageNumber: 1,
-              isActive: true,
-              translations: {},
-              createdAt: new Date().toISOString(),
-              updatedAt: new Date().toISOString()
-            } as SectionDto);
-          }
-        }
-        
-        // Images
-        const images = await serviceConfig.getImages(slug);
-        setCloudinaryImages(images);
-      } catch (error) {
-        console.error(`Error fetching ${serviceConfig.type} detail:`, error);
-      } finally {
-        setIsLoadingImages(false);
-      }
-    };
-
-    fetchData();
-  }, [slug, serviceConfig]);
+    // Only redirect if language actually changed and we have a valid service route
+    if (prevLanguageRef.current !== currentLanguage && serviceRoute && serviceRoute !== '/services') {
+      navigate(serviceRoute, { replace: true });
+    }
+    // Update the ref to current language
+    prevLanguageRef.current = currentLanguage;
+  }, [currentLanguage, serviceRoute, navigate]);
 
   // Validation
-  if (!serviceConfig) {
+  if (!currentServiceType) {
     return (
       <div className="section">
         <div className="container-responsive text-center">
@@ -355,13 +263,13 @@ export default function ServiceDetail() {
     );
   }
 
-  if (!item && !dynamicSection) {
+  if (!section) {
     return (
       <div className="section">
         <div className="container-responsive text-center">
-          <p className="text-muted-foreground mb-6">{serviceConfig.displayName} item not found.</p>
+          <p className="text-muted-foreground mb-6">{displayName} item not found.</p>
           <Button asChild>
-            <Link to={serviceConfig.route}>Back to {serviceConfig.displayName}</Link>
+            <Link to={serviceRoute}>Back to {displayName}</Link>
           </Button>
         </div>
       </div>
@@ -379,12 +287,12 @@ export default function ServiceDetail() {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbLink href={serviceConfig.route}>{serviceConfig.displayName}</BreadcrumbLink>
+                <BreadcrumbLink href={serviceRoute}>{displayName}</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbLink href={`${serviceConfig.route}/${item?.slug || slug}`}>
-                  {dynamicSection?.title || item?.title || 'Detail'}
+                <BreadcrumbLink href={`${serviceRoute}/${slug}`}>
+                  {section?.title || 'Detail'}
                 </BreadcrumbLink>
               </BreadcrumbItem>
             </BreadcrumbList>
@@ -392,41 +300,17 @@ export default function ServiceDetail() {
         </div>
       </section>
 
-      {/* Content with strategic image placement based on content structure */}
-      {(dynamicSection?.bodyText || item?.description || cloudinaryImages.length > 0) && (
+      {/* Content with images from section data */}
+      {(section?.bodyText || (section?.images && section.images.length > 0)) && (
         <section className="section pt-0">
           <div className="container-responsive max-w-6xl mx-auto">
             {(() => {
-              // Prioritize backend data, fallback to static data
-              const content = dynamicSection?.bodyText || item?.content || item?.description || '';
+              // Use section data directly
+              const content = section?.bodyText || '';
               const textBlocks = parseContentToBlocks(content);
-              let imageUrls: string[] = [];
               
-              // Prioritize dynamicSection images, fallback to Cloudinary images only if needed
-              const fromSection = (dynamicSection?.images && dynamicSection.images.length > 0)
-                ? [...dynamicSection.images]
-                : [];
-              const fromCloud = (cloudinaryImages && cloudinaryImages.length > 0)
-                ? cloudinaryImages.map((img) => img.url)
-                : [];
-
-              // Enforce image count: default 3, except Phased Array Ultrasonic Testing = 4
-              const titleForCount = (dynamicSection?.title || item?.title || '').trim().toLowerCase();
-              const isPAUT = (slug === 'phased-array-ut') || titleForCount.includes('phased array');
-              const desiredCount = isPAUT ? Number.MAX_SAFE_INTEGER : 3;
-
-              // Start with backend section images, then top-up from Cloudinary to reach desired count
-              imageUrls = [...fromSection];
-              if (imageUrls.length < desiredCount && fromCloud.length > 0) {
-                for (const url of fromCloud) {
-                  if (imageUrls.length >= desiredCount) break;
-                  if (!imageUrls.includes(url)) imageUrls.push(url);
-                }
-              }
-              // If still more than desired (e.g., section had many), trim for non-PAUT only
-              if (!isPAUT && imageUrls.length > desiredCount) {
-                imageUrls = imageUrls.slice(0, desiredCount);
-              }
+              // Use images from section data
+              const imageUrls = section?.images || [];
               
               // Determine main title from first H1
               const mainTitle = (textBlocks.find((b) => b.type === 'h1')?.props?.children) as string | undefined;
@@ -456,7 +340,7 @@ export default function ServiceDetail() {
                       <div key={`img-${imageIndex}`} className="overflow-hidden mb-6 md:max-w-3xl mx-auto">
                         <img
                           src={imageUrls[imageIndex]}
-                          alt="Borescope inspection in action"
+                          alt={section?.title || 'Service Image'}
                           className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
                         />
                       </div>
@@ -472,7 +356,7 @@ export default function ServiceDetail() {
                       <div key={`img-${imageIndex}`} className="overflow-hidden mb-6 md:max-w-2xl mx-auto">
                         <img
                           src={imageUrls[imageIndex]}
-                          alt="Professional borescope inspection"
+                          alt={section?.title || 'Service Image'}
                           className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
                         />
                       </div>
@@ -495,7 +379,7 @@ export default function ServiceDetail() {
                           <div className="overflow-hidden">
                             <img
                               src={imageUrls[imageIndex]}
-                              alt="Robotic inspection device"
+                              alt={section?.title || 'Service Image'}
                               className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
                             />
                           </div>
@@ -518,7 +402,7 @@ export default function ServiceDetail() {
                       <div key={`rem-${idx}`} className="overflow-hidden">
                         <img
                           src={url}
-                          alt={(dynamicSection?.title) || item?.title || 'Service Image'}
+                          alt={section?.title || 'Service Image'}
                           className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
                         />
                       </div>
@@ -534,7 +418,7 @@ export default function ServiceDetail() {
                       <div key={idx} className="overflow-hidden">
                         <img 
                           src={url} 
-                          alt={(dynamicSection?.title) || item?.title || 'Service Image'} 
+                          alt={section?.title || 'Service Image'} 
                           className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl" 
                         />
                       </div>
@@ -549,15 +433,6 @@ export default function ServiceDetail() {
         </section>
       )}
 
-      {/* Loading State */}
-      {isLoadingImages && (
-        <section className="section">
-          <div className="container-responsive text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-muted-foreground">Loading project images...</p>
-          </div>
-        </section>
-      )}
     </div>
   );
 }

@@ -44,6 +44,9 @@ const PageSchema = new mongoose.Schema(
 PageSchema.index({ language: 1, isActive: 1 });
 PageSchema.index({ createdAt: -1 });
 PageSchema.index({ title: 'text', description: 'text', category: 'text' });
+PageSchema.index({ slug: 1, isActive: 1 }); // For getPageBySlug queries
+PageSchema.index({ pageNumber: 1, isActive: 1 }); // For getPages sorting
+PageSchema.index({ isActive: 1, pageNumber: 1, createdAt: -1 }); // Compound index for getPages
 
 // Virtual for getting sections count
 PageSchema.virtual('sectionsCount').get(function() {

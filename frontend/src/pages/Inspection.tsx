@@ -5,10 +5,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getPageWithSections, SectionDto } from '@/utils/api';
 import { inspectionItems } from '@/data/inspection';
+import { useTranslation } from '@/contexts/TranslationContext';
 
 export default function Inspection() {
   const navigate = useNavigate();
+  const { currentLanguage } = useTranslation();
   const [sections, setSections] = useState<SectionDto[]>([]);
+  const [pageData, setPageData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -24,12 +27,22 @@ export default function Inspection() {
     let isMounted = true;
     const load = async () => {
       try {
+        console.log('Loading inspection sections for language:', currentLanguage);
         setLoading(true);
-        const page = await getPageWithSections('inspection');
-        console.log("page", page);
-        
-        if (isMounted) setSections(page.sections || []);
+        setError(null);
+        const page = await getPageWithSections('inspection', undefined, currentLanguage);
+        console.log('Received page data:', page);
+        if (isMounted) {
+          setSections(page.sections || []);
+          setPageData(page);
+        }
       } catch (e) {
+        console.error('Error loading inspection sections:', e);
+        console.error('Error details:', {
+          message: e instanceof Error ? e.message : 'Unknown error',
+          stack: e instanceof Error ? e.stack : undefined,
+          response: (e as any)?.response?.data
+        });
         if (isMounted) setError('Failed to load inspection sections');
       } finally {
         if (isMounted) setLoading(false);
@@ -39,7 +52,7 @@ export default function Inspection() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [currentLanguage]);
 
   const toSlug = (text: string) =>
     text.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
@@ -60,14 +73,23 @@ export default function Inspection() {
           </Breadcrumb>
 
           <div className="mt-6 text-center">
-            <h1 className="text-3xl lg:text-4xl font-bold mb-3">Inspection (I)</h1>
-            <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-none leading-relaxed md:leading-8 whitespace-pre-line text-justify">
-            Our Inspection Services ensure the safety, reliability, and compliance of industrial assets throughout their lifecycle. With a team of certified inspectors, advanced tools, and global expertise, we deliver independent, third-party inspections that meet international codes and client specifications across multiple industries. 
- 
-             “Trusted Inspection Services – Ensuring Safety, Compliance, and 
-             Performance Worldwide.” 
-              
-            </p>
+            {loading ? (
+              <div className="animate-pulse">
+                <div className="h-10 bg-gray-200 rounded mb-3 mx-auto max-w-md"></div>
+                <div className="h-6 bg-gray-200 rounded mb-2 mx-auto max-w-4xl"></div>
+                <div className="h-6 bg-gray-200 rounded mb-2 mx-auto max-w-4xl"></div>
+                <div className="h-6 bg-gray-200 rounded mx-auto max-w-3xl"></div>
+              </div>
+            ) : (
+              <>
+                <h1 className="text-3xl lg:text-4xl font-bold mb-3">
+                  {pageData?.title || 'Inspection (I)'}
+                </h1>
+                <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-none leading-relaxed md:leading-8 whitespace-pre-line text-justify">
+                  {pageData?.description || 'Our Inspection Services ensure the safety, reliability, and compliance of industrial assets throughout their lifecycle. With a team of certified inspectors, advanced tools, and global expertise, we deliver independent, third-party inspections that meet international codes and client specifications across multiple industries. "Trusted Inspection Services – Ensuring Safety, Compliance, and Performance Worldwide."'}
+                </p>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -85,13 +107,17 @@ export default function Inspection() {
               <Card
                 key={item._id}
                 className="overflow-hidden group hover:shadow-tuv-md transition-all cursor-pointer"
-                onClick={() => navigate(`/services/inspection/${item.sectionId || toSlug(item.title)}`)}
+                onClick={() => navigate(`/services/inspection/${item.sectionId || toSlug(item.title)}`, { 
+                  state: { sectionData: item, serviceType: 'inspection', serviceDisplayName: 'Inspection (I)' } 
+                })}
                 role="link"
                 tabIndex={0}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
-                    navigate(`/services/inspection/${item.sectionId || toSlug(item.title)}`);
+                    navigate(`/services/inspection/${item.sectionId || toSlug(item.title)}`, { 
+                      state: { sectionData: item, serviceType: 'inspection', serviceDisplayName: 'Inspection (I)' } 
+                    });
                   }
                 }}
               >
@@ -106,7 +132,12 @@ export default function Inspection() {
                 </CardContent>
                 <CardFooter>
                   <Button asChild variant="outline" className="w-full">
-                    <Link to={`/services/inspection/${item.sectionId || toSlug(item.title)}`}>View Details</Link>
+                    <Link 
+                      to={`/services/inspection/${item.sectionId || toSlug(item.title)}`}
+                      state={{ sectionData: item, serviceType: 'inspection', serviceDisplayName: 'Inspection (I)' }}
+                    >
+                      View Details
+                    </Link>
                   </Button>
                 </CardFooter>
               </Card>

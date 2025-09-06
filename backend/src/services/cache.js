@@ -3,6 +3,7 @@
 const Redis = require('ioredis');
 
 let client = null;
+let memoryCache = new Map();
 
 function getRedisClient() {
   if (client) return client;
@@ -13,27 +14,57 @@ function getRedisClient() {
   return client;
 }
 
-async function cacheGet(key) {
+async function get(key) {
   const redis = getRedisClient();
-  if (!redis) return null;
-  try {
-    return await redis.get(key);
-  } catch (_) {
-    return null;
+  if (redis) {
+    try {
+      const value = await redis.get(key);
+      return value ? JSON.parse(value) : null;
+    } catch (_) {
+      // Fallback to memory cache
+    }
   }
+  
+  // Fallback to memory cache
+  const cached = memoryCache.get(key);
+  if (cached && cached.expires > Date.now()) {
+    return cached.value;
+  }
+  if (cached) {
+    memoryCache.delete(key);
+  }
+  return null;
 }
 
-async function cacheSet(key, value, ttlSeconds = 3600) {
+async function set(key, value, ttlSeconds = 3600) {
   const redis = getRedisClient();
-  if (!redis) return false;
-  try {
-    await redis.set(key, value, 'EX', ttlSeconds);
-    return true;
-  } catch (_) {
-    return false;
+  if (redis) {
+    try {
+      await redis.set(key, JSON.stringify(value), 'EX', ttlSeconds);
+      return true;
+    } catch (_) {
+      // Fallback to memory cache
+    }
   }
+  
+  // Fallback to memory cache
+  memoryCache.set(key, {
+    value,
+    expires: Date.now() + (ttlSeconds * 1000)
+  });
+  
+  // Clean up expired entries periodically
+  if (memoryCache.size > 1000) {
+    for (const [k, v] of memoryCache.entries()) {
+      if (v.expires <= Date.now()) {
+        memoryCache.delete(k);
+      }
+    }
+  }
+  
+  return true;
 }
 
-module.exports = { cacheGet, cacheSet };
+module.exports = { get, set };
 
 

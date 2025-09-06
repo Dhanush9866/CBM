@@ -49,7 +49,7 @@ export function Navbar() {
       { name: translations.navbar.industries, href: '/industries' },
       { name: translations.navbar.about, href: '/about' },
       { name: translations.navbar.careers, href: '/careers' },
-      { name: translations.navbar.resources, href: '/resources' },
+      { name: translations.navbar.blog || 'Blog', href: '/blog' },
       { name: translations.navbar.contact, href: '/contact' },
     ];
   };
