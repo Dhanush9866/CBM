@@ -50,7 +50,7 @@ async function createPage(req, res, next) {
 async function getPageById(req, res, next) {
   try {
     const { id } = req.params;
-    const { populate = 'true' } = req.query;
+    const { populate = 'true', lang } = req.query;
     
     let query = Page.findById(id);
     
@@ -64,6 +64,45 @@ async function getPageById(req, res, next) {
     const page = await query;
     if (!page) {
       throw new ApiError(404, 'Page not found');
+    }
+
+    // Handle language translation for page and sections
+    if (lang && lang !== 'en') {
+      // Translate page title and description
+      let pageFromDb = null;
+      if (page.translations) {
+        if (page.translations instanceof Map) {
+          pageFromDb = page.translations.get(lang);
+        } else if (typeof page.translations === 'object') {
+          pageFromDb = page.translations[lang];
+        }
+      }
+      
+      if (pageFromDb && (pageFromDb.title || pageFromDb.description)) {
+        page.title = pageFromDb.title || page.title;
+        page.description = pageFromDb.description || page.description;
+        page.language = lang;
+      }
+
+      // Translate sections if populated
+      if (page.sections && page.sections.length > 0) {
+        for (const section of page.sections) {
+          let sectionFromDb = null;
+          if (section.translations) {
+            if (section.translations instanceof Map) {
+              sectionFromDb = section.translations.get(lang);
+            } else if (typeof section.translations === 'object') {
+              sectionFromDb = section.translations[lang];
+            }
+          }
+          
+          if (sectionFromDb && (sectionFromDb.title || sectionFromDb.bodyText)) {
+            section.title = sectionFromDb.title || section.title;
+            section.bodyText = sectionFromDb.bodyText || section.bodyText;
+            section.language = lang;
+          }
+        }
+      }
     }
 
     res.json({ success: true, data: page });
@@ -109,8 +148,24 @@ async function getPageBySlug(req, res, next) {
       throw new ApiError(404, 'Page not found');
     }
 
-    // Handle language translation for sections only
+    // Handle language translation for page and sections
     if (lang && lang !== 'en') {
+      // Translate page title and description
+      let pageFromDb = null;
+      if (page.translations) {
+        if (page.translations instanceof Map) {
+          pageFromDb = page.translations.get(lang);
+        } else if (typeof page.translations === 'object') {
+          pageFromDb = page.translations[lang];
+        }
+      }
+      
+      if (pageFromDb && (pageFromDb.title || pageFromDb.description)) {
+        page.title = pageFromDb.title || page.title;
+        page.description = pageFromDb.description || page.description;
+        page.language = lang;
+      }
+
       // Translate sections if populated
       if (page.sections && page.sections.length > 0) {
         for (const section of page.sections) {
@@ -352,16 +407,33 @@ async function getPageWithSectionsByName(req, res, next) {
 
     // Handle language translation with English fallback (no dynamic translation)
     if (lang && lang !== 'en' && lang !== page.language) {
-      const fromDb = page.translations && page.translations[lang];
-      if (fromDb && (fromDb.title || fromDb.description)) {
-        page.title = fromDb.title || page.title;
-        page.description = fromDb.description || page.description;
+      // Translate page title and description
+      let pageFromDb = null;
+      if (page.translations) {
+        if (page.translations instanceof Map) {
+          pageFromDb = page.translations.get(lang);
+        } else if (typeof page.translations === 'object') {
+          pageFromDb = page.translations[lang];
+        }
+      }
+      
+      if (pageFromDb && (pageFromDb.title || pageFromDb.description)) {
+        page.title = pageFromDb.title || page.title;
+        page.description = pageFromDb.description || page.description;
         page.language = lang;
       }
 
       // Translate sections using stored translations only
       for (const section of page.sections) {
-        const sectionFromDb = section.translations && section.translations[lang];
+        let sectionFromDb = null;
+        if (section.translations) {
+          if (section.translations instanceof Map) {
+            sectionFromDb = section.translations.get(lang);
+          } else if (typeof section.translations === 'object') {
+            sectionFromDb = section.translations[lang];
+          }
+        }
+        
         if (sectionFromDb && (sectionFromDb.title || sectionFromDb.bodyText)) {
           section.title = sectionFromDb.title || section.title;
           section.bodyText = sectionFromDb.bodyText || section.bodyText;

@@ -17,6 +17,7 @@ import TestingInspection from "./pages/TestingInspection";
 import CBMMonitoring from "./pages/CBMMonitoring";
 import Inspection from "./pages/Inspection";
 import Auditing from "./pages/Auditing";
+import Blog from "./pages/Blog";
 import VerificationCertification from "./pages/VerificationCertification";
 import InnovationRD from "./pages/InnovationRD";
 import ServiceDetail from "./pages/ServiceDetail";
@@ -48,7 +49,7 @@ const App = () => (
               <Route path="/industries/:slug" element={<IndustriesDetail />} />
               <Route path="/about" element={<About />} />
               <Route path="/careers" element={<Careers />} />
-  
+              <Route path="/blog" element={<Blog />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
