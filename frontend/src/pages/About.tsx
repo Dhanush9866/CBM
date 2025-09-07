@@ -1,12 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from '@/contexts/TranslationContext';
 import { getPageWithSections, PageDto } from '@/utils/api';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 
 export default function About() {
-  const { currentLanguage } = useTranslation();
+  const { currentLanguage, translations } = useTranslation();
   const [page, setPage] = useState<PageDto | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Get About page translations
+  const aboutTranslations = translations?.pages?.about;
 
   // Lightweight Markdown-like parser supporting H1/H2/H3, paragraphs and bullets
   function parseContentToBlocks(raw: string): Array<{ type: string; content: JSX.Element; props?: any }> {
@@ -207,7 +211,7 @@ export default function About() {
   if (loading) {
   return (
       <div className="container-responsive py-16">
-        <p>Loading...</p>
+        <p>{aboutTranslations?.loading || "Loading..."}</p>
               </div>
     );
   }
@@ -215,16 +219,33 @@ export default function About() {
   if (error) {
     return (
       <div className="container-responsive py-16">
-        <p className="text-destructive">{error}</p>
+        <p className="text-destructive">{aboutTranslations?.error || "Failed to load content"}</p>
           </div>
     );
   }
 
   return (
-    <div className="container-responsive py-12">
-      <article className="prose max-w-none">
+    <div>
+      <section className="section pb-2">
+        <div className="container-responsive">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/">{aboutTranslations?.breadcrumb?.home || "Home"}</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/about">{aboutTranslations?.breadcrumb?.about || "About"}</BreadcrumbLink>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+      </section>
+
+      <div className="container-responsive py-12">
+        <article className="prose max-w-none">
         {(!blocks.some(b => b.type === 'h1')) && (
-          <h1 className="text-3xl lg:text-5xl font-bold mb-4">{page?.title || 'About'}</h1>
+          <h1 className="text-3xl lg:text-5xl font-bold mb-4">{page?.title || aboutTranslations?.title || 'About'}</h1>
         )}
         {/* Hero banner after first heading */}
         {mainSection?.images && mainSection.images[0] && (
@@ -261,7 +282,8 @@ export default function About() {
             ));
           })()}
         </div>
-      </article>
+        </article>
+      </div>
     </div>
   );
 }

@@ -2,17 +2,37 @@
 import { HeroSection } from '@/components/Common/HeroSection';
 import { VideoHero } from '@/components/Common/VideoHero';
 import { ServiceCard } from '@/components/Common/ServiceCard';
-import { services } from '@/data/services';
-import { industryStats } from '@/data/industries';
+import { services as staticServices } from '@/data/services';
+import { industryStats as staticIndustryStats } from '@/data/industries';
 import CountUp from '@/components/Common/CountUp';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { ArrowRight, CheckCircle, Users, Award, Globe } from 'lucide-react';
+import { ArrowRight, CheckCircle, Users, Award, Globe, Search, Settings, Shield, FileText, Brain } from 'lucide-react';
 import { useTranslation } from '@/contexts/TranslationContext';
 
 export default function Services() {
   const { translations } = useTranslation();
   const hero = translations?.pages?.services?.hero;
+  const servicesData = translations?.services;
+
+  // Icon mapping for services
+  const iconMap = {
+    Search,
+    Settings,
+    Shield,
+    FileText,
+    Award,
+    Brain
+  };
+
+  // Get services from API or fallback to static data
+  const services = servicesData?.servicesList?.map(service => ({
+    ...service,
+    icon: iconMap[service.icon as keyof typeof iconMap] || Search
+  })) || staticServices;
+
+  // Get industry stats from API or fallback to static data
+  const industryStats = translations?.industryStats || staticIndustryStats;
 
   return (
     <div>
@@ -74,10 +94,12 @@ export default function Services() {
       <section className="section" id="services">
         <div className="container-responsive">
           <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Complete Service Portfolio</h2>
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+              {servicesData?.completeServicePortfolio?.heading || "Complete Service Portfolio"}
+            </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              From product testing to regulatory compliance, we provide comprehensive 
-              solutions to help you succeed in global markets.
+              {servicesData?.completeServicePortfolio?.subheading || 
+                "From product testing to regulatory compliance, we provide comprehensive solutions to help you succeed in global markets."}
             </p>
           </div>
           
@@ -89,31 +111,7 @@ export default function Services() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="section bg-tuv-gray-50">
-        <div className="container-responsive text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold mb-6">
-            Need Custom Solutions?
-          </h2>
-          <p className="text-xl text-muted-foreground mb-10 max-w-3xl mx-auto">
-            Every business is unique. Let our experts develop tailored testing, 
-            inspection, and certification solutions for your specific needs.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="btn-primary" asChild>
-              <Link to="/contact">
-                Contact Our Experts
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
-            <Button size="lg" variant="outline" asChild>
-              <Link to="/industries">
-                Explore Industries
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+     
     </div>
   );
 }
