@@ -25,7 +25,10 @@
     "verify:translations": "node src/scripts/verify-translations.js",
     "verify:detailed": "node src/scripts/verify-translations.js --detailed",
     "verify:page": "node src/scripts/verify-translations.js verify --page",
-    "list:sections": "node src/scripts/verify-translations.js sections"
+    "list:sections": "node src/scripts/verify-translations.js sections",
+    "translate:careers": "node src/scripts/translate-careers.js translate",
+    "list:careers": "node src/scripts/translate-careers.js list",
+    "check:career-translations": "node src/scripts/translate-careers.js status"
   },
   "engines": {
     "node": ">=18.0.0"

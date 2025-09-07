@@ -6,31 +6,67 @@ require('dotenv').config();
 const Section = require('../models/Section');
 const Page = require('../models/Page');
 
-const MONGODB_URI = "mongodb+srv://cbm360tiv:MiiFze4xYGr6XNji@cluster0.sf6iagh.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster" || 'mongodb://localhost:27017/cbm';
+const MONGODB_URI = "mongodb+srv://cbm360tiv_db_user:ghtVDlZZEZRwzGOW@cluster0.wizvkjv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0" || 'mongodb://localhost:27017/cbm';
 
-const PAGE_SLUG = 'innovation-rd';
-const SECTION_ID = 'section-1';
+const PAGE_SLUG = 'about';
+const SECTION_ID = 'main';
 
-const DATA = {
-  service: 'Innovation & Research and Development (R&D)',
+const ABOUT_US = {
+  service: 'About Us',
   sections: [
     {
-      heading: 'Innovation & Research and Development (R&D)',
-      content: 'We are pioneers in Condition-Based Monitoring (CBM), Technical Industrial Verification (TIV), and advanced R&D services, delivering next-generation solutions powered by IoT, AI, Robotics, and Industry 4.0 technologies. Our mission is to enhance safety, reliability, and sustainability across industries through intelligent monitoring, inspection, and verification systems.'
-    },
-    {
-      heading: 'CBM 360° – IoT & AI Condition Monitoring Systems',
-      content: 'Our Condition-Based Monitoring (CBM 360°) solutions provide real-time asset health insights for rotating machinery, pipelines, offshore structures, and civil infrastructure.'
-    },
-    {
-      heading: 'Capabilities',
+      heading: 'INSPECTORS 360 – Company Profile',
       content: [
-        '**Wireless CBM Sensor Nodes:** Designed with Wi-Fi 6 & Bluetooth 6.0 for industrial rotating equipment & structural health monitoring.',
-        '**Smart Sensor Integration:** Embedded vibration, thermal, strain, and acoustic sensors with microcontrollers (ESP32, STM32, nRF).',
-        '**Edge Computing & AI:** Deployed AI models directly on sensors for anomaly detection & predictive maintenance.',
-        '**Cloud-Based IoT Pipeline:** Implemented MQTT + database infrastructure for remote monitoring, reporting, and trend analysis.',
-        '**Applications:** Power plants, refineries, FPSOs, offshore jackets, mining equipment, and bridges.'
+        'Head Office: United Kingdom',
+        'Branch Offices: Dubai (UAE) | Hong Kong',
+        'Established: 18 Years Ago'
       ]
+    },
+    {
+      heading: 'Who We Are',
+      content: 'INSPECTORS 360 is a trusted global partner in Recruitment, Contract Staffing, Payroll, HR, and Technical Support Solutions for the world\'s most demanding industries. With 18 years of proven expertise, we specialize in connecting clients with certified inspectors, technical staff, and industrial equipment—ensuring operational excellence, compliance, and safety across every project.'
+    },
+    {
+      heading: 'Our Mission',
+      content: 'Our core mission is to deliver flexible, reliable, and industry-compliant workforce solutions that meet the unique needs of Oil & Gas, Mining, FPSO/FSO, and Industrial Sectors worldwide.'
+    },
+    {
+      heading: 'Our Services',
+      content: [
+        'Recruitment & Selection',
+        'Contract Staffing',
+        'Technical Staff & Industrial Equipment Supply',
+        'Payroll & HR Administration',
+        'Background Verification (BGV) Services',
+        'Mobilization & Logistics Support',
+        'Training & Certification Support'
+      ]
+    },
+    {
+      heading: 'Why Choose INSPECTORS 360?',
+      content: [
+        '18 Years of Global Experience in inspection workforce solutions',
+        'Worldwide Talent Pool of certified inspectors & technical staff',
+        'Comprehensive Service Coverage – recruitment, staffing, payroll, logistics, equipment, and training under one provider',
+        'International Compliance with ISO, API, ASME, AWS, and industry standards',
+        'Fast Deployment for urgent projects, shutdowns, and audits'
+      ]
+    },
+    {
+      heading: 'Industries We Serve',
+      content: [
+        'Oil & Gas (Onshore & Offshore)',
+        'FPSO / FSO Vessels',
+        'Mining & Metals'
+      ]
+    },
+    {
+      heading: 'Our Commitment',
+      content: 'At INSPECTORS 360, we believe inspection is more than compliance—it is the backbone of safety, reliability, and operational success. By combining expert people, precision tools, and strong global support, we ensure our clients achieve excellence in every project.'
+    },
+    {
+      heading: 'Tagline',
+      content: '"INSPECTORS 360 – Global Workforce. Local Expertise. Guaranteed Compliance."'
     }
   ]
 };
@@ -63,8 +99,8 @@ async function upsertSection() {
   await ensurePage();
   const existing = await Section.findOne({ sectionId: SECTION_ID, language: 'en' });
   const update = {
-    title: DATA.service,
-    bodyText: toMarkdown(DATA),
+    title: ABOUT_US.service,
+    bodyText: toMarkdown(ABOUT_US),
     page: PAGE_SLUG,
     isActive: true
   };
@@ -92,7 +128,7 @@ async function main() {
   try {
     const sectionId = await upsertSection();
     await linkSectionToPage(sectionId);
-    console.log(`✅ ${DATA.service} section upserted`);
+    console.log(`✅ ${ABOUT_US.service} section upserted`);
   } catch (e) {
     console.error('❌ Error:', e.message);
     process.exitCode = 1;
@@ -107,5 +143,3 @@ if (require.main === module) {
 }
 
 module.exports = { main };
-
-

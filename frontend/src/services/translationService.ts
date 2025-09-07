@@ -41,6 +41,102 @@ export interface StaticTranslations {
         secondaryCTAText: string;
       };
     };
+    industries?: {
+      hero?: {
+        title: string;
+        subtitle: string;
+        description: string;
+        primaryCTAText: string;
+        secondaryCTAText: string;
+      };
+    };
+    about?: {
+      hero?: {
+        title: string;
+        subtitle: string;
+        description: string;
+        primaryCTAText: string;
+        secondaryCTAText: string;
+      };
+    };
+    careers?: {
+      hero?: {
+        title: string;
+        subtitle: string;
+        description: string;
+        primaryCTAText: string;
+        secondaryCTAText: string;
+      };
+    };
+  };
+  services?: {
+    recruitment?: {
+      title: string;
+      description: string;
+    };
+    contractStaffing?: {
+      title: string;
+      description: string;
+    };
+    technicalStaff?: {
+      title: string;
+      description: string;
+    };
+    payrollHR?: {
+      title: string;
+      description: string;
+    };
+    backgroundVerification?: {
+      title: string;
+      description: string;
+    };
+    mobilization?: {
+      title: string;
+      description: string;
+    };
+    training?: {
+      title: string;
+      description: string;
+    };
+  };
+  industries?: {
+    oilGas?: {
+      title: string;
+      description: string;
+    };
+    fpspFso?: {
+      title: string;
+      description: string;
+    };
+    miningMetals?: {
+      title: string;
+      description: string;
+    };
+    industrialManufacturing?: {
+      title: string;
+      description: string;
+    };
+    specializedEngineering?: {
+      title: string;
+      description: string;
+    };
+  };
+  about?: {
+    companyProfile?: {
+      title: string;
+      headOffice: string;
+      branchOffices: string;
+      established: string;
+    };
+    whoWeAre?: {
+      title: string;
+      description: string;
+    };
+    mission?: {
+      title: string;
+      description: string;
+    };
+    tagline: string;
   };
 }
 

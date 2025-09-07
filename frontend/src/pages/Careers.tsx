@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { listCareers, CareerDto } from '@/services/careersService';
+import { useTranslation } from '@/contexts/TranslationContext';
 import { 
   ArrowRight, 
   Users, 
@@ -24,12 +25,16 @@ export default function Careers() {
   const [jobs, setJobs] = useState<CareerDto[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const { currentLanguage, translations } = useTranslation();
 
   useEffect(() => {
     let isMounted = true;
     (async () => {
       try {
-        const data = await listCareers({ active: true });
+        setLoading(true);
+        setError(null);
+        // Pass the current language to get translated career data
+        const data = await listCareers({ active: true, lang: currentLanguage });
         if (isMounted) setJobs(data);
       } catch (err: any) {
         if (isMounted) setError(err?.message || 'Failed to load careers');
@@ -38,7 +43,7 @@ export default function Careers() {
       }
     })();
     return () => { isMounted = false; };
-  }, []);
+  }, [currentLanguage]); // Re-fetch when language changes
 
   return (
     <div>
@@ -186,15 +191,19 @@ export default function Careers() {
       <section className="section" id="jobs">
         <div className="container-responsive">
           <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Current Openings</h2>
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+              {translations?.pages?.careers?.currentOpenings?.title || 'Current Openings'}
+            </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Explore exciting career opportunities across our global organization. 
-              Find the perfect role to advance your career.
+              {translations?.pages?.careers?.currentOpenings?.description || 
+                'Explore exciting career opportunities across our global organization. Find the perfect role to advance your career.'}
             </p>
           </div>
           
           {loading && (
-            <div className="text-center text-muted-foreground">Loading careers...</div>
+            <div className="text-center text-muted-foreground">
+              {translations?.pages?.careers?.currentOpenings?.loadingText || 'Loading careers...'}
+            </div>
           )}
           {error && (
             <div className="text-center text-destructive">{error}</div>
@@ -235,7 +244,7 @@ export default function Careers() {
                       <Button 
                         className="w-full lg:w-auto"
                       >
-                        Apply Now
+                        {translations?.pages?.careers?.currentOpenings?.applyNow || 'Apply Now'}
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </JobApplicationDialog>
@@ -248,14 +257,15 @@ export default function Careers() {
           
           <div className="text-center mt-12">
             <p className="text-muted-foreground mb-6">
-              Don't see the right role? We're always looking for talented individuals.
+              {translations?.pages?.careers?.currentOpenings?.generalApplicationText || 
+                "Don't see the right role? We're always looking for talented individuals."}
             </p>
             <GeneralApplicationDialog>
               <Button 
                 variant="outline" 
                 size="lg"
               >
-                Submit General Application
+                {translations?.pages?.careers?.currentOpenings?.submitGeneralApplication || 'Submit General Application'}
               </Button>
             </GeneralApplicationDialog>
           </div>
@@ -267,11 +277,11 @@ export default function Careers() {
         <div className="container-responsive">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-              Our Hiring Process
+              {translations?.pages?.careers?.hiringProcess?.title || 'Our Hiring Process'}
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              We've designed our process to be transparent, efficient, and 
-              focused on finding the right mutual fit.
+              {translations?.pages?.careers?.hiringProcess?.description || 
+                "We've designed our process to be transparent, efficient, and focused on finding the right mutual fit."}
             </p>
           </div>
           
@@ -279,23 +289,23 @@ export default function Careers() {
             {[
               {
                 step: "01",
-                title: "Application Review",
-                description: "Our talent team reviews your application and qualifications against role requirements."
+                title: translations?.pages?.careers?.hiringProcess?.steps?.review?.title || "Application Review",
+                description: translations?.pages?.careers?.hiringProcess?.steps?.review?.description || "Our talent team reviews your application and qualifications against role requirements."
               },
               {
                 step: "02", 
-                title: "Initial Interview",
-                description: "Phone or video interview to discuss your background, interests, and fit for the role."
+                title: translations?.pages?.careers?.hiringProcess?.steps?.interview?.title || "Initial Interview",
+                description: translations?.pages?.careers?.hiringProcess?.steps?.interview?.description || "Phone or video interview to discuss your background, interests, and fit for the role."
               },
               {
                 step: "03",
-                title: "Technical Assessment",
-                description: "Role-specific technical evaluation or case study to assess your capabilities."
+                title: translations?.pages?.careers?.hiringProcess?.steps?.assessment?.title || "Technical Assessment",
+                description: translations?.pages?.careers?.hiringProcess?.steps?.assessment?.description || "Role-specific technical evaluation or case study to assess your capabilities."
               },
               {
                 step: "04",
-                title: "Final Interview",
-                description: "Meet with hiring managers and team members to discuss collaboration and next steps."
+                title: translations?.pages?.careers?.hiringProcess?.steps?.final?.title || "Final Interview",
+                description: translations?.pages?.careers?.hiringProcess?.steps?.final?.description || "Meet with hiring managers and team members to discuss collaboration and next steps."
               }
             ].map((process, index) => (
               <div key={index} className="text-center">

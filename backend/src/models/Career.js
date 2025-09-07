@@ -5,6 +5,25 @@ const mongoose = require('mongoose');
 const EmploymentTypes = ['Full-time', 'Part-time', 'Contract', 'Internship', 'Temporary'];
 const SeniorityLevels = ['Entry Level', 'Mid Level', 'Senior Level', 'Lead', 'Manager', 'Director'];
 const WorkArrangements = ['Onsite', 'Remote', 'Hybrid'];
+const SupportedLanguages = ['en', 'fr', 'pt', 'es', 'ru'];
+
+// Translation schema for career fields
+const CareerTranslationSchema = new mongoose.Schema(
+  {
+    title: { type: String },
+    description: { type: String },
+    department: { type: String },
+    location: { type: String },
+    type: { type: String },
+    level: { type: String },
+    workArrangement: { type: String },
+    responsibilities: [{ type: String }],
+    requirements: [{ type: String }],
+    benefits: [{ type: String }],
+    tags: [{ type: String }]
+  },
+  { _id: false }
+);
 
 const CareerSchema = new mongoose.Schema(
   {
@@ -22,7 +41,13 @@ const CareerSchema = new mongoose.Schema(
     isActive: { type: Boolean, default: true, index: true },
     postedAt: { type: Date, default: Date.now, index: true },
     closingAt: { type: Date },
-    applicationUrl: { type: String }
+    applicationUrl: { type: String },
+    translations: {
+      // Pre-stored translations for career content
+      type: Map,
+      of: CareerTranslationSchema,
+      default: {},
+    }
   },
   { timestamps: true }
 );
