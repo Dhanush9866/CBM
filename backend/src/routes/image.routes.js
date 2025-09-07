@@ -59,6 +59,22 @@ router.post('/verification-certification/:subService/upload',
 
 router.get('/verification-certification/:subService/images', imageController.getImages);
 
+// Industries Service Routes
+router.post('/industries/:subService/upload',
+  (req, res, next) => applyUploadMiddleware('industries', req.params.subService)(req, res, next),
+  imageController.uploadImages
+);
+
+router.get('/industries/:subService/images', imageController.getImages);
+
+// Industry Cover Images Routes
+router.post('/industries/:subService/cover-upload',
+  (req, res, next) => applyUploadMiddleware('industries', `${req.params.subService}/covers`)(req, res, next),
+  imageController.uploadImages
+);
+
+router.get('/industries/:subService/cover-images', imageController.getImages);
+
 // Generic image management routes
 router.delete('/image/:publicId', imageController.deleteImage);
 router.get('/usage-stats', imageController.getUsageStats);

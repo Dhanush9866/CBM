@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { getPageWithSections, SectionDto } from '@/utils/api';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslation } from '@/contexts/TranslationContext';
+import { getIndustryCoverImage } from '@/utils/industryImages';
 
 export default function Industries() {
   const navigate = useNavigate();
@@ -166,7 +167,11 @@ export default function Industries() {
                 }}
               >
                 <div className="aspect-video w-full overflow-hidden">
-                  <img src={(s.images && s.images[0]) || '/placeholder.svg'} alt={s.title} className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-300" />
+                  <img 
+                    src={getIndustryCoverImage(s.title) || (s.images && s.images[0]) || '/placeholder.svg'} 
+                    alt={s.title} 
+                    className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-300" 
+                  />
                 </div>
                 <CardHeader>
                   <CardTitle className="text-xl">{s.title}</CardTitle>
