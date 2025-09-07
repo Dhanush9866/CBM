@@ -192,10 +192,10 @@ export default function Careers() {
         <div className="container-responsive">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-              {translations?.pages?.careers?.currentOpenings?.title || 'Current Openings'}
+              {translations?.pages?.careers?.title || 'Current Openings'}
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              {translations?.pages?.careers?.currentOpenings?.description || 
+              {translations?.pages?.careers?.description || 
                 'Explore exciting career opportunities across our global organization. Find the perfect role to advance your career.'}
             </p>
           </div>
@@ -244,7 +244,7 @@ export default function Careers() {
                       <Button 
                         className="w-full lg:w-auto"
                       >
-                        {translations?.pages?.careers?.currentOpenings?.applyNow || 'Apply Now'}
+                        {translations?.pages?.careers?.applyNow || 'Apply Now'}
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </JobApplicationDialog>

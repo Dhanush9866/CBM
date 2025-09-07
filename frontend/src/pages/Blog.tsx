@@ -14,6 +14,7 @@ import {
   Loader2
 } from 'lucide-react';
 import { getBlogs, getBlogTags, getBlogById, BlogPostDto } from '@/services/blogService';
+import { useTranslation } from '@/contexts/TranslationContext';
 
 // State for blog data
 interface BlogState {
@@ -26,6 +27,7 @@ interface BlogState {
 }
 
 export default function Blog() {
+  const { currentLanguage, translations } = useTranslation();
   const [expandedPosts, setExpandedPosts] = useState<Set<string>>(new Set());
   const [postsWithContent, setPostsWithContent] = useState<Map<string, string>>(new Map());
   const [loadingContent, setLoadingContent] = useState<Set<string>>(new Set());
@@ -38,7 +40,7 @@ export default function Blog() {
     totalPages: 1
   });
 
-  // Load blog data on component mount
+  // Load blog data when language changes
   useEffect(() => {
     const loadBlogData = async () => {
       try {
@@ -53,9 +55,25 @@ export default function Blog() {
         console.log('Blog API Response:', blogsResponse);
         console.log('Blog posts:', blogsResponse.blogs);
 
+        // Apply translations if available and language is not English
+        const localizedPosts: BlogPostDto[] = blogsResponse.blogs.map((post) => {
+          const tr = post.translations?.[currentLanguage];
+          if (tr && currentLanguage !== 'en') {
+            return {
+              ...post,
+              title: tr.title || post.title,
+              excerpt: tr.excerpt || post.excerpt,
+              content: tr.content || post.content,
+              tags: tr.tags && tr.tags.length > 0 ? tr.tags : post.tags,
+              metaDescription: tr.metaDescription || post.metaDescription,
+            };
+          }
+          return post;
+        });
+
         setBlogState(prev => ({
           ...prev,
-          posts: blogsResponse.blogs,
+          posts: localizedPosts,
           tags,
           currentPage: blogsResponse.pagination.currentPage,
           totalPages: blogsResponse.pagination.totalPages,
@@ -72,7 +90,7 @@ export default function Blog() {
     };
 
     loadBlogData();
-  }, []);
+  }, [currentLanguage]);
 
   const toggleExpanded = async (postId: string) => {
     const newExpanded = new Set(expandedPosts);
@@ -86,7 +104,9 @@ export default function Blog() {
         setLoadingContent(prev => new Set(prev).add(postId));
         try {
           const fullPost = await getBlogById(postId);
-          setPostsWithContent(prev => new Map(prev).set(postId, fullPost.content));
+          const tr = fullPost.translations?.[currentLanguage];
+          const localizedContent = tr && currentLanguage !== 'en' ? (tr.content || fullPost.content) : fullPost.content;
+          setPostsWithContent(prev => new Map(prev).set(postId, localizedContent));
         } catch (error) {
           console.error('Error loading blog content:', error);
         } finally {
@@ -162,9 +182,9 @@ export default function Blog() {
       <section className="section" id="blog-posts">
         <div className="container-responsive">
           <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Latest Articles</h2>
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4">{translations?.pages?.blog?.title || 'Latest Articles'}</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Technical insights and industry updates from our team of experts.
+              {translations?.pages?.blog?.description || 'Technical insights and industry updates from our team of experts.'}
             </p>
           </div>
           
@@ -267,67 +287,9 @@ export default function Blog() {
         </div>
       </section>
 
-      {/* Newsletter Signup */}
-      <section className="section bg-primary text-white" id="newsletter">
-        <div className="container-responsive">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-6">
-              Stay Updated with Industry Insights
-            </h2>
-            <p className="text-xl text-white/90 mb-10">
-              Subscribe to our newsletter and receive the latest technical articles, 
-              industry updates, and expert insights directly in your inbox.
-            </p>
-            
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 max-w-2xl mx-auto">
-              <div className="flex flex-col sm:flex-row gap-4 mb-6">
-                <input
-                  type="email"
-                  placeholder="Enter your email address"
-                  className="flex-1 px-4 py-3 rounded-md border-0 text-tuv-gray-900 placeholder:text-tuv-gray-500"
-                />
-                <Button size="lg" className="bg-white text-primary hover:bg-white/90">
-                  Subscribe
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </div>
-              
-              <div className="text-sm text-white/70">
-                <label className="flex items-center justify-center space-x-2">
-                  <input type="checkbox" className="rounded border-white/30" />
-                  <span>I agree to receive marketing communications from CBM</span>
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Contact Experts */}
-      <section className="section">
-        <div className="container-responsive text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold mb-6">
-            Need Expert Consultation?
-          </h2>
-          <p className="text-xl text-muted-foreground mb-10 max-w-3xl mx-auto">
-            Our technical experts are available to provide personalized guidance 
-            and answer your specific questions about NDT methods and industry standards.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="btn-primary" asChild>
-              <Link to="/contact">
-                Speak with an Expert
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
-            <Button size="lg" variant="outline" asChild>
-              <Link to="/services">
-                Explore Services
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+
+ 
     </div>
   );
 }

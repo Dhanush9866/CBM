@@ -66,6 +66,61 @@ const translations = {
           loading: "Loading...",
           error: "Failed to load content"
         },
+        careers: {
+          title: "Current Openings",
+          description: "Explore exciting career opportunities across our global organization. Find the perfect role to advance your career.",
+          applyNow: "Apply Now"
+        },
+        blog: {
+          title: "Latest Articles",
+          description: "Technical insights and industry updates from our team of experts."
+        },
+        contact: {
+          officesTitle: "Our Global Offices",
+          officesDescription: "With locations worldwide, we're always close to you. Find your nearest CBM office for local support and services.",
+          formTitle: "Send Us a Message",
+          formDescription: "Fill out the form below and our experts will get back to you within 24 hours.",
+          supportTitle: "Get Direct Support",
+          supportDescription: "Prefer to speak directly? Our customer support team is available to help you with immediate questions and urgent requests.",
+          supportPhoneTitle: "Phone Support",
+          supportPhoneDesc: "Speak with our customer service team",
+          supportPhoneHours: "Mon-Fri: 8:00 AM - 6:00 PM EST",
+          supportEmailTitle: "Email Support",
+          supportEmailDesc: "Send detailed inquiries and documentation",
+          supportEmailResponse: "Response within 24 hours",
+          supportEmergencyTitle: "Emergency Support",
+          supportEmergencyDesc: "24/7 support for urgent certification issues",
+          supportEmergencyNote: "Available 24/7 for emergencies",
+          responseGuaranteeTitle: "Quick Response Guarantee",
+          responsePhone: "Phone inquiries answered within 3 rings",
+          responseEmail: "Email responses within 24 hours",
+          responseQuote: "Quote requests processed within 48 hours",
+          labels: {
+            firstName: "First Name *",
+            lastName: "Last Name *",
+            email: "Email Address *",
+            phone: "Phone Number",
+            company: "Company *",
+            industry: "Industry",
+            service: "Service Needed",
+            message: "Message *",
+            consent: "I agree to CBM processing my personal data for the purpose of responding to my inquiry. I understand I can withdraw consent at any time."
+          },
+          placeholders: {
+            firstName: "John",
+            lastName: "Doe",
+            email: "john.doe@company.com",
+            phone: "+1 (555) 123-4567",
+            company: "Your Company Name",
+            selectIndustry: "Select Industry",
+            selectService: "Select Service",
+            message: "Please describe your requirements, timeline, and any specific questions you have..."
+          },
+          cta: {
+            send: "Send Message",
+            sending: "Sending..."
+          }
+        },
       },
       services: {
         completeServicePortfolio: {
@@ -236,6 +291,61 @@ const translations = {
           },
           loading: "Chargement...",
           error: "Échec du chargement du contenu"
+        },
+        careers: {
+          title: "Offres d'emploi actuelles",
+          description: "Découvrez des opportunités de carrière passionnantes au sein de notre organisation mondiale. Trouvez le poste idéal pour faire progresser votre carrière.",
+          applyNow: "Postuler maintenant"
+        },
+        blog: {
+          title: "Derniers Articles",
+          description: "Analyses techniques et actualités du secteur de notre équipe d'experts."
+        },
+        contact: {
+          officesTitle: "Nos bureaux dans le monde",
+          officesDescription: "Avec des sites dans le monde entier, nous sommes toujours proches de vous. Trouvez le bureau CBM le plus proche pour un support et des services locaux.",
+          formTitle: "Envoyez-nous un message",
+          formDescription: "Remplissez le formulaire ci-dessous et nos experts vous répondront sous 24 heures.",
+          supportTitle: "Support direct",
+          supportDescription: "Vous préférez parler directement ? Notre équipe d'assistance client est disponible pour vous aider avec des questions immédiates et des demandes urgentes.",
+          supportPhoneTitle: "Assistance téléphonique",
+          supportPhoneDesc: "Parlez à notre service client",
+          supportPhoneHours: "Lun-Ven : 8h00 - 18h00 (EST)",
+          supportEmailTitle: "Assistance email",
+          supportEmailDesc: "Envoyez des demandes détaillées et de la documentation",
+          supportEmailResponse: "Réponse sous 24 heures",
+          supportEmergencyTitle: "Assistance d'urgence",
+          supportEmergencyDesc: "Support 24/7 pour les demandes urgentes de certification",
+          supportEmergencyNote: "Disponible 24/7 pour les urgences",
+          responseGuaranteeTitle: "Garantie de réponse rapide",
+          responsePhone: "Appels répondus en moins de 3 sonneries",
+          responseEmail: "Réponses aux emails sous 24 heures",
+          responseQuote: "Devis traités sous 48 heures",
+          labels: {
+            firstName: "Prénom *",
+            lastName: "Nom *",
+            email: "Adresse e-mail *",
+            phone: "Numéro de téléphone",
+            company: "Entreprise *",
+            industry: "Industrie",
+            service: "Service requis",
+            message: "Message *",
+            consent: "J'accepte que CBM traite mes données personnelles afin de répondre à ma demande. Je comprends que je peux retirer mon consentement à tout moment."
+          },
+          placeholders: {
+            firstName: "Jean",
+            lastName: "Dupont",
+            email: "jean.dupont@entreprise.com",
+            phone: "+33 1 23 45 67 89",
+            company: "Nom de votre entreprise",
+            selectIndustry: "Sélectionner une industrie",
+            selectService: "Sélectionner un service",
+            message: "Veuillez décrire vos besoins, votre calendrier et vos questions spécifiques..."
+          },
+          cta: {
+            send: "Envoyer le message",
+            sending: "Envoi..."
+          }
         },
       },
       services: {
@@ -408,6 +518,61 @@ const translations = {
           loading: "Carregando...",
           error: "Falha ao carregar conteúdo"
         },
+        careers: {
+          title: "Vagas Abertas",
+          description: "Explore oportunidades de carreira empolgantes em nossa organização global. Encontre o cargo ideal para avançar na sua carreira.",
+          applyNow: "Candidatar-se agora"
+        },
+        blog: {
+          title: "Artigos Mais Recentes",
+          description: "Percepções técnicas e novidades do setor da nossa equipe de especialistas."
+        },
+        contact: {
+          officesTitle: "Nossos Escritórios Globais",
+          officesDescription: "Com locais em todo o mundo, estamos sempre perto de você. Encontre o escritório CBM mais próximo para suporte e serviços locais.",
+          formTitle: "Envie-nos uma mensagem",
+          formDescription: "Preencha o formulário abaixo e nossos especialistas retornarão em até 24 horas.",
+          supportTitle: "Obter suporte direto",
+          supportDescription: "Prefere falar diretamente? Nossa equipe de suporte ao cliente está disponível para ajudar com dúvidas imediatas e solicitações urgentes.",
+          supportPhoneTitle: "Suporte por telefone",
+          supportPhoneDesc: "Fale com nossa equipe de atendimento",
+          supportPhoneHours: "Seg-Sex: 8:00 - 18:00 (EST)",
+          supportEmailTitle: "Suporte por e-mail",
+          supportEmailDesc: "Envie dúvidas detalhadas e documentação",
+          supportEmailResponse: "Resposta em até 24 horas",
+          supportEmergencyTitle: "Suporte de emergência",
+          supportEmergencyDesc: "Suporte 24/7 para questões urgentes de certificação",
+          supportEmergencyNote: "Disponível 24/7 para emergências",
+          responseGuaranteeTitle: "Garantia de resposta rápida",
+          responsePhone: "Ligações atendidas em até 3 toques",
+          responseEmail: "Respostas por e-mail em até 24 horas",
+          responseQuote: "Solicitações de cotação processadas em até 48 horas",
+          labels: {
+            firstName: "Nome *",
+            lastName: "Sobrenome *",
+            email: "Endereço de e-mail *",
+            phone: "Número de telefone",
+            company: "Empresa *",
+            industry: "Indústria",
+            service: "Serviço necessário",
+            message: "Mensagem *",
+            consent: "Concordo que a CBM processe meus dados pessoais para responder à minha solicitação. Entendo que posso retirar o consentimento a qualquer momento."
+          },
+          placeholders: {
+            firstName: "João",
+            lastName: "Silva",
+            email: "joao.silva@empresa.com",
+            phone: "+55 (11) 1234-5678",
+            company: "Nome da sua empresa",
+            selectIndustry: "Selecionar indústria",
+            selectService: "Selecionar serviço",
+            message: "Descreva seus requisitos, prazos e dúvidas específicas..."
+          },
+          cta: {
+            send: "Enviar mensagem",
+            sending: "Enviando..."
+          }
+        },
       },
       services: {
         completeServicePortfolio: {
@@ -579,6 +744,61 @@ const translations = {
           loading: "Cargando...",
           error: "Error al cargar contenido"
         },
+        careers: {
+          title: "Vacantes Actuales",
+          description: "Explora emocionantes oportunidades de carrera en nuestra organización global. Encuentra el puesto perfecto para impulsar tu carrera.",
+          applyNow: "Postular ahora"
+        },
+        blog: {
+          title: "Artículos Recientes",
+          description: "Perspectivas técnicas y novedades de la industria de nuestro equipo de expertos."
+        },
+        contact: {
+          officesTitle: "Nuestras Oficinas Globales",
+          officesDescription: "Con ubicaciones en todo el mundo, siempre estamos cerca de ti. Encuentra tu oficina CBM más cercana para soporte y servicios locales.",
+          formTitle: "Envíanos un mensaje",
+          formDescription: "Completa el formulario y nuestros expertos te responderán dentro de 24 horas.",
+          supportTitle: "Obtén soporte directo",
+          supportDescription: "¿Prefieres hablar directamente? Nuestro equipo de atención está disponible para ayudarte con preguntas inmediatas y solicitudes urgentes.",
+          supportPhoneTitle: "Soporte telefónico",
+          supportPhoneDesc: "Habla con nuestro equipo de atención al cliente",
+          supportPhoneHours: "Lun-Vie: 8:00 - 18:00 (EST)",
+          supportEmailTitle: "Soporte por correo",
+          supportEmailDesc: "Envía consultas detalladas y documentación",
+          supportEmailResponse: "Respuesta dentro de 24 horas",
+          supportEmergencyTitle: "Soporte de emergencia",
+          supportEmergencyDesc: "Atención 24/7 para problemas urgentes de certificación",
+          supportEmergencyNote: "Disponible 24/7 para emergencias",
+          responseGuaranteeTitle: "Garantía de respuesta rápida",
+          responsePhone: "Llamadas respondidas dentro de 3 timbres",
+          responseEmail: "Respuestas por correo dentro de 24 horas",
+          responseQuote: "Solicitudes de cotización procesadas dentro de 48 horas",
+          labels: {
+            firstName: "Nombre *",
+            lastName: "Apellido *",
+            email: "Correo electrónico *",
+            phone: "Número de teléfono",
+            company: "Compañía *",
+            industry: "Industria",
+            service: "Servicio requerido",
+            message: "Mensaje *",
+            consent: "Acepto que CBM procese mis datos personales para responder a mi consulta. Entiendo que puedo retirar mi consentimiento en cualquier momento."
+          },
+          placeholders: {
+            firstName: "Juan",
+            lastName: "Pérez",
+            email: "juan.perez@empresa.com",
+            phone: "+34 600 000 000",
+            company: "Nombre de tu empresa",
+            selectIndustry: "Seleccionar industria",
+            selectService: "Seleccionar servicio",
+            message: "Describe tus requisitos, plazos y preguntas específicas..."
+          },
+          cta: {
+            send: "Enviar mensaje",
+            sending: "Enviando..."
+          }
+        },
       },
       services: {
         completeServicePortfolio: {
@@ -749,6 +969,61 @@ const translations = {
           },
           loading: "Загрузка...",
           error: "Ошибка загрузки контента"
+        },
+        careers: {
+          title: "Актуальные вакансии",
+          description: "Изучите интересные карьерные возможности в нашей глобальной организации. Найдите идеальную роль для развития вашей карьеры.",
+          applyNow: "Подать заявку"
+        },
+        blog: {
+          title: "Последние статьи",
+          description: "Технические обзоры и новости отрасли от нашей команды экспертов."
+        },
+        contact: {
+          officesTitle: "Наши офисы по всему миру",
+          officesDescription: "С офисами по всему миру мы всегда рядом. Найдите ближайший офис CBM для локальной поддержки и услуг.",
+          formTitle: "Отправьте нам сообщение",
+          formDescription: "Заполните форму ниже, и наши специалисты свяжутся с вами в течение 24 часов.",
+          supportTitle: "Получите прямую поддержку",
+          supportDescription: "Предпочитаете поговорить напрямую? Наша служба поддержки готова помочь с оперативными вопросами и срочными запросами.",
+          supportPhoneTitle: "Телефонная поддержка",
+          supportPhoneDesc: "Свяжитесь с нашей службой поддержки",
+          supportPhoneHours: "Пн-Пт: 8:00 - 18:00 (EST)",
+          supportEmailTitle: "Поддержка по email",
+          supportEmailDesc: "Отправляйте подробные запросы и документы",
+          supportEmailResponse: "Ответ в течение 24 часов",
+          supportEmergencyTitle: "Экстренная поддержка",
+          supportEmergencyDesc: "Круглосуточная поддержка срочных вопросов сертификации",
+          supportEmergencyNote: "Доступно 24/7 для экстренных случаев",
+          responseGuaranteeTitle: "Гарантия быстрого ответа",
+          responsePhone: "Ответ на звонки в течение 3 гудков",
+          responseEmail: "Ответ по электронной почте в течение 24 часов",
+          responseQuote: "Обработка запросов на расчет в течение 48 часов",
+          labels: {
+            firstName: "Имя *",
+            lastName: "Фамилия *",
+            email: "Адрес электронной почты *",
+            phone: "Номер телефона",
+            company: "Компания *",
+            industry: "Отрасль",
+            service: "Требуемая услуга",
+            message: "Сообщение *",
+            consent: "Я согласен на обработку CBM моих персональных данных для ответа на мой запрос. Я понимаю, что могу отозвать согласие в любое время."
+          },
+          placeholders: {
+            firstName: "Иван",
+            lastName: "Иванов",
+            email: "ivan.ivanov@company.com",
+            phone: "+7 (999) 123-45-67",
+            company: "Название вашей компании",
+            selectIndustry: "Выберите отрасль",
+            selectService: "Выберите услугу",
+            message: "Опишите ваши требования, сроки и конкретные вопросы..."
+          },
+          cta: {
+            send: "Отправить сообщение",
+            sending: "Отправка..."
+          }
         },
       },
       services: {

@@ -2,6 +2,18 @@
 
 const mongoose = require('mongoose');
 
+// Translation schema for blog fields
+const BlogTranslationSchema = new mongoose.Schema(
+  {
+    title: { type: String },
+    excerpt: { type: String },
+    content: { type: String },
+    tags: [{ type: String }],
+    metaDescription: { type: String }
+  },
+  { _id: false }
+);
+
 const BlogSchema = new mongoose.Schema(
   {
     title: { 
@@ -87,6 +99,12 @@ const BlogSchema = new mongoose.Schema(
     readingTime: { 
       type: Number, 
       default: 5 // in minutes
+    },
+    translations: {
+      // Pre-stored translations for blog content
+      type: Map,
+      of: BlogTranslationSchema,
+      default: {},
     }
   },
   { 
