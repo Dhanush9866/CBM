@@ -51,6 +51,61 @@ export interface StaticTranslations {
       loading: string;
       error: string;
     };
+    careers?: {
+      title: string;
+      description: string;
+      applyNow: string;
+    };
+    blog?: {
+      title: string;
+      description: string;
+    };
+    contact?: {
+      officesTitle: string;
+      officesDescription: string;
+      formTitle: string;
+      formDescription: string;
+      supportTitle: string;
+      supportDescription: string;
+      supportPhoneTitle: string;
+      supportPhoneDesc: string;
+      supportPhoneHours: string;
+      supportEmailTitle: string;
+      supportEmailDesc: string;
+      supportEmailResponse: string;
+      supportEmergencyTitle: string;
+      supportEmergencyDesc: string;
+      supportEmergencyNote: string;
+      responseGuaranteeTitle: string;
+      responsePhone: string;
+      responseEmail: string;
+      responseQuote: string;
+      labels: {
+        firstName: string;
+        lastName: string;
+        email: string;
+        phone: string;
+        company: string;
+        industry: string;
+        service: string;
+        message: string;
+        consent: string;
+      };
+      placeholders: {
+        firstName: string;
+        lastName: string;
+        email: string;
+        phone: string;
+        company: string;
+        selectIndustry: string;
+        selectService: string;
+        message: string;
+      };
+      cta: {
+        send: string;
+        sending: string;
+      };
+    };
   };
   services?: {
     completeServicePortfolio: {

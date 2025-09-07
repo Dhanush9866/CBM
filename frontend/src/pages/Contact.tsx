@@ -19,10 +19,12 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import { fetchContactOffices, sendContactInquiry } from '@/services/contactOffices';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from '@/contexts/TranslationContext';
 
 // Using dynamic offices data from contact-offices.ts
 
 export default function Contact() {
+  const { currentLanguage, translations } = useTranslation();
   const [groups, setGroups] = useState<{ region_name: string; offices: any[] }[]>([]);
   const { toast } = useToast();
 
@@ -51,11 +53,36 @@ export default function Contact() {
   }, [form]);
   useEffect(() => {
     fetchContactOffices()
-      .then(setGroups)
+      .then((data) => {
+        // Apply translations per current language for groups and offices
+        const localized = data.map(group => {
+          const offices = group.offices.map((office: any) => {
+            const tr = office.translations?.[currentLanguage];
+            if (tr && currentLanguage !== 'en') {
+              return {
+                ...office,
+                region_name: tr.region_name || office.region_name,
+                region: tr.region || office.region,
+                country: tr.country || office.country,
+                office_name: tr.office_name || office.office_name,
+                address: tr.address || office.address,
+                notes: tr.notes || office.notes,
+              };
+            }
+            return office;
+          });
+          return {
+            ...group,
+            region_name: offices[0]?.region_name || group.region_name,
+            offices,
+          };
+        });
+        setGroups(localized);
+      })
       .catch(() => {
         setGroups([]);
       });
-  }, []);
+  }, [currentLanguage]);
   return (
     <div>
       {/* Hero Section */}
@@ -134,10 +161,9 @@ export default function Contact() {
       <section className="section" id="offices">
         <div className="container-responsive">
           <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Our Global Offices</h2>
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4">{translations?.pages?.contact?.officesTitle || 'Our Global Offices'}</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              With locations worldwide, we're always close to you. Find your nearest 
-              CBM office for local support and services.
+              {translations?.pages?.contact?.officesDescription || "With locations worldwide, we're always close to you. Find your nearest CBM office for local support and services."}
             </p>
           </div>
           
@@ -199,9 +225,9 @@ export default function Contact() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Form */}
             <div className="bg-white rounded-2xl p-8 lg:p-12">
-              <h2 className="text-3xl font-bold mb-6">Send Us a Message</h2>
+              <h2 className="text-3xl font-bold mb-6">{translations?.pages?.contact?.formTitle || 'Send Us a Message'}</h2>
               <p className="text-muted-foreground mb-8">
-                Fill out the form below and our experts will get back to you within 24 hours.
+                {translations?.pages?.contact?.formDescription || 'Fill out the form below and our experts will get back to you within 24 hours.'}
               </p>
               
               <form className="space-y-6" onSubmit={async (e) => {
@@ -234,37 +260,37 @@ export default function Contact() {
               }}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
-                    <Label htmlFor="firstName">First Name *</Label>
-                    <Input id="firstName" placeholder="John" className="mt-2" value={form.firstName} onChange={(e) => setForm((f) => ({ ...f, firstName: e.target.value }))} />
+                    <Label htmlFor="firstName">{translations?.pages?.contact?.labels?.firstName || 'First Name *'}</Label>
+                    <Input id="firstName" placeholder={translations?.pages?.contact?.placeholders?.firstName || 'John'} className="mt-2" value={form.firstName} onChange={(e) => setForm((f) => ({ ...f, firstName: e.target.value }))} />
                   </div>
                   <div>
-                    <Label htmlFor="lastName">Last Name *</Label>
-                    <Input id="lastName" placeholder="Doe" className="mt-2" value={form.lastName} onChange={(e) => setForm((f) => ({ ...f, lastName: e.target.value }))} />
+                    <Label htmlFor="lastName">{translations?.pages?.contact?.labels?.lastName || 'Last Name *'}</Label>
+                    <Input id="lastName" placeholder={translations?.pages?.contact?.placeholders?.lastName || 'Doe'} className="mt-2" value={form.lastName} onChange={(e) => setForm((f) => ({ ...f, lastName: e.target.value }))} />
                   </div>
                 </div>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
-                    <Label htmlFor="email">Email Address *</Label>
-                    <Input id="email" type="email" placeholder="john.doe@company.com" className="mt-2" value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} />
+                    <Label htmlFor="email">{translations?.pages?.contact?.labels?.email || 'Email Address *'}</Label>
+                    <Input id="email" type="email" placeholder={translations?.pages?.contact?.placeholders?.email || 'john.doe@company.com'} className="mt-2" value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} />
                   </div>
                   <div>
-                    <Label htmlFor="phone">Phone Number</Label>
-                    <Input id="phone" type="tel" placeholder="+1 (555) 123-4567" className="mt-2" value={form.phone} onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))} />
+                    <Label htmlFor="phone">{translations?.pages?.contact?.labels?.phone || 'Phone Number'}</Label>
+                    <Input id="phone" type="tel" placeholder={translations?.pages?.contact?.placeholders?.phone || '+1 (555) 123-4567'} className="mt-2" value={form.phone} onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))} />
                   </div>
                 </div>
                 
                 <div>
-                  <Label htmlFor="company">Company *</Label>
-                  <Input id="company" placeholder="Your Company Name" className="mt-2" value={form.company} onChange={(e) => setForm((f) => ({ ...f, company: e.target.value }))} />
+                  <Label htmlFor="company">{translations?.pages?.contact?.labels?.company || 'Company *'}</Label>
+                  <Input id="company" placeholder={translations?.pages?.contact?.placeholders?.company || 'Your Company Name'} className="mt-2" value={form.company} onChange={(e) => setForm((f) => ({ ...f, company: e.target.value }))} />
                 </div>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
-                    <Label htmlFor="industry">Industry</Label>
+                    <Label htmlFor="industry">{translations?.pages?.contact?.labels?.industry || 'Industry'}</Label>
                     <Select value={form.industry} onValueChange={(v) => setForm((f) => ({ ...f, industry: v }))}>
                       <SelectTrigger className="mt-2">
-                        <SelectValue placeholder="Select Industry" />
+                        <SelectValue placeholder={translations?.pages?.contact?.placeholders?.selectIndustry || 'Select Industry'} />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="automotive">Automotive</SelectItem>
@@ -280,10 +306,10 @@ export default function Contact() {
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor="service">Service Needed</Label>
+                    <Label htmlFor="service">{translations?.pages?.contact?.labels?.service || 'Service Needed'}</Label>
                     <Select value={form.service} onValueChange={(v) => setForm((f) => ({ ...f, service: v }))}>
                       <SelectTrigger className="mt-2">
-                        <SelectValue placeholder="Select Service" />
+                        <SelectValue placeholder={translations?.pages?.contact?.placeholders?.selectService || 'Select Service'} />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="testing">Testing & Inspection</SelectItem>
@@ -298,10 +324,10 @@ export default function Contact() {
                 </div>
                 
                 <div>
-                  <Label htmlFor="message">Message *</Label>
+                  <Label htmlFor="message">{translations?.pages?.contact?.labels?.message || 'Message *'}</Label>
                   <Textarea 
                     id="message" 
-                    placeholder="Please describe your requirements, timeline, and any specific questions you have..."
+                    placeholder={translations?.pages?.contact?.placeholders?.message || 'Please describe your requirements, timeline, and any specific questions you have...'}
                     className="mt-2 min-h-[120px]"
                     value={form.message}
                     onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
@@ -311,13 +337,12 @@ export default function Contact() {
                 <div className="flex items-start space-x-2">
                   <input type="checkbox" id="consent" className="mt-1" checked={form.consent} onChange={(e) => setForm((f) => ({ ...f, consent: e.target.checked }))} />
                   <Label htmlFor="consent" className="text-sm text-muted-foreground">
-                    I agree to CBM processing my personal data for the purpose of responding to my inquiry. 
-                    I understand I can withdraw consent at any time.
+                    {translations?.pages?.contact?.labels?.consent || 'I agree to CBM processing my personal data for the purpose of responding to my inquiry. I understand I can withdraw consent at any time.'}
                   </Label>
                 </div>
                 
                 <Button size="lg" className="w-full btn-primary" type="submit" disabled={!isValid || submitting}>
-                  {submitting ? 'Sending...' : 'Send Message'}
+                  {submitting ? (translations?.pages?.contact?.cta?.sending || 'Sending...') : (translations?.pages?.contact?.cta?.send || 'Send Message')}
                   <Send className="ml-2 h-5 w-5" />
                 </Button>
               </form>
@@ -325,10 +350,9 @@ export default function Contact() {
             
             {/* Contact Information */}
             <div>
-              <h2 className="text-3xl font-bold mb-6">Get Direct Support</h2>
+              <h2 className="text-3xl font-bold mb-6">{translations?.pages?.contact?.supportTitle || 'Get Direct Support'}</h2>
               <p className="text-muted-foreground mb-8">
-                Prefer to speak directly? Our customer support team is available 
-                to help you with immediate questions and urgent requests.
+                {translations?.pages?.contact?.supportDescription || 'Prefer to speak directly? Our customer support team is available to help you with immediate questions and urgent requests.'}
               </p>
               
               <div className="space-y-8">
@@ -337,12 +361,12 @@ export default function Contact() {
                     <Phone className="h-6 w-6 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-2">Phone Support</h3>
+                    <h3 className="font-semibold mb-2">{translations?.pages?.contact?.supportPhoneTitle || 'Phone Support'}</h3>
                     <p className="text-muted-foreground mb-2">
-                      Speak with our customer service team
+                      {translations?.pages?.contact?.supportPhoneDesc || 'Speak with our customer service team'}
                     </p>
                     <p className="font-medium text-primary">+1 (800) 000-0000</p>
-                    <p className="text-sm text-muted-foreground">Mon-Fri: 8:00 AM - 6:00 PM EST</p>
+                    <p className="text-sm text-muted-foreground">{translations?.pages?.contact?.supportPhoneHours || 'Mon-Fri: 8:00 AM - 6:00 PM EST'}</p>
                   </div>
                 </div>
                 
@@ -351,12 +375,12 @@ export default function Contact() {
                     <Mail className="h-6 w-6 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-2">Email Support</h3>
+                    <h3 className="font-semibold mb-2">{translations?.pages?.contact?.supportEmailTitle || 'Email Support'}</h3>
                     <p className="text-muted-foreground mb-2">
-                      Send detailed inquiries and documentation
+                      {translations?.pages?.contact?.supportEmailDesc || 'Send detailed inquiries and documentation'}
                     </p>
                     <p className="font-medium text-primary">contact@cbm.com</p>
-                    <p className="text-sm text-muted-foreground">Response within 24 hours</p>
+                    <p className="text-sm text-muted-foreground">{translations?.pages?.contact?.supportEmailResponse || 'Response within 24 hours'}</p>
                   </div>
                 </div>
                 
@@ -365,30 +389,30 @@ export default function Contact() {
                     <Clock className="h-6 w-6 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-2">Emergency Support</h3>
+                    <h3 className="font-semibold mb-2">{translations?.pages?.contact?.supportEmergencyTitle || 'Emergency Support'}</h3>
                     <p className="text-muted-foreground mb-2">
-                      24/7 support for urgent certification issues
+                      {translations?.pages?.contact?.supportEmergencyDesc || '24/7 support for urgent certification issues'}
                     </p>
                     <p className="font-medium text-primary">+1 (800) 111-1111</p>
-                    <p className="text-sm text-muted-foreground">Available 24/7 for emergencies</p>
+                    <p className="text-sm text-muted-foreground">{translations?.pages?.contact?.supportEmergencyNote || 'Available 24/7 for emergencies'}</p>
                   </div>
                 </div>
               </div>
               
               <div className="mt-12 p-6 bg-tuv-blue-50 rounded-lg">
-                <h3 className="font-bold mb-4">Quick Response Guarantee</h3>
+                <h3 className="font-bold mb-4">{translations?.pages?.contact?.responseGuaranteeTitle || 'Quick Response Guarantee'}</h3>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-primary rounded-full" />
-                    <span>Phone inquiries answered within 3 rings</span>
+                    <span>{translations?.pages?.contact?.responsePhone || 'Phone inquiries answered within 3 rings'}</span>
                   </li>
                   <li className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-primary rounded-full" />
-                    <span>Email responses within 24 hours</span>
+                    <span>{translations?.pages?.contact?.responseEmail || 'Email responses within 24 hours'}</span>
                   </li>
                   <li className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-primary rounded-full" />
-                    <span>Quote requests processed within 48 hours</span>
+                    <span>{translations?.pages?.contact?.responseQuote || 'Quote requests processed within 48 hours'}</span>
                   </li>
                 </ul>
               </div>
