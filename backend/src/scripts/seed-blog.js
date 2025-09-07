@@ -4,9 +4,20 @@ const mongoose = require('mongoose');
 const Blog = require('../models/Blog');
 const { connectToDatabase } = require('../setup/database');
 
+// Helper function to generate slug from title
+function generateSlug(title) {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+}
+
 const blogData = [
   {
     title: "The Future of Non-Destructive Testing: AI and Machine Learning Integration",
+    slug: "the-future-of-non-destructive-testing-ai-and-machine-learning-integration",
     excerpt: "Explore how artificial intelligence and machine learning are revolutionizing non-destructive testing methodologies, improving accuracy and efficiency across industries.",
     content: "Artificial intelligence and machine learning are transforming the landscape of non-destructive testing (NDT) in unprecedented ways. These technologies are enabling more accurate defect detection, faster analysis, and improved reliability across various industries including aerospace, automotive, and manufacturing.\n\nKey benefits include:\n• Automated defect recognition with 95% accuracy\n• Real-time analysis and reporting\n• Reduced human error and inspection time\n• Predictive maintenance capabilities\n• Enhanced data visualization and interpretation\n\nThe integration of AI in NDT processes allows for continuous learning and improvement, making inspections more efficient and reliable than ever before.",
     publishedAt: new Date('2024-03-15'),
@@ -34,6 +45,7 @@ const blogData = [
   },
   {
     title: "Understanding ISO 9712:2021 - Latest Updates in NDT Personnel Certification",
+    slug: "understanding-iso-9712-2021-latest-updates-in-ndt-personnel-certification",
     excerpt: "A comprehensive guide to the latest ISO 9712:2021 standard updates and their impact on NDT personnel certification requirements worldwide.",
     content: "The ISO 9712:2021 standard represents a significant update to NDT personnel certification requirements, introducing new competency frameworks and assessment methods. This revision emphasizes practical skills, theoretical knowledge, and continuous professional development.\n\nMajor changes include:\n• Updated qualification requirements for Level I, II, and III personnel\n• Enhanced practical examination procedures\n• New digital certification management systems\n• Improved international recognition and portability\n• Stricter continuing education requirements\n\nThese updates ensure that NDT professionals maintain the highest standards of competency and stay current with evolving industry practices and technologies.",
     publishedAt: new Date('2024-03-12'),
@@ -61,6 +73,7 @@ const blogData = [
   },
   {
     title: "Ultrasonic Testing in Aerospace: Ensuring Safety in Critical Applications",
+    slug: "ultrasonic-testing-in-aerospace-ensuring-safety-in-critical-applications",
     excerpt: "Discover how ultrasonic testing plays a crucial role in aerospace safety, from component inspection to structural integrity assessment.",
     content: "Ultrasonic testing (UT) is a cornerstone of aerospace safety, providing critical insights into the structural integrity of aircraft components. This non-destructive method uses high-frequency sound waves to detect internal flaws, cracks, and material discontinuities that could compromise flight safety.\n\nApplications in aerospace include:\n• Engine component inspection\n• Wing and fuselage structural assessment\n• Landing gear integrity verification\n• Composite material evaluation\n• Weld quality assurance\n\nAdvanced UT techniques such as phased array and time-of-flight diffraction (TOFD) enable precise defect characterization and sizing, ensuring that aircraft meet the stringent safety standards required for commercial and military aviation.",
     publishedAt: new Date('2024-03-10'),
@@ -88,6 +101,7 @@ const blogData = [
   },
   {
     title: "Radiographic Testing: Digital Revolution in Industrial Inspection",
+    slug: "radiographic-testing-digital-revolution-in-industrial-inspection",
     excerpt: "Learn about the digital transformation in radiographic testing and how it's improving inspection capabilities in industrial applications.",
     content: "The digital revolution in radiographic testing has transformed traditional film-based methods into sophisticated digital systems that offer superior image quality, faster processing, and enhanced analysis capabilities. Digital radiography (DR) and computed radiography (CR) are now standard in many industrial applications.\n\nKey advantages of digital radiography:\n• Immediate image availability and review\n• Enhanced image processing and analysis tools\n• Reduced chemical waste and environmental impact\n• Improved image storage and retrieval systems\n• Remote inspection capabilities\n• Better defect detection sensitivity\n\nThese technological advances have made radiographic testing more efficient, cost-effective, and environmentally friendly while maintaining the high standards required for critical industrial inspections.",
     publishedAt: new Date('2024-03-08'),
@@ -115,6 +129,7 @@ const blogData = [
   },
   {
     title: "Magnetic Particle Testing: Best Practices for Surface Crack Detection",
+    slug: "magnetic-particle-testing-best-practices-for-surface-crack-detection",
     excerpt: "Master the fundamentals of magnetic particle testing with our comprehensive guide to surface crack detection techniques and best practices.",
     content: "Magnetic particle testing (MPT) is one of the most effective methods for detecting surface and near-surface discontinuities in ferromagnetic materials. This reliable technique is widely used across industries for quality assurance and safety-critical applications.\n\nBest practices for effective MPT include:\n• Proper surface preparation and cleaning\n• Correct magnetization technique selection\n• Appropriate particle type and application method\n• Adequate lighting conditions for inspection\n• Proper interpretation of indications\n• Documentation and reporting standards\n\nUnderstanding the physics behind magnetic particle testing and following established procedures ensures reliable defect detection and helps maintain the highest quality standards in manufacturing and maintenance operations.",
     publishedAt: new Date('2024-03-05'),

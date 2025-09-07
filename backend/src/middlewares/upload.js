@@ -112,6 +112,11 @@ const uploadMiddlewares = {
     'on-site-laboratory-sampling': createUploadMiddleware('inspection', 'on-site-laboratory-sampling')
   },
   
+  // Blog uploads
+  blog: {
+    'featured-images': createUploadMiddleware('blog', 'featured-images', 1)
+  },
+  
   // Other services (to be expanded)
   auditing: {},
   cbm: {},
