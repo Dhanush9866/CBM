@@ -138,30 +138,100 @@ async function getApplicationStatus(req, res) {
 module.exports = {
   submitJobApplication,
   getApplicationStatus,
-  // List all active careers (with optional filters)
+  // List all active careers (with optional filters and language support)
   async listCareers(req, res) {
     try {
-      const { department, location, level, type, active } = req.query;
+      const { department, location, level, type, active, lang } = req.query;
       const query = {};
       if (department) query.department = department;
       if (location) query.location = location;
       if (level) query.level = level;
       if (type) query.type = type;
       if (typeof active !== 'undefined') query.isActive = active === 'true';
+      
       const careers = await Career.find(query).sort({ postedAt: -1, createdAt: -1 });
-      res.json({ success: true, data: careers });
+      
+      // If language is specified and not English, return translated data
+      if (lang && lang !== 'en' && ['fr', 'pt', 'es', 'ru'].includes(lang)) {
+        const translatedCareers = careers.map(career => {
+          const careerObj = career.toObject();
+          const translations = career.translations?.get(lang);
+          
+          if (translations) {
+            // Return translated fields if available, fallback to original
+            return {
+              ...careerObj,
+              title: translations.title || careerObj.title,
+              description: translations.description || careerObj.description,
+              department: translations.department || careerObj.department,
+              location: translations.location || careerObj.location,
+              type: translations.type || careerObj.type,
+              level: translations.level || careerObj.level,
+              workArrangement: translations.workArrangement || careerObj.workArrangement,
+              responsibilities: translations.responsibilities || careerObj.responsibilities,
+              requirements: translations.requirements || careerObj.requirements,
+              benefits: translations.benefits || careerObj.benefits,
+              tags: translations.tags || careerObj.tags,
+              // Keep original translations object for reference
+              translations: careerObj.translations
+            };
+          }
+          
+          // If no translations available, return original data
+          return careerObj;
+        });
+        
+        res.json({ success: true, data: translatedCareers });
+      } else {
+        // Return original English data
+        res.json({ success: true, data: careers });
+      }
     } catch (error) {
       logger.error('Error listing careers:', error);
       res.status(500).json({ success: false, message: 'Failed to fetch careers' });
     }
   },
-  // Get a single career by id
+  // Get a single career by id (with language support)
   async getCareerById(req, res) {
     try {
       const { id } = req.params;
+      const { lang } = req.query;
       const career = await Career.findById(id);
       if (!career) return res.status(404).json({ success: false, message: 'Career not found' });
-      res.json({ success: true, data: career });
+      
+      // If language is specified and not English, return translated data
+      if (lang && lang !== 'en' && ['fr', 'pt', 'es', 'ru'].includes(lang)) {
+        const careerObj = career.toObject();
+        const translations = career.translations?.get(lang);
+        
+        if (translations) {
+          // Return translated fields if available, fallback to original
+          const translatedCareer = {
+            ...careerObj,
+            title: translations.title || careerObj.title,
+            description: translations.description || careerObj.description,
+            department: translations.department || careerObj.department,
+            location: translations.location || careerObj.location,
+            type: translations.type || careerObj.type,
+            level: translations.level || careerObj.level,
+            workArrangement: translations.workArrangement || careerObj.workArrangement,
+            responsibilities: translations.responsibilities || careerObj.responsibilities,
+            requirements: translations.requirements || careerObj.requirements,
+            benefits: translations.benefits || careerObj.benefits,
+            tags: translations.tags || careerObj.tags,
+            // Keep original translations object for reference
+            translations: careerObj.translations
+          };
+          
+          res.json({ success: true, data: translatedCareer });
+        } else {
+          // If no translations available, return original data
+          res.json({ success: true, data: careerObj });
+        }
+      } else {
+        // Return original English data
+        res.json({ success: true, data: career });
+      }
     } catch (error) {
       logger.error('Error getting career:', error);
       res.status(500).json({ success: false, message: 'Failed to fetch career' });

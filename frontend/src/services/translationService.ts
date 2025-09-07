@@ -1,3 +1,4 @@
+
 import { apiClient } from '@/utils/api';
 
 export interface StaticTranslations {
@@ -166,4 +167,5 @@ class TranslationService {
 
 export const translationService = new TranslationService();
 export default translationService;
+
 

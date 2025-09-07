@@ -1,4 +1,4 @@
-// translations.js
+
 
 const translations = {
     en: {
@@ -858,4 +858,4 @@ const translations = {
   };
   
   module.exports = translations;
-  
+
