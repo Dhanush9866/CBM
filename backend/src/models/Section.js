@@ -17,6 +17,7 @@ const SectionSchema = new mongoose.Schema(
     title: { type: String, required: true, index: true },
     bodyText: { type: String, required: true },
     images: [{ type: String }],
+    coverPhoto: { type: String },
     language: { type: String, enum: SupportedLanguages, default: 'en', index: true },
     pageNumber: { type: Number, index: true },
     sectionId: { type: String, index: true },

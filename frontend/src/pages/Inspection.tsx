@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getPageWithSections, SectionDto } from '@/utils/api';
-import { inspectionItems } from '@/data/inspection';
+// Cover photos are now provided by backend via SectionDto.coverPhoto
 import { useTranslation } from '@/contexts/TranslationContext';
 
 export default function Inspection() {
@@ -15,13 +15,7 @@ export default function Inspection() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Create cover photo mapping from frontend data
-  const coverPhotoMap: Record<string, string> = {};
-  inspectionItems.forEach(section => {
-    if (section.image && section.image.includes('res.cloudinary.com')) {
-      coverPhotoMap[section.slug] = section.image;
-    }
-  });
+  // Cover photos will be read from backend (item.coverPhoto)
 
   useEffect(() => {
     let isMounted = true;
@@ -85,7 +79,7 @@ export default function Inspection() {
                 <h1 className="text-3xl lg:text-4xl font-bold mb-3">
                   {pageData?.title || 'Inspection (I)'}
                 </h1>
-                <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-none leading-relaxed md:leading-8 whitespace-pre-line text-justify">
+                <p className="text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed md:leading-8 whitespace-pre-line text-center">
                   {pageData?.description || 'Our Inspection Services ensure the safety, reliability, and compliance of industrial assets throughout their lifecycle. With a team of certified inspectors, advanced tools, and global expertise, we deliver independent, third-party inspections that meet international codes and client specifications across multiple industries. "Trusted Inspection Services – Ensuring Safety, Compliance, and Performance Worldwide."'}
                 </p>
               </>
@@ -122,7 +116,7 @@ export default function Inspection() {
                 }}
               >
                 <div className="aspect-video w-full overflow-hidden">
-                  <img src={coverPhotoMap[item.sectionId] || (item.images && item.images[0]) || '/placeholder.svg'} alt={item.title} className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-300" />
+                  <img src={item.coverPhoto || (item.images && item.images[0]) || '/placeholder.svg'} alt={item.title} className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-300" />
                 </div>
                 <CardHeader>
                   <CardTitle className="text-xl">{item.title}</CardTitle>
