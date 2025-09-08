@@ -106,17 +106,24 @@ export default function IndustriesDetail() {
             <div className="w-24 h-1 bg-gradient-to-r from-primary to-primary/60 mx-auto rounded-full"></div>
           </div>
 
-          {/* Layout: top image | middle content | bottom image */}
+          {/* Layout: diagonal images with content in the middle, keeping current positions */}
           {section.images && section.images.length >= 2 ? (
             <div className="flex flex-col gap-8">
-              {/* Images without borders or rounded corners */}
-              <div className="overflow-hidden">
-                <img
-                  src={section.images[0]}
-                  alt={`${section.title} 1`}
-                  className="w-full h-64 md:h-80 object-cover rounded-2xl"
-                />
-              </div>
+              {/* First image - diagonal alignment based on index */}
+              {(() => {
+                const alignment = 0 % 3 === 0 ? 'justify-start' : 0 % 3 === 1 ? 'justify-center' : 'justify-end';
+                return (
+                  <div className={`flex w-full ${alignment}`}>
+                    <div className="overflow-hidden w-full md:max-w-4xl">
+                      <img
+                        src={section.images[0]}
+                        alt={`${section.title} 1`}
+                        className="w-full h-64 md:h-80 object-cover rounded-2xl"
+                      />
+                    </div>
+                  </div>
+                );
+              })()}
 
               {/* Enhanced content styling */}
               <div className="space-y-6 md:px-4">
@@ -140,21 +147,56 @@ export default function IndustriesDetail() {
                 })}
               </div>
 
-              {/* Reduced second image size - no border/radius */}
-              <div className="overflow-hidden">
-                <img
-                  src={section.images[1]}
-                  alt={`${section.title} 2`}
-                  className="w-full h-64 md:h-80 object-cover rounded-2xl"
-                />
-              </div>
+              {/* Second image - diagonal alignment based on index */}
+              {(() => {
+                const alignment = 1 % 3 === 0 ? 'justify-start' : 1 % 3 === 1 ? 'justify-center' : 'justify-end';
+                return (
+                  <div className={`flex w-full ${alignment}`}>
+                    <div className="overflow-hidden w-full md:max-w-4xl">
+                      <img
+                        src={section.images[1]}
+                        alt={`${section.title} 2`}
+                        className="w-full h-64 md:h-80 object-cover rounded-2xl"
+                      />
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Any remaining images - continue diagonal pattern */}
+              {section.images.length > 2 && (
+                <div className="space-y-6">
+                  {section.images.slice(2).map((url, idx) => {
+                    const globalIndex = 2 + idx;
+                    const alignment = globalIndex % 3 === 0 ? 'justify-start' : globalIndex % 3 === 1 ? 'justify-center' : 'justify-end';
+                    return (
+                      <div key={`img-${globalIndex}`} className={`flex w-full ${alignment}`}>
+                        <div className="overflow-hidden w-full md:max-w-4xl">
+                          <img
+                            src={url}
+                            alt={`${section.title} ${globalIndex + 1}`}
+                            className="w-full h-64 md:h-80 object-cover rounded-2xl"
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           ) : (
             <>
               {section.images && section.images.length === 1 && (
-                <div className="overflow-hidden mb-10">
-                  <img src={section.images[0]} alt={section.title} className="w-full h-64 md:h-80 object-cover rounded-2xl" />
-                </div>
+                (() => {
+                  const alignment = 0 % 3 === 0 ? 'justify-start' : 0 % 3 === 1 ? 'justify-center' : 'justify-end';
+                  return (
+                    <div className={`flex w-full mb-10 ${alignment}`}>
+                      <div className="overflow-hidden w-full md:max-w-4xl">
+                        <img src={section.images[0]} alt={section.title} className="w-full h-64 md:h-80 object-cover rounded-2xl" />
+                      </div>
+                    </div>
+                  );
+                })()
               )}
               {/* Enhanced content styling for single image layout */}
               <div className="space-y-6">
