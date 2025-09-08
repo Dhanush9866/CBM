@@ -336,13 +336,16 @@ export default function ServiceDetail({ sectionData, serviceType, serviceDisplay
                 if (imageUrls.length > 0) {
                   // First image after main title (H1)
                   if (blockIndex === 0 && block.type === 'h1' && imageIndex < imageUrls.length) {
+                    const alignment = imageIndex % 3 === 0 ? 'justify-start' : imageIndex % 3 === 1 ? 'justify-center' : 'justify-end';
                     blocks.push(
-                      <div key={`img-${imageIndex}`} className="overflow-hidden mb-6 md:max-w-3xl mx-auto">
-                        <img
-                          src={imageUrls[imageIndex]}
-                          alt={section?.title || 'Service Image'}
-                          className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
-                        />
+                      <div key={`img-${imageIndex}`} className={`flex w-full mb-6 ${alignment}`}>
+                        <div className="overflow-hidden md:max-w-3xl w-full">
+                          <img
+                            src={imageUrls[imageIndex]}
+                            alt={section?.title || 'Service Image'}
+                            className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
+                          />
+                        </div>
                       </div>
                     );
                     imageIndex++;
@@ -352,13 +355,16 @@ export default function ServiceDetail({ sectionData, serviceType, serviceDisplay
                   if (block.type === 'h2' && 
                       block.props?.children?.includes('Why Choose') && 
                       imageIndex < imageUrls.length) {
+                    const alignment = imageIndex % 3 === 0 ? 'justify-start' : imageIndex % 3 === 1 ? 'justify-center' : 'justify-end';
                     blocks.push(
-                      <div key={`img-${imageIndex}`} className="overflow-hidden mb-6 md:max-w-2xl mx-auto">
-                        <img
-                          src={imageUrls[imageIndex]}
-                          alt={section?.title || 'Service Image'}
-                          className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
-                        />
+                      <div key={`img-${imageIndex}`} className={`flex w-full mb-6 ${alignment}`}>
+                        <div className="overflow-hidden md:max-w-2xl w-full">
+                          <img
+                            src={imageUrls[imageIndex]}
+                            alt={section?.title || 'Service Image'}
+                            className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
+                          />
+                        </div>
                       </div>
                     );
                     imageIndex++;
@@ -397,16 +403,22 @@ export default function ServiceDetail({ sectionData, serviceType, serviceDisplay
               if (imageIndex < imageUrls.length) {
                 const remaining = imageUrls.slice(imageIndex);
                 blocks.push(
-                  <div key={`remaining-${imageIndex}`} className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    {remaining.map((url, idx) => (
-                      <div key={`rem-${idx}`} className="overflow-hidden">
-                        <img
-                          src={url}
-                          alt={section?.title || 'Service Image'}
-                          className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
-                        />
-                      </div>
-                    ))}
+                  <div key={`remaining-${imageIndex}`} className="space-y-6 mb-6">
+                    {remaining.map((url, idx) => {
+                      const globalIndex = imageIndex + idx;
+                      const alignment = globalIndex % 3 === 0 ? 'justify-start' : globalIndex % 3 === 1 ? 'justify-center' : 'justify-end';
+                      return (
+                        <div key={`rem-${idx}`} className={`flex w-full ${alignment}`}>
+                          <div className="overflow-hidden w-full md:max-w-2xl">
+                            <img
+                              src={url}
+                              alt={section?.title || 'Service Image'}
+                              className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 );
               }
