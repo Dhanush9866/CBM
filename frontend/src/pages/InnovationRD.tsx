@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getPageWithSections, SectionDto } from '@/utils/api';
-import { innovationRDSections } from '@/data/innovation-rd';
+// Cover photos are now provided by backend via SectionDto.coverPhoto
 import { useTranslation } from '@/contexts/TranslationContext';
 
 export default function InnovationRD() {
@@ -15,13 +15,7 @@ export default function InnovationRD() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Create cover photo mapping from frontend data
-  const coverPhotoMap: Record<string, string> = {};
-  innovationRDSections.forEach(section => {
-    if (section.image && section.image.includes('res.cloudinary.com')) {
-      coverPhotoMap[section.slug] = section.image;
-    }
-  });
+  // Cover photos will be read from backend (s.coverPhoto)
 
   useEffect(() => {
     let isMounted = true;
@@ -86,7 +80,7 @@ export default function InnovationRD() {
                 <h1 className="text-3xl lg:text-4xl font-bold mb-3">
                   {pageData?.title || 'Innovation & Research and Development (R&D)'}
                 </h1>
-                <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-none leading-relaxed md:leading-8 whitespace-pre-line text-justify">
+                <p className="text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed md:leading-8 whitespace-pre-line text-center">
                   {pageData?.description || 'We are pioneers in Condition-Based Monitoring (CBM), Technical Industrial Verification (TIV), and advanced R&D services, delivering next-generation solutions powered by IoT, AI, Robotics, and Industry 4.0 technologies. Our mission is to enhance safety, reliability, and sustainability across industries through intelligent monitoring, inspection, and verification systems.'}
                 </p>
               </>
@@ -123,7 +117,7 @@ export default function InnovationRD() {
                 }}
               >
                 <div className="aspect-video w-full overflow-hidden">
-                  <img src={coverPhotoMap[s.sectionId] || (s.images && s.images[0]) || '/placeholder.svg'} alt={s.title} className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-300" />
+                  <img src={s.coverPhoto || (s.images && s.images[0]) || '/placeholder.svg'} alt={s.title} className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-300" />
                 </div>
                 <CardHeader>
                   <CardTitle className="text-xl">{s.title}</CardTitle>

@@ -9,6 +9,16 @@ export interface OfficeData {
   is_lab_facility: boolean;
   notes: string;
   image_url?: string;
+  translations?: {
+    [languageCode: string]: {
+      region_name?: string;
+      region?: string;
+      country?: string;
+      office_name?: string;
+      address?: string;
+      notes?: string;
+    };
+  };
 }
 
 import { apiClient } from '@/utils/api';

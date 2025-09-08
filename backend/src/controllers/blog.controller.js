@@ -1,4 +1,5 @@
 const Blog = require('../models/Blog');
+const cloudinaryService = require('../services/cloudinary');
 
 // Get all published blogs with pagination and filtering
 const getAllBlogs = async (req, res) => {
@@ -18,7 +19,12 @@ const getAllBlogs = async (req, res) => {
     const skip = (pageNum - 1) * limitNum;
 
     // Build query
-    let query = { isPublished: true };
+    let query = {};
+    
+    // Only filter by published status if not requesting all blogs (for admin)
+    if (req.query.includeUnpublished !== 'true') {
+      query.isPublished = true;
+    }
 
     if (featured === 'true') {
       query.isFeatured = true;
@@ -29,20 +35,18 @@ const getAllBlogs = async (req, res) => {
     }
 
     if (search) {
-      query.$or = [
-        { title: { $regex: search, $options: 'i' } },
-        { excerpt: { $regex: search, $options: 'i' } },
-        { content: { $regex: search, $options: 'i' } },
-        { tags: { $in: [new RegExp(search, 'i')] } }
-      ];
+      query.title = { $regex: search, $options: 'i' };
     }
 
     // Build sort object
     const sort = {};
     sort[sortBy] = sortOrder === 'desc' ? -1 : 1;
 
+    // Include content for admin requests (when includeUnpublished=true)
+    const selectFields = req.query.includeUnpublished === 'true' ? '' : '-content';
+    
     const blogs = await Blog.find(query)
-      .select('-content') // Exclude full content for list view
+      .select(selectFields)
       .sort(sort)
       .skip(skip)
       .limit(limitNum)
@@ -263,7 +267,45 @@ const getAllTags = async (req, res) => {
 // Create new blog (Admin only)
 const createBlog = async (req, res) => {
   try {
+    console.log('Create blog request received:', {
+      body: req.body,
+      file: req.file ? 'File present' : 'No file',
+      headers: req.headers
+    });
+    
     const blogData = req.body;
+
+    // Handle uploaded featured image
+    if (req.file) {
+      try {
+        // Generate a unique public ID for the blog image
+        const timestamp = Date.now();
+        const publicId = `blog-${timestamp}`;
+        
+        const uploadResult = await cloudinaryService.uploadFromBuffer(req.file.buffer, {
+          folder: 'cbm/blog/featured-images',
+          public_id: publicId,
+          transformation: [
+            { width: 800, height: 600, crop: 'fit', quality: 'auto' }
+          ],
+          tags: ['blog', 'featured-image', 'cbm']
+        });
+        
+        blogData.featuredImage = uploadResult.url;
+      } catch (uploadError) {
+        console.error('Image upload error:', uploadError);
+        // If Cloudinary upload fails, keep the existing image URL or empty
+        console.warn('Cloudinary upload failed, using provided image URL or empty');
+      }
+    }
+
+    // Parse JSON fields if they exist
+    if (blogData.tags && typeof blogData.tags === 'string') {
+      blogData.tags = JSON.parse(blogData.tags);
+    }
+    if (blogData.images && typeof blogData.images === 'string') {
+      blogData.images = JSON.parse(blogData.images);
+    }
 
     // Generate slug if not provided
     if (!blogData.slug && blogData.title) {
@@ -295,9 +337,77 @@ const createBlog = async (req, res) => {
 // Update blog (Admin only)
 const updateBlog = async (req, res) => {
   try {
+    console.log('Update blog request received:', {
+      id: req.params.id,
+      body: req.body,
+      file: req.file ? 'File present' : 'No file',
+      headers: req.headers,
+      contentType: req.headers['content-type']
+    });
+    
     const { id } = req.params;
     const updateData = req.body;
+    
+    // Check if blog exists
+    const existingBlog = await Blog.findById(id);
+    if (!existingBlog) {
+      console.log('Blog not found for ID:', id);
+      return res.status(404).json({
+        success: false,
+        message: 'Blog post not found'
+      });
+    }
+    
+    console.log('Existing blog found:', {
+      id: existingBlog._id,
+      title: existingBlog.title,
+      featuredImage: existingBlog.featuredImage
+    });
 
+    // Handle uploaded featured image
+    if (req.file) {
+      try {
+        // Generate a unique public ID for the blog image
+        const timestamp = Date.now();
+        const publicId = `blog-${timestamp}`;
+        
+        const uploadResult = await cloudinaryService.uploadFromBuffer(req.file.buffer, {
+          folder: 'cbm/blog/featured-images',
+          public_id: publicId,
+          transformation: [
+            { width: 800, height: 600, crop: 'fit', quality: 'auto' }
+          ],
+          tags: ['blog', 'featured-image', 'cbm']
+        });
+        
+        updateData.featuredImage = uploadResult.url;
+      } catch (uploadError) {
+        console.error('Image upload error:', uploadError);
+        // If Cloudinary upload fails, keep the existing image URL or empty
+        console.warn('Cloudinary upload failed, using provided image URL or empty');
+      }
+    }
+
+    // Parse JSON fields if they exist
+    if (updateData.tags && typeof updateData.tags === 'string') {
+      try {
+        updateData.tags = JSON.parse(updateData.tags);
+      } catch (e) {
+        console.error('Error parsing tags:', e);
+        updateData.tags = [];
+      }
+    }
+    if (updateData.images && typeof updateData.images === 'string') {
+      try {
+        updateData.images = JSON.parse(updateData.images);
+      } catch (e) {
+        console.error('Error parsing images:', e);
+        updateData.images = [];
+      }
+    }
+
+    console.log('Updating blog with data:', updateData);
+    
     const blog = await Blog.findByIdAndUpdate(
       id,
       updateData,
@@ -305,12 +415,15 @@ const updateBlog = async (req, res) => {
     );
 
     if (!blog) {
+      console.log('Blog not found with ID:', id);
       return res.status(404).json({
         success: false,
         message: 'Blog post not found'
       });
     }
 
+    console.log('Blog updated successfully:', { id: blog._id, title: blog.title });
+    
     res.json({
       success: true,
       data: blog,

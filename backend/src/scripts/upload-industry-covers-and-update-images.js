@@ -1,6 +1,6 @@
 'use strict';
 
-// Uploads cover images from "frontend/uploads/<Industry Name> cover images"
+// Uploads cover images from "frontend/uploads/<Industry Name> cover-pic"
 // to Cloudinary and updates frontend/src/images.js to include a coverImages array
 // for each industry.
 
@@ -100,7 +100,7 @@ async function main() {
 
   // Find cover folders
   const coverDirs = await fs.promises.readdir(uploadsRoot, { withFileTypes: true });
-  const coverSuffix = ' cover images';
+  const coverSuffix = ' cover-pic';
   const targets = coverDirs.filter(d => d.isDirectory() && d.name.toLowerCase().endsWith(coverSuffix));
 
   for (const dirent of targets) {

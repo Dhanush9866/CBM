@@ -1,3 +1,4 @@
+
 'use strict';
 
 const mongoose = require('mongoose');
@@ -55,12 +56,12 @@ const RECRUITMENT_SELECTION = {
 
 function toMarkdown(data) {
   const lines = [];
-  lines.push(# ${data.service});
+  lines.push(`# ${data.service}`);
   for (const section of data.sections) {
-    if (section.heading) lines.push(\n## ${section.heading});
+    if (section.heading) lines.push(`\n## ${section.heading}`);
     if (Array.isArray(section.content)) {
       for (const bullet of section.content) {
-        lines.push(- ${bullet});
+        lines.push(`- ${bullet}`);
       }
     } else if (typeof section.content === 'string') {
       lines.push(section.content);
@@ -110,7 +111,7 @@ async function main() {
   try {
     const sectionId = await upsertSection();
     await linkSectionToPage(sectionId);
-    console.log(✅ ${RECRUITMENT_SELECTION.service} section upserted);
+    console.log(`✅ ${RECRUITMENT_SELECTION.service} section upserted`);
   } catch (e) {
     console.error('❌ Error:', e.message);
     process.exitCode = 1;
@@ -125,3 +126,5 @@ if (require.main === module) {
 }
 
 module.exports = { main };
+
+

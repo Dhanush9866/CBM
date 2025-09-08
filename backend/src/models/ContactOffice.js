@@ -2,6 +2,19 @@
 
 const mongoose = require('mongoose');
 
+// Translation schema for contact office fields
+const ContactOfficeTranslationSchema = new mongoose.Schema(
+  {
+    region_name: { type: String },
+    region: { type: String },
+    country: { type: String },
+    office_name: { type: String },
+    address: { type: String },
+    notes: { type: String }
+  },
+  { _id: false }
+);
+
 const ContactOfficeSchema = new mongoose.Schema(
   {
     region_name: { type: String, required: true, index: true },
@@ -15,7 +28,13 @@ const ContactOfficeSchema = new mongoose.Schema(
     notes: { type: String, default: '' },
     image_url: { type: String, default: '' },
     region_order: { type: Number, default: 0, index: true },
-    office_order: { type: Number, default: 0, index: true }
+    office_order: { type: Number, default: 0, index: true },
+    translations: {
+      // Pre-stored translations for contact office content
+      type: Map,
+      of: ContactOfficeTranslationSchema,
+      default: {},
+    }
   },
   { timestamps: true }
 );

@@ -1,3 +1,4 @@
+
 import { apiClient } from '@/utils/api';
 
 export interface StaticTranslations {
@@ -41,103 +42,91 @@ export interface StaticTranslations {
         secondaryCTAText: string;
       };
     };
-    industries?: {
-      hero?: {
-        title: string;
-        subtitle: string;
-        description: string;
-        primaryCTAText: string;
-        secondaryCTAText: string;
-      };
-    };
     about?: {
-      hero?: {
-        title: string;
-        subtitle: string;
-        description: string;
-        primaryCTAText: string;
-        secondaryCTAText: string;
+      title: string;
+      breadcrumb: {
+        home: string;
+        about: string;
       };
+      loading: string;
+      error: string;
     };
     careers?: {
-      hero?: {
-        title: string;
-        subtitle: string;
-        description: string;
-        primaryCTAText: string;
-        secondaryCTAText: string;
+      title: string;
+      description: string;
+      applyNow: string;
+    };
+    blog?: {
+      title: string;
+      description: string;
+    };
+    contact?: {
+      officesTitle: string;
+      officesDescription: string;
+      formTitle: string;
+      formDescription: string;
+      supportTitle: string;
+      supportDescription: string;
+      supportPhoneTitle: string;
+      supportPhoneDesc: string;
+      supportPhoneHours: string;
+      supportEmailTitle: string;
+      supportEmailDesc: string;
+      supportEmailResponse: string;
+      supportEmergencyTitle: string;
+      supportEmergencyDesc: string;
+      supportEmergencyNote: string;
+      responseGuaranteeTitle: string;
+      responsePhone: string;
+      responseEmail: string;
+      responseQuote: string;
+      labels: {
+        firstName: string;
+        lastName: string;
+        email: string;
+        phone: string;
+        company: string;
+        industry: string;
+        service: string;
+        message: string;
+        consent: string;
+      };
+      placeholders: {
+        firstName: string;
+        lastName: string;
+        email: string;
+        phone: string;
+        company: string;
+        selectIndustry: string;
+        selectService: string;
+        message: string;
+      };
+      cta: {
+        send: string;
+        sending: string;
       };
     };
   };
   services?: {
-    recruitment?: {
+    completeServicePortfolio: {
+      heading: string;
+      subheading: string;
+    };
+    servicesList: Array<{
+      id: number;
       title: string;
       description: string;
-    };
-    contractStaffing?: {
-      title: string;
-      description: string;
-    };
-    technicalStaff?: {
-      title: string;
-      description: string;
-    };
-    payrollHR?: {
-      title: string;
-      description: string;
-    };
-    backgroundVerification?: {
-      title: string;
-      description: string;
-    };
-    mobilization?: {
-      title: string;
-      description: string;
-    };
-    training?: {
-      title: string;
-      description: string;
-    };
+      icon: any;
+      link: string;
+      imageUrl: string;
+      features: string[];
+    }>;
   };
-  industries?: {
-    oilGas?: {
-      title: string;
-      description: string;
-    };
-    fpspFso?: {
-      title: string;
-      description: string;
-    };
-    miningMetals?: {
-      title: string;
-      description: string;
-    };
-    industrialManufacturing?: {
-      title: string;
-      description: string;
-    };
-    specializedEngineering?: {
-      title: string;
-      description: string;
-    };
-  };
-  about?: {
-    companyProfile?: {
-      title: string;
-      headOffice: string;
-      branchOffices: string;
-      established: string;
-    };
-    whoWeAre?: {
-      title: string;
-      description: string;
-    };
-    mission?: {
-      title: string;
-      description: string;
-    };
-    tagline: string;
-  };
+  industryStats?: Array<{
+    number: string;
+    label: string;
+    description: string;
+  }>;
 }
 
 export interface TranslationResponse {
@@ -233,4 +222,5 @@ class TranslationService {
 
 export const translationService = new TranslationService();
 export default translationService;
+
 

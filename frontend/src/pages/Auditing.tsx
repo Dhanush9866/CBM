@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getPageWithSections, SectionDto } from '@/utils/api';
-import { auditingItems } from '@/data/auditing';
 import { useTranslation } from '@/contexts/TranslationContext';
 
 export default function Auditing() {
@@ -15,13 +14,7 @@ export default function Auditing() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Create cover photo mapping from frontend data
-  const coverPhotoMap: Record<string, string> = {};
-  auditingItems.forEach(section => {
-    if (section.image && section.image.includes('res.cloudinary.com')) {
-      coverPhotoMap[section.slug] = section.image;
-    }
-  });
+  // Cover photos will be read from backend (item.coverPhoto)
 
   useEffect(() => {
     let isMounted = true;
@@ -85,7 +78,7 @@ export default function Auditing() {
                 <h1 className="text-3xl lg:text-4xl font-bold mb-3">
                   {pageData?.title || 'Auditing (A)'}
                 </h1>
-                <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-none leading-relaxed md:leading-8 whitespace-pre-line text-justify">
+                <p className="text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed md:leading-8 whitespace-pre-line text-center">
                   {pageData?.description || 'Our Auditing Services provide independent, systematic, and comprehensive evaluations to ensure compliance, efficiency, and safety across industrial operations. With certified auditors and global expertise, we help organizations identify gaps, mitigate risks, and enhance operational performance in line with international standards and regulatory requirements. "Independent Auditing Services – Driving Compliance, Safety, and Operational Excellence."'}
                 </p>
               </>
@@ -122,7 +115,7 @@ export default function Auditing() {
                 }}
               >
                 <div className="aspect-video w-full overflow-hidden">
-                  <img src={coverPhotoMap[item.sectionId] || (item.images && item.images[0]) || '/placeholder.svg'} alt={item.title} className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-300" />
+                  <img src={item.coverPhoto || (item.images && item.images[0]) || '/placeholder.svg'} alt={item.title} className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-300" />
                 </div>
                 <CardHeader>
                   <CardTitle className="text-xl">{item.title}</CardTitle>
