@@ -5,12 +5,12 @@ const { ApiError } = require('../utils/error');
 
 async function createSection(req, res, next) {
   try {
-    const { title, bodyText, pageNumber, sectionId, language = 'en', translations = {} } = req.body;
+    const { title, bodyText, pageNumber, sectionId, language = 'en', translations = {}, coverPhoto } = req.body;
     if (!title || !bodyText) throw new ApiError(400, 'title and bodyText are required');
 
     const images = (req.files || []).map((f) => `/uploads/${f.filename}`);
 
-    const section = await Section.create({ title, bodyText, images, pageNumber, sectionId, language, translations });
+    const section = await Section.create({ title, bodyText, images, coverPhoto, pageNumber, sectionId, language, translations });
     res.status(201).json({ success: true, data: section });
   } catch (err) {
     next(err);
@@ -77,13 +77,14 @@ async function getSections(req, res, next) {
 async function updateSection(req, res, next) {
   try {
     const { id } = req.params;
-    const { title, bodyText, pageNumber, sectionId, translations } = req.body;
+    const { title, bodyText, pageNumber, sectionId, translations, coverPhoto } = req.body;
     const updates = {};
     if (title !== undefined) updates.title = title;
     if (bodyText !== undefined) updates.bodyText = bodyText;
     if (pageNumber !== undefined) updates.pageNumber = pageNumber;
     if (sectionId !== undefined) updates.sectionId = sectionId;
     if (translations !== undefined) updates.translations = translations;
+    if (coverPhoto !== undefined) updates.coverPhoto = coverPhoto;
 
     if (req.files && req.files.length > 0) {
       updates.$push = { images: { $each: req.files.map((f) => `/uploads/${f.filename}`) } };

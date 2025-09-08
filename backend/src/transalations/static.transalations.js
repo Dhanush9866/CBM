@@ -69,7 +69,34 @@ const translations = {
         careers: {
           title: "Current Openings",
           description: "Explore exciting career opportunities across our global organization. Find the perfect role to advance your career.",
-          applyNow: "Apply Now"
+          applyNow: "Apply Now",
+          hiringProcess: {
+            title: "Our Hiring Process",
+            description: "We've designed our process to be transparent, efficient, and focused on finding the right mutual fit.",
+            steps: {
+              review: {
+                title: "Application Review",
+                description: "Our talent team reviews your application and qualifications against role requirements."
+              },
+              interview: {
+                title: "Initial Interview",
+                description: "Phone or video interview to discuss your background, interests, and fit for the role."
+              },
+              assessment: {
+                title: "Technical Assessment",
+                description: "Role-specific technical evaluation or case study to assess your capabilities."
+              },
+              final: {
+                title: "Final Interview",
+                description: "Meet with hiring managers and team members to discuss collaboration and next steps."
+              }
+            }
+          },
+          currentOpenings: {
+            loadingText: "Loading careers...",
+            generalApplicationText: "Don't see the right role? We're always looking for talented individuals.",
+            submitGeneralApplication: "Submit General Application"
+          }
         },
         blog: {
           title: "Latest Articles",
@@ -295,7 +322,34 @@ const translations = {
         careers: {
           title: "Offres d'emploi actuelles",
           description: "Découvrez des opportunités de carrière passionnantes au sein de notre organisation mondiale. Trouvez le poste idéal pour faire progresser votre carrière.",
-          applyNow: "Postuler maintenant"
+          applyNow: "Postuler maintenant",
+          hiringProcess: {
+            title: "Notre processus de recrutement",
+            description: "Nous avons conçu un processus transparent, efficace et axé sur la recherche de l'adéquation mutuelle.",
+            steps: {
+              review: {
+                title: "Examen de la candidature",
+                description: "Notre équipe RH examine votre candidature et vos qualifications par rapport aux exigences du poste."
+              },
+              interview: {
+                title: "Entretien initial",
+                description: "Entretien téléphonique ou vidéo pour discuter de votre parcours, de vos intérêts et de votre adéquation au poste."
+              },
+              assessment: {
+                title: "Évaluation technique",
+                description: "Évaluation technique spécifique au poste ou étude de cas pour évaluer vos compétences."
+              },
+              final: {
+                title: "Entretien final",
+                description: "Rencontrez les responsables du recrutement et les membres de l'équipe pour discuter de la collaboration et des prochaines étapes."
+              }
+            }
+          },
+          currentOpenings: {
+            loadingText: "Chargement des offres...",
+            generalApplicationText: "Vous ne trouvez pas le bon poste ? Nous recherchons toujours des talents.",
+            submitGeneralApplication: "Envoyer une candidature spontanée"
+          }
         },
         blog: {
           title: "Derniers Articles",
@@ -521,7 +575,34 @@ const translations = {
         careers: {
           title: "Vagas Abertas",
           description: "Explore oportunidades de carreira empolgantes em nossa organização global. Encontre o cargo ideal para avançar na sua carreira.",
-          applyNow: "Candidatar-se agora"
+          applyNow: "Candidatar-se agora",
+          hiringProcess: {
+            title: "Nosso processo de contratação",
+            description: "Criamos um processo transparente, eficiente e focado em encontrar o melhor encaixe mútuo.",
+            steps: {
+              review: {
+                title: "Análise da candidatura",
+                description: "Nossa equipe de talentos avalia sua candidatura e qualificações em relação aos requisitos da vaga."
+              },
+              interview: {
+                title: "Entrevista inicial",
+                description: "Entrevista por telefone ou vídeo para discutir sua experiência, interesses e aderência à função."
+              },
+              assessment: {
+                title: "Avaliação técnica",
+                description: "Avaliação técnica específica da função ou estudo de caso para avaliar suas capacidades."
+              },
+              final: {
+                title: "Entrevista final",
+                description: "Reunião com os gestores e membros da equipe para discutir colaboração e próximos passos."
+              }
+            }
+          },
+          currentOpenings: {
+            loadingText: "Carregando vagas...",
+            generalApplicationText: "Não encontrou a vaga ideal? Estamos sempre em busca de talentos.",
+            submitGeneralApplication: "Enviar candidatura geral"
+          }
         },
         blog: {
           title: "Artigos Mais Recentes",
@@ -747,7 +828,34 @@ const translations = {
         careers: {
           title: "Vacantes Actuales",
           description: "Explora emocionantes oportunidades de carrera en nuestra organización global. Encuentra el puesto perfecto para impulsar tu carrera.",
-          applyNow: "Postular ahora"
+          applyNow: "Postular ahora",
+          hiringProcess: {
+            title: "Nuestro proceso de contratación",
+            description: "Hemos diseñado un proceso transparente, eficiente y centrado en encontrar el ajuste mutuo adecuado.",
+            steps: {
+              review: {
+                title: "Revisión de la solicitud",
+                description: "Nuestro equipo de talento revisa tu solicitud y calificaciones en relación con los requisitos del puesto."
+              },
+              interview: {
+                title: "Entrevista inicial",
+                description: "Entrevista telefónica o por video para hablar sobre tu experiencia, intereses y encaje con el puesto."
+              },
+              assessment: {
+                title: "Evaluación técnica",
+                description: "Evaluación técnica específica del puesto o caso práctico para valorar tus capacidades."
+              },
+              final: {
+                title: "Entrevista final",
+                description: "Reúnete con los responsables de contratación y miembros del equipo para hablar de la colaboración y los siguientes pasos."
+              }
+            }
+          },
+          currentOpenings: {
+            loadingText: "Cargando vacantes...",
+            generalApplicationText: "¿No ves el puesto adecuado? Siempre buscamos personas con talento.",
+            submitGeneralApplication: "Enviar candidatura general"
+          }
         },
         blog: {
           title: "Artículos Recientes",
@@ -973,7 +1081,34 @@ const translations = {
         careers: {
           title: "Актуальные вакансии",
           description: "Изучите интересные карьерные возможности в нашей глобальной организации. Найдите идеальную роль для развития вашей карьеры.",
-          applyNow: "Подать заявку"
+          applyNow: "Подать заявку",
+          hiringProcess: {
+            title: "Наш процесс найма",
+            description: "Мы разработали прозрачный и эффективный процесс, нацеленный на поиск взаимного соответствия.",
+            steps: {
+              review: {
+                title: "Рассмотрение заявки",
+                description: "Наша команда по подбору изучает вашу заявку и квалификацию в соответствии с требованиями роли."
+              },
+              interview: {
+                title: "Первичное интервью",
+                description: "Телефонное или видео-интервью для обсуждения вашего опыта, интересов и соответствия роли."
+              },
+              assessment: {
+                title: "Техническая оценка",
+                description: "Тематическая техническая проверка или кейс для оценки ваших компетенций."
+              },
+              final: {
+                title: "Финальное интервью",
+                description: "Встреча с руководителями и членами команды для обсуждения сотрудничества и следующих шагов."
+              }
+            }
+          },
+          currentOpenings: {
+            loadingText: "Загрузка вакансий...",
+            generalApplicationText: "Не нашли подходящую роль? Мы всегда рады талантливым специалистам.",
+            submitGeneralApplication: "Отправить общую заявку"
+          }
         },
         blog: {
           title: "Последние статьи",

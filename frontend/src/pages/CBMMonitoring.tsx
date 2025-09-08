@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getPageWithSections, SectionDto } from '@/utils/api';
-import { cbmItems } from '@/data/cbm';
+// Cover photos are now provided by backend via SectionDto.coverPhoto
 import { useTranslation } from '@/contexts/TranslationContext';
 
 export default function CBMMonitoring() {
@@ -15,13 +15,7 @@ export default function CBMMonitoring() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Create cover photo mapping from frontend data
-  const coverPhotoMap: Record<string, string> = {};
-  cbmItems.forEach(section => {
-    if (section.image && section.image.includes('res.cloudinary.com')) {
-      coverPhotoMap[section.slug] = section.image;
-    }
-  });
+  // Cover photos will be read from backend (item.coverPhoto)
 
   useEffect(() => {
     let isMounted = true;
@@ -85,7 +79,7 @@ export default function CBMMonitoring() {
                 <h1 className="text-3xl lg:text-4xl font-bold mb-3">
                   {pageData?.title || 'Condition based Monitoring (CBM)'}
                 </h1>
-                <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-none leading-relaxed md:leading-8 whitespace-pre-line text-justify">
+                <p className="text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed md:leading-8 whitespace-pre-line text-center">
                   {pageData?.description || 'Our Condition-Based Monitoring (CBM) services provide real-time insights into the health and performance of critical assets, enabling predictive maintenance, reduced downtime, and extended equipment life. By integrating IoT, AI, and advanced sensor technologies, we help industries move from reactive and scheduled maintenance to a datadriven, proactive approach. "Smart Monitoring. Predictive Insights. Reliable Assets."'}
                 </p>
               </>
@@ -122,7 +116,7 @@ export default function CBMMonitoring() {
                 }}
               >
                 <div className="aspect-video w-full overflow-hidden">
-                  <img src={coverPhotoMap[item.sectionId] || (item.images && item.images[0]) || '/placeholder.svg'} alt={item.title} className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-300" />
+                  <img src={item.coverPhoto || (item.images && item.images[0]) || '/placeholder.svg'} alt={item.title} className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-300" />
                 </div>
                 <CardHeader>
                   <CardTitle className="text-xl">{item.title}</CardTitle>

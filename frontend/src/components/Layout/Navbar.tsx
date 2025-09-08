@@ -155,7 +155,7 @@ export function Navbar() {
                 </Link>
               </Button>
               <Button className="btn-primary" asChild>
-                <Link to="/contact">
+                <Link to="/contact#contact-form">
                   {translations?.navbar.contactUs || 'Contact Us'}
                 </Link>
               </Button>
@@ -233,7 +233,7 @@ export function Navbar() {
                       </Link>
                     </Button>
                     <Button className="btn-primary" asChild>
-                      <Link to="/contact" onClick={() => setIsOpen(false)}>
+                      <Link to="/contact#contact-form" onClick={() => setIsOpen(false)}>
                         {translations?.navbar.contactUs || 'Contact Us'}
                       </Link>
                     </Button>

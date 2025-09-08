@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { getPageWithSections, SectionDto } from '@/utils/api';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslation } from '@/contexts/TranslationContext';
+// Prefer coverPhoto from backend; industry-specific helper remains fallback
 import { getIndustryCoverImage } from '@/utils/industryImages';
 
 export default function Industries() {
@@ -69,7 +70,7 @@ export default function Industries() {
                 <h1 className="text-3xl lg:text-4xl font-bold mb-3">
                   {pageData?.title || 'Industries We Serve'}
                 </h1>
-                <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-none leading-relaxed md:leading-8 whitespace-pre-line text-justify">
+                <p className="text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed md:leading-8 whitespace-pre-line text-center">
                   {pageData?.description || 'From automotive to aerospace, healthcare to energy - we provide specialized services across all major industry sectors. Our deep industry knowledge and specialized services are tailored to meet the unique challenges and regulatory requirements of your sector.'}
                 </p>
               </>
@@ -168,7 +169,7 @@ export default function Industries() {
               >
                 <div className="aspect-video w-full overflow-hidden">
                   <img 
-                    src={getIndustryCoverImage(s.title) || (s.images && s.images[0]) || '/placeholder.svg'} 
+                    src={s.coverPhoto || getIndustryCoverImage(s.title) || (s.images && s.images[0]) || '/placeholder.svg'} 
                     alt={s.title} 
                     className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-300" 
                   />

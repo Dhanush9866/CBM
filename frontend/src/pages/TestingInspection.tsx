@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getPageWithSections, SectionDto } from '@/utils/api';
-import { testingSections } from '@/data/testing';
+// Cover photos are now provided by backend via SectionDto.coverPhoto
 import { useTranslation } from '@/contexts/TranslationContext';
 
 export default function TestingInspection() {
@@ -15,13 +15,7 @@ export default function TestingInspection() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Create cover photo mapping from frontend data
-  const coverPhotoMap: Record<string, string> = {};
-  testingSections.forEach(section => {
-    if (section.image && section.image.includes('res.cloudinary.com')) {
-      coverPhotoMap[section.slug] = section.image;
-    }
-  });
+  // Cover photos will be read from backend (s.coverPhoto)
 
   useEffect(() => {
     let isMounted = true;
@@ -85,7 +79,7 @@ export default function TestingInspection() {
                 <h1 className="text-3xl lg:text-4xl font-bold mb-3">
                   {pageData?.title || 'Testing'}
                 </h1>
-                <p className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-none leading-relaxed md:leading-8 whitespace-pre-line text-justify">
+                <p className="text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed md:leading-8 whitespace-pre-line text-center">
                   {pageData?.description || 'Our Testing Services provide precise, reliable, and globally recognized solutions to ensure the safety, quality, and compliance of critical assets across industries. Backed by advanced laboratories, certified professionals, and innovative technologies, we deliver end-to-end testing support tailored to client requirements and international standards. "Delivering Trusted Testing Services – Ensuring Safety, Quality, and Compliance Across Global Industries."'}
                 </p>
               </>
@@ -122,7 +116,7 @@ export default function TestingInspection() {
                 }}
               >
                 <div className="aspect-video w-full overflow-hidden">
-                  <img src={coverPhotoMap[s.sectionId] || (s.images && s.images[0]) || '/placeholder.svg'} alt={s.title} className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-300" />
+                  <img src={s.coverPhoto || (s.images && s.images[0]) || '/placeholder.svg'} alt={s.title} className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-300" />
                 </div>
                 <CardHeader>
                   <CardTitle className="text-xl">{s.title}</CardTitle>
