@@ -79,7 +79,7 @@ export default function TestingInspection() {
                 <h1 className="text-3xl lg:text-4xl font-bold mb-3">
                   {pageData?.title || 'Testing'}
                 </h1>
-                <p className="text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed md:leading-8 whitespace-pre-line text-center">
+                <p className="text-xs md:text-base lg:text-lg text-muted-foreground leading-relaxed md:leading-8 whitespace-pre-line text-center">
                   {pageData?.description || 'Our Testing Services provide precise, reliable, and globally recognized solutions to ensure the safety, quality, and compliance of critical assets across industries. Backed by advanced laboratories, certified professionals, and innovative technologies, we deliver end-to-end testing support tailored to client requirements and international standards. "Delivering Trusted Testing Services – Ensuring Safety, Quality, and Compliance Across Global Industries."'}
                 </p>
               </>
