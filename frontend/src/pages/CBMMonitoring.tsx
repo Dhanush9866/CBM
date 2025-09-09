@@ -90,12 +90,7 @@ export default function CBMMonitoring() {
       <section className="section pt-6">
         <div className="container-responsive">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {loading && (
-              <div className="col-span-full flex flex-col items-center">
-                <LoadingAnimation size="sm" text="" />
-                <div className="text-center text-muted-foreground mt-2">Loading...</div>
-              </div>
-            )}
+            
             {error && !loading && (
               <div className="col-span-full text-center text-destructive">{error}</div>
             )}

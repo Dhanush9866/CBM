@@ -8,7 +8,6 @@ interface LoadingAnimationProps {
 
 const LoadingAnimation: React.FC<LoadingAnimationProps> = ({ 
   size = 'md', 
-  text = '360',
   className = '' 
 }) => {
   const sizeClasses = {
@@ -38,15 +37,15 @@ const LoadingAnimation: React.FC<LoadingAnimationProps> = ({
     },
     md: {
       first: 'inset-0',
-      second: 'inset-2',
-      third: 'inset-4',
-      fourth: 'inset-6'
+      second: 'inset-1',
+      third: 'inset-2',
+      fourth: 'inset-3'
     },
     lg: {
       first: 'inset-0',
-      second: 'inset-3',
-      third: 'inset-6',
-      fourth: 'inset-9'
+      second: 'inset-2',
+      third: 'inset-4',
+      fourth: 'inset-6'
     }
   };
 
@@ -97,8 +96,9 @@ const LoadingAnimation: React.FC<LoadingAnimationProps> = ({
         />
         
         {/* Center text */}
-        <div className={`absolute inset-0 flex items-center justify-center ${textSizeClasses[size]} font-bold text-gray-800`}>
-          {text}
+        <div className={`absolute inset-0 flex items-center justify-center ${textSizeClasses[size]} font-semibold text-gray-500 animate-pulse`}
+             style={{ padding: size === 'sm' ? '10px' : size === 'md' ? '14px' : '18px' }}>
+          360
         </div>
       </div>
     </div>
