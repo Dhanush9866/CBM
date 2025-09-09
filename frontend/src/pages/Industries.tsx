@@ -11,6 +11,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { useTranslation } from '@/contexts/TranslationContext';
 // Prefer coverPhoto from backend; industry-specific helper remains fallback
 import { getIndustryCoverImage } from '@/utils/industryImages';
+import LoadingAnimation from '@/components/Common/LoadingAnimation';
 
 export default function Industries() {
   const navigate = useNavigate();
@@ -59,11 +60,9 @@ export default function Industries() {
         <div className="container-responsive">
           <div className="mt-6 text-center">
             {loading ? (
-              <div className="animate-pulse">
-                <div className="h-10 bg-gray-200 rounded mb-3 mx-auto max-w-md"></div>
-                <div className="h-6 bg-gray-200 rounded mb-2 mx-auto max-w-4xl"></div>
-                <div className="h-6 bg-gray-200 rounded mb-2 mx-auto max-w-4xl"></div>
-                <div className="h-6 bg-gray-200 rounded mx-auto max-w-3xl"></div>
+              <div className="flex flex-col items-center">
+                <LoadingAnimation size="md" text="Loading" />
+                <p className="text-muted-foreground mt-4">Loading page...</p>
               </div>
             ) : (
               <>
@@ -148,7 +147,10 @@ export default function Industries() {
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {loading && (
-              <div className="col-span-full text-center text-muted-foreground">Loading...</div>
+              <div className="col-span-full flex flex-col items-center">
+                <LoadingAnimation size="sm" text="" />
+                <div className="text-center text-muted-foreground mt-2">Loading...</div>
+              </div>
             )}
             {error && !loading && (
               <div className="col-span-full text-center text-destructive">{error}</div>
