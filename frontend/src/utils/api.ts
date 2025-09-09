@@ -12,6 +12,8 @@ export const apiClient = axios.create({
 
 // Debug logging via interceptors
 apiClient.interceptors.request.use((config) => {
+  // Attach high-resolution timer start
+  (config as any).__perfStart = performance.now();
   // eslint-disable-next-line no-console
   console.log('[API][REQUEST]', {
     method: config.method,
@@ -24,6 +26,13 @@ apiClient.interceptors.request.use((config) => {
 
 apiClient.interceptors.response.use(
   (response) => {
+    const start = (response.config as any).__perfStart as number | undefined;
+    if (typeof start === 'number') {
+      const end = performance.now();
+      const duration = (end - start).toFixed(2);
+      // eslint-disable-next-line no-console
+      console.log(`Frontend fetch to ${response.config.url} took ${duration} ms`);
+    }
     // eslint-disable-next-line no-console
     console.log('[API][RESPONSE]', {
       url: response.config.url,
@@ -33,6 +42,13 @@ apiClient.interceptors.response.use(
     return response;
   },
   (error) => {
+    const start = (error.config as any)?.__perfStart as number | undefined;
+    if (typeof start === 'number') {
+      const end = performance.now();
+      const duration = (end - start).toFixed(2);
+      // eslint-disable-next-line no-console
+      console.log(`Frontend fetch to ${error.config?.url} failed after ${duration} ms`);
+    }
     // eslint-disable-next-line no-console
     console.error('[API][ERROR]', {
       url: error.config?.url,

@@ -33,6 +33,21 @@ function createApp() {
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ extended: true }));
 
+  // Global request duration middleware
+  app.use((req, res, next) => {
+    const start = Date.now();
+    res.on('finish', () => {
+      const duration = Date.now() - start;
+      // eslint-disable-next-line no-console
+      if (duration > 1000) {
+        console.warn(`⚠️ Slow API: ${req.method} ${req.originalUrl} took ${duration}ms`);
+      } else {
+        console.log(`${req.method} ${req.originalUrl} took ${duration}ms`);
+      }
+    });
+    next();
+  });
+
   // Logging: METHOD PATH STATUS(response code colored) DURATION
   const colorizeStatus = (status) => {
     if (status >= 500) return `\x1b[31m${status}\x1b[0m`; // red

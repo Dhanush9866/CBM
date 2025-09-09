@@ -115,40 +115,70 @@ async function getPageBySlug(req, res, next) {
   try {
     const { slug } = req.params;
     const { populate = 'true', lang } = req.query;
+    const startDb = Date.now();
     
     const normalizedSlug = String(slug || '').trim();
 
+    const projection = populate === 'true'
+      ? { title: 1, description: 1, slug: 1, language: 1, sections: 1, translations: 1 }
+      : { title: 1, description: 1, slug: 1, language: 1, translations: 1 };
+
     let query = Page.findOne({ 
       slug: normalizedSlug, 
-      isActive: true 
-    });
+      isActive: true,
+      ...(lang ? { language: String(lang).toLowerCase() } : {})
+    }, projection).lean();
     
     if (populate === 'true') {
-      query = query.populate({
+      query = Page.findOne({ 
+        slug: normalizedSlug, 
+        isActive: true,
+        ...(lang ? { language: String(lang).toLowerCase() } : {})
+      }, projection)
+      .populate({
         path: 'sections',
         select: 'title bodyText images language pageNumber sectionId translations',
         match: { isActive: true },
         options: { 
           sort: { pageNumber: 1 }
         }
-      });
+      })
+      .lean();
+    }
+
+    // Basic 60s cache using cache service (Redis or in-memory fallback)
+    const { get: cacheGet, set: cacheSet } = require('../services/cache');
+    const cacheKey = `page:${normalizedSlug}:${lang || 'en'}:${populate}`;
+    const cached = await cacheGet(cacheKey);
+    if (cached) {
+      // eslint-disable-next-line no-console
+      console.log(`Cache hit: ${cacheKey}`);
+      return res.json({ success: true, data: cached });
     }
 
     let page = await query;
+    const firstQueryMs = Date.now() - startDb;
+    // eslint-disable-next-line no-console
+    console.log(`MongoDB query (Page by slug initial) took ${firstQueryMs} ms`);
     
     if (!page) {
       const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       const pattern = `^\\s*${escapeRegex(normalizedSlug)}\\s*$`;
+      const startFallback = Date.now();
       page = await Page.findOne({ 
         slug: { $regex: pattern, $options: 'i' }, 
-        isActive: true 
-      });
+        isActive: true,
+        ...(lang ? { language: String(lang).toLowerCase() } : {})
+      }, projection).lean();
+      const fallbackMs = Date.now() - startFallback;
+      // eslint-disable-next-line no-console
+      console.log(`MongoDB query (Page by slug fallback) took ${fallbackMs} ms`);
     }
     if (!page) {
       throw new ApiError(404, 'Page not found');
     }
 
-    // Handle language translation for page and sections
+    // Handle language translation for page and sections (works with lean docs)
     if (lang && lang !== 'en') {
       // Translate page title and description
       let pageFromDb = null;
@@ -167,7 +197,7 @@ async function getPageBySlug(req, res, next) {
       }
 
       // Translate sections if populated
-      if (page.sections && page.sections.length > 0) {
+      if (Array.isArray(page.sections) && page.sections.length > 0) {
         for (const section of page.sections) {
           // Handle both Map and Object formats for translations
           let sectionFromDb = null;
@@ -188,6 +218,8 @@ async function getPageBySlug(req, res, next) {
       }
     }
     
+    // Store in cache for 60s
+    try { await cacheSet(cacheKey, page, 60); } catch (_) {}
     res.json({ success: true, data: page });
   } catch (err) {
     next(err);
