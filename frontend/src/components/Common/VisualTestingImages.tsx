@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { imageService, CloudinaryImage } from '@/services/imageService';
+import LoadingAnimation from '@/components/Common/LoadingAnimation';
 
 export default function VisualTestingImages() {
   const [images, setImages] = useState<CloudinaryImage[]>([]);
@@ -24,9 +25,9 @@ export default function VisualTestingImages() {
 
   if (isLoading) {
     return (
-      <div className="text-center py-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-        <p className="text-muted-foreground">Loading Visual Testing images...</p>
+      <div className="text-center py-8 flex flex-col items-center">
+        <LoadingAnimation size="sm" text="" />
+        <p className="text-muted-foreground mt-4">Loading Visual Testing images...</p>
       </div>
     );
   }

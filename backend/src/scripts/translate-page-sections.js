@@ -26,7 +26,7 @@ const TARGET_LANGUAGES = ['fr', 'pt', 'es', 'ru'];
 // Database connection
 async function connectDB() {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://cbm360tiv:MiiFze4xYGr6XNji@cluster0.sf6iagh.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster');
+    await mongoose.connect( 'mongodb+srv://cbm360tiv_db_user:ghtVDlZZEZRwzGOW@cluster0.wizvkjv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
     console.log('✅ Connected to MongoDB');
   } catch (error) {
     console.error('❌ MongoDB connection error:', error.message);
@@ -41,8 +41,8 @@ function initializeTranslationClient() {
       projectId: process.env.GOOGLE_CLOUD_PROJECT_ID || 'your-project-id',
     };
     
-    if (process.env.GOOGLE_CLOUD_API_KEY) {
-      config.key = process.env.GOOGLE_CLOUD_API_KEY;
+    if ('AIzaSyAWiR1KCKcclqjPUQrBxmTEFgjtV3cv5CY'||process.env.GOOGLE_CLOUD_API_KEY) {
+      config.key = 'AIzaSyAWiR1KCKcclqjPUQrBxmTEFgjtV3cv5CY' || process.env.GOOGLE_CLOUD_API_KEY;
       console.log('✅ Using Google Cloud API Key for authentication');
     } else if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
       config.keyFilename = process.env.GOOGLE_APPLICATION_CREDENTIALS;

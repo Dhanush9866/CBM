@@ -2,6 +2,7 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { Button } from '@/components/ui/button';
+import LoadingAnimation from '@/components/Common/LoadingAnimation';
 import { getPageWithSections, PageDto, SectionDto } from '@/utils/api';
 import { useTranslation } from '@/contexts/TranslationContext';
 
@@ -52,9 +53,9 @@ export default function IndustriesDetail() {
   if (loading) {
     return (
       <section className="section">
-        <div className="container-responsive text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading industry details...</p>
+        <div className="container-responsive text-center flex flex-col items-center">
+          <LoadingAnimation size="sm" text="" />
+          <p className="text-muted-foreground mt-4">Loading industry details...</p>
         </div>
       </section>
     );
