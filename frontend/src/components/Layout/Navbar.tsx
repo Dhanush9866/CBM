@@ -149,14 +149,14 @@ export function Navbar() {
 
             {/* CTA Button */}
             <div className="hidden lg:flex items-center space-x-4">
-              <Button variant="outline" size="sm" asChild>
+              {/* <Button variant="outline" size="sm" asChild>
                 <Link to="/contact">
                   {translations?.navbar.getQuote || 'Get Quote'}
                 </Link>
-              </Button>
+              </Button> */}
               <Button className="btn-primary" asChild>
                 <Link to="/contact#contact-form">
-                  {translations?.navbar.contactUs || 'Contact Us'}
+                  {translations?.navbar.contactUs || 'Get Quote'}
                 </Link>
               </Button>
             </div>
