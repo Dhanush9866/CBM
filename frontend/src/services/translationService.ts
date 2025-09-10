@@ -149,7 +149,7 @@ export interface AllTranslationsResponse {
 
 class TranslationService {
   private cache = new Map<string, { data: StaticTranslations; timestamp: number }>();
-  private readonly CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
+  private readonly CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache
 
   async getStaticTranslations(language: string): Promise<StaticTranslations> {
     const cacheKey = `static_${language}`;

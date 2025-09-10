@@ -65,11 +65,11 @@ export function Navbar() {
             <div className="flex items-center space-x-6">
               <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4" />
-                <span>+1 (555) 123-4567</span>
+                <span>+44 7934 980214</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4" />
-                <span>contact@cbm.com</span>
+                <span>Support@cbm360tiv.com</span>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -149,14 +149,14 @@ export function Navbar() {
 
             {/* CTA Button */}
             <div className="hidden lg:flex items-center space-x-4">
-              <Button variant="outline" size="sm" asChild>
+              {/* <Button variant="outline" size="sm" asChild>
                 <Link to="/contact">
                   {translations?.navbar.getQuote || 'Get Quote'}
                 </Link>
-              </Button>
+              </Button> */}
               <Button className="btn-primary" asChild>
                 <Link to="/contact#contact-form">
-                  {translations?.navbar.contactUs || 'Contact Us'}
+                  {translations?.navbar.contactUs || 'Get Quote'}
                 </Link>
               </Button>
             </div>

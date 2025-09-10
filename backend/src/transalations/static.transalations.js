@@ -232,22 +232,22 @@ const translations = {
       },
       industryStats: [
         {
-          number: "150+",
+          number: "72+",
           label: "Countries Served",
           description: "Global presence with local expertise"
         },
         {
-          number: "25,000+",
+          number: "7,000+",
           label: "Experts Worldwide",
           description: "Highly qualified professionals"
         },
         {
-          number: "1,000+",
+          number: "25+",
           label: "Testing Laboratories",
           description: "State-of-the-art facilities"
         },
         {
-          number: "150",
+          number: "33",
           label: "Years of Excellence",
           description: "Trusted since 1866"
         }
@@ -485,22 +485,22 @@ const translations = {
       },
       industryStats: [
         {
-          number: "150+",
+          number: "72+",
           label: "Pays Desservis",
           description: "Présence mondiale avec expertise locale"
         },
         {
-          number: "25,000+",
+          number: "7,000+",
           label: "Experts dans le Monde",
           description: "Professionnels hautement qualifiés"
         },
         {
-          number: "1,000+",
+          number: "25+",
           label: "Laboratoires de Test",
           description: "Installations de pointe"
         },
         {
-          number: "150",
+          number: "33",
           label: "Années d'Excellence",
           description: "De confiance depuis 1866"
         }
@@ -738,22 +738,22 @@ const translations = {
       },
       industryStats: [
         {
-          number: "150+",
+          number: "72+",
           label: "Países Atendidos",
           description: "Presença global com expertise local"
         },
         {
-          number: "25,000+",
+          number: "7,000+",
           label: "Especialistas no Mundo",
           description: "Profissionais altamente qualificados"
         },
         {
-          number: "1,000+",
+          number: "25+",
           label: "Laboratórios de Teste",
           description: "Instalações de última geração"
         },
         {
-          number: "150",
+          number: "33",
           label: "Anos de Excelência",
           description: "Confiável desde 1866"
         }
@@ -991,22 +991,22 @@ const translations = {
       },
       industryStats: [
         {
-          number: "150+",
+          number: "72+",
           label: "Países Atendidos",
           description: "Presencia global con experiencia local"
         },
         {
-          number: "25,000+",
+          number: "7,000+",
           label: "Expertos en el Mundo",
           description: "Profesionales altamente calificados"
         },
         {
-          number: "1,000+",
+          number: "25+",
           label: "Laboratorios de Prueba",
           description: "Instalaciones de vanguardia"
         },
         {
-          number: "150",
+          number: "33",
           label: "Años de Excelencia",
           description: "Confiable desde 1866"
         }
@@ -1244,22 +1244,22 @@ const translations = {
       },
       industryStats: [
         {
-          number: "150+",
+          number: "72+",
           label: "Обслуживаемые Страны",
           description: "Глобальное присутствие с местной экспертизой"
         },
         {
-          number: "25,000+",
+          number: "7,000+",
           label: "Экспертов по Миру",
           description: "Высококвалифицированные специалисты"
         },
         {
-          number: "1,000+",
+          number: "25+",
           label: "Испытательных Лабораторий",
           description: "Современные объекты"
         },
         {
-          number: "150",
+          number: "33",
           label: "Лет Совершенства",
           description: "Доверие с 1866 года"
         }
