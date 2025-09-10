@@ -57,7 +57,7 @@ async function getPageById(req, res, next) {
     if (populate === 'true') {
       query = query.populate({
         path: 'sections',
-        select: 'title bodyText images language pageNumber sectionId translations'
+        select: 'title bodyText images coverPhoto language pageNumber sectionId translations'
       });
     }
 
@@ -137,7 +137,7 @@ async function getPageBySlug(req, res, next) {
       }, projection)
       .populate({
         path: 'sections',
-        select: 'title bodyText images language pageNumber sectionId translations',
+        select: 'title bodyText images coverPhoto language pageNumber sectionId translations',
         match: { isActive: true },
         options: { 
           sort: { pageNumber: 1 }
@@ -249,7 +249,7 @@ async function getPages(req, res, next) {
     if (populate === 'true') {
       query = query.populate({
         path: 'sections',
-        select: 'title bodyText images language pageNumber sectionId',
+        select: 'title bodyText images coverPhoto language pageNumber sectionId',
         options: { limit: 5 }
       });
     }
@@ -378,7 +378,7 @@ async function addSectionToPage(req, res, next) {
       { new: true }
     ).populate({
       path: 'sections',
-      select: 'title bodyText images language pageNumber sectionId'
+      select: 'title bodyText images coverPhoto language pageNumber sectionId'
     });
 
     res.json({ success: true, data: updatedPage });
@@ -397,7 +397,7 @@ async function removeSectionFromPage(req, res, next) {
       { new: true }
     ).populate({
       path: 'sections',
-      select: 'title bodyText images language pageNumber sectionId'
+      select: 'title bodyText images coverPhoto language pageNumber sectionId'
     });
 
     if (!updatedPage) {
@@ -421,7 +421,7 @@ async function getPageWithSectionsByName(req, res, next) {
       isActive: true
     }).populate({
       path: 'sections',
-      select: 'title bodyText images language pageNumber sectionId translations'
+      select: 'title bodyText images coverPhoto language pageNumber sectionId translations'
     });
 
     if (!page) {
