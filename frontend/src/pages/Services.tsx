@@ -1,4 +1,5 @@
 
+import React from 'react';
 import { HeroSection } from '@/components/Common/HeroSection';
 import { VideoHero } from '@/components/Common/VideoHero';
 import { ServiceCard } from '@/components/Common/ServiceCard';
@@ -9,9 +10,15 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle, Users, Award, Globe, Search, Settings, Shield, FileText, Brain } from 'lucide-react';
 import { useTranslation } from '@/contexts/TranslationContext';
+import translationService from '@/services/translationService';
 
 export default function Services() {
   const { translations } = useTranslation();
+  
+  // Clear translation cache to force fresh data
+  React.useEffect(() => {
+    translationService.clearCache();
+  }, []);
   const hero = translations?.pages?.services?.hero;
   const servicesData = translations?.services;
 
@@ -32,7 +39,8 @@ export default function Services() {
   })) || staticServices;
 
   // Get industry stats from API or fallback to static data
-  const industryStats = translations?.industryStats || staticIndustryStats;
+  // Temporarily force static data to bypass caching issues
+  const industryStats = staticIndustryStats;
 
   return (
     <div>

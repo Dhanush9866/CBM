@@ -24,6 +24,12 @@ export default function Contacts() {
   const [form, setForm] = useState<ContactOffice>(emptyContactOffice);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
+  
+  // Filter states
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState('');
+  const [selectedRegion, setSelectedRegion] = useState('');
+  const [selectedLabFacility, setSelectedLabFacility] = useState('');
 
   const load = async () => {
     setLoading(true);
@@ -113,6 +119,31 @@ export default function Contacts() {
     const newEmails = [...form.emails];
     newEmails[index] = value;
     setForm({ ...form, emails: newEmails });
+  };
+
+  // Filter logic
+  const filteredItems = items.filter(item => {
+    const matchesSearch = item.office_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         item.region_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         item.country.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCountry = !selectedCountry || item.country === selectedCountry;
+    const matchesRegion = !selectedRegion || item.region === selectedRegion;
+    const matchesLabFacility = selectedLabFacility === '' || 
+                              (selectedLabFacility === 'yes' && item.is_lab_facility) ||
+                              (selectedLabFacility === 'no' && !item.is_lab_facility);
+    
+    return matchesSearch && matchesCountry && matchesRegion && matchesLabFacility;
+  });
+
+  // Get unique values for filter dropdowns
+  const uniqueCountries = [...new Set(items.map(item => item.country))].sort();
+  const uniqueRegions = [...new Set(items.map(item => item.region))].sort();
+
+  const clearFilters = () => {
+    setSearchTerm('');
+    setSelectedCountry('');
+    setSelectedRegion('');
+    setSelectedLabFacility('');
   };
 
   return (
@@ -321,6 +352,146 @@ export default function Contacts() {
         </form>
       </div>
 
+      {/* Filters */}
+      <div style={{ 
+        border: '1px solid #e5e7eb', 
+        borderRadius: 8, 
+        padding: 16, 
+        marginBottom: 16,
+        backgroundColor: '#f9fafb'
+      }}>
+        <div style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'space-between',
+          marginBottom: 12
+        }}>
+          <h3 style={{ margin: 0, fontSize: '16px', fontWeight: '600' }}>Filters</h3>
+          <button 
+            onClick={clearFilters}
+            style={{
+              padding: '6px 12px',
+              backgroundColor: '#6b7280',
+              color: 'white',
+              border: 'none',
+              borderRadius: 6,
+              fontSize: '12px',
+              cursor: 'pointer'
+            }}
+          >
+            Clear All
+          </button>
+        </div>
+        
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+          gap: 12 
+        }}>
+          {/* Search */}
+          <div>
+            <label style={{ display: 'block', fontSize: '12px', fontWeight: '500', marginBottom: 4, color: '#374151' }}>
+              Search
+            </label>
+            <input
+              type="text"
+              placeholder="Search offices, regions, countries..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '8px 12px',
+                border: '1px solid #d1d5db',
+                borderRadius: 6,
+                fontSize: '14px'
+              }}
+            />
+          </div>
+
+          {/* Country Filter */}
+          <div>
+            <label style={{ display: 'block', fontSize: '12px', fontWeight: '500', marginBottom: 4, color: '#374151' }}>
+              Country
+            </label>
+            <select
+              value={selectedCountry}
+              onChange={(e) => setSelectedCountry(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '8px 12px',
+                border: '1px solid #d1d5db',
+                borderRadius: 6,
+                fontSize: '14px',
+                backgroundColor: 'white'
+              }}
+            >
+              <option value="">All Countries</option>
+              {uniqueCountries.map(country => (
+                <option key={country} value={country}>{country}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Region Filter */}
+          <div>
+            <label style={{ display: 'block', fontSize: '12px', fontWeight: '500', marginBottom: 4, color: '#374151' }}>
+              Region
+            </label>
+            <select
+              value={selectedRegion}
+              onChange={(e) => setSelectedRegion(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '8px 12px',
+                border: '1px solid #d1d5db',
+                borderRadius: 6,
+                fontSize: '14px',
+                backgroundColor: 'white'
+              }}
+            >
+              <option value="">All Regions</option>
+              {uniqueRegions.map(region => (
+                <option key={region} value={region}>{region}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Lab Facility Filter */}
+          <div>
+            <label style={{ display: 'block', fontSize: '12px', fontWeight: '500', marginBottom: 4, color: '#374151' }}>
+              Lab Facility
+            </label>
+            <select
+              value={selectedLabFacility}
+              onChange={(e) => setSelectedLabFacility(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '8px 12px',
+                border: '1px solid #d1d5db',
+                borderRadius: 6,
+                fontSize: '14px',
+                backgroundColor: 'white'
+              }}
+            >
+              <option value="">All Facilities</option>
+              <option value="yes">Lab Facilities Only</option>
+              <option value="no">Non-Lab Facilities Only</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Results count */}
+        <div style={{ 
+          marginTop: 12, 
+          fontSize: '12px', 
+          color: '#6b7280',
+          borderTop: '1px solid #e5e7eb',
+          paddingTop: 8
+        }}>
+          Showing {filteredItems.length} of {items.length} offices
+        </div>
+      </div>
+
       {/* Contact Offices Table */}
       {loading ? (
         <div>Loading...</div>
@@ -337,45 +508,58 @@ export default function Contacts() {
               </tr>
             </thead>
             <tbody>
-              {items.map(item => (
-                <tr key={item._id}>
-                  <td style={{ padding: 12, borderBottom: '1px solid #f3f4f6' }}>
-                    <div>
-                      <div style={{ fontWeight: '500' }}>{item.office_name}</div>
-                      <div style={{ fontSize: '12px', color: '#6b7280' }}>{item.region_name}</div>
-                    </div>
-                  </td>
-                  <td style={{ padding: 12, borderBottom: '1px solid #f3f4f6' }}>{item.region}</td>
-                  <td style={{ padding: 12, borderBottom: '1px solid #f3f4f6' }}>{item.country}</td>
-                  <td style={{ padding: 12, borderBottom: '1px solid #f3f4f6' }}>{item.phone}</td>
-                  <td style={{ padding: 12, borderBottom: '1px solid #f3f4f6' }}>
-                    <span style={{
-                      padding: '4px 8px',
-                      borderRadius: '4px',
-                      fontSize: '12px',
-                      fontWeight: '500',
-                      backgroundColor: item.is_lab_facility ? '#10b98120' : '#6b728020',
-                      color: item.is_lab_facility ? '#10b981' : '#6b7280'
-                    }}>
-                      {item.is_lab_facility ? 'Yes' : 'No'}
-                    </span>
-                  </td>
-                  <td style={{ padding: 12, borderBottom: '1px solid #f3f4f6' }}>
-                    <button 
-                      onClick={() => startEdit(item)} 
-                      style={{ marginRight: 8, padding: '6px 10px', borderRadius: 6, border: '1px solid #d1d5db' }}
-                    >
-                      Edit
-                    </button>
-                    <button 
-                      onClick={() => remove(item)} 
-                      style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid #d1d5db' }}
-                    >
-                      Delete
-                    </button>
+              {filteredItems.length === 0 ? (
+                <tr>
+                  <td colSpan={6} style={{ 
+                    padding: 40, 
+                    textAlign: 'center', 
+                    color: '#6b7280',
+                    fontStyle: 'italic'
+                  }}>
+                    No offices found matching your filters
                   </td>
                 </tr>
-              ))}
+              ) : (
+                filteredItems.map(item => (
+                  <tr key={item._id}>
+                    <td style={{ padding: 12, borderBottom: '1px solid #f3f4f6' }}>
+                      <div>
+                        <div style={{ fontWeight: '500' }}>{item.office_name}</div>
+                        <div style={{ fontSize: '12px', color: '#6b7280' }}>{item.region_name}</div>
+                      </div>
+                    </td>
+                    <td style={{ padding: 12, borderBottom: '1px solid #f3f4f6' }}>{item.region}</td>
+                    <td style={{ padding: 12, borderBottom: '1px solid #f3f4f6' }}>{item.country}</td>
+                    <td style={{ padding: 12, borderBottom: '1px solid #f3f4f6' }}>{item.phone}</td>
+                    <td style={{ padding: 12, borderBottom: '1px solid #f3f4f6' }}>
+                      <span style={{
+                        padding: '4px 8px',
+                        borderRadius: '4px',
+                        fontSize: '12px',
+                        fontWeight: '500',
+                        backgroundColor: item.is_lab_facility ? '#10b98120' : '#6b728020',
+                        color: item.is_lab_facility ? '#10b981' : '#6b7280'
+                      }}>
+                        {item.is_lab_facility ? 'Yes' : 'No'}
+                      </span>
+                    </td>
+                    <td style={{ padding: 12, borderBottom: '1px solid #f3f4f6' }}>
+                      <button 
+                        onClick={() => startEdit(item)} 
+                        style={{ marginRight: 8, padding: '6px 10px', borderRadius: 6, border: '1px solid #d1d5db' }}
+                      >
+                        Edit
+                      </button>
+                      <button 
+                        onClick={() => remove(item)} 
+                        style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid #d1d5db' }}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

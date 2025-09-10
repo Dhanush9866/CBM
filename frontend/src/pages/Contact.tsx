@@ -365,7 +365,7 @@ export default function Contact() {
                     <p className="text-muted-foreground mb-2">
                       {translations?.pages?.contact?.supportPhoneDesc || 'Speak with our customer service team'}
                     </p>
-                    <p className="font-medium text-primary">+1 (800) 000-0000</p>
+                    <p className="font-medium text-primary">+44 7934 980214</p>
                     <p className="text-sm text-muted-foreground">{translations?.pages?.contact?.supportPhoneHours || 'Mon-Fri: 8:00 AM - 6:00 PM EST'}</p>
                   </div>
                 </div>
@@ -379,7 +379,7 @@ export default function Contact() {
                     <p className="text-muted-foreground mb-2">
                       {translations?.pages?.contact?.supportEmailDesc || 'Send detailed inquiries and documentation'}
                     </p>
-                    <p className="font-medium text-primary">contact@cbm.com</p>
+                    <p className="font-medium text-primary">Support@cbm360tiv.com</p>
                     <p className="text-sm text-muted-foreground">{translations?.pages?.contact?.supportEmailResponse || 'Response within 24 hours'}</p>
                   </div>
                 </div>
