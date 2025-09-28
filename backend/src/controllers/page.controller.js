@@ -4,6 +4,7 @@ const Page = require('../models/Page');
 const Section = require('../models/Section');
 const { ApiError } = require('../utils/error');
 const { translateText } = require('../services/translation');
+const { get: cacheGet, set: cacheSet } = require("../services/cache");
 
 async function createPage(req, res, next) {
   try {
@@ -114,113 +115,94 @@ async function getPageById(req, res, next) {
 async function getPageBySlug(req, res, next) {
   try {
     const { slug } = req.params;
-    const { populate = 'true', lang } = req.query;
-    const startDb = Date.now();
-    
-    const normalizedSlug = String(slug || '').trim();
+    const { populate = "true", lang = "en" } = req.query;
 
-    const projection = populate === 'true'
-      ? { title: 1, description: 1, slug: 1, language: 1, sections: 1, translations: 1 }
-      : { title: 1, description: 1, slug: 1, language: 1, translations: 1 };
+    const normalizedSlug = String(slug || "").trim().toLowerCase();
+    const cacheKey = `page:${normalizedSlug}:${lang}:${populate}`;
 
-    let query = Page.findOne({ 
-      slug: normalizedSlug, 
-      isActive: true,
-      ...(lang ? { language: String(lang).toLowerCase() } : {})
-    }, projection).lean();
-    
-    if (populate === 'true') {
-      query = Page.findOne({ 
-        slug: normalizedSlug, 
-        isActive: true,
-        ...(lang ? { language: String(lang).toLowerCase() } : {})
-      }, projection)
-      .populate({
-        path: 'sections',
-        select: 'title bodyText images coverPhoto language pageNumber sectionId translations',
-        match: { isActive: true },
-        options: { 
-          sort: { pageNumber: 1 }
-        }
-      })
-      .lean();
-    }
-
-    // Basic 60s cache using cache service (Redis or in-memory fallback)
-    const { get: cacheGet, set: cacheSet } = require('../services/cache');
-    const cacheKey = `page:${normalizedSlug}:${lang || 'en'}:${populate}`;
+    // ✅ Cache first
     const cached = await cacheGet(cacheKey);
     if (cached) {
-      // eslint-disable-next-line no-console
       console.log(`Cache hit: ${cacheKey}`);
       return res.json({ success: true, data: cached });
     }
 
-    let page = await query;
-    const firstQueryMs = Date.now() - startDb;
-    // eslint-disable-next-line no-console
-    console.log(`MongoDB query (Page by slug initial) took ${firstQueryMs} ms`);
-    
-    if (!page) {
-      const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const pattern = `^\\s*${escapeRegex(normalizedSlug)}\\s*$`;
-      const startFallback = Date.now();
-      page = await Page.findOne({ 
-        slug: { $regex: pattern, $options: 'i' }, 
-        isActive: true,
-        ...(lang ? { language: String(lang).toLowerCase() } : {})
-      }, projection).lean();
-      const fallbackMs = Date.now() - startFallback;
-      // eslint-disable-next-line no-console
-      console.log(`MongoDB query (Page by slug fallback) took ${fallbackMs} ms`);
-    }
-    if (!page) {
-      throw new ApiError(404, 'Page not found');
+    // ✅ Build aggregation pipeline
+    const pipeline = [
+      {
+        $match: {
+          slug: { $regex: new RegExp(`^\\s*${normalizedSlug}\\s*$`, "i") },
+          isActive: true,
+          ...(lang ? { language: lang.toLowerCase() } : {}),
+        },
+      },
+      {
+        $project: {
+          title: 1,
+          description: 1,
+          slug: 1,
+          language: 1,
+          sections: 1,
+          translations: 1,
+        },
+      },
+    ];
+
+    if (populate === "true") {
+      pipeline.push({
+        $lookup: {
+          from: "sections",
+          let: { sectionIds: "$sections" },
+          pipeline: [
+            { $match: { $expr: { $in: ["$_id", "$$sectionIds"] }, isActive: true } },
+            {
+              $project: {
+                title: 1,
+                bodyText: 1,
+                images: 1,
+                coverPhoto: 1,
+                language: 1,
+                pageNumber: 1,
+                sectionId: 1,
+                translations: 1,
+              },
+            },
+            { $sort: { pageNumber: 1 } },
+          ],
+          as: "sections",
+        },
+      });
     }
 
-    // Handle language translation for page and sections (works with lean docs)
-    if (lang && lang !== 'en') {
-      // Translate page title and description
-      let pageFromDb = null;
-      if (page.translations) {
-        if (page.translations instanceof Map) {
-          pageFromDb = page.translations.get(lang);
-        } else if (typeof page.translations === 'object') {
-          pageFromDb = page.translations[lang];
-        }
-      }
-      
-      if (pageFromDb && (pageFromDb.title || pageFromDb.description)) {
-        page.title = pageFromDb.title || page.title;
-        page.description = pageFromDb.description || page.description;
-        page.language = lang;
-      }
+    const startDb = Date.now();
+    let [page] = await Page.aggregate(pipeline).exec();
+    console.log(`MongoDB query took ${Date.now() - startDb} ms`);
 
-      // Translate sections if populated
-      if (Array.isArray(page.sections) && page.sections.length > 0) {
-        for (const section of page.sections) {
-          // Handle both Map and Object formats for translations
-          let sectionFromDb = null;
-          if (section.translations) {
-            if (section.translations instanceof Map) {
-              sectionFromDb = section.translations.get(lang);
-            } else if (typeof section.translations === 'object') {
-              sectionFromDb = section.translations[lang];
-            }
-          }
-          
-          if (sectionFromDb && (sectionFromDb.title || sectionFromDb.bodyText)) {
-            section.title = sectionFromDb.title || section.title;
-            section.bodyText = sectionFromDb.bodyText || section.bodyText;
-            section.language = lang;
-          }
-        }
+    if (!page) {
+      throw new ApiError(404, "Page not found");
+    }
+
+    // ✅ Apply translations (page + sections)
+    if (lang && lang !== "en") {
+      const translate = (translations, fallback) => {
+        if (!translations) return fallback;
+        const t = translations[lang];
+        return t ? { ...fallback, ...t, language: lang } : fallback;
+      };
+
+      page = translate(page.translations, page);
+
+      if (Array.isArray(page.sections)) {
+        page.sections = page.sections.map((sec) => translate(sec.translations, sec));
       }
     }
-    
-    // Store in cache for 60s
-    try { await cacheSet(cacheKey, page, 60); } catch (_) {}
-    res.json({ success: true, data: page });
+
+    // ✅ Cache for 60s
+    try {
+      await cacheSet(cacheKey, page, 60);
+    } catch (_) {}
+
+    return res.json({ success: true, data: page });
   } catch (err) {
     next(err);
   }
