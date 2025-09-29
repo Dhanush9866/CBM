@@ -25,7 +25,7 @@ export const TranslationProvider: React.FC<TranslationProviderProps> = ({
   const [translations, setTranslations] = useState<StaticTranslations | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [supportedLanguages] = useState(['en', 'fr', 'pt', 'es', 'ru']);
+  const [supportedLanguages] = useState(['en', 'fr', 'pt', 'es', 'ru', 'zh']);
 
   // Debug currentLanguage changes
   useEffect(() => {

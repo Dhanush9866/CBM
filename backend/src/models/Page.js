@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 
-const SupportedLanguages = ['en', 'fr', 'pt', 'es', 'ru'];
+const SupportedLanguages = ['en', 'fr', 'pt', 'es', 'ru', 'zh'];
 
 const TranslationSchema = new mongoose.Schema(
   {

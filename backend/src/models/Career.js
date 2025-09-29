@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const EmploymentTypes = ['Full-time', 'Part-time', 'Contract', 'Internship', 'Temporary'];
 const SeniorityLevels = ['Entry Level', 'Mid Level', 'Senior Level', 'Lead', 'Manager', 'Director'];
 const WorkArrangements = ['Onsite', 'Remote', 'Hybrid'];
-const SupportedLanguages = ['en', 'fr', 'pt', 'es', 'ru'];
+const SupportedLanguages = ['en', 'fr', 'pt', 'es', 'ru', 'zh'];
 
 // Translation schema for career fields
 const CareerTranslationSchema = new mongoose.Schema(

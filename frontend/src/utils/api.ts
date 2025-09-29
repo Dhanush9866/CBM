@@ -1,7 +1,7 @@
 import axios from 'axios';
 const isLocal = typeof window !== 'undefined' && window.location.hostname === 'localhost';
 
-const apiBaseURL = isLocal ? "http://localhost:8080" : "https://cbm-backend-e1rq.onrender.com" ;
+const apiBaseURL = isLocal ? "http://localhost:8000" : "https://cbm-backend-e1rq.onrender.com" ;
 // When developing locally, target the local backend; otherwise use the deployed backend
 
 export const apiClient = axios.create({
