@@ -17,6 +17,7 @@ const languages = [
   { code: 'pt', name: 'Português', flag: '🇵🇹' },
   { code: 'es', name: 'Español', flag: '🇪🇸' },
   { code: 'ru', name: 'Русский', flag: '🇷🇺' },
+  { code: 'zh', name: '中文', flag: '🇨🇳' },
 ];
 
 export function Navbar() {

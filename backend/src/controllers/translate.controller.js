@@ -9,7 +9,7 @@ async function translateSection(req, res, next) {
   try {
     const { id } = req.params;
     const lang = (req.query.lang || 'en').toLowerCase();
-    if (!['en', 'fr', 'pt', 'es', 'ru'].includes(lang)) throw new ApiError(400, 'Unsupported lang');
+    if (!['en', 'fr', 'pt', 'es', 'ru', 'zh'].includes(lang)) throw new ApiError(400, 'Unsupported lang');
 
     const section = await Section.findById(id);
     if (!section) throw new ApiError(404, 'Section not found');
@@ -42,8 +42,8 @@ async function getStaticTranslations(req, res, next) {
     console.log(req.params.lang);
     const lang = req.params.lang || 'en';
     
-    if (!['en', 'fr', 'pt', 'es', 'ru'].includes(lang)) {
-      throw new ApiError(400, 'Unsupported language. Supported languages: en, fr, pt, es, ru');
+    if (!['en', 'fr', 'pt', 'es', 'ru', 'zh'].includes(lang)) {
+      throw new ApiError(400, 'Unsupported language. Supported languages: en, fr, pt, es, ru, zh');
     }
 
     const staticTexts = translations[lang];
@@ -69,7 +69,7 @@ async function getAllStaticTranslations(req, res, next) {
     res.json({
       success: true,
       data: {
-        supportedLanguages: ['en', 'fr', 'pt', 'es', 'ru'],
+        supportedLanguages: ['en', 'fr', 'pt', 'es', 'ru', 'zh'],
         translations: translations,
         timestamp: new Date().toISOString()
       }

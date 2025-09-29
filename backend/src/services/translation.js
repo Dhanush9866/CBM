@@ -3,7 +3,7 @@
 const fetch = require('node-fetch');
 const { cacheGet, cacheSet } = require('./cache');
 
-const SUPPORTED = ['en', 'fr', 'pt', 'es', 'ru'];
+const SUPPORTED = ['en', 'fr', 'pt', 'es', 'ru', 'zh'];
 
 async function translateText(text, targetLang) {
   if (!text || !targetLang || targetLang === 'en') return text;

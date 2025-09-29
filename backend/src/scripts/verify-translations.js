@@ -18,7 +18,7 @@ const Section = require('../models/Section');
 const Page = require('../models/Page');
 
 // Target languages for translation
-const TARGET_LANGUAGES = ['fr', 'pt', 'es', 'ru'];
+const TARGET_LANGUAGES = ['fr', 'pt', 'es', 'ru', 'zh'];
 
 // Database connection
 async function connectDB() {
