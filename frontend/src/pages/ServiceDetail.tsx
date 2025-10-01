@@ -319,6 +319,104 @@ export default function ServiceDetail({ sectionData, serviceType, serviceDisplay
               const blocks: JSX.Element[] = [];
               let imageIndex = 0;
               
+              // Targeted fix: ensure strict ordering for the
+              // Industrial Structural Health Monitoring & Fitness VC page
+              const isIndustrialSHMVC =
+                (serviceType || currentServiceType) === 'verification-certification' && (
+                  (slug && slug.includes('industrial-structural-health-monitoring')) ||
+                  (section?.title && section.title.toLowerCase().includes('industrial structural health monitoring'))
+                );
+              let paragraphCount = 0;
+
+              // For this page, replicate other pages behavior: first image near the top,
+              // second image in the middle of content, third image at the end
+              if (isIndustrialSHMVC && imageUrls.length > 0) {
+                const contentBlocks: JSX.Element[] = [];
+                // Build plain content blocks first
+                textBlocks.forEach((block, blockIndex) => {
+                  if (block.type === 'h2' && mainTitle && block.props?.children === mainTitle) {
+                    return;
+                  }
+                  contentBlocks.push(
+                    <div key={`txt-${blockIndex}`} className="mb-4">
+                      {block.content}
+                    </div>
+                  );
+                });
+
+                const finalBlocks: JSX.Element[] = [];
+                const midIndex = Math.max(1, Math.floor(contentBlocks.length / 2));
+
+                // Insert content and images at required positions
+                contentBlocks.forEach((cb, idx) => {
+                  finalBlocks.push(cb);
+                  // After the very first block (ideally H1), place first image
+                  if (idx === 0 && imageUrls[0]) {
+                    finalBlocks.push(
+                      <div key={`img-top-0`} className={`flex w-full mb-6 justify-start`}>
+                        <div className="overflow-hidden md:max-w-3xl w-full">
+                          <img
+                            src={imageUrls[0]}
+                            alt={section?.title || 'Service Image'}
+                            className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
+                          />
+                        </div>
+                      </div>
+                    );
+                  }
+                  // Around the middle, place second image
+                  if (idx === midIndex && imageUrls[1]) {
+                    finalBlocks.push(
+                      <div key={`img-mid-1`} className={`flex w-full mb-6 justify-center`}>
+                        <div className="overflow-hidden md:max-w-2xl w-full">
+                          <img
+                            src={imageUrls[1]}
+                            alt={section?.title || 'Service Image'}
+                            className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
+                          />
+                        </div>
+                      </div>
+                    );
+                  }
+                });
+
+                // After all content, place third image if exists
+                if (imageUrls[2]) {
+                  finalBlocks.push(
+                    <div key={`img-end-2`} className={`flex w-full mb-6 justify-end`}>
+                      <div className="overflow-hidden md:max-w-2xl w-full">
+                        <img
+                          src={imageUrls[2]}
+                          alt={section?.title || 'Service Image'}
+                          className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
+                        />
+                      </div>
+                    </div>
+                  );
+                }
+
+                // If more than 3 images, append remaining with diagonal pattern
+                if (imageUrls.length > 3) {
+                  imageUrls.slice(3).forEach((url, idx) => {
+                    const globalIndex = 3 + idx;
+                    const alignment = globalIndex % 3 === 0 ? 'justify-start' : globalIndex % 3 === 1 ? 'justify-center' : 'justify-end';
+                    finalBlocks.push(
+                      <div key={`img-rest-${globalIndex}`} className={`flex w-full ${alignment}`}>
+                        <div className="overflow-hidden w-full md:max-w-2xl">
+                          <img
+                            src={url}
+                            alt={section?.title || 'Service Image'}
+                            className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
+                          />
+                        </div>
+                      </div>
+                    );
+                  });
+                }
+
+                return <div className="space-y-4">{finalBlocks}</div>;
+              }
+              
               textBlocks.forEach((block, blockIndex) => {
                 // Skip H2 that duplicates main H1 text
                 if (block.type === 'h2' && mainTitle && block.props?.children === mainTitle) {
@@ -334,55 +432,13 @@ export default function ServiceDetail({ sectionData, serviceType, serviceDisplay
                 
                 // Strategic image placement based on content
                 if (imageUrls.length > 0) {
-                  // First image after main title (H1)
-                  if (blockIndex === 0 && block.type === 'h1' && imageIndex < imageUrls.length) {
-                    const alignment = imageIndex % 3 === 0 ? 'justify-start' : imageIndex % 3 === 1 ? 'justify-center' : 'justify-end';
-                    blocks.push(
-                      <div key={`img-${imageIndex}`} className={`flex w-full mb-6 ${alignment}`}>
-                        <div className="overflow-hidden md:max-w-3xl w-full">
-                          <img
-                            src={imageUrls[imageIndex]}
-                            alt={section?.title || 'Service Image'}
-                            className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
-                          />
-                        </div>
-                      </div>
-                    );
-                    imageIndex++;
-                  }
-                  
-                  // Second image after "Why Choose..." heading
-                  if (block.type === 'h2' && 
-                      block.props?.children?.includes('Why Choose') && 
-                      imageIndex < imageUrls.length) {
-                    const alignment = imageIndex % 3 === 0 ? 'justify-start' : imageIndex % 3 === 1 ? 'justify-center' : 'justify-end';
-                    blocks.push(
-                      <div key={`img-${imageIndex}`} className={`flex w-full mb-6 ${alignment}`}>
-                        <div className="overflow-hidden md:max-w-2xl w-full">
-                          <img
-                            src={imageUrls[imageIndex]}
-                            alt={section?.title || 'Service Image'}
-                            className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
-                          />
-                        </div>
-                      </div>
-                    );
-                    imageIndex++;
-                  }
-                  
-                  // Third image alongside "Ready to Inspect" section (if available)
-                  if (block.type === 'h2' && 
-                      block.props?.children?.includes('Ready to Inspect') && 
-                      imageIndex < imageUrls.length) {
-                    // Create a two-column layout for this section
-                    const nextBlock = textBlocks[blockIndex + 1];
-                    if (nextBlock && nextBlock.type === 'p') {
+                  if (isIndustrialSHMVC) {
+                    // Enforce strict order: first (left) after H1, second (center) after first paragraph,
+                    // third (right) after second paragraph
+                    if (blockIndex === 0 && block.type === 'h1' && imageIndex === 0) {
                       blocks.push(
-                        <div key={`img-text-${imageIndex}`} className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                          <div className="space-y-4">
-                            <div className="mb-4">{nextBlock.content}</div>
-                          </div>
-                          <div className="overflow-hidden">
+                        <div key={`img-${imageIndex}`} className={`flex w-full mb-6 justify-start`}>
+                          <div className="overflow-hidden md:max-w-3xl w-full">
                             <img
                               src={imageUrls[imageIndex]}
                               alt={section?.title || 'Service Image'}
@@ -392,8 +448,101 @@ export default function ServiceDetail({ sectionData, serviceType, serviceDisplay
                         </div>
                       );
                       imageIndex++;
-                      // Skip the next paragraph since we've already rendered it
-                      return;
+                    }
+
+                    if (block.type === 'p') {
+                      paragraphCount++;
+                      if (imageIndex === 1 && paragraphCount === 1) {
+                        blocks.push(
+                          <div key={`img-${imageIndex}`} className={`flex w-full mb-6 justify-center`}>
+                            <div className="overflow-hidden md:max-w-2xl w-full">
+                              <img
+                                src={imageUrls[imageIndex]}
+                                alt={section?.title || 'Service Image'}
+                                className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
+                              />
+                            </div>
+                          </div>
+                        );
+                        imageIndex++;
+                      } else if (imageIndex === 2 && paragraphCount === 2) {
+                        blocks.push(
+                          <div key={`img-${imageIndex}`} className={`flex w-full mb-6 justify-end`}>
+                            <div className="overflow-hidden md:max-w-2xl w-full">
+                              <img
+                                src={imageUrls[imageIndex]}
+                                alt={section?.title || 'Service Image'}
+                                className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
+                              />
+                            </div>
+                          </div>
+                        );
+                        imageIndex++;
+                      }
+                    }
+                  } else {
+                    // Default logic for other pages
+                    // First image after main title (H1)
+                    if (blockIndex === 0 && block.type === 'h1' && imageIndex < imageUrls.length) {
+                      const alignment = imageIndex % 3 === 0 ? 'justify-start' : imageIndex % 3 === 1 ? 'justify-center' : 'justify-end';
+                      blocks.push(
+                        <div key={`img-${imageIndex}`} className={`flex w-full mb-6 ${alignment}`}>
+                          <div className="overflow-hidden md:max-w-3xl w-full">
+                            <img
+                              src={imageUrls[imageIndex]}
+                              alt={section?.title || 'Service Image'}
+                              className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
+                            />
+                          </div>
+                        </div>
+                      );
+                      imageIndex++;
+                    }
+                    
+                    // Second image after "Why Choose..." heading
+                    if (block.type === 'h2' && 
+                        block.props?.children?.includes('Why Choose') && 
+                        imageIndex < imageUrls.length) {
+                      const alignment = imageIndex % 3 === 0 ? 'justify-start' : imageIndex % 3 === 1 ? 'justify-center' : 'justify-end';
+                      blocks.push(
+                        <div key={`img-${imageIndex}`} className={`flex w-full mb-6 ${alignment}`}>
+                          <div className="overflow-hidden md:max-w-2xl w-full">
+                            <img
+                              src={imageUrls[imageIndex]}
+                              alt={section?.title || 'Service Image'}
+                              className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
+                            />
+                          </div>
+                        </div>
+                      );
+                      imageIndex++;
+                    }
+                    
+                    // Third image alongside "Ready to Inspect" section (if available)
+                    if (block.type === 'h2' && 
+                        block.props?.children?.includes('Ready to Inspect') && 
+                        imageIndex < imageUrls.length) {
+                      // Create a two-column layout for this section
+                      const nextBlock = textBlocks[blockIndex + 1];
+                      if (nextBlock && nextBlock.type === 'p') {
+                        blocks.push(
+                          <div key={`img-text-${imageIndex}`} className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div className="space-y-4">
+                              <div className="mb-4">{nextBlock.content}</div>
+                            </div>
+                            <div className="overflow-hidden">
+                              <img
+                                src={imageUrls[imageIndex]}
+                                alt={section?.title || 'Service Image'}
+                                className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
+                              />
+                            </div>
+                          </div>
+                        );
+                        imageIndex++;
+                        // Skip the next paragraph since we've already rendered it
+                        return;
+                      }
                     }
                   }
                 }
