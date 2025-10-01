@@ -328,9 +328,8 @@ export default function ServiceDetail({ sectionData, serviceType, serviceDisplay
                 );
               let paragraphCount = 0;
 
-              // For this page, replicate other pages behavior: first image near the top,
-              // second image in the middle of content, third image at the end
-              if (isIndustrialSHMVC && imageUrls.length > 0) {
+              // For all services, use content-agnostic placement to keep order stable across languages
+              if (imageUrls.length > 0) {
                 const contentBlocks: JSX.Element[] = [];
                 // Build plain content blocks first
                 textBlocks.forEach((block, blockIndex) => {
@@ -416,7 +415,8 @@ export default function ServiceDetail({ sectionData, serviceType, serviceDisplay
 
                 return <div className="space-y-4">{finalBlocks}</div>;
               }
-              
+
+              // Fallback (should not hit when images exist): original strategic logic
               textBlocks.forEach((block, blockIndex) => {
                 // Skip H2 that duplicates main H1 text
                 if (block.type === 'h2' && mainTitle && block.props?.children === mainTitle) {
