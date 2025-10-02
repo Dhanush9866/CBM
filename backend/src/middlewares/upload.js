@@ -109,7 +109,9 @@ const uploadMiddlewares = {
     'marine-inspection': createUploadMiddleware('inspection', 'marine-inspection'),
     'pre-shipment-inspection': createUploadMiddleware('inspection', 'pre-shipment-inspection'),
     'underground-mine-shaft-safety-inspection': createUploadMiddleware('inspection', 'underground-mine-shaft-safety-inspection'),
-    'on-site-laboratory-sampling': createUploadMiddleware('inspection', 'on-site-laboratory-sampling')
+    'on-site-laboratory-sampling': createUploadMiddleware('inspection', 'on-site-laboratory-sampling'),
+    'pharmaceutical-products-inspection-ppi': createUploadMiddleware('inspection', 'pharmaceutical-products-inspection-ppi'),
+    'pharmaceutical-plant-equipment-inspection-ppei': createUploadMiddleware('inspection', 'pharmaceutical-plant-equipment-inspection-ppei')
   },
   
   // Blog uploads
@@ -120,7 +122,9 @@ const uploadMiddlewares = {
   // Other services (to be expanded)
   auditing: {},
   cbm: {},
-  'verification-certification': {}
+  'verification-certification': {
+    'pharmaceutical-plant-refinery-fitness-verification-certification': createUploadMiddleware('verification-certification', 'pharmaceutical-plant-refinery-fitness-verification-certification')
+  }
 };
 
 // Helper function to get upload middleware

@@ -117,6 +117,17 @@ export const verificationCertificationItems: VerificationCertificationItem[] = [
       'Operational certification',
     ],
   },
+  {
+    slug: 'pharmaceutical-plant-refinery-fitness-verification-certification',
+    title: 'Pharmaceutical Plant & Refinery Fitness Verification & Certification',
+    image: 'https://res.cloudinary.com/docyipoze/image/upload/v1756657796/cbm/verification-certification/pharmaceutical-plant-refinery-fitness-verification-certification/cover-photo.jpg',
+    description: 'Comprehensive fitness verification and certification services for pharmaceutical plants and refinery facilities.',
+    details: [
+      'Facility fitness verification',
+      'Regulatory compliance certification',
+      'Process safety management certification',
+    ],
+  },
 
 ];
 
