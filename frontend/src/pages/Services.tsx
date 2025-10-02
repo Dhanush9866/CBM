@@ -56,16 +56,13 @@ export default function Services() {
           text: hero?.secondaryCTAText || "Get Quote",
           href: "/contact"
         }}
-        autoPlaySeconds={7}
+       autoPlaySeconds={120}
         videoUrls={[
-          'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-          'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
-          'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
-          'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
-          'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4',
-          'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
-          'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4',
-          'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4',
+          'https://res.cloudinary.com/docyipoze/video/upload/v1759426686/slide-1_dmckef.3gp',
+          'https://res.cloudinary.com/docyipoze/video/upload/v1759427872/slide-2_v6noyl.3gp',
+          'https://res.cloudinary.com/docyipoze/video/upload/v1759426710/slide-3_p4nffe.3gp',
+          'https://res.cloudinary.com/docyipoze/video/upload/v1759426742/slide-4_ftiyr9.3gp',
+          'https://res.cloudinary.com/docyipoze/video/upload/v1759426683/slide-5_raxjt8.3gp',
         ]}
       />
 
