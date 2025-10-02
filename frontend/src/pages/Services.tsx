@@ -39,8 +39,7 @@ export default function Services() {
   })) || staticServices;
 
   // Get industry stats from API or fallback to static data
-  // Temporarily force static data to bypass caching issues
-  const industryStats = staticIndustryStats;
+  const industryStats = translations?.industryStats || staticIndustryStats;
 
   return (
     <div>

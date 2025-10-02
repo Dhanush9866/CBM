@@ -249,7 +249,7 @@ const translations = {
         {
           number: "33",
           label: "Years of Excellence",
-          description: "Trusted since 1866"
+          description: "Trusted since 1992"
         }
       ],
     },
@@ -502,7 +502,7 @@ const translations = {
         {
           number: "33",
           label: "Années d'Excellence",
-          description: "De confiance depuis 1866"
+          description: "De confiance depuis 1992"
         }
       ],
     },
@@ -755,7 +755,7 @@ const translations = {
         {
           number: "33",
           label: "Anos de Excelência",
-          description: "Confiável desde 1866"
+          description: "Confiável desde 1992"
         }
       ],
     },
@@ -1008,7 +1008,7 @@ const translations = {
         {
           number: "33",
           label: "Años de Excelencia",
-          description: "Confiable desde 1866"
+          description: "Confiable desde 1992"
         }
       ],
     },
@@ -1261,7 +1261,7 @@ const translations = {
         {
           number: "33",
           label: "Лет Совершенства",
-          description: "Доверие с 1866 года"
+          description: "Доверие с 1992 года"
         }
       ],
     },
@@ -1530,7 +1530,7 @@ const translations = {
         {
           number: "33",
           label: "多年的卓越成就",
-          description: "自 1866 年以来值得信赖",
+          description: "自 1992 年以来值得信赖",
         },
       ],
     },
