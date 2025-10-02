@@ -10,7 +10,7 @@ export const auditingItems: AuditingItem[] = [
   {
     slug: 'technical-audit',
     title: 'Technical Audit',
-    image: 'https://res.cloudinary.com/docyipoze/image/upload/v1756657797/cbm/auditing/technical-audit/cover-photo.jpg',
+    image: 'https://res.cloudinary.com/docyipoze/image/upload/v1759397203/cbm/auditing/technical-audit/cbm/auditing/technical-audit/cover-photo.jpg?cache=bust2025',
     description: 'Assessment of technical systems, processes, and infrastructure for efficiency and compliance.',
     details: [
       'System performance evaluation',
