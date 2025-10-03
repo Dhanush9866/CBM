@@ -249,11 +249,11 @@ export default function About() {
         )}
         {/* Hero banner after first heading */}
         {mainSection?.images && mainSection.images[0] && (
-          <div className="mb-8 max-w-3xl mx-auto">
+          <div className="mb-8 max-w-5xl mx-auto">
             <img
               src={mainSection.images[0]}
               alt="About hero image"
-              className="w-full h-auto object-contain"
+              className="w-full h-auto object-contain rounded-lg shadow-lg"
               loading="eager"
             />
           </div>
@@ -268,11 +268,11 @@ export default function About() {
             return blocks.map((b, i) => (
               <div key={i}>
                 {midImage && i === insertIndex && (
-                  <div className="my-8">
+                  <div className="my-12 max-w-6xl mx-auto">
                     <img
                       src={midImage}
                       alt="About mid content image"
-                      className="w-full h-48 md:h-60 object-cover"
+                      className="w-full h-64 md:h-80 lg:h-96 object-cover rounded-lg shadow-lg"
                       loading="lazy"
                     />
                   </div>

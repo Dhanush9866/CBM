@@ -116,9 +116,8 @@ export function Footer() {
                       ))
                     ) : (
                       <>
-                        <p>CBM America</p>
-                        <p>10040 Mesa Rim Road</p>
-                        <p>San Diego, CA 92121</p>
+                        <p>CBM 360 TIV – UK</p>
+                        <p>79 Denyer St, London SW3 2NY, UK</p>
                       </>
                     )}
                   </div>
@@ -126,14 +125,23 @@ export function Footer() {
                 <div className="flex items-center space-x-3">
                   <Phone className="h-5 w-5 text-tuv-gray-400" />
                   <span className="text-tuv-gray-400">
-                    {translations?.footer.contact.phone || '+1 (555) 123-4567'}
+                    {translations?.footer.contact.phone || '+44 7934 980214'}
                   </span>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <Mail className="h-5 w-5 text-tuv-gray-400" />
-                  <span className="text-tuv-gray-400">
-                    {translations?.footer.contact.email || 'contact@cbm.com'}
-                  </span>
+                <div className="flex items-start space-x-3">
+                  <Mail className="h-5 w-5 text-tuv-gray-400 mt-1 flex-shrink-0" />
+                  <div className="text-tuv-gray-400">
+                    {translations?.footer.contact.email ? (
+                      translations.footer.contact.email.split('\n').map((email, index) => (
+                        <div key={index}>{email}</div>
+                      ))
+                    ) : (
+                      <>
+                        <div>Support@cbm360tiv.com</div>
+                        <div>info@cbm360tiv.com</div>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
 

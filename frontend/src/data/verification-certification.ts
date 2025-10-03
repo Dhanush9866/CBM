@@ -120,7 +120,7 @@ export const verificationCertificationItems: VerificationCertificationItem[] = [
   {
     slug: 'pharmaceutical-plant-refinery-fitness-verification-certification',
     title: 'Pharmaceutical Plant & Refinery Fitness Verification & Certification',
-    image: 'https://res.cloudinary.com/docyipoze/image/upload/v1756657796/cbm/verification-certification/pharmaceutical-plant-refinery-fitness-verification-certification/cover-photo.jpg',
+    image: 'https://res.cloudinary.com/docyipoze/image/upload/v1759462611/cbm/verification-certification/pharmaceutical-plant-refinery-fitness-verification-certification/cbm/verification-certification/pharmaceutical-plant-refinery-fitness-verification-certification/cover-photo.jpg',
     description: 'Comprehensive fitness verification and certification services for pharmaceutical plants and refinery facilities.',
     details: [
       'Facility fitness verification',
