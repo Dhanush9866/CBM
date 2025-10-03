@@ -276,7 +276,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <Label htmlFor="phone">{translations?.pages?.contact?.labels?.phone || 'Phone Number'}</Label>
-                    <Input id="phone" type="tel" placeholder={translations?.pages?.contact?.placeholders?.phone || '+1 (555) 123-4567'} className="mt-2" value={form.phone} onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))} />
+                    <Input id="phone" type="tel" placeholder={translations?.pages?.contact?.placeholders?.phone || '+44 7934 980214'} className="mt-2" value={form.phone} onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))} />
                   </div>
                 </div>
                 
