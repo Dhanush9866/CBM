@@ -3,7 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '@/components/ui/carousel';
 
-interface VideoHeroProps {
+interface SlideContent {
   title: string;
   subtitle?: string;
   description: string;
@@ -15,20 +15,21 @@ interface VideoHeroProps {
     text: string;
     href: string;
   };
+}
+
+interface VideoHeroProps {
+  slides: SlideContent[];
   videoUrls: string[];
   autoPlaySeconds?: number;
 }
 
 export function VideoHero({
-  title,
-  subtitle,
-  description,
-  primaryCTA,
-  secondaryCTA,
+  slides,
   videoUrls,
   autoPlaySeconds = 5,
 }: VideoHeroProps) {
   const [api, setApi] = React.useState<CarouselApi | null>(null);
+  const [currentSlide, setCurrentSlide] = React.useState(0);
 
   React.useEffect(() => {
     if (!api || !videoUrls || videoUrls.length <= 1) return;
@@ -43,6 +44,21 @@ export function VideoHero({
 
     return () => window.clearInterval(id);
   }, [api, autoPlaySeconds, videoUrls]);
+
+  React.useEffect(() => {
+    if (!api) return;
+
+    const onSelect = () => {
+      setCurrentSlide(api.selectedScrollSnap());
+    };
+
+    api.on('select', onSelect);
+    onSelect(); // Set initial slide
+
+    return () => {
+      api.off('select', onSelect);
+    };
+  }, [api]);
   return (
     <section className="relative overflow-hidden">
       {/* Video Carousel Background */}
@@ -76,37 +92,37 @@ export function VideoHero({
       {/* Content Overlay */}
       <div className="relative container-responsive py-16 lg:py-28">
         <div className="max-w-4xl mx-auto text-center text-white">
-          {subtitle && (
+          {slides[currentSlide]?.subtitle && (
             <div className="inline-block bg-white/10 backdrop-blur-sm rounded-full px-6 py-2 mb-6">
-              <span className="text-sm font-medium">{subtitle}</span>
+              <span className="text-sm font-medium">{slides[currentSlide].subtitle}</span>
             </div>
           )}
 
           <h1 className="text-4xl lg:text-6xl font-bold mb-6 text-balance">
-            {title}
+            {slides[currentSlide]?.title || ''}
           </h1>
 
           <p className="text-xl lg:text-2xl text-white/90 mb-10 text-pretty max-w-3xl mx-auto">
-            {description}
+            {slides[currentSlide]?.description || ''}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            {primaryCTA && (
+            {slides[currentSlide]?.primaryCTA && (
               <Button size="lg" className="bg-white text-primary hover:bg-white/90 text-lg px-8 py-4" asChild>
-                <a href={primaryCTA.href}>
-                  {primaryCTA.text}
+                <a href={slides[currentSlide].primaryCTA!.href}>
+                  {slides[currentSlide].primaryCTA!.text}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </a>
               </Button>
             )}
-            {secondaryCTA && (
+            {slides[currentSlide]?.secondaryCTA && (
               <Button 
                 size="lg" 
                 variant="outline" 
                 className="border-white text-white hover:bg-white hover:text-primary text-lg px-8 py-4" asChild
               >
-                <a href={secondaryCTA.href}>
-                  {secondaryCTA.text}
+                <a href={slides[currentSlide].secondaryCTA!.href}>
+                  {slides[currentSlide].secondaryCTA!.text}
                 </a>
               </Button>
             )}

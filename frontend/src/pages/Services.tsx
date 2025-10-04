@@ -45,24 +45,78 @@ export default function Services() {
     <div>
       {/* Video Hero Section */}
       <VideoHero
-        title={hero?.title || "Leading Testing, Inspection & Certification Services"}
-        subtitle={hero?.subtitle || "Trusted Worldwide"}
-        description={hero?.description || "Ensuring safety, security, and sustainability across industries with comprehensive testing, inspection, certification, and advisory services."}
-        primaryCTA={{
-          text: hero?.primaryCTAText || "Explore Services",
-          href: "#services"
-        }}
-        secondaryCTA={{
-          text: hero?.secondaryCTAText || "Get Quote",
-          href: "/contact"
-        }}
-       autoPlaySeconds={120}videoUrls={[
-  'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475287/slide-1_eqslb6.mp4',
-  'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475275/slide-2_jl5ldp.mp4',
-  'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475290/slide-3_rayaoy.mp4',
-  'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475303/slide-4_izmzsr.mp4',
-  'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475289/slide-5_rff1ml.mp4',
-]}
+        slides={[
+          {
+            title: "CBM- Condition Based Monitoring",
+            description: "We provide comprehensive (CBM) services to ensure the reliability, safety, and efficiency of your critical assets. Our solutions cover rotating machinery, process equipment, pipelines, Using advanced technologies such as vibration analysis, oil analysis, thermal imaging, performance monitoring, and AI with IoT-based systems, we help identify faults at an early stage, reduce downtime, and extend asset life.",
+            primaryCTA: {
+              text: "Explore Services",
+              href: "#services"
+            },
+            secondaryCTA: {
+              text: "Get Quote",
+              href: "/contact"
+            }
+          },
+          {
+            title: "360°",
+            subtitle: "Worldwide Coverage",
+            description: "Our Professional Inspectors & Experts are available 24/7 across all continents.",
+            primaryCTA: {
+              text: "Explore Services",
+              href: "#services"
+            },
+            secondaryCTA: {
+              text: "Get Quote",
+              href: "/contact"
+            }
+          },
+          {
+            title: "TIV-Technical Industrial Verification",
+            subtitle: "CBM 360° TIV™",
+            description: "Services ensure that industrial assets, equipment, and processes meet international codes, standards, and client specifications. Our global team of certified inspectors provides independent verification, inspection, and certification across oil & gas, mining, power plants, marine, and infrastructure projects-delivering compliance, reliability, and safety. (Third-party inspection & verification, Vendor inspection & expediting, Welding & coating inspection, Load testing & lifting gear certification, Shutdown & turnaround and inspection, HSE audits & compliance.)",
+            primaryCTA: {
+              text: "Explore Services",
+              href: "#services"
+            },
+            secondaryCTA: {
+              text: "Get Quote",
+              href: "/contact"
+            }
+          },
+          {
+            title: "Leading Testing, Inspection & Certification Services",
+            description: "Delivering trusted NDT testing, inspection, certification, and technical advisory solutions to ensure safety, reliability, and sustainability across global industries.",
+            primaryCTA: {
+              text: "Explore Services",
+              href: "#services"
+            },
+            secondaryCTA: {
+              text: "Get Quote",
+              href: "/contact"
+            }
+          },
+          {
+            title: "R&D Capabilities - Design, Development & Production",
+            description: "We focus on advanced IoT & AI-driven Condition Monitoring Systems and next-generation AI + Robotics in NDT solutions, designed to enhance industrial safety, reliability, and efficiency.",
+            primaryCTA: {
+              text: "Explore Services",
+              href: "#services"
+            },
+            secondaryCTA: {
+              text: "Get Quote",
+              href: "/contact"
+            }
+          }
+        ]}
+        videoUrls={[
+          'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475287/slide-1_eqslb6.mp4',
+          'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475275/slide-2_jl5ldp.mp4',
+          'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475290/slide-3_rayaoy.mp4',
+          'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475303/slide-4_izmzsr.mp4',
+          'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475289/slide-5_rff1ml.mp4',
+        ]}
+        autoPlaySeconds={120}
 
       />
 
