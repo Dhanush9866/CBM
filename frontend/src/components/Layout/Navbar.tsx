@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useTranslation } from '@/contexts/TranslationContext';
+import { Logo } from '@/components/Common/Logo';
 
 const languages = [
   { code: 'en', name: 'English', flag: '🇺🇸' },
@@ -127,11 +128,7 @@ export function Navbar() {
         <div className="container-responsive">
           <div className="flex justify-between items-center h-16 lg:h-20">
             {/* Logo */}
-            <Link to="/services" className="flex items-center">
-              <div className="text-2xl font-bold text-primary">
-                CBM
-              </div>
-            </Link>
+            <Logo size="md" />
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-8">

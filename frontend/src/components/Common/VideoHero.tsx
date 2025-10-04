@@ -63,7 +63,15 @@ export function VideoHero({
     <section className="relative overflow-hidden">
       {/* Video Carousel Background */}
       <div className="absolute inset-0">
-        <Carousel className="h-full" opts={{ loop: true }} setApi={setApi}>
+        <Carousel 
+          className="h-full" 
+          opts={{ 
+            loop: true,
+            dragFree: true,
+            containScroll: 'trimSnaps'
+          }} 
+          setApi={setApi}
+        >
           <CarouselContent className="h-full">
             {videoUrls.map((url, idx) => (
               <CarouselItem key={idx} className="h-[80vh] lg:h-[90vh] p-0">
@@ -84,8 +92,8 @@ export function VideoHero({
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white" />
-          <CarouselNext className="right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white" />
+          <CarouselPrevious className="left-2 md:left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white z-10 h-10 w-10 md:h-8 md:w-8" />
+          <CarouselNext className="right-2 md:right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white z-10 h-10 w-10 md:h-8 md:w-8" />
         </Carousel>
       </div>
 
@@ -128,6 +136,22 @@ export function VideoHero({
             )}
           </div>
         </div>
+      </div>
+
+      {/* Slide Indicators for Mobile */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-10 md:hidden">
+        {videoUrls.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => api?.scrollTo(index)}
+            className={`w-2 h-2 rounded-full transition-all ${
+              currentSlide === index 
+                ? 'bg-white scale-125' 
+                : 'bg-white/50 hover:bg-white/75'
+            }`}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
       </div>
 
       {/* Decorative Bottom Wave for continuity with existing design */}

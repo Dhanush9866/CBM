@@ -11,6 +11,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { useTranslation } from '@/contexts/TranslationContext';
+import { Logo } from '@/components/Common/Logo';
 
 export function Footer() {
   const { translations } = useTranslation();
@@ -23,11 +24,9 @@ export function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Company Info */}
             <div className="lg:col-span-1">
-              <Link to="/services" className="inline-block mb-6">
-                <div className="text-2xl font-bold text-white">
-                  {translations?.footer.company || 'CBM'}
-                </div>
-              </Link>
+              <div className="mb-6">
+                <Logo size="lg" showTagline={true} className="text-white" />
+              </div>
               <p className="text-tuv-gray-400 mb-6 leading-relaxed">
                 {translations?.footer.description || 'Leading provider of testing, inspection, certification, and advisory services. Committed to safety, security, and sustainability worldwide.'}
               </p>
