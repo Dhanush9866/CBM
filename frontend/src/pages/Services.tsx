@@ -56,14 +56,14 @@ export default function Services() {
           text: hero?.secondaryCTAText || "Get Quote",
           href: "/contact"
         }}
-       autoPlaySeconds={120}
-        videoUrls={[
-          'https://res.cloudinary.com/docyipoze/video/upload/v1759426686/slide-1_dmckef.3gp',
-          'https://res.cloudinary.com/docyipoze/video/upload/v1759427872/slide-2_v6noyl.3gp',
-          'https://res.cloudinary.com/docyipoze/video/upload/v1759426710/slide-3_p4nffe.3gp',
-          'https://res.cloudinary.com/docyipoze/video/upload/v1759426742/slide-4_ftiyr9.3gp',
-          'https://res.cloudinary.com/docyipoze/video/upload/v1759426683/slide-5_raxjt8.3gp',
-        ]}
+       autoPlaySeconds={120}videoUrls={[
+  'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475287/slide-1_eqslb6.mp4',
+  'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475275/slide-2_jl5ldp.mp4',
+  'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475290/slide-3_rayaoy.mp4',
+  'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475303/slide-4_izmzsr.mp4',
+  'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475289/slide-5_rff1ml.mp4',
+]}
+
       />
 
       {/* Trust Indicators */}
