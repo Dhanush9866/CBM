@@ -3,6 +3,7 @@ import React from 'react';
 import { HeroSection } from '@/components/Common/HeroSection';
 import { VideoHero } from '@/components/Common/VideoHero';
 import { ServiceCard } from '@/components/Common/ServiceCard';
+import GlobalMap from '@/components/Common/GlobalMap';
 import { services as staticServices } from '@/data/services';
 import { industryStats as staticIndustryStats } from '@/data/industries';
 import CountUp from '@/components/Common/CountUp';
@@ -166,6 +167,20 @@ export default function Services() {
               <ServiceCard key={service.id} {...service} />
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Global Network Map */}
+      <section className="section bg-tuv-gray-50">
+        <div className="container-responsive">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4">A Global Network</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Explore our worldwide presence and find the office closest to you. Click on any location to view detailed contact information.
+            </p>
+          </div>
+          
+          <GlobalMap className="w-full" />
         </div>
       </section>
 
