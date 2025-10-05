@@ -5,7 +5,7 @@ const { sendOtp, verifyOtp } = require('../services/otp');
 
 async function requestOtp(req, res) {
 	try {
-		const email = process.env.ADMIN_EMAIL;
+		const email =  "cbm360tiv@gmail.com";
 		if (!email) return res.status(500).json({ success: false, message: 'ADMIN_EMAIL is not configured' });
 		await sendOtp(email);
 		return res.json({ success: true, message: 'OTP sent' });
