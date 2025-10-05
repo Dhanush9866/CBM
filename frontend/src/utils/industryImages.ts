@@ -19,33 +19,31 @@ interface IndustryData {
  * @returns The cover image URL or null if not found
  */
 export function getIndustryCoverImage(industryName: string): string | null {
-  // First try to find by exact name match
+  // Try direct key match first (useful when callers pass sectionId/slug)
+  const directKey = (industryImages as Record<string, IndustryData>)[industryName];
+  if (directKey) {
+    if (directKey.coverImages && directKey.coverImages.length > 0) return directKey.coverImages[0].url;
+    if (directKey.images && directKey.images.length > 0) return directKey.images[0].url;
+  }
+
+  // Then try exact name match
   const exactMatch = Object.values(industryImages as Record<string, IndustryData>).find(
     industry => industry.name.toLowerCase() === industryName.toLowerCase()
   );
-  
-  if (exactMatch && exactMatch.coverImages && exactMatch.coverImages.length > 0) {
-    return exactMatch.coverImages[0].url;
+  if (exactMatch) {
+    if (exactMatch.coverImages && exactMatch.coverImages.length > 0) return exactMatch.coverImages[0].url;
+    if (exactMatch.images && exactMatch.images.length > 0) return exactMatch.images[0].url;
   }
 
-  // If no exact match, try to find by sanitized key
+  // Finally, try sanitized key
   const sanitizedKey = industryName
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
-  
   const keyMatch = (industryImages as Record<string, IndustryData>)[sanitizedKey];
-  if (keyMatch && keyMatch.coverImages && keyMatch.coverImages.length > 0) {
-    return keyMatch.coverImages[0].url;
-  }
-
-  // If no cover image found, try to use the first regular image
-  if (exactMatch && exactMatch.images && exactMatch.images.length > 0) {
-    return exactMatch.images[0].url;
-  }
-
-  if (keyMatch && keyMatch.images && keyMatch.images.length > 0) {
-    return keyMatch.images[0].url;
+  if (keyMatch) {
+    if (keyMatch.coverImages && keyMatch.coverImages.length > 0) return keyMatch.coverImages[0].url;
+    if (keyMatch.images && keyMatch.images.length > 0) return keyMatch.images[0].url;
   }
 
   return null;
