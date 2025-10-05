@@ -80,13 +80,17 @@ export function Footer() {
               </h3>
               <ul className="space-y-4">
                 {(translations?.footer.industries.list || [
-                  'Automotive',
-                  'Healthcare & Medical',
-                  'Energy & Utilities',
-                  'Manufacturing',
-                  'Construction',
-                  'Food & Agriculture'
-                ]).map((industry, index) => (
+            "Mining & Mental ",
+            "Oil and Gas",
+            "Marine",
+            "Energy & Utilities",
+            "Healthcare & Medical",
+            "Automotive",
+            "Construction",
+            "Manufacturing",
+            "Aerospace",
+            "Food & Agriculture",
+          ]).map((industry, index) => (
                   <li key={index}>
                     <Link 
                       to="/industries" 

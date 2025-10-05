@@ -16,7 +16,7 @@ export interface ContactOffice {
   updatedAt?: string;
 }
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_BASE = "https://cbm-backend-e1rq.onrender.com"
 
 // Helper function to create FormData for file uploads
 const createFormData = (data: Partial<ContactOffice>, file?: File): FormData => {
