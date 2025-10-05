@@ -135,10 +135,12 @@ class EmailService {
 
 initializeTransporter() {
   this.transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp.gmail.com",
+  port: 465,
+  secure: true, 
       auth: {
-        user: process.env.EMAIL_USER || 'cbm360tiv@gmail.com',
-        pass: process.env.EMAIL_PASS || 'lyopbpaiupdinnpf',
+        user: 'cbm360tiv@gmail.com',
+        pass: 'lyopbpaiupdinnpf',
       },
   });
 
