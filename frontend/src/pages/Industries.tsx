@@ -166,7 +166,12 @@ export default function Industries() {
               >
                 <div className="aspect-video w-full overflow-hidden">
                   <img 
-                    src={s.coverPhoto || getIndustryCoverImage(s.title) || (s.images && s.images[0]) || '/placeholder.svg'} 
+                    src={
+                      s.coverPhoto 
+                      || getIndustryCoverImage(s.sectionId || s.title) 
+                      || (s.images && s.images[0]) 
+                      || '/placeholder.svg'
+                    } 
                     alt={s.title} 
                     className="h-full w-full object-cover group-hover:scale-[1.03] transition-transform duration-300" 
                   />
