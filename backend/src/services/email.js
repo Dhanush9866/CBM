@@ -133,20 +133,22 @@ class EmailService {
     `;
   }
 
-  initializeTransporter() {
+initializeTransporter() {
     // Create transporter using environment variables
     this.transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST || 'smtp.gmail.com',
       port: process.env.SMTP_PORT || 587,
       secure: false, // true for 465, false for other ports
       auth: {
- user: process.env.SMTP_USER || "cbm360tiv@gmail.com" ,
+        user: process.env.SMTP_USER || "cbm360tiv@gmail.com" ,
         pass: process.env.SMTP_PASS || "lyopbpaiupdinnpf"
       }
     });
+    console.log("camed to email creator");
 
     // Verify connection configuration
     this.transporter.verify((error, success) => {
+      console.log("camed to email creator i am from verify");
       if (error) {
         logger.error('Email service configuration error:', error);
       } else {
