@@ -135,22 +135,17 @@ class EmailService {
 
 initializeTransporter() {
   this.transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp.gmail.com',
-    port: 587,
-    secure: false,
-    auth: {
-      user: process.env.SMTP_USER || 'cbm360tiv@gmail.com',
-      pass: process.env.SMTP_PASS || 'lyopbpaiupdinnpf',
-    },
-    tls: {
-      rejectUnauthorized: false, // allow self-signed certs (Render safe)
-    },
+    service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER || 'cbm360tiv@gmail.com',
+        pass: process.env.EMAIL_PASS || 'lyopbpaiupdinnpf',
+      },
   });
 
   console.log("✅ Transporter created");
 
   // Skip verify in production to avoid hanging on Render
-  if (process.env.NODE_ENV !== 'production') {
+ 
     this.transporter.verify((error, success) => {
       if (error) {
         console.error('Email service configuration error:', error);
@@ -158,7 +153,7 @@ initializeTransporter() {
         console.log('Email service is ready to send messages');
       }
     });
-  }
+
 }
 
   /**
