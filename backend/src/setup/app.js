@@ -30,7 +30,7 @@ function createApp() {
       "http://localhost:8080", // React development server
       "http://localhost:8081",
       "http://localhost:3000", // Fallback for development
-      "http://localhost:5173", // Vite development server
+      "http://localhost:5175", // Vite development server
       // Add your production frontend URL here
       // "https://yourdomain.com",
       // "https://www.yourdomain.com",
