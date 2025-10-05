@@ -1,7 +1,12 @@
+'use strict';
+
 const Blog = require('../models/Blog');
 const cloudinaryService = require('../services/cloudinary');
+const { translateText, translateArraySafely, SUPPORTED } = require('../services/translation');
 
-// Get all published blogs with pagination and filtering
+/**
+ * Get all published blogs with pagination and filtering
+ */
 const getAllBlogs = async (req, res) => {
   try {
     const {
@@ -18,33 +23,17 @@ const getAllBlogs = async (req, res) => {
     const limitNum = parseInt(limit);
     const skip = (pageNum - 1) * limitNum;
 
-    // Build query
     let query = {};
-    
-    // Only filter by published status if not requesting all blogs (for admin)
-    if (req.query.includeUnpublished !== 'true') {
-      query.isPublished = true;
-    }
+    if (req.query.includeUnpublished !== 'true') query.isPublished = true;
+    if (featured === 'true') query.isFeatured = true;
+    if (tag) query.tags = { $in: [new RegExp(tag, 'i')] };
+    if (search) query.title = { $regex: search, $options: 'i' };
 
-    if (featured === 'true') {
-      query.isFeatured = true;
-    }
-
-    if (tag) {
-      query.tags = { $in: [new RegExp(tag, 'i')] };
-    }
-
-    if (search) {
-      query.title = { $regex: search, $options: 'i' };
-    }
-
-    // Build sort object
     const sort = {};
     sort[sortBy] = sortOrder === 'desc' ? -1 : 1;
 
-    // Include content for admin requests (when includeUnpublished=true)
     const selectFields = req.query.includeUnpublished === 'true' ? '' : '-content';
-    
+
     const blogs = await Blog.find(query)
       .select(selectFields)
       .sort(sort)
@@ -77,35 +66,36 @@ const getAllBlogs = async (req, res) => {
   }
 };
 
-// Get single blog by ID or slug
+/**
+ * Get single blog by ID or slug
+ */
 const getBlogById = async (req, res) => {
   try {
     const { id } = req.params;
+    const { lang } = req.query;
 
-    // Check if id is a valid ObjectId or slug
     const isObjectId = /^[0-9a-fA-F]{24}$/.test(id);
-    
-    let blog;
-    if (isObjectId) {
-      blog = await Blog.findById(id);
-    } else {
-      blog = await Blog.findOne({ slug: id });
-    }
+    let blog = isObjectId
+      ? await Blog.findById(id)
+      : await Blog.findOne({ slug: id });
 
     if (!blog || !blog.isPublished) {
-      return res.status(404).json({
-        success: false,
-        message: 'Blog post not found'
-      });
+      return res.status(404).json({ success: false, message: 'Blog post not found' });
     }
 
-    // Increment view count
     await blog.incrementViewCount();
 
-    res.json({
-      success: true,
-      data: blog
-    });
+    // Handle translation
+    if (lang && lang !== 'en' && blog.translations?.get(lang)) {
+      const translation = blog.translations.get(lang);
+      blog = {
+        ...blog.toObject(),
+        ...translation,
+        translations: blog.translations
+      };
+    }
+
+    res.json({ success: true, data: blog });
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -115,21 +105,18 @@ const getBlogById = async (req, res) => {
   }
 };
 
-// Get featured blogs
+/**
+ * Get featured blogs
+ */
 const getFeaturedBlogs = async (req, res) => {
   try {
-    const { limit = 5 } = req.query;
-    const limitNum = parseInt(limit);
-
+    const limitNum = parseInt(req.query.limit || 5);
     const blogs = await Blog.getFeatured()
       .select('-content')
       .limit(limitNum)
       .lean();
 
-    res.json({
-      success: true,
-      data: blogs
-    });
+    res.json({ success: true, data: blogs });
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -139,14 +126,14 @@ const getFeaturedBlogs = async (req, res) => {
   }
 };
 
-// Get blogs by tag
+/**
+ * Get blogs by tag
+ */
 const getBlogsByTag = async (req, res) => {
   try {
     const { tag } = req.params;
-    const { page = 1, limit = 10 } = req.query;
-
-    const pageNum = parseInt(page);
-    const limitNum = parseInt(limit);
+    const pageNum = parseInt(req.query.page || 1);
+    const limitNum = parseInt(req.query.limit || 10);
     const skip = (pageNum - 1) * limitNum;
 
     const blogs = await Blog.find({
@@ -163,7 +150,6 @@ const getBlogsByTag = async (req, res) => {
       isPublished: true,
       tags: { $in: [new RegExp(tag, 'i')] }
     });
-
     const totalPages = Math.ceil(total / limitNum);
 
     res.json({
@@ -189,17 +175,13 @@ const getBlogsByTag = async (req, res) => {
   }
 };
 
-// Search blogs
+/**
+ * Search blogs
+ */
 const searchBlogs = async (req, res) => {
   try {
     const { q: query, page = 1, limit = 10 } = req.query;
-
-    if (!query) {
-      return res.status(400).json({
-        success: false,
-        message: 'Search query is required'
-      });
-    }
+    if (!query) return res.status(400).json({ success: false, message: 'Search query is required' });
 
     const pageNum = parseInt(page);
     const limitNum = parseInt(limit);
@@ -246,15 +228,13 @@ const searchBlogs = async (req, res) => {
   }
 };
 
-// Get all unique tags
+/**
+ * Get all unique tags
+ */
 const getAllTags = async (req, res) => {
   try {
     const tags = await Blog.distinct('tags', { isPublished: true });
-    
-    res.json({
-      success: true,
-      data: tags.sort()
-    });
+    res.json({ success: true, data: tags.sort() });
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -264,50 +244,62 @@ const getAllTags = async (req, res) => {
   }
 };
 
-// Create new blog (Admin only)
+/**
+ * Create new blog (Admin only) with auto translations
+ */
 const createBlog = async (req, res) => {
   try {
-    console.log('Create blog request received:', {
+    console.log('🟢 Create blog request received:', {
       body: req.body,
       file: req.file ? 'File present' : 'No file',
       headers: req.headers
     });
-    
+
     const blogData = req.body;
 
-    // Handle uploaded featured image
+    // Handle featured image upload
     if (req.file) {
       try {
-        // Generate a unique public ID for the blog image
         const timestamp = Date.now();
         const publicId = `blog-${timestamp}`;
-        
+        console.log('🔹 Uploading featured image to Cloudinary with publicId:', publicId);
+
         const uploadResult = await cloudinaryService.uploadFromBuffer(req.file.buffer, {
           folder: 'cbm/blog/featured-images',
           public_id: publicId,
-          transformation: [
-            { width: 800, height: 600, crop: 'fit', quality: 'auto' }
-          ],
+          transformation: [{ width: 800, height: 600, crop: 'fit', quality: 'auto' }],
           tags: ['blog', 'featured-image', 'cbm']
         });
-        
+
+        console.log('✅ Featured image uploaded:', uploadResult.url);
         blogData.featuredImage = uploadResult.url;
       } catch (uploadError) {
-        console.error('Image upload error:', uploadError);
-        // If Cloudinary upload fails, keep the existing image URL or empty
-        console.warn('Cloudinary upload failed, using provided image URL or empty');
+        console.warn('❌ Cloudinary upload failed:', uploadError);
       }
     }
 
-    // Parse JSON fields if they exist
+    // Parse JSON fields
     if (blogData.tags && typeof blogData.tags === 'string') {
-      blogData.tags = JSON.parse(blogData.tags);
-    }
-    if (blogData.images && typeof blogData.images === 'string') {
-      blogData.images = JSON.parse(blogData.images);
+      try {
+        blogData.tags = JSON.parse(blogData.tags);
+        console.log('🔹 Parsed tags:', blogData.tags);
+      } catch (e) {
+        console.warn('❌ Failed to parse tags JSON:', e);
+        blogData.tags = [];
+      }
     }
 
-    // Generate slug if not provided
+    if (blogData.images && typeof blogData.images === 'string') {
+      try {
+        blogData.images = JSON.parse(blogData.images);
+        console.log('🔹 Parsed images:', blogData.images);
+      } catch (e) {
+        console.warn('❌ Failed to parse images JSON:', e);
+        blogData.images = [];
+      }
+    }
+
+    // Generate slug if missing
     if (!blogData.slug && blogData.title) {
       blogData.slug = blogData.title
         .toLowerCase()
@@ -315,10 +307,43 @@ const createBlog = async (req, res) => {
         .trim()
         .replace(/\s+/g, '-')
         .replace(/-+/g, '-');
+      console.log('🔹 Generated slug:', blogData.slug);
     }
 
+    // Initialize translations map
+    blogData.translations = {};
+    const TARGET_LANGUAGES = SUPPORTED.filter(l => l !== 'en');
+
+    for (const lang of TARGET_LANGUAGES) {
+      try {
+        console.log(`🌍 Translating blog to ${lang}...`);
+
+        const [titleT, excerptT, contentT, tagsT, metaT] = await Promise.all([
+          translateText(blogData.title, lang),
+          translateText(blogData.excerpt, lang),
+          translateText(blogData.content, lang),
+          translateArraySafely(blogData.tags || [], lang),
+          blogData.metaDescription ? translateText(blogData.metaDescription, lang) : ''
+        ]);
+
+        blogData.translations[lang] = {
+          title: titleT,
+          excerpt: excerptT,
+          content: contentT,
+          tags: tagsT,
+          metaDescription: metaT
+        };
+
+        console.log(`✅ Successfully translated blog to ${lang}`);
+      } catch (e) {
+        console.warn(`❌ Failed to translate blog to ${lang}:`, e.message);
+      }
+    }
+
+    console.log('🟢 Saving blog to database...');
     const blog = new Blog(blogData);
     await blog.save();
+    console.log('✅ Blog saved successfully with ID:', blog._id);
 
     res.status(201).json({
       success: true,
@@ -326,6 +351,7 @@ const createBlog = async (req, res) => {
       message: 'Blog post created successfully'
     });
   } catch (error) {
+    console.error('❌ Error creating blog post:', error);
     res.status(500).json({
       success: false,
       message: 'Error creating blog post',
@@ -334,102 +360,84 @@ const createBlog = async (req, res) => {
   }
 };
 
-// Update blog (Admin only)
+
+/**
+ * Update blog (Admin only)
+ */
 const updateBlog = async (req, res) => {
   try {
-    console.log('Update blog request received:', {
-      id: req.params.id,
-      body: req.body,
-      file: req.file ? 'File present' : 'No file',
-      headers: req.headers,
-      contentType: req.headers['content-type']
-    });
-    
     const { id } = req.params;
     const updateData = req.body;
-    
-    // Check if blog exists
+
+    console.log(`🔹 Update blog request received for ID: ${id}`);
+    console.log('Update payload:', updateData);
+
     const existingBlog = await Blog.findById(id);
     if (!existingBlog) {
-      console.log('Blog not found for ID:', id);
-      return res.status(404).json({
-        success: false,
-        message: 'Blog post not found'
-      });
+      console.warn(`❌ Blog not found for ID: ${id}`);
+      return res.status(404).json({ success: false, message: 'Blog post not found' });
     }
-    
-    console.log('Existing blog found:', {
-      id: existingBlog._id,
-      title: existingBlog.title,
-      featuredImage: existingBlog.featuredImage
-    });
 
     // Handle uploaded featured image
     if (req.file) {
       try {
-        // Generate a unique public ID for the blog image
         const timestamp = Date.now();
         const publicId = `blog-${timestamp}`;
-        
+        console.log(`🔹 Uploading featured image to Cloudinary with publicId: ${publicId}`);
+
         const uploadResult = await cloudinaryService.uploadFromBuffer(req.file.buffer, {
           folder: 'cbm/blog/featured-images',
           public_id: publicId,
-          transformation: [
-            { width: 800, height: 600, crop: 'fit', quality: 'auto' }
-          ],
+          transformation: [{ width: 800, height: 600, crop: 'fit', quality: 'auto' }],
           tags: ['blog', 'featured-image', 'cbm']
         });
-        
+
         updateData.featuredImage = uploadResult.url;
+        console.log(`✅ Featured image uploaded: ${updateData.featuredImage}`);
       } catch (uploadError) {
-        console.error('Image upload error:', uploadError);
-        // If Cloudinary upload fails, keep the existing image URL or empty
-        console.warn('Cloudinary upload failed, using provided image URL or empty');
+        console.warn('⚠️ Cloudinary upload failed:', uploadError);
       }
     }
 
-    // Parse JSON fields if they exist
+    // Parse JSON fields if needed
     if (updateData.tags && typeof updateData.tags === 'string') {
-      try {
-        updateData.tags = JSON.parse(updateData.tags);
-      } catch (e) {
-        console.error('Error parsing tags:', e);
-        updateData.tags = [];
-      }
+      try { updateData.tags = JSON.parse(updateData.tags); console.log('🔹 Parsed tags:', updateData.tags); } 
+      catch { updateData.tags = []; console.warn('⚠️ Failed to parse tags, resetting to empty array'); }
     }
     if (updateData.images && typeof updateData.images === 'string') {
+      try { updateData.images = JSON.parse(updateData.images); console.log('🔹 Parsed images:', updateData.images); } 
+      catch { updateData.images = []; console.warn('⚠️ Failed to parse images, resetting to empty array'); }
+    }
+
+    // Initialize translations map if not present
+    if (!existingBlog.translations) existingBlog.translations = new Map();
+
+    const TARGET_LANGUAGES = SUPPORTED.filter(l => l !== 'en');
+
+    for (const lang of TARGET_LANGUAGES) {
       try {
-        updateData.images = JSON.parse(updateData.images);
+        const [titleT, excerptT, contentT, tagsT, metaT] = await Promise.all([
+          updateData.title ? translateText(updateData.title, lang) : existingBlog.translations?.get(lang)?.title || existingBlog.title,
+          updateData.excerpt ? translateText(updateData.excerpt, lang) : existingBlog.translations?.get(lang)?.excerpt || existingBlog.excerpt,
+          updateData.content ? translateText(updateData.content, lang) : existingBlog.translations?.get(lang)?.content || existingBlog.content,
+          updateData.tags ? translateArraySafely(updateData.tags, lang) : existingBlog.translations?.get(lang)?.tags || existingBlog.tags,
+          updateData.metaDescription ? translateText(updateData.metaDescription, lang) : existingBlog.translations?.get(lang)?.metaDescription || existingBlog.metaDescription
+        ]);
+
+        if (!updateData.translations) updateData.translations = {};
+        updateData.translations[lang] = { title: titleT, excerpt: excerptT, content: contentT, tags: tagsT, metaDescription: metaT };
+        console.log(`✅ Translated blog to ${lang}`);
       } catch (e) {
-        console.error('Error parsing images:', e);
-        updateData.images = [];
+        console.warn(`❌ Failed to translate blog to ${lang}:`, e.message);
       }
     }
 
-    console.log('Updating blog with data:', updateData);
-    
-    const blog = await Blog.findByIdAndUpdate(
-      id,
-      updateData,
-      { new: true, runValidators: true }
-    );
+    const blog = await Blog.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
+    console.log(`✅ Blog updated successfully: ID ${blog._id}`);
 
-    if (!blog) {
-      console.log('Blog not found with ID:', id);
-      return res.status(404).json({
-        success: false,
-        message: 'Blog post not found'
-      });
-    }
-
-    console.log('Blog updated successfully:', { id: blog._id, title: blog.title });
-    
-    res.json({
-      success: true,
-      data: blog,
-      message: 'Blog post updated successfully'
-    });
+    res.json({ success: true, data: blog, message: 'Blog post updated successfully' });
   } catch (error) {
+    console.error('❌ Error updating blog post:', error);
     res.status(500).json({
       success: false,
       message: 'Error updating blog post',
@@ -438,30 +446,19 @@ const updateBlog = async (req, res) => {
   }
 };
 
-// Delete blog (Admin only)
+
+/**
+ * Delete blog (Admin only)
+ */
 const deleteBlog = async (req, res) => {
   try {
     const { id } = req.params;
-
     const blog = await Blog.findByIdAndDelete(id);
+    if (!blog) return res.status(404).json({ success: false, message: 'Blog post not found' });
 
-    if (!blog) {
-      return res.status(404).json({
-        success: false,
-        message: 'Blog post not found'
-      });
-    }
-
-    res.json({
-      success: true,
-      message: 'Blog post deleted successfully'
-    });
+    res.json({ success: true, message: 'Blog post deleted successfully' });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: 'Error deleting blog post',
-      error: error.message
-    });
+    res.status(500).json({ success: false, message: 'Error deleting blog post', error: error.message });
   }
 };
 
