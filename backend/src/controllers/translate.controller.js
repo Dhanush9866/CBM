@@ -79,6 +79,33 @@ async function getAllStaticTranslations(req, res, next) {
   }
 }
 
-module.exports = { translateSection, getStaticTranslations, getAllStaticTranslations };
+async function getSlidesData(req, res, next) {
+  try {
+    const lang = req.params.lang || 'en';
+    
+    if (!['en', 'fr', 'pt', 'es', 'ru', 'zh'].includes(lang)) {
+      throw new ApiError(400, 'Unsupported language. Supported languages: en, fr, pt, es, ru, zh');
+    }
+
+    const slidesData = translations[lang]?.pages?.services?.slides;
+    if (!slidesData) {
+      throw new ApiError(404, 'Slides data not found for the specified language');
+    }
+
+    res.json({
+      success: true,
+      data: {
+        language: lang,
+        slides: slidesData,
+        count: slidesData.length,
+        timestamp: new Date().toISOString()
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { translateSection, getStaticTranslations, getAllStaticTranslations, getSlidesData };
 
 

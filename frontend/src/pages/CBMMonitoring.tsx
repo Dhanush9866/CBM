@@ -55,7 +55,7 @@ export default function CBMMonitoring() {
     <div>
       <section className="section pb-2">
         <div className="container-responsive">
-          <Breadcrumb>
+          {/* <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
                 <BreadcrumbLink href="/services">Services</BreadcrumbLink>
@@ -65,7 +65,7 @@ export default function CBMMonitoring() {
                 <BreadcrumbLink href="/services/cbm">Condition based Monitoring (CBM)</BreadcrumbLink>
               </BreadcrumbItem>
             </BreadcrumbList>
-          </Breadcrumb>
+          </Breadcrumb> */}
 
           <div className="mt-6 text-center">
             {loading ? (
