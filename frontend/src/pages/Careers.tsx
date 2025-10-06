@@ -26,6 +26,15 @@ export default function Careers() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const { currentLanguage, translations } = useTranslation();
+  const formatDate = (dateString: string) => {
+    if (!dateString) return '';
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      timeZone: 'UTC',
+    });
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -219,6 +228,11 @@ export default function Careers() {
                       <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm">
                         {job.level}
                       </span>
+                    {job.postedAt && (
+                      <span className="text-sm text-muted-foreground">
+                        Posted on {formatDate(job.postedAt)}
+                      </span>
+                    )}
                     </div>
                     
                     <p className="text-muted-foreground mb-4">{job.description}</p>
@@ -238,7 +252,6 @@ export default function Careers() {
                       </div>
                     </div>
                   </div>
-                  
                   <div className="mt-4 lg:mt-0 lg:ml-6">
                     <JobApplicationDialog job={job}>
                       <Button 
