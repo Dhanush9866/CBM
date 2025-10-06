@@ -15,6 +15,7 @@ import { Logo } from '@/components/Common/Logo';
 
 export function Footer() {
   const { translations } = useTranslation();
+  const currentYear = new Date().getFullYear();
 
   return (
     <footer className="bg-tuv-gray-900 text-white">
@@ -172,7 +173,7 @@ export function Footer() {
         <div className="border-t border-tuv-gray-700 py-6">
           <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
             <div className="text-tuv-gray-400 text-sm">
-              © 2024 CBM. All rights reserved.
+              © {currentYear} CBM. All rights reserved.
             </div>
             <div className="flex flex-wrap items-center space-x-6 text-sm">
               <Link to="#" className="text-tuv-gray-400 hover:text-white transition-colors">
