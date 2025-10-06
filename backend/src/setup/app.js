@@ -31,6 +31,8 @@ function createApp() {
       "http://localhost:8081",
       "http://localhost:3000", // Fallback for development
       "http://localhost:5175", // Vite development server
+      "https://cbm-ky2n.onrender.com",
+      "https://cbm-admin-7dbj.onrender.com",
       // Add your production frontend URL here
       // "https://yourdomain.com",
       // "https://www.yourdomain.com",
