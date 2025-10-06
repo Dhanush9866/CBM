@@ -12,6 +12,8 @@ export interface OfficeData {
   emails: string[];
   is_lab_facility: boolean;
   notes: string;
+  latitude?: number;
+  longitude?: number;
 }
 
 export interface RegionalOfficeGroup {

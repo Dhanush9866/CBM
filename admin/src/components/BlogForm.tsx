@@ -231,8 +231,179 @@ export default function BlogForm({ blog, onSave, onCancel, isLoading = false }: 
       )}
 
       <form onSubmit={handleSubmit} style={{ backgroundColor: 'white', padding: '24px', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
-        {/* Your input fields remain exactly the same as before */}
-        {/* ... full form content unchanged ... */}
+        {/* Title */}
+        <div style={{ marginBottom: 16 }}>
+          <label style={{ display: 'block', fontSize: 13, color: '#374151', marginBottom: 6 }}>Title</label>
+          <input
+            name="title"
+            value={formData.title}
+            onChange={handleInputChange}
+            placeholder="Post title"
+            style={{ width: '100%', padding: '10px 12px', border: `1px solid ${errors.title ? '#fecaca' : '#e5e7eb'}`, borderRadius: 6 }}
+          />
+        </div>
+
+        {/* Slug */}
+        <div style={{ marginBottom: 16 }}>
+          <label style={{ display: 'block', fontSize: 13, color: '#374151', marginBottom: 6 }}>Slug</label>
+          <input
+            name="slug"
+            value={formData.slug}
+            onChange={handleInputChange}
+            placeholder="auto-generated from title, or edit"
+            style={{ width: '100%', padding: '10px 12px', border: `1px solid ${errors.slug ? '#fecaca' : '#e5e7eb'}`, borderRadius: 6 }}
+          />
+        </div>
+
+        {/* Excerpt */}
+        <div style={{ marginBottom: 16 }}>
+          <label style={{ display: 'block', fontSize: 13, color: '#374151', marginBottom: 6 }}>Excerpt</label>
+          <textarea
+            name="excerpt"
+            value={formData.excerpt}
+            onChange={handleInputChange}
+            rows={3}
+            placeholder="Short summary"
+            style={{ width: '100%', padding: '10px 12px', border: `1px solid ${errors.excerpt ? '#fecaca' : '#e5e7eb'}`, borderRadius: 6 }}
+          />
+        </div>
+
+        {/* Content */}
+        <div style={{ marginBottom: 16 }}>
+          <label style={{ display: 'block', fontSize: 13, color: '#374151', marginBottom: 6 }}>Content</label>
+          <textarea
+            name="content"
+            value={formData.content}
+            onChange={handleInputChange}
+            rows={10}
+            placeholder="Write your content here..."
+            style={{ width: '100%', padding: '10px 12px', border: `1px solid ${errors.content ? '#fecaca' : '#e5e7eb'}`, borderRadius: 6 }}
+          />
+        </div>
+
+        {/* Tags */}
+        <div style={{ marginBottom: 16 }}>
+          <label style={{ display: 'block', fontSize: 13, color: '#374151', marginBottom: 6 }}>Tags</label>
+          <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
+            <input
+              value={tagInput}
+              onChange={(e) => setTagInput(e.target.value)}
+              placeholder="Add a tag and press Add"
+              onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddTag(); } }}
+              style={{ flex: 1, padding: '10px 12px', border: '1px solid #e5e7eb', borderRadius: 6 }}
+            />
+            <button type="button" onClick={handleAddTag} style={{ padding: '10px 14px', border: '1px solid #e5e7eb', borderRadius: 6, background: '#fff', cursor: 'pointer' }}>Add</button>
+          </div>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            {(formData.tags ?? []).map((tag) => (
+              <span key={tag} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '4px 8px', background: '#f3f4f6', borderRadius: 999 }}>
+                {tag}
+                <button type="button" onClick={() => handleRemoveTag(tag)} style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: '#6b7280' }}>×</button>
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Featured image */}
+        <div style={{ marginBottom: 16 }}>
+          <label style={{ display: 'block', fontSize: 13, color: '#374151', marginBottom: 6 }}>Featured Image</label>
+          <div
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+            style={{ border: `1px dashed ${errors.featuredImage ? '#fecaca' : '#d1d5db'}`, padding: 16, borderRadius: 8, textAlign: 'center', marginBottom: 8 }}
+          >
+            <input type="file" accept="image/*" onChange={handleFeaturedImageChange} />
+            <div style={{ color: '#6b7280', fontSize: 12, marginTop: 6 }}>Drag and drop an image or click to select</div>
+          </div>
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 8 }}>
+            <input
+              name="featuredImage"
+              value={formData.featuredImage}
+              onChange={handleInputChange}
+              placeholder="...or paste image URL"
+              style={{ flex: 1, padding: '10px 12px', border: '1px solid #e5e7eb', borderRadius: 6 }}
+            />
+          </div>
+          {featuredImagePreview && (
+            <div style={{ marginTop: 8 }}>
+              <img src={featuredImagePreview} alt="Preview" style={{ maxWidth: '100%', borderRadius: 8 }} />
+            </div>
+          )}
+        </div>
+
+        {/* Gallery images */}
+        <div style={{ marginBottom: 16 }}>
+          <label style={{ display: 'block', fontSize: 13, color: '#374151', marginBottom: 6 }}>Gallery Images</label>
+          <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
+            <input
+              value={imageInput.url}
+              onChange={(e) => setImageInput({ ...imageInput, url: e.target.value })}
+              placeholder="Image URL"
+              style={{ flex: 1, padding: '10px 12px', border: '1px solid #e5e7eb', borderRadius: 6 }}
+            />
+            <input
+              value={imageInput.alt}
+              onChange={(e) => setImageInput({ ...imageInput, alt: e.target.value })}
+              placeholder="Alt text"
+              style={{ flex: 1, padding: '10px 12px', border: '1px solid #e5e7eb', borderRadius: 6 }}
+            />
+            <input
+              value={imageInput.caption}
+              onChange={(e) => setImageInput({ ...imageInput, caption: e.target.value })}
+              placeholder="Caption"
+              style={{ flex: 1, padding: '10px 12px', border: '1px solid #e5e7eb', borderRadius: 6 }}
+            />
+            <button type="button" onClick={handleAddImage} style={{ padding: '10px 14px', border: '1px solid #e5e7eb', borderRadius: 6, background: '#fff', cursor: 'pointer' }}>Add</button>
+          </div>
+          {(formData.images ?? []).length > 0 && (
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 8 }}>
+              {(formData.images ?? []).map((img, idx) => (
+                <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: '1px solid #f3f4f6', borderRadius: 6, padding: 8 }}>
+                  <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <div style={{ fontSize: 12, color: '#111827' }}>{img.url}</div>
+                    <div style={{ fontSize: 12, color: '#6b7280' }}>{img.alt} {img.caption ? `• ${img.caption}` : ''}</div>
+                  </div>
+                  <button type="button" onClick={() => handleRemoveImage(idx)} style={{ padding: '6px 10px', border: '1px solid #ef4444', color: '#ef4444', borderRadius: 6, background: '#fff', cursor: 'pointer' }}>Remove</button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Flags */}
+        <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
+          <label style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+            <input type="checkbox" name="isPublished" checked={!!formData.isPublished} onChange={handleInputChange} />
+            Published
+          </label>
+          <label style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+            <input type="checkbox" name="isFeatured" checked={!!formData.isFeatured} onChange={handleInputChange} />
+            Featured
+          </label>
+        </div>
+
+        {/* Meta description */}
+        <div style={{ marginBottom: 20 }}>
+          <label style={{ display: 'block', fontSize: 13, color: '#374151', marginBottom: 6 }}>Meta Description</label>
+          <textarea
+            name="metaDescription"
+            value={formData.metaDescription}
+            onChange={handleInputChange}
+            rows={3}
+            placeholder="SEO description"
+            style={{ width: '100%', padding: '10px 12px', border: '1px solid #e5e7eb', borderRadius: 6 }}
+          />
+        </div>
+
+        {/* Actions */}
+        <div style={{ display: 'flex', gap: 12 }}>
+          <button type="submit" disabled={isLoading} style={{ padding: '12px 20px', background: '#10b981', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer' }}>
+            {isLoading ? 'Saving...' : (blog ? 'Save Changes' : 'Create Blog')}
+          </button>
+          <button type="button" onClick={onCancel} disabled={isLoading} style={{ padding: '12px 20px', border: '1px solid #e5e7eb', borderRadius: 6, background: '#fff', cursor: 'pointer' }}>
+            Cancel
+          </button>
+        </div>
       </form>
     </div>
   );

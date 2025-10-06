@@ -60,7 +60,7 @@ export function VideoHero({
     };
   }, [api]);
   return (
-    <section className="relative overflow-hidden h-[80vh] lg:h-[110vh]">
+    <section className="relative overflow-hidden h-[62vh] sm:h-[78vh] lg:h-[110vh] pb-[env(safe-area-inset-bottom)]">
       {/* Video Carousel Background */}
       <div className="absolute inset-0">
         <Carousel 
@@ -87,37 +87,41 @@ export function VideoHero({
                     preload="metadata"
                   />
                   {/* Gradient overlay for readability */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-black/20" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/25 md:from-black/60 md:via-black/30 md:to-black/20" />
                 </div>
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="left-2 md:left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white z-10 h-10 w-10 md:h-8 md:w-8" />
-          <CarouselNext className="right-2 md:right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white z-10 h-10 w-10 md:h-8 md:w-8" />
+          <div className="hidden md:block">
+            <CarouselPrevious className="left-2 md:left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white z-10 h-8 w-8" />
+          </div>
+          <div className="hidden md:block">
+            <CarouselNext className="right-2 md:right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white z-10 h-8 w-8" />
+          </div>
         </Carousel>
       </div>
 
       {/* Content Overlay */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="container-responsive px-4">
-        <div className="max-w-4xl mx-auto text-center text-white">
+        <div className="container-responsive px-3 sm:px-4 pt-8 pb-14 sm:pt-12 sm:pb-20">
+        <div className="max-w-3xl sm:max-w-4xl mx-auto text-center text-white">
           {slides[currentSlide]?.subtitle && (
-            <div className="inline-block bg-white/10 backdrop-blur-sm rounded-full px-6 py-2 mb-6">
-              <span className="text-sm font-medium">{slides[currentSlide].subtitle}</span>
+            <div className="inline-block bg-white/10 backdrop-blur-sm rounded-full px-5 py-1.5 mb-4 sm:px-6 sm:py-2 sm:mb-6">
+              <span className="text-xs sm:text-sm font-medium">{slides[currentSlide].subtitle}</span>
             </div>
           )}
 
-          <h1 className="text-4xl lg:text-6xl font-bold mb-6 text-balance">
+          <h1 className="text-2xl sm:text-4xl lg:text-6xl font-bold mb-3 sm:mb-6 text-balance">
             {slides[currentSlide]?.title || ''}
           </h1>
 
-          <p className="text-xl lg:text-xl text-white/90 mb-10 text-pretty max-w-3xl mx-auto">
+          <p className="text-sm sm:text-base lg:text-xl text-white/90 mb-5 sm:mb-10 text-pretty max-w-3xl mx-auto">
             {slides[currentSlide]?.description || ''}
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             {slides[currentSlide]?.primaryCTA && (
-              <Button size="lg" className="bg-white text-primary hover:bg-white/90 text-lg px-8 py-4" asChild>
+              <Button size="lg" className="w-full sm:w-auto bg-white text-primary hover:bg-white/90 text-base sm:text-lg px-6 py-3 sm:px-8 sm:py-4" asChild>
                 <a href={slides[currentSlide].primaryCTA!.href}>
                   {slides[currentSlide].primaryCTA!.text}
                   <ArrowRight className="ml-2 h-5 w-5" />
@@ -128,7 +132,7 @@ export function VideoHero({
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="border-white text-white  text-primary text-lg px-8 py-4" asChild
+                className="w-full sm:w-auto border-white text-white  text-primary text-base sm:text-lg px-6 py-3 sm:px-8 sm:py-4" asChild
               >
                 <a href={slides[currentSlide].secondaryCTA!.href}>
                   {slides[currentSlide].secondaryCTA!.text}
@@ -141,7 +145,7 @@ export function VideoHero({
       </div>
 
       {/* Slide Indicators for Mobile */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-10 md:hidden">
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex space-x-2 z-10 md:hidden">
         {videoUrls.map((_, index) => (
           <button
             key={index}
@@ -157,7 +161,7 @@ export function VideoHero({
       </div>
 
       {/* Decorative Bottom Wave for continuity with existing design */}
-      <div className="absolute bottom-0 left-0 right-0">
+      <div className="hidden md:block absolute bottom-0 left-0 right-0">
         <svg className="w-full h-12 text-background" viewBox="0 0 1200 120" preserveAspectRatio="none">
           <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" fill="currentColor"></path>
         </svg>

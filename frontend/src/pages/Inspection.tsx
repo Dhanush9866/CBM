@@ -55,17 +55,7 @@ export default function Inspection() {
     <div>
       <section className="section pb-2">
         <div className="container-responsive">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/services">Services</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/services/inspection">Inspection (I)</BreadcrumbLink>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
+    
 
           <div className="mt-6 text-center">
             {loading ? (

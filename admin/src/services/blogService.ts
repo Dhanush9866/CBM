@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://api2.brelis.in/api';
+import { api } from '@/lib/api';
 
 export interface Blog {
   _id: string;
@@ -68,28 +68,25 @@ export interface BlogResponse {
 
 class BlogService {
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    const url = `${API_BASE_URL}/blogs${endpoint}`;
-    
-    const config: RequestInit = {
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
-      ...options,
-    };
+    const url = `/api/blogs${endpoint}`;
+
+    const method = (options.method || 'GET').toUpperCase();
+    const headers = options.headers as Record<string, string> | undefined;
+    const body = (options as any).body as any | undefined;
 
     try {
-      const response = await fetch(url, config);
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error('Blog service error:', error);
-      throw error;
+      const response = await api.request({
+        url,
+        method: method as any,
+        headers,
+        // Axios uses `data` for request body
+        data: body,
+      });
+      return response.data as T;
+    } catch (error: any) {
+      const message = error?.response?.data?.message || error?.message || 'Blog service error';
+      console.error('Blog service error:', message);
+      throw new Error(message);
     }
   }
 
@@ -158,16 +155,17 @@ class BlogService {
         }
       });
       formData.append('featuredImageFile', featuredImageFile);
-      
+      // Let Axios set the correct multipart headers
       return this.request<BlogResponse>('', {
         method: 'POST',
         body: formData,
-        headers: {} // Remove Content-Type header to let browser set it with boundary
+        headers: {},
       });
     } else {
       return this.request<BlogResponse>('', {
         method: 'POST',
         body: JSON.stringify(blogData),
+        headers: { 'Content-Type': 'application/json' },
       });
     }
   }
@@ -188,16 +186,16 @@ class BlogService {
         }
       });
       formData.append('featuredImageFile', featuredImageFile);
-      
       return this.request<BlogResponse>(`/${id}`, {
         method: 'PUT',
         body: formData,
-        headers: {} // Remove Content-Type header to let browser set it with boundary
+        headers: {},
       });
     } else {
       return this.request<BlogResponse>(`/${id}`, {
         method: 'PUT',
         body: JSON.stringify(blogData),
+        headers: { 'Content-Type': 'application/json' },
       });
     }
   }

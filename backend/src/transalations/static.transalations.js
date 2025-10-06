@@ -67,9 +67,9 @@ const translations = {
               title: "Our Global Network",
               titleShort: "Network",
               corporate: "Corporate",
-              regional: "Regional",
+              regional: "Regional offices with Laboratories",
               branch: "Branch offices",
-              labs: "Laboratories"
+              labs: "Branch offices with Laboratories"
             }
           },
           slides: [
@@ -399,13 +399,13 @@ const translations = {
             title: "Un réseau mondial",
             description: "Explorez notre présence mondiale et trouvez le bureau le plus proche de chez vous. Cliquez sur un emplacement pour afficher les coordonnées détaillées.",
             legend: {
-              title: "Notre réseau mondial",
-              titleShort: "Réseau",
-              corporate: "Siège",
-              regional: "Régional",
-              branch: "Bureaux de branche",
-              labs: "Laboratoires"
-            }
+              "title": "Notre Réseau Mondial",
+              "titleShort": "Réseau",
+              "corporate": "Siège Social",
+              "regional": "Bureaux régionaux avec laboratoires",
+              "branch": "Bureaux de succursale",
+              "labs": "Succursales avec laboratoires"
+            }            
           },
           slides: [
             {
@@ -733,13 +733,13 @@ const translations = {
             title: "Uma Rede Global",
             description: "Explore nossa presença mundial e encontre o escritório mais próximo de você. Clique em qualquer local para ver informações de contato detalhadas.",
             legend: {
-              title: "Nossa Rede Global",
-              titleShort: "Rede",
-              corporate: "Corporativo",
-              regional: "Regional",
-              branch: "Escritórios filiais",
-              labs: "Laboratórios"
-            }
+              "title": "Nossa Rede Global",
+              "titleShort": "Rede",
+              "corporate": "Corporativo",
+              "regional": "Escritórios regionais com laboratórios",
+              "branch": "Filiais",
+              "labs": "Filiais com laboratórios"
+            }            
           },
           slides: [
             {
@@ -1066,13 +1066,13 @@ const translations = {
             title: "Una Red Global",
             description: "Explora nuestra presencia mundial y encuentra la oficina más cercana a ti. Haz clic en cualquier ubicación para ver información de contacto detallada.",
             legend: {
-              title: "Nuestra Red Global",
-              titleShort: "Red",
-              corporate: "Corporativo",
-              regional: "Regional",
-              branch: "Oficinas sucursales",
-              labs: "Laboratorios"
-            }
+              "title": "Nuestra Red Global",
+              "titleShort": "Red",
+              "corporate": "Corporativo",
+              "regional": "Oficinas regionales con laboratorios",
+              "branch": "Sucursales",
+              "labs": "Sucursales con laboratorios"
+            }            
           },
           slides: [
             {
@@ -1399,13 +1399,13 @@ const translations = {
             title: "Глобальная сеть",
             description: "Изучите наше мировое присутствие и найдите ближайший к вам офис. Нажмите на любую точку, чтобы увидеть подробную контактную информацию.",
             legend: {
-              title: "Наша глобальная сеть",
-              titleShort: "Сеть",
-              corporate: "Головной офис",
-              regional: "Региональный",
-              branch: "Филиалы",
-              labs: "Лаборатории"
-            }
+              "title": "Наша Глобальная Сеть",
+              "titleShort": "Сеть",
+              "corporate": "Корпоративный офис",
+              "regional": "Региональные офисы с лабораториями",
+              "branch": "Филиалы",
+              "labs": "Филиалы с лабораториями"
+            }            
           },
           slides: [
             {
@@ -1734,13 +1734,13 @@ const translations = {
             title: "全球网络",
             description: "探索我们的全球布局并找到离您最近的办公室。点击任意位置查看详细联系信息。",
             legend: {
-              title: "我们的全球网络",
-              titleShort: "网络",
-              corporate: "总部",
-              regional: "区域",
-              branch: "分支机构",
-              labs: "实验室"
-            }
+              "title": "我们的全球网络",
+              "titleShort": "网络",
+              "corporate": "总部",
+              "regional": "设有实验室的区域办事处",
+              "branch": "分支办事处",
+              "labs": "设有实验室的分支办事处"
+            }            
           },
           slides: [
             {

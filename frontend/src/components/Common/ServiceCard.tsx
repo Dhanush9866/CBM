@@ -17,18 +17,7 @@ export function ServiceCard({ title, description, icon: Icon, link, features, im
 
   return (
     <Link to={link} className={`card-service block${imageUrl ? ' relative overflow-hidden' : ''}`}>
-      {imageUrl && (
-        <>
-          <img
-            src={imageUrl}
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-            onLoad={() => setImageLoaded(true)}
-            onError={() => setImageLoaded(false)}
-          />
-          {imageLoaded && <div className="absolute inset-0 bg-black/30 pointer-events-none" />}
-        </>
-      )}
+
       <div className={`flex items-start space-x-4 mb-4${imageUrl ? ' relative z-10' : ''}`}>
         <div className="flex-shrink-0 p-3 bg-primary/10 rounded-lg">
           <Icon className="h-6 w-6 text-primary" />

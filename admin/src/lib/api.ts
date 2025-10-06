@@ -8,8 +8,8 @@ interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
 
-// ✅ Compute base URL dynamically
-const apiBaseURL = false ? "http://localhost:8000" : "https://api2.brelis.in/";
+// ✅ Compute base URL from env
+const apiBaseURL = (import.meta as any)?.env?.VITE_API_BASE_URL || "https://api2.brelis.in" || 'http://localhost:8000';
 
 // ✅ Create Axios instance
 export const api = axios.create({
