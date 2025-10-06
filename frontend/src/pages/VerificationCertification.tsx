@@ -55,17 +55,7 @@ export default function VerificationCertification() {
     <div>
       <section className="section pb-2">
         <div className="container-responsive">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/services">Services</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/services/verification-certification">Verification & Certification (VC)</BreadcrumbLink>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
+        
 
           <div className="mt-6 text-center">
             {loading ? (

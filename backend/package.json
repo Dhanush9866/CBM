@@ -28,7 +28,9 @@
     "list:sections": "node src/scripts/verify-translations.js sections",
     "translate:careers": "node src/scripts/translate-careers.js translate",
     "list:careers": "node src/scripts/translate-careers.js list",
-    "check:career-translations": "node src/scripts/translate-careers.js status"
+    "check:career-translations": "node src/scripts/translate-careers.js status",
+    "translate:sections": "node src/scripts/translate-sections-by-id.js translate",
+    "status:sections": "node src/scripts/translate-sections-by-id.js status"
   },
   "engines": {
     "node": ">=18.0.0"

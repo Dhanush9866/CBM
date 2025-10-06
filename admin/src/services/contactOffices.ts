@@ -1,3 +1,5 @@
+import { api } from '@/lib/api';
+
 export interface ContactOffice {
   _id?: string;
   region_name: string;
@@ -15,8 +17,6 @@ export interface ContactOffice {
   createdAt?: string;
   updatedAt?: string;
 }
-
-const API_BASE = 'https://api2.brelis.in"
 
 // Helper function to create FormData for file uploads
 const createFormData = (data: Partial<ContactOffice>, file?: File): FormData => {
@@ -38,85 +38,31 @@ const createFormData = (data: Partial<ContactOffice>, file?: File): FormData => 
 };
 
 export async function listContactOffices(): Promise<ContactOffice[]> {
-  const response = await fetch(`${API_BASE}/api/contact-offices/admin`, {
-    headers: {
-      'Authorization': `Bearer ${localStorage.getItem('admin_token')}`,
-    },
-  });
-  
-  if (!response.ok) {
-    throw new Error('Failed to fetch contact offices');
-  }
-  
-  const result = await response.json();
-  return result.data || [];
+  const { data } = await api.get('/api/contact-offices/admin');
+  return (data?.data as ContactOffice[]) || [];
 }
 
 export async function getContactOffice(id: string): Promise<ContactOffice> {
-  const response = await fetch(`${API_BASE}/api/contact-offices/admin/${id}`, {
-    headers: {
-      'Authorization': `Bearer ${localStorage.getItem('admin_token')}`,
-    },
-  });
-  
-  if (!response.ok) {
-    throw new Error('Failed to fetch contact office');
-  }
-  
-  const result = await response.json();
-  return result.data;
+  const { data } = await api.get(`/api/contact-offices/admin/${id}`);
+  return data.data as ContactOffice;
 }
 
 export async function createContactOffice(data: Partial<ContactOffice>, file?: File): Promise<ContactOffice> {
   const formData = createFormData(data, file);
-  
-  const response = await fetch(`${API_BASE}/api/contact-offices/admin`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${localStorage.getItem('admin_token')}`,
-    },
-    body: formData,
+  const { data: resp } = await api.post('/api/contact-offices/admin', formData, {
+    headers: {},
   });
-  
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || 'Failed to create contact office');
-  }
-  
-  const result = await response.json();
-  return result.data;
+  return resp.data as ContactOffice;
 }
 
 export async function updateContactOffice(id: string, data: Partial<ContactOffice>, file?: File): Promise<ContactOffice> {
   const formData = createFormData(data, file);
-  
-  const response = await fetch(`${API_BASE}/api/contact-offices/admin/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Authorization': `Bearer ${localStorage.getItem('admin_token')}`,
-    },
-    body: formData,
+  const { data: resp } = await api.put(`/api/contact-offices/admin/${id}`, formData, {
+    headers: {},
   });
-  
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || 'Failed to update contact office');
-  }
-  
-  const result = await response.json();
-  return result.data;
+  return resp.data as ContactOffice;
 }
 
 export async function deleteContactOffice(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE}/api/contact-offices/admin/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Authorization': `Bearer ${localStorage.getItem('admin_token')}`,
-    },
-  });
-  
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || 'Failed to delete contact office');
-  }
+  await api.delete(`/api/contact-offices/admin/${id}`);
 }

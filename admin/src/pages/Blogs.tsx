@@ -309,8 +309,95 @@ export default function Blogs() {
   // 👇 Keep your blog list, pagination, and modal logic as is
   // (everything below stays the same as in your version)
   return (
-    <>
-      {/* ... unchanged list, table, pagination, and modal code ... */}
-    </>
+    <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '20px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+        <h2 style={{ margin: 0 }}>Blogs</h2>
+        <button
+          onClick={handleNewBlog}
+          style={{ padding: '10px 16px', background: '#3b82f6', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer' }}
+        >
+          + New Blog
+        </button>
+      </div>
+
+      <div style={{ marginBottom: 16, display: 'flex', gap: 12 }}>
+        <input
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search blogs..."
+          style={{ flex: 1, padding: '10px 12px', border: '1px solid #e5e7eb', borderRadius: 6 }}
+        />
+      </div>
+
+      {loading && <div>Loading blogs...</div>}
+      {error && (
+        <div style={{ background: '#fee2e2', color: '#b91c1c', padding: 12, borderRadius: 6, marginBottom: 12 }}>
+          {error}
+        </div>
+      )}
+
+      {!loading && blogs.length === 0 && (
+        <div style={{ color: '#6b7280' }}>No blogs found.</div>
+      )}
+
+      {!loading && blogs.length > 0 && (
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr style={{ textAlign: 'left', background: '#f9fafb' }}>
+                <th style={{ padding: 12, borderBottom: '1px solid #e5e7eb' }}>Title</th>
+                <th style={{ padding: 12, borderBottom: '1px solid #e5e7eb' }}>Status</th>
+                <th style={{ padding: 12, borderBottom: '1px solid #e5e7eb' }}>Published</th>
+                <th style={{ padding: 12, borderBottom: '1px solid #e5e7eb' }}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {blogs.map((b) => (
+                <tr key={b._id}>
+                  <td style={{ padding: 12, borderBottom: '1px solid #f3f4f6' }}>{b.title}</td>
+                  <td style={{ padding: 12, borderBottom: '1px solid #f3f4f6' }}>{getStatusText(b.isPublished)}</td>
+                  <td style={{ padding: 12, borderBottom: '1px solid #f3f4f6' }}>{formatDate(b.publishedAt)}</td>
+                  <td style={{ padding: 12, borderBottom: '1px solid #f3f4f6', display: 'flex', gap: 8 }}>
+                    <button onClick={() => handleViewBlog(b)} style={{ padding: '6px 10px', border: '1px solid #e5e7eb', borderRadius: 6, background: '#fff', cursor: 'pointer' }}>View</button>
+                    <button onClick={() => handleEditBlog(b)} style={{ padding: '6px 10px', border: '1px solid #e5e7eb', borderRadius: 6, background: '#fff', cursor: 'pointer' }}>Edit</button>
+                    <button onClick={() => setShowDeleteConfirm(b._id)} style={{ padding: '6px 10px', border: '1px solid #ef4444', color: '#ef4444', borderRadius: 6, background: '#fff', cursor: 'pointer' }}>Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* Pagination */}
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 12, marginTop: 16 }}>
+        <button
+          onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+          disabled={currentPage <= 1}
+          style={{ padding: '8px 12px', border: '1px solid #e5e7eb', borderRadius: 6, background: '#fff', cursor: currentPage <= 1 ? 'not-allowed' : 'pointer' }}
+        >
+          Prev
+        </button>
+        <span style={{ color: '#6b7280' }}>Page {currentPage} of {totalPages}</span>
+        <button
+          onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+          disabled={currentPage >= totalPages}
+          style={{ padding: '8px 12px', border: '1px solid #e5e7eb', borderRadius: 6, background: '#fff', cursor: currentPage >= totalPages ? 'not-allowed' : 'pointer' }}
+        >
+          Next
+        </button>
+      </div>
+
+      {/* Delete confirm (simple) */}
+      {showDeleteConfirm && (
+        <div style={{ marginTop: 16, padding: 12, background: '#fff7ed', border: '1px solid #fed7aa', borderRadius: 6 }}>
+          <div style={{ marginBottom: 8 }}>Delete this blog?</div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button onClick={() => handleDeleteBlog(showDeleteConfirm)} style={{ padding: '8px 12px', background: '#ef4444', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer' }}>Delete</button>
+            <button onClick={() => setShowDeleteConfirm(null)} style={{ padding: '8px 12px', border: '1px solid #e5e7eb', borderRadius: 6, background: '#fff', cursor: 'pointer' }}>Cancel</button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
