@@ -29,10 +29,10 @@ export function Logo({ className = '', showTagline = false, size = 'md' }: LogoP
         
         {/* 360° Circle */}
         <div className="relative">
-          <div className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 rounded-full border-2 border-purple-400 flex items-center justify-center">
-            <div className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 rounded-full border border-gray-400 flex items-center justify-center">
-              <div className="w-4 h-4 md:w-6 md:h-6 lg:w-8 lg:h-8 rounded-full border border-purple-400 flex items-center justify-center">
-                <span className="text-gray-600 text-xs md:text-sm lg:text-base font-medium">360°</span>
+          <div className="w-12 h-12 md:w-14 md:h-14 lg:w-14 lg:h-14 rounded-full border-2 border-purple-400 flex items-center justify-center">
+            <div className="w-10 h-10 md:w-12 md:h-12 lg:w-12 lg:h-12 rounded-full border border-gray-400 flex items-center justify-center">
+              <div className="w-8 h-8 md:w-10 md:h-10 lg:w-10 lg:h-10 rounded-full border border-purple-400 flex items-center justify-center">
+                <span className="text-gray-600 text-xs md:text-sm lg:text-l font-medium">360°</span>
               </div>
             </div>
           </div>

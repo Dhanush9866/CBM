@@ -41,6 +41,19 @@ export interface StaticTranslations {
         primaryCTAText: string;
         secondaryCTAText: string;
       };
+      slides?: Array<{
+        title: string;
+        subtitle?: string;
+        description: string;
+        primaryCTA: {
+          text: string;
+          href: string;
+        };
+        secondaryCTA: {
+          text: string;
+          href: string;
+        };
+      }>;
     };
     about?: {
       title: string;
@@ -147,8 +160,31 @@ export interface AllTranslationsResponse {
   };
 }
 
+export interface SlidesResponse {
+  success: boolean;
+  data: {
+    language: string;
+    slides: Array<{
+      title: string;
+      subtitle?: string;
+      description: string;
+      primaryCTA: {
+        text: string;
+        href: string;
+      };
+      secondaryCTA: {
+        text: string;
+        href: string;
+      };
+    }>;
+    count: number;
+    timestamp: string;
+  };
+}
+
 class TranslationService {
   private cache = new Map<string, { data: StaticTranslations; timestamp: number }>();
+  private slidesCache = new Map<string, { data: any[]; timestamp: number }>();
   private readonly CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache
 
   async getStaticTranslations(language: string): Promise<StaticTranslations> {
@@ -207,12 +243,52 @@ class TranslationService {
     }
   }
 
+  async getSlidesData(language: string): Promise<any[]> {
+    const cacheKey = `slides_${language}`;
+    const cached = this.slidesCache.get(cacheKey);
+    
+    // Check if cached data is still valid
+    if (cached && Date.now() - cached.timestamp < this.CACHE_DURATION) {
+      return cached.data;
+    }
+
+    try {
+      const response = await apiClient.get<SlidesResponse>(
+        `/api/translate/slides/${language}`
+      );
+      
+      if (response.data.success) {
+        // Cache the response
+        this.slidesCache.set(cacheKey, {
+          data: response.data.data.slides,
+          timestamp: Date.now()
+        });
+        
+        return response.data.data.slides;
+      } else {
+        throw new Error('Failed to fetch slides data');
+      }
+    } catch (error) {
+      console.error(`Error fetching slides data for ${language}:`, error);
+      throw error;
+    }
+  }
+
   clearCache(): void {
     this.cache.clear();
+    this.slidesCache.clear();
   }
 
   getCachedTranslations(language: string): StaticTranslations | null {
     const cached = this.cache.get(`static_${language}`);
+    if (cached && Date.now() - cached.timestamp < this.CACHE_DURATION) {
+      return cached.data;
+    }
+    return null;
+  }
+
+  getCachedSlides(language: string): any[] | null {
+    const cached = this.slidesCache.get(`slides_${language}`);
     if (cached && Date.now() - cached.timestamp < this.CACHE_DURATION) {
       return cached.data;
     }

@@ -60,6 +60,82 @@ const translations = {
             primaryCTAText: "Explore Services",
             secondaryCTAText: "Get Quote",
           },
+          globalNetwork: {
+            title: "A Global Network",
+            description: "Explore our worldwide presence and find the office closest to you. Click on any location to view detailed contact information.",
+            legend: {
+              title: "Our Global Network",
+              titleShort: "Network",
+              corporate: "Corporate",
+              regional: "Regional",
+              branch: "Branch offices",
+              labs: "Laboratories"
+            }
+          },
+          slides: [
+            {
+              title: "CBM- Condition Based Monitoring",
+              description: "We provide comprehensive (CBM) services to ensure the reliability, safety, and efficiency of your critical assets. Our solutions cover rotating machinery, process equipment, pipelines, Using advanced technologies such as vibration analysis, oil analysis, thermal imaging, performance monitoring, and AI with IoT-based systems, we help identify faults at an early stage, reduce downtime, and extend asset life.",
+              primaryCTA: {
+                text: "Explore Services",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "Get Quote",
+                href: "/contact"
+              }
+            },
+            {
+              title: "360°",
+              subtitle: "Worldwide Coverage",
+              description: "Our Professional Inspectors & Experts are available 24/7 across all continents.",
+              primaryCTA: {
+                text: "Explore Services",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "Get Quote",
+                href: "/contact"
+              }
+            },
+            {
+              title: "TIV-Technical Industrial Verification",
+              subtitle: "CBM 360° TIV™",
+              description: "Services ensure that industrial assets, equipment, and processes meet international codes, standards, and client specifications. Our global team of certified inspectors provides independent verification, inspection, and certification across oil & gas, mining, power plants, marine, and infrastructure projects-delivering compliance, reliability, and safety. (Third-party inspection & verification, Vendor inspection & expediting, Welding & coating inspection, Load testing & lifting gear certification, Shutdown & turnaround and inspection, HSE audits & compliance.)",
+              primaryCTA: {
+                text: "Explore Services",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "Get Quote",
+                href: "/contact"
+              }
+            },
+            {
+              title: "Leading Testing, Inspection & Certification Services",
+              description: "Delivering trusted NDT testing, inspection, certification, and technical advisory solutions to ensure safety, reliability, and sustainability across global industries.",
+              primaryCTA: {
+                text: "Explore Services",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "Get Quote",
+                href: "/contact"
+              }
+            },
+            {
+              title: "R&D Capabilities - Design, Development & Production",
+              description: "We focus on advanced IoT & AI-driven Condition Monitoring Systems and next-generation AI + Robotics in NDT solutions, designed to enhance industrial safety, reliability, and efficiency.",
+              primaryCTA: {
+                text: "Explore Services",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "Get Quote",
+                href: "/contact"
+              }
+            }
+          ]
         },
         about: {
           title: "About",
@@ -319,6 +395,82 @@ const translations = {
             primaryCTAText: "Explorer les services",
             secondaryCTAText: "Obtenir un devis",
           },
+          globalNetwork: {
+            title: "Un réseau mondial",
+            description: "Explorez notre présence mondiale et trouvez le bureau le plus proche de chez vous. Cliquez sur un emplacement pour afficher les coordonnées détaillées.",
+            legend: {
+              title: "Notre réseau mondial",
+              titleShort: "Réseau",
+              corporate: "Siège",
+              regional: "Régional",
+              branch: "Bureaux de branche",
+              labs: "Laboratoires"
+            }
+          },
+          slides: [
+            {
+              title: "CBM - Surveillance basée sur l'état",
+              description: "Nous fournissons des services complets de surveillance basée sur l'état (CBM) pour assurer la fiabilité, la sécurité et l'efficacité de vos actifs critiques. Nos solutions couvrent les machines rotatives, l'équipement de processus, les pipelines. En utilisant des technologies avancées telles que l'analyse des vibrations, l'analyse d'huile, l'imagerie thermique, la surveillance des performances et l'IA avec des systèmes basés sur l'IoT, nous aidons à identifier les défauts à un stade précoce, à réduire les temps d'arrêt et à prolonger la durée de vie des actifs.",
+              primaryCTA: {
+                text: "Explorer les services",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "Obtenir un devis",
+                href: "/contact"
+              }
+            },
+            {
+              title: "360°",
+              subtitle: "Couverture mondiale",
+              description: "Nos inspecteurs professionnels et experts sont disponibles 24h/24 et 7j/7 sur tous les continents.",
+              primaryCTA: {
+                text: "Explorer les services",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "Obtenir un devis",
+                href: "/contact"
+              }
+            },
+            {
+              title: "TIV - Vérification industrielle technique",
+              subtitle: "CBM 360° TIV™",
+              description: "Les services garantissent que les actifs industriels, l'équipement et les processus respectent les codes internationaux, les normes et les spécifications client. Notre équipe mondiale d'inspecteurs certifiés fournit une vérification, inspection et certification indépendantes dans les projets pétrole et gaz, miniers, centrales électriques, marins et d'infrastructure - offrant conformité, fiabilité et sécurité. (Inspection et vérification tierce partie, Inspection et expédition de fournisseurs, Inspection de soudage et revêtement, Test de charge et certification d'équipement de levage, Arrêt et retournement et inspection, Audits HSE et conformité.)",
+              primaryCTA: {
+                text: "Explorer les services",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "Obtenir un devis",
+                href: "/contact"
+              }
+            },
+            {
+              title: "Services de test, d'inspection et de certification de premier plan",
+              description: "Fourniture de solutions de test NDT, d'inspection, de certification et de conseil technique de confiance pour assurer la sécurité, la fiabilité et la durabilité dans toutes les industries mondiales.",
+              primaryCTA: {
+                text: "Explorer les services",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "Obtenir un devis",
+                href: "/contact"
+              }
+            },
+            {
+              title: "Capacités R&D - Conception, Développement et Production",
+              description: "Nous nous concentrons sur les systèmes de surveillance d'état avancés basés sur l'IoT et l'IA et la nouvelle génération d'IA + Robotique dans les solutions NDT, conçus pour améliorer la sécurité industrielle, la fiabilité et l'efficacité.",
+              primaryCTA: {
+                text: "Explorer les services",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "Obtenir un devis",
+                href: "/contact"
+              }
+            }
+          ]
         },
         about: {
           title: "À propos",
@@ -577,6 +729,82 @@ const translations = {
             primaryCTAText: "Explorar Serviços",
             secondaryCTAText: "Solicitar Orçamento",
           },
+          globalNetwork: {
+            title: "Uma Rede Global",
+            description: "Explore nossa presença mundial e encontre o escritório mais próximo de você. Clique em qualquer local para ver informações de contato detalhadas.",
+            legend: {
+              title: "Nossa Rede Global",
+              titleShort: "Rede",
+              corporate: "Corporativo",
+              regional: "Regional",
+              branch: "Escritórios filiais",
+              labs: "Laboratórios"
+            }
+          },
+          slides: [
+            {
+              title: "CBM - Monitoramento Baseado em Condição",
+              description: "Fornecemos serviços abrangentes de monitoramento baseado em condição (CBM) para garantir a confiabilidade, segurança e eficiência de seus ativos críticos. Nossas soluções cobrem máquinas rotativas, equipamentos de processo, dutos. Usando tecnologias avançadas como análise de vibração, análise de óleo, imagem térmica, monitoramento de desempenho e IA com sistemas baseados em IoT, ajudamos a identificar falhas em estágio inicial, reduzir tempo de inatividade e estender a vida útil dos ativos.",
+              primaryCTA: {
+                text: "Explorar Serviços",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "Solicitar Orçamento",
+                href: "/contact"
+              }
+            },
+            {
+              title: "360°",
+              subtitle: "Cobertura Mundial",
+              description: "Nossos Inspetores Profissionais e Especialistas estão disponíveis 24/7 em todos os continentes.",
+              primaryCTA: {
+                text: "Explorar Serviços",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "Solicitar Orçamento",
+                href: "/contact"
+              }
+            },
+            {
+              title: "TIV - Verificação Industrial Técnica",
+              subtitle: "CBM 360° TIV™",
+              description: "Os serviços garantem que ativos industriais, equipamentos e processos atendam aos códigos internacionais, padrões e especificações do cliente. Nossa equipe global de inspetores certificados fornece verificação, inspeção e certificação independentes em projetos de petróleo e gás, mineração, usinas de energia, marítimos e de infraestrutura - entregando conformidade, confiabilidade e segurança. (Inspeção e verificação de terceiros, Inspeção e aceleração de fornecedores, Inspeção de soldagem e revestimento, Teste de carga e certificação de equipamentos de elevação, Parada e retorno e inspeção, Auditorias HSE e conformidade.)",
+              primaryCTA: {
+                text: "Explorar Serviços",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "Solicitar Orçamento",
+                href: "/contact"
+              }
+            },
+            {
+              title: "Principais Serviços de Teste, Inspeção e Certificação",
+              description: "Fornecendo soluções confiáveis de teste NDT, inspeção, certificação e consultoria técnica para garantir segurança, confiabilidade e sustentabilidade em todas as indústrias globais.",
+              primaryCTA: {
+                text: "Explorar Serviços",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "Solicitar Orçamento",
+                href: "/contact"
+              }
+            },
+            {
+              title: "Capacidades de P&D - Design, Desenvolvimento e Produção",
+              description: "Focamos em Sistemas Avançados de Monitoramento de Condição baseados em IoT e IA e na próxima geração de IA + Robótica em soluções NDT, projetados para melhorar a segurança industrial, confiabilidade e eficiência.",
+              primaryCTA: {
+                text: "Explorar Serviços",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "Solicitar Orçamento",
+                href: "/contact"
+              }
+            }
+          ]
         },
         about: {
           title: "Sobre",
@@ -834,6 +1062,82 @@ const translations = {
             primaryCTAText: "Explorar Servicios",
             secondaryCTAText: "Obtener Cotización",
           },
+          globalNetwork: {
+            title: "Una Red Global",
+            description: "Explora nuestra presencia mundial y encuentra la oficina más cercana a ti. Haz clic en cualquier ubicación para ver información de contacto detallada.",
+            legend: {
+              title: "Nuestra Red Global",
+              titleShort: "Red",
+              corporate: "Corporativo",
+              regional: "Regional",
+              branch: "Oficinas sucursales",
+              labs: "Laboratorios"
+            }
+          },
+          slides: [
+            {
+              title: "CBM - Monitoreo Basado en Condición",
+              description: "Proporcionamos servicios integrales de monitoreo basado en condición (CBM) para garantizar la confiabilidad, seguridad y eficiencia de sus activos críticos. Nuestras soluciones cubren maquinaria rotativa, equipos de proceso, tuberías. Utilizando tecnologías avanzadas como análisis de vibración, análisis de aceite, imagen térmica, monitoreo de rendimiento e IA con sistemas basados en IoT, ayudamos a identificar fallas en una etapa temprana, reducir el tiempo de inactividad y extender la vida útil de los activos.",
+              primaryCTA: {
+                text: "Explorar Servicios",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "Obtener Cotización",
+                href: "/contact"
+              }
+            },
+            {
+              title: "360°",
+              subtitle: "Cobertura Mundial",
+              description: "Nuestros Inspectores Profesionales y Expertos están disponibles 24/7 en todos los continentes.",
+              primaryCTA: {
+                text: "Explorar Servicios",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "Obtener Cotización",
+                href: "/contact"
+              }
+            },
+            {
+              title: "TIV - Verificación Industrial Técnica",
+              subtitle: "CBM 360° TIV™",
+              description: "Los servicios garantizan que los activos industriales, equipos y procesos cumplan con los códigos internacionales, estándares y especificaciones del cliente. Nuestro equipo global de inspectores certificados proporciona verificación, inspección y certificación independientes en proyectos de petróleo y gas, minería, plantas de energía, marítimos e infraestructura - entregando cumplimiento, confiabilidad y seguridad. (Inspección y verificación de terceros, Inspección y aceleración de proveedores, Inspección de soldadura y recubrimiento, Prueba de carga y certificación de equipos de elevación, Parada y retorno e inspección, Auditorías HSE y cumplimiento.)",
+              primaryCTA: {
+                text: "Explorar Servicios",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "Obtener Cotización",
+                href: "/contact"
+              }
+            },
+            {
+              title: "Servicios Líderes de Pruebas, Inspección y Certificación",
+              description: "Proporcionando soluciones confiables de pruebas NDT, inspección, certificación y asesoría técnica para garantizar seguridad, confiabilidad y sostenibilidad en todas las industrias globales.",
+              primaryCTA: {
+                text: "Explorar Servicios",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "Obtener Cotización",
+                href: "/contact"
+              }
+            },
+            {
+              title: "Capacidades de I+D - Diseño, Desarrollo y Producción",
+              description: "Nos enfocamos en Sistemas Avanzados de Monitoreo de Condición basados en IoT e IA y en la próxima generación de IA + Robótica en soluciones NDT, diseñados para mejorar la seguridad industrial, confiabilidad y eficiencia.",
+              primaryCTA: {
+                text: "Explorar Servicios",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "Obtener Cotización",
+                href: "/contact"
+              }
+            }
+          ]
         },
         about: {
           title: "Acerca de",
@@ -1091,6 +1395,82 @@ const translations = {
             primaryCTAText: "Изучить услуги",
             secondaryCTAText: "Получить предложение",
           },
+          globalNetwork: {
+            title: "Глобальная сеть",
+            description: "Изучите наше мировое присутствие и найдите ближайший к вам офис. Нажмите на любую точку, чтобы увидеть подробную контактную информацию.",
+            legend: {
+              title: "Наша глобальная сеть",
+              titleShort: "Сеть",
+              corporate: "Головной офис",
+              regional: "Региональный",
+              branch: "Филиалы",
+              labs: "Лаборатории"
+            }
+          },
+          slides: [
+            {
+              title: "CBM - Мониторинг по состоянию",
+              description: "Мы предоставляем комплексные услуги мониторинга по состоянию (CBM) для обеспечения надежности, безопасности и эффективности ваших критически важных активов. Наши решения охватывают вращающееся оборудование, технологическое оборудование, трубопроводы. Используя передовые технологии, такие как анализ вибрации, анализ масла, тепловидение, мониторинг производительности и ИИ с системами на основе IoT, мы помогаем выявлять неисправности на ранней стадии, сокращать время простоя и продлевать срок службы активов.",
+              primaryCTA: {
+                text: "Изучить услуги",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "Получить предложение",
+                href: "/contact"
+              }
+            },
+            {
+              title: "360°",
+              subtitle: "Глобальное покрытие",
+              description: "Наши профессиональные инспекторы и эксперты доступны 24/7 на всех континентах.",
+              primaryCTA: {
+                text: "Изучить услуги",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "Получить предложение",
+                href: "/contact"
+              }
+            },
+            {
+              title: "TIV - Техническая промышленная верификация",
+              subtitle: "CBM 360° TIV™",
+              description: "Услуги гарантируют, что промышленные активы, оборудование и процессы соответствуют международным кодам, стандартам и спецификациям клиента. Наша глобальная команда сертифицированных инспекторов обеспечивает независимую верификацию, инспекцию и сертификацию в проектах нефти и газа, горнодобывающей промышленности, электростанций, морских и инфраструктурных проектов - обеспечивая соответствие, надежность и безопасность. (Инспекция и верификация третьей стороной, Инспекция и ускорение поставщиков, Инспекция сварки и покрытия, Нагрузочные испытания и сертификация подъемного оборудования, Остановка и возврат и инспекция, Аудиты HSE и соответствие.)",
+              primaryCTA: {
+                text: "Изучить услуги",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "Получить предложение",
+                href: "/contact"
+              }
+            },
+            {
+              title: "Ведущие услуги по тестированию, инспекции и сертификации",
+              description: "Предоставление надежных решений для NDT тестирования, инспекции, сертификации и технического консультирования для обеспечения безопасности, надежности и устойчивости во всех глобальных отраслях.",
+              primaryCTA: {
+                text: "Изучить услуги",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "Получить предложение",
+                href: "/contact"
+              }
+            },
+            {
+              title: "Возможности НИОКР - Дизайн, Разработка и Производство",
+              description: "Мы сосредоточены на передовых системах мониторинга состояния на основе IoT и ИИ и следующем поколении ИИ + Робототехники в решениях NDT, разработанных для повышения промышленной безопасности, надежности и эффективности.",
+              primaryCTA: {
+                text: "Изучить услуги",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "Получить предложение",
+                href: "/contact"
+              }
+            }
+          ]
         },
         about: {
           title: "О нас",
@@ -1350,6 +1730,82 @@ const translations = {
             primaryCTAText: "探索服务",
             secondaryCTAText: "获取报价",
           },
+          globalNetwork: {
+            title: "全球网络",
+            description: "探索我们的全球布局并找到离您最近的办公室。点击任意位置查看详细联系信息。",
+            legend: {
+              title: "我们的全球网络",
+              titleShort: "网络",
+              corporate: "总部",
+              regional: "区域",
+              branch: "分支机构",
+              labs: "实验室"
+            }
+          },
+          slides: [
+            {
+              title: "CBM - 基于状态的监测",
+              description: "我们提供全面的基于状态的监测（CBM）服务，以确保您关键资产的可靠性、安全性和效率。我们的解决方案涵盖旋转机械、工艺设备、管道。使用先进技术，如振动分析、油分析、热成像、性能监测和基于物联网系统的AI，我们帮助在早期阶段识别故障，减少停机时间，延长资产寿命。",
+              primaryCTA: {
+                text: "探索服务",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "获取报价",
+                href: "/contact"
+              }
+            },
+            {
+              title: "360°",
+              subtitle: "全球覆盖",
+              description: "我们的专业检查员和专家在各大洲24/7全天候提供服务。",
+              primaryCTA: {
+                text: "探索服务",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "获取报价",
+                href: "/contact"
+              }
+            },
+            {
+              title: "TIV - 技术工业验证",
+              subtitle: "CBM 360° TIV™",
+              description: "服务确保工业资产、设备和流程符合国际规范、标准和客户规格。我们的全球认证检查员团队在石油和天然气、采矿、发电厂、海洋和基础设施项目中提供独立的验证、检查和认证 - 提供合规性、可靠性和安全性。（第三方检查和验证、供应商检查和加急、焊接和涂层检查、负载测试和起重设备认证、停机和周转检查、HSE审计和合规。）",
+              primaryCTA: {
+                text: "探索服务",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "获取报价",
+                href: "/contact"
+              }
+            },
+            {
+              title: "领先的测试、检验和认证服务",
+              description: "提供值得信赖的NDT测试、检验、认证和技术咨询解决方案，确保全球各行业的安全、可靠性和可持续性。",
+              primaryCTA: {
+                text: "探索服务",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "获取报价",
+                href: "/contact"
+              }
+            },
+            {
+              title: "研发能力 - 设计、开发和生产",
+              description: "我们专注于先进的基于物联网和AI的状态监测系统以及下一代AI + 机器人NDT解决方案，旨在提高工业安全性、可靠性和效率。",
+              primaryCTA: {
+                text: "探索服务",
+                href: "#services"
+              },
+              secondaryCTA: {
+                text: "获取报价",
+                href: "/contact"
+              }
+            }
+          ]
         },
         about: {
           title: "关于",
@@ -1541,7 +1997,7 @@ const translations = {
       },
       industryStats: [
         {
-          number: "72岁以上",
+          number: "72+",
           label: "服务国家",
           description: "拥有本地专业知识的全球影响力",
         },
@@ -1551,7 +2007,7 @@ const translations = {
           description: "高素质的专业人员",
         },
         {
-          number: "25岁以上",
+          number: "25+",
           label: "测试实验室",
           description: "最先进的设施",
         },

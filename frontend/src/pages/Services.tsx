@@ -11,15 +11,37 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle, Users, Award, Globe, Search, Settings, Shield, FileText, Brain } from 'lucide-react';
 import { useTranslation } from '@/contexts/TranslationContext';
-import translationService from '@/services/translationService';
+import translationService from '../services/translationService';
 
 export default function Services() {
-  const { translations } = useTranslation();
+  const { translations, currentLanguage } = useTranslation();
+  const [slidesData, setSlidesData] = React.useState<any[] | null>(null);
+  const [slidesLoading, setSlidesLoading] = React.useState(true);
   
   // Clear translation cache to force fresh data
   React.useEffect(() => {
     translationService.clearCache();
   }, []);
+
+  // Fetch slides data from API
+  React.useEffect(() => {
+    const fetchSlides = async () => {
+      try {
+        setSlidesLoading(true);
+        const slides = await translationService.getSlidesData(currentLanguage);
+        setSlidesData(slides);
+      } catch (error) {
+        console.error('Error fetching slides:', error);
+        // Fallback to static data if API fails
+        setSlidesData(translations?.pages?.services?.slides || null);
+      } finally {
+        setSlidesLoading(false);
+      }
+    };
+
+    fetchSlides();
+  }, [currentLanguage, translations?.pages?.services?.slides]);
+
   const hero = translations?.pages?.services?.hero;
   const servicesData = translations?.services;
 
@@ -42,74 +64,77 @@ export default function Services() {
   // Get industry stats from API or fallback to static data
   const industryStats = translations?.industryStats || staticIndustryStats;
 
+  // Fallback slides data
+  const fallbackSlides = [
+    {
+      title: "CBM- Condition Based Monitoring",
+      description: "We provide comprehensive (CBM) services to ensure the reliability, safety, and efficiency of your critical assets. Our solutions cover rotating machinery, process equipment, pipelines, Using advanced technologies such as vibration analysis, oil analysis, thermal imaging, performance monitoring, and AI with IoT-based systems, we help identify faults at an early stage, reduce downtime, and extend asset life.",
+      primaryCTA: {
+        text: "Explore Services",
+        href: "#services"
+      },
+      secondaryCTA: {
+        text: "Get Quote",
+        href: "/contact"
+      }
+    },
+    {
+      title: "360°",
+      subtitle: "Worldwide Coverage",
+      description: "Our Professional Inspectors & Experts are available 24/7 across all continents.",
+      primaryCTA: {
+        text: "Explore Services",
+        href: "#services"
+      },
+      secondaryCTA: {
+        text: "Get Quote",
+        href: "/contact"
+      }
+    },
+    {
+      title: "TIV-Technical Industrial Verification",
+      subtitle: "CBM 360° TIV™",
+      description: "Services ensure that industrial assets, equipment, and processes meet international codes, standards, and client specifications. Our global team of certified inspectors provides independent verification, inspection, and certification across oil & gas, mining, power plants, marine, and infrastructure projects-delivering compliance, reliability, and safety. (Third-party inspection & verification, Vendor inspection & expediting, Welding & coating inspection, Load testing & lifting gear certification, Shutdown & turnaround and inspection, HSE audits & compliance.)",
+      primaryCTA: {
+        text: "Explore Services",
+        href: "#services"
+      },
+      secondaryCTA: {
+        text: "Get Quote",
+        href: "/contact"
+      }
+    },
+    {
+      title: "Leading Testing, Inspection & Certification Services",
+      description: "Delivering trusted NDT testing, inspection, certification, and technical advisory solutions to ensure safety, reliability, and sustainability across global industries.",
+      primaryCTA: {
+        text: "Explore Services",
+        href: "#services"
+      },
+      secondaryCTA: {
+        text: "Get Quote",
+        href: "/contact"
+      }
+    },
+    {
+      title: "R&D Capabilities - Design, Development & Production",
+      description: "We focus on advanced IoT & AI-driven Condition Monitoring Systems and next-generation AI + Robotics in NDT solutions, designed to enhance industrial safety, reliability, and efficiency.",
+      primaryCTA: {
+        text: "Explore Services",
+        href: "#services"
+      },
+      secondaryCTA: {
+        text: "Get Quote",
+        href: "/contact"
+      }
+    }
+  ];
+
   return (
     <div>
       {/* Video Hero Section */}
       <VideoHero
-        slides={[
-          {
-            title: "CBM- Condition Based Monitoring",
-            description: "We provide comprehensive (CBM) services to ensure the reliability, safety, and efficiency of your critical assets. Our solutions cover rotating machinery, process equipment, pipelines, Using advanced technologies such as vibration analysis, oil analysis, thermal imaging, performance monitoring, and AI with IoT-based systems, we help identify faults at an early stage, reduce downtime, and extend asset life.",
-            primaryCTA: {
-              text: "Explore Services",
-              href: "#services"
-            },
-            secondaryCTA: {
-              text: "Get Quote",
-              href: "/contact"
-            }
-          },
-          {
-            title: "360°",
-            subtitle: "Worldwide Coverage",
-            description: "Our Professional Inspectors & Experts are available 24/7 across all continents.",
-            primaryCTA: {
-              text: "Explore Services",
-              href: "#services"
-            },
-            secondaryCTA: {
-              text: "Get Quote",
-              href: "/contact"
-            }
-          },
-          {
-            title: "TIV-Technical Industrial Verification",
-            subtitle: "CBM 360° TIV™",
-            description: "Services ensure that industrial assets, equipment, and processes meet international codes, standards, and client specifications. Our global team of certified inspectors provides independent verification, inspection, and certification across oil & gas, mining, power plants, marine, and infrastructure projects-delivering compliance, reliability, and safety. (Third-party inspection & verification, Vendor inspection & expediting, Welding & coating inspection, Load testing & lifting gear certification, Shutdown & turnaround and inspection, HSE audits & compliance.)",
-            primaryCTA: {
-              text: "Explore Services",
-              href: "#services"
-            },
-            secondaryCTA: {
-              text: "Get Quote",
-              href: "/contact"
-            }
-          },
-          {
-            title: "Leading Testing, Inspection & Certification Services",
-            description: "Delivering trusted NDT testing, inspection, certification, and technical advisory solutions to ensure safety, reliability, and sustainability across global industries.",
-            primaryCTA: {
-              text: "Explore Services",
-              href: "#services"
-            },
-            secondaryCTA: {
-              text: "Get Quote",
-              href: "/contact"
-            }
-          },
-          {
-            title: "R&D Capabilities - Design, Development & Production",
-            description: "We focus on advanced IoT & AI-driven Condition Monitoring Systems and next-generation AI + Robotics in NDT solutions, designed to enhance industrial safety, reliability, and efficiency.",
-            primaryCTA: {
-              text: "Explore Services",
-              href: "#services"
-            },
-            secondaryCTA: {
-              text: "Get Quote",
-              href: "/contact"
-            }
-          }
-        ]}
+        slides={slidesData || fallbackSlides}
         videoUrls={[
           'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475287/slide-1_eqslb6.mp4',
           'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475275/slide-2_jl5ldp.mp4',
@@ -174,9 +199,9 @@ export default function Services() {
       <section className="section bg-tuv-gray-50">
         <div className="container-responsive">
           <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">A Global Network</h2>
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4">{translations?.pages?.services?.globalNetwork?.title || 'A Global Network'}</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Explore our worldwide presence and find the office closest to you. Click on any location to view detailed contact information.
+              {translations?.pages?.services?.globalNetwork?.description || 'Explore our worldwide presence and find the office closest to you. Click on any location to view detailed contact information.'}
             </p>
           </div>
           

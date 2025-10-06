@@ -81,7 +81,7 @@ export default function IndustriesDetail() {
 
   return (
     <div>
-      <section className="section pb-0">
+      {/* <section className="section pb-0">
         <div className="container-responsive">
           <Breadcrumb>
             <BreadcrumbList>
@@ -95,7 +95,7 @@ export default function IndustriesDetail() {
             </BreadcrumbList>
           </Breadcrumb>
         </div>
-      </section>
+      </section> */}
 
       <section className="section pt-0">
         <div className="container-responsive max-w-5xl mx-auto">

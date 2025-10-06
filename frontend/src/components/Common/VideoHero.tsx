@@ -60,7 +60,7 @@ export function VideoHero({
     };
   }, [api]);
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative overflow-hidden h-[80vh] lg:h-[110vh]">
       {/* Video Carousel Background */}
       <div className="absolute inset-0">
         <Carousel 
@@ -74,7 +74,7 @@ export function VideoHero({
         >
           <CarouselContent className="h-full">
             {videoUrls.map((url, idx) => (
-              <CarouselItem key={idx} className="h-[80vh] lg:h-[90vh] p-0">
+              <CarouselItem key={idx} className="h-full p-0">
                 <div className="relative h-full w-full">
                   <video
                     className="h-full w-full object-cover"
@@ -98,7 +98,8 @@ export function VideoHero({
       </div>
 
       {/* Content Overlay */}
-      <div className="relative container-responsive py-16 lg:py-28">
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="container-responsive px-4">
         <div className="max-w-4xl mx-auto text-center text-white">
           {slides[currentSlide]?.subtitle && (
             <div className="inline-block bg-white/10 backdrop-blur-sm rounded-full px-6 py-2 mb-6">
@@ -110,7 +111,7 @@ export function VideoHero({
             {slides[currentSlide]?.title || ''}
           </h1>
 
-          <p className="text-xl lg:text-2xl text-white/90 mb-10 text-pretty max-w-3xl mx-auto">
+          <p className="text-xl lg:text-xl text-white/90 mb-10 text-pretty max-w-3xl mx-auto">
             {slides[currentSlide]?.description || ''}
           </p>
 
@@ -127,7 +128,7 @@ export function VideoHero({
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="border-white text-white hover:bg-white hover:text-primary text-lg px-8 py-4" asChild
+                className="border-white text-white  text-primary text-lg px-8 py-4" asChild
               >
                 <a href={slides[currentSlide].secondaryCTA!.href}>
                   {slides[currentSlide].secondaryCTA!.text}
@@ -135,6 +136,7 @@ export function VideoHero({
               </Button>
             )}
           </div>
+        </div>
         </div>
       </div>
 

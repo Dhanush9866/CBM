@@ -278,7 +278,7 @@ export default function ServiceDetail({ sectionData, serviceType, serviceDisplay
 
   return (
     <div>
-      <section className="section pb-0">
+      {/* <section className="section pb-0">
         <div className="container-responsive">
           <Breadcrumb>
             <BreadcrumbList>
@@ -298,7 +298,7 @@ export default function ServiceDetail({ sectionData, serviceType, serviceDisplay
             </BreadcrumbList>
           </Breadcrumb>
         </div>
-      </section>
+      </section> */}
 
       {/* Content with images from section data */}
       {(section?.bodyText || (section?.images && section.images.length > 0)) && (

@@ -56,7 +56,7 @@ export default function InnovationRD() {
     <div>
       <section className="section pb-2">
         <div className="container-responsive">
-          <Breadcrumb>
+          {/* <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
                 <BreadcrumbLink href="/services">Services</BreadcrumbLink>
@@ -66,7 +66,7 @@ export default function InnovationRD() {
                 <BreadcrumbLink href="/services/innovation-rd">Innovation & R&D</BreadcrumbLink>
               </BreadcrumbItem>
             </BreadcrumbList>
-          </Breadcrumb>
+          </Breadcrumb> */}
 
           <div className="mt-6 text-center">
             {loading ? (

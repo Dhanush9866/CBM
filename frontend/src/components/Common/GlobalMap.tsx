@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup } from 'react-simple-maps';
 import { MapPin, Phone, Mail, X, Globe, Plus, Minus } from 'lucide-react';
 import { contactOfficesData, OfficeData } from '../../data/contact-offices';
+import { useTranslation } from '@/contexts/TranslationContext';
 
 // World map topology data - using a reliable source
 const geoUrl = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
@@ -33,7 +34,7 @@ const OfficeMarker: React.FC<OfficeMarkerProps> = ({ office, onClick, colorSchem
 
   return (
     <Marker
-      coordinates={[office.longitude || 0, office.latitude || 0]}
+      coordinates={[getLongitudeForCountry(office.country) || 0, getLatitudeForCountry(office.country) || 0]}
       onClick={() => onClick(office)}
       style={{ cursor: 'pointer' }}
     >
@@ -126,6 +127,7 @@ interface GlobalMapProps {
 }
 
 const GlobalMap: React.FC<GlobalMapProps> = ({ className = "" }) => {
+  const { translations } = useTranslation();
   const [selectedOffice, setSelectedOffice] = useState<OfficeData | null>(null);
   const [zoom, setZoom] = useState(1);
   const [center, setCenter] = useState<[number, number]>([0, 0]);
@@ -153,13 +155,6 @@ const GlobalMap: React.FC<GlobalMapProps> = ({ className = "" }) => {
 
   // Get all offices from the data
   const allOffices = contactOfficesData.flatMap(group => group.offices);
-
-  // Add coordinates for offices (you'll need to add these to your data)
-  const officesWithCoordinates = allOffices.map(office => ({
-    ...office,
-    latitude: getLatitudeForCountry(office.country),
-    longitude: getLongitudeForCountry(office.country)
-  }));
 
   const handleOfficeClick = (office: OfficeData) => {
     setSelectedOffice(office);
@@ -190,26 +185,26 @@ const GlobalMap: React.FC<GlobalMapProps> = ({ className = "" }) => {
       <div className="absolute top-2 left-2 sm:top-6 sm:left-6 z-10 bg-white/95 backdrop-blur-sm rounded-lg sm:rounded-2xl p-3 sm:p-6 shadow-2xl border border-gray-200/50 max-w-[calc(100vw-1rem)] sm:max-w-none">
         <h3 className="text-sm sm:text-xl font-bold text-gray-900 mb-2 sm:mb-5 flex items-center gap-1 sm:gap-2">
           <Globe className="h-3 w-3 sm:h-5 sm:w-5 text-blue-600" />
-          <span className="hidden sm:inline">Our Global Network</span>
-          <span className="sm:hidden">Network</span>
+          <span className="hidden sm:inline">{translations?.pages?.services?.globalNetwork?.legend?.title || 'Our Global Network'}</span>
+          <span className="sm:hidden">{translations?.pages?.services?.globalNetwork?.legend?.titleShort || 'Network'}</span>
         </h3>
         <div className="space-y-2 sm:space-y-4">
           <div className="flex items-center gap-2 sm:gap-3 group">
             <div className="w-3 h-3 sm:w-5 sm:h-5 bg-gradient-to-br from-gray-800 to-gray-900 rounded-full border border-gray-300 sm:border-2 shadow-lg group-hover:scale-110 transition-transform"></div>
-            <span className="text-xs sm:text-sm font-semibold text-gray-800">Corporate</span>
+            <span className="text-xs sm:text-sm font-semibold text-gray-800">{translations?.pages?.services?.globalNetwork?.legend?.corporate || 'Corporate'}</span>
           </div>
           <div className="flex items-center gap-2 sm:gap-3 group">
   <div className="w-3 h-3 sm:w-5 sm:h-5 bg-yellow-400 border border-gray-400 sm:border-2 rounded-full shadow-lg group-hover:scale-110 transition-transform"></div>
-  <span className="text-xs sm:text-sm font-semibold text-gray-800">Regional</span>
+  <span className="text-xs sm:text-sm font-semibold text-gray-800">{translations?.pages?.services?.globalNetwork?.legend?.regional || 'Regional'}</span>
 </div>
 
           <div className="flex items-center gap-2 sm:gap-3 group">
             <div className="w-3 h-3 sm:w-5 sm:h-5 bg-gradient-to-br from-white to-gray-100 border border-gray-400 sm:border-2 rounded-full shadow-lg group-hover:scale-110 transition-transform"></div>
-            <span className="text-xs sm:text-sm font-semibold text-gray-800">Branch offices</span>
+            <span className="text-xs sm:text-sm font-semibold text-gray-800">{translations?.pages?.services?.globalNetwork?.legend?.branch || 'Branch offices'}</span>
           </div>
           <div className="flex items-center gap-2 sm:gap-3 group">
             <div className="w-3 h-3 sm:w-5 sm:h-5 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full border border-purple-300 sm:border-2 shadow-lg group-hover:scale-110 transition-transform"></div>
-            <span className="text-xs sm:text-sm font-semibold text-gray-800">Laboratories</span>
+            <span className="text-xs sm:text-sm font-semibold text-gray-800">{translations?.pages?.services?.globalNetwork?.legend?.labs || 'Laboratories'}</span>
           </div>
           
           
@@ -281,7 +276,7 @@ const GlobalMap: React.FC<GlobalMapProps> = ({ className = "" }) => {
               }}
             </Geographies>
             
-            {officesWithCoordinates.map((office, index) => (
+            {allOffices.map((office, index) => (
               <OfficeMarker
                 key={index}
                 office={office}
@@ -402,7 +397,6 @@ function getCountryName(properties: any): string {
 function getCountryNameFromCode(code: string): string | null {
   const countryCodeMap: { [key: string]: string } = {
     'NLD': 'Netherlands',
-    'NLD': 'Netherlands',
     'GBR': 'United Kingdom',
     'USA': 'United States',
     'DEU': 'Germany',
@@ -424,11 +418,10 @@ function getCountryNameFromCode(code: string): string | null {
     'LVA': 'Latvia',
     'LTU': 'Lithuania',
     'GRC': 'Greece',
-    'CYP': 'Cyprus',
+    'CYP2': 'Cyprus',
     'MLT': 'Malta',
     'LUX': 'Luxembourg',
     'BEL': 'Belgium',
-    'NLD': 'Netherlands',
     'DNK': 'Denmark',
     'SWE': 'Sweden',
     'NOR': 'Norway',
