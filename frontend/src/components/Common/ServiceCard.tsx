@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, LucideIcon } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from '@/contexts/TranslationContext';
 
 interface ServiceCardProps {
   title: string;
@@ -14,6 +15,25 @@ interface ServiceCardProps {
 
 export function ServiceCard({ title, description, icon: Icon, link, features, imageUrl }: ServiceCardProps) {
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
+  const { translations } = useTranslation();
+
+  // Helper function to get translation with fallback
+  const t = (key: string) => {
+    if (!translations) return key;
+    
+    const keys = key.split('.');
+    let value: any = translations;
+    
+    for (const k of keys) {
+      if (value && typeof value === 'object' && k in value) {
+        value = value[k];
+      } else {
+        return key; // Return key if translation not found
+      }
+    }
+    
+    return typeof value === 'string' ? value : key;
+  };
 
   return (
     <Link to={link} className={`card-service block${imageUrl ? ' relative overflow-hidden' : ''}`}>
@@ -50,7 +70,7 @@ export function ServiceCard({ title, description, icon: Icon, link, features, im
       <span 
         className={`inline-flex items-center font-medium group${imageLoaded ? ' relative z-10 text-white hover:text-white/90' : ' text-primary hover:text-primary-hover'}`}
       >
-        Learn More
+        {t('services.learnMore')}
         <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
       </span>
     </Link>

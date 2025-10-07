@@ -6,114 +6,134 @@ require('dotenv').config();
 const Section = require('../models/Section');
 const Page = require('../models/Page');
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/cbm';
+const MONGODB_URI = "mongodb+srv://cbm360tiv:MiiFze4xYGr6XNji@cluster0.sf6iagh.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster"||process.env.MONGODB_URI || 'mongodb://localhost:27017/cbm';
 
-const PAGE_SLUG = 'testing';
-const SECTION_ID = 'radiographic-testing';
+const PAGE_SLUG = 'verification-certification-services';
+const SECTION_ID = 'defence-vehicle-fitness-verification-and-certification';
 
-const DATA = {
-  service: 'Radiographic Testing (RT)',
-  sections: [
+const DATA ={
+  "service": "Defence Vehicle Fitness Verification & Certification",
+  "sections": [
     {
-      heading: 'Radiographic Testing (RT)',
-      content:
-        'From CBM 360 TIV - Known as Condition Based Monitoring 360° Technical Industrial Verification – Deliver precise radiographic testing services for Mining and Metal Plants, Oil & Gas Facilities, FPSO/FSO Vessels, Industrial Plants, and Power & Utility Infrastructure.\n\nRadiographic Testing (RT) uses X-rays or gamma rays to produce images of the internal structure of materials, welds, and components. It reveals volumetric flaws such as porosity, inclusions, cracks, and lack of fusion, ensuring the integrity of critical assets.'
+      "heading": "Overview",
+      "content": "From CBM 360 TIV – Condition Based Monitoring 360° Technical Industrial Verification\n\nDefence vehicles operate under extreme terrain, climate, and mission conditions, demanding the highest levels of mechanical integrity, mobility, and safety. Whether deployed on land, amphibious operations, or logistical support, every vehicle must undergo systematic inspection and fitness verification to ensure reliability, safety, and readiness.\n\nCBM 360 TIV provides specialized Defence Vehicle Fitness Verification & Certification Services, combining mechanical inspection, non-destructive testing (NDT), and performance evaluation to verify combat readiness and compliance with defence and international standards."
     },
     {
-      heading: 'Why Choose RT from CBM 360 TIV?',
-      content: [
-        'Detects both surface and subsurface volumetric defects',
-        'Provides permanent inspection records through radiographic film or digital images',
-        'Capable of inspecting a wide range of materials and thicknesses',
-        'Highly reliable for weld quality assessment',
-        'Non-destructive and widely accepted by industry codes and standards'
+      "heading": "Why Choose CBM 360 TIV for Defence Vehicle Fitness Verification?",
+      "content": [
+        "Comprehensive inspection of armoured and tactical vehicles for structural, mechanical, and operational integrity",
+        "Ensure compliance with MIL-STD, ISO, ASTM, and national defence authority standards",
+        "Conduct NDT, functional testing, and mobility assessments under field conditions",
+        "Verify engine, transmission, braking, steering, and suspension performance",
+        "Assess fatigue, corrosion, and structural health of armour and frames",
+        "Support maintenance, overhaul, and pre-deployment readiness checks",
+        "Issue Fitness-for-Service (FFS) and Operational Certification Reports"
       ]
     },
     {
-      heading: 'Key Features and Benefits of RT:',
-      content: [
-        'Visual representation of internal defects',
-        'Permanent record for quality assurance and audits',
-        'Detects porosity, inclusions, cracks, and incomplete penetration',
-        'Applicable to ferrous and non-ferrous materials',
-        'Digital RT improves speed and reduces radiation exposure',
-        'Supports compliance with international codes'
+      "heading": "Defence Vehicle Fitness Inspection Coverage",
+      "subsections": [
+        {
+          "title": "A. Structural & Chassis Integrity",
+          "content": [
+            "Frame, hull, and undercarriage inspection for cracks, fatigue, and corrosion",
+            "Weld integrity testing using Magnetic Particle (MPI) or Dye Penetrant (DPI) methods",
+            "Armour plate inspection for delamination, distortion, or ballistic damage",
+            "Dimensional and alignment verification"
+          ]
+        },
+        {
+          "title": "B. Powertrain & Mechanical Systems",
+          "content": [
+            "Engine performance testing (compression, oil analysis, thermal monitoring)",
+            "Transmission, gearbox, and differential condition evaluation",
+            "Cooling and lubrication system efficiency verification",
+            "Hydraulic and pneumatic system testing"
+          ]
+        },
+        {
+          "title": "C. Safety & Functional Systems",
+          "content": [
+            "Brake system efficiency and emergency brake verification",
+            "Steering and suspension functionality under load",
+            "Electrical and electronic systems (lighting, sensors, control units)",
+            "Fire suppression, exhaust, and air filtration system inspections"
+          ]
+        },
+        {
+          "title": "D. Load, Endurance & Mobility Testing",
+          "content": [
+            "Load carrying and towing capacity evaluation",
+            "Endurance testing under operational or simulated conditions",
+            "Tire and track system wear and performance analysis",
+            "Ground clearance and obstacle negotiation testing"
+          ]
+        }
       ]
     },
     {
-      heading: 'RT Inspection Services Include:',
-      content: [
-        'Conventional film-based radiography',
-        'Digital radiography (DR) for faster results and lower exposure',
-        'Gamma radiography using isotopes (Ir-192, Co-60)',
-        'X-ray radiography for welds and castings',
-        'Pipeline girth weld inspection',
-        'Casting and forging inspection'
+      "heading": "Testing & Verification Techniques",
+      "content": [
+        "NDT Methods: Ultrasonic (UT), Radiography (RT), MPI, DPI, Eddy Current (ECT)",
+        "Vibration & Condition Monitoring: For rotating and drivetrain components",
+        "Thermography: Detecting heat buildup in mechanical and electrical systems",
+        "Oil & Fluid Analysis: Identifying contamination, metal wear, and degradation",
+        "Brake & Suspension Testing: Dynamic and static performance verification",
+        "Alignment & Dimensional Check: Ensuring precision and operational readiness"
       ]
     },
     {
-      heading: 'We Can Help You With:',
-      content: [
-        'Ensuring weld integrity in pipelines, boilers, and pressure vessels',
-        'Detecting porosity and inclusions in castings',
-        'Assessing internal quality of forgings and composite materials',
-        'Providing radiographic evidence for regulatory compliance',
-        'Supporting manufacturing quality control and in-service inspections'
+      "heading": "Applicable Standards & Guidelines",
+      "content": [
+        "MIL-STD 810 / 209 / 461 – US Military Standards for environmental and structural performance",
+        "ISO 9001 / 45001 / 50001 – Quality, safety, and energy management systems",
+        "SAE & ASTM Standards – Vehicle component testing and performance validation",
+        "NATO AQAP Series – Allied Quality Assurance publications",
+        "OEM & Defence Ministry Specifications – Equipment-specific compliance"
       ]
     },
     {
-      heading: 'Trusted RT by Industry Experts',
-      content:
-        'CBM 360 TIV\'s certified radiographers utilize advanced X-ray and gamma-ray systems, ensuring safe, efficient, and compliant inspections. Our RT services deliver high-quality radiographs with detailed interpretation reports.'
-    },
-    {
-      heading: 'Applications Across Industries',
-      content: [
-        'Mining & Metals – Welded joints, crushers, and heavy equipment components',
-        'Industrial Plants – Boilers, heat exchangers, reactors',
-        'Oil & Gas – Pipelines, storage tanks, offshore structures',
-        'FPSO/FSO Vessels – Cargo tanks, structural welds, risers',
-        'Power & Utilities – Turbine components, boiler tubes, high-pressure systems'
+      "heading": "Types of Defence Vehicles Covered",
+      "content": [
+        "🪖 Armoured Vehicles – Tanks, APCs, IFVs, MRAPs",
+        "🚛 Tactical Transport Vehicles – Troop carriers, supply trucks, refuelers",
+        "🚙 Light Utility Vehicles – Patrol jeeps, reconnaissance, and communication vehicles",
+        "🚒 Firefighting & Recovery Vehicles – Support and emergency response units",
+        "🚜 Engineering & Maintenance Vehicles – Cranes, excavators, loaders, and logistics carriers"
       ]
     },
     {
-      heading: 'Global Experience in All Major Sectors',
-      content: [
-        'Mining & Metal Facilities – Weld inspections, conveyor structures, slurry pipelines',
-        'Industrial Manufacturing & Process Plants – Reactor vessels, pressure piping',
-        'Onshore/Offshore Oil & Gas Facilities – Subsea welds, risers, and flowlines',
-        'FPSO & FSO Vessels – Hull welds, storage tanks, deck piping',
-        'Power & Utility Plants – Steam piping, turbine housings, boiler welds'
+      "heading": "Deliverables",
+      "content": [
+        "Structural & mechanical inspection reports",
+        "NDT & condition monitoring results",
+        "Fitness-for-Service (FFS) certification and compliance summary",
+        "Maintenance recommendations and risk evaluation",
+        "CBM 360 TIV Defence Vehicle Fitness Certificate – verifying operational readiness and compliance"
       ]
     },
     {
-      heading: 'Our RT Services Include:',
-      content: [
-        'Film radiography for detailed defect detection',
-        'Digital radiography (DR) for real-time inspection',
-        'Isotope-based gamma radiography for field use',
-        'X-ray inspection for critical welds and materials',
-        'Image interpretation and reporting by certified experts',
-        'Archiving and traceability for regulatory compliance'
+      "heading": "Benefits of CBM 360 TIV Defence Vehicle Fitness Verification",
+      "content": [
+        "Ensure mission readiness and mechanical reliability",
+        "Identify defects early and prevent in-field failures",
+        "Comply with military and OEM specifications",
+        "Support maintenance, overhaul, and redeployment readiness programs",
+        "Extend operational lifespan of defence vehicle fleets"
       ]
     },
     {
-      heading: 'Standards We Follow:',
-      content: [
-        'ASNT SNT-TC-1A – Personnel qualification and certification',
-        'ISO 17636 – Radiographic testing of welds',
-        'ASTM E1742 – Radiographic examination',
-        'ASME BPVC Section V – RT methods',
-        'API 1104 – Welding of pipelines and related facilities'
-      ]
-    },
-    {
-      heading: 'Ready to Inspect with RT?',
-      content:
-        'Trust CBM 360 TIV\'s Radiographic Testing services to provide accurate, reliable, and standards-compliant inspection results.\n\nContact CBM 360 TIV today to schedule a radiographic inspection.'
+      "heading": "Conclusion",
+      "content": "Assure Operational Readiness & Mission Safety\n\nCBM 360 TIV Defence Vehicle Fitness Verification & Certification Services ensure that every land, amphibious, or tactical vehicle meets the highest safety, reliability, and performance standards required for mission-critical operations.\n\nContact CBM 360 TIV today to schedule your Defence Vehicle Fitness Verification & Certification Services and ensure your fleet’s operational excellence."
     }
   ]
-};
+}
+
+
+
+
+
+;
 
 function toMarkdown(data) {
   const lines = [];

@@ -10,11 +10,29 @@ import LoadingAnimation from '@/components/Common/LoadingAnimation';
 
 export default function Inspection() {
   const navigate = useNavigate();
-  const { currentLanguage } = useTranslation();
+  const { currentLanguage, translations } = useTranslation();
   const [sections, setSections] = useState<SectionDto[]>([]);
   const [pageData, setPageData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Helper function to get translation with fallback
+  const t = (key: string) => {
+    if (!translations) return key;
+    
+    const keys = key.split('.');
+    let value: any = translations;
+    
+    for (const k of keys) {
+      if (value && typeof value === 'object' && k in value) {
+        value = value[k];
+      } else {
+        return key; // Return key if translation not found
+      }
+    }
+    
+    return typeof value === 'string' ? value : key;
+  };
 
   // Cover photos will be read from backend (item.coverPhoto)
 
@@ -117,7 +135,7 @@ export default function Inspection() {
                       to={`/services/inspection/${item.sectionId || toSlug(item.title)}`}
                       state={{ sectionData: item, serviceType: 'inspection', serviceDisplayName: 'Inspection (I)' }}
                     >
-                      View Details
+                      {t('services.viewDetails')}
                     </Link>
                   </Button>
                 </CardFooter>
