@@ -12,6 +12,14 @@ import {
 } from 'lucide-react';
 import { useTranslation } from '@/contexts/TranslationContext';
 import { Logo } from '@/components/Common/Logo';
+import { 
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription
+} from '@/components/ui/dialog';
 
 export function Footer() {
   const { translations } = useTranslation();
@@ -149,22 +157,6 @@ export function Footer() {
                 </div>
               </div>
 
-              {/* Newsletter */}
-              <div className="mt-8">
-                <h4 className="text-sm font-semibold mb-4 text-white">
-                  {translations?.footer.newsletter || 'Stay Updated'}
-                </h4>
-                <div className="flex">
-                  <input
-                    type="email"
-                    placeholder={translations?.footer.placeholderEmail || 'Enter your email'}
-                    className="flex-1 px-4 py-2 rounded-l-md border-0 text-tuv-gray-900"
-                  />
-                  <button className="bg-primary hover:bg-primary-hover px-4 py-2 rounded-r-md transition-colors">
-                    <ArrowRight className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -176,18 +168,72 @@ export function Footer() {
               © {currentYear} CBM. All rights reserved.
             </div>
             <div className="flex flex-wrap items-center space-x-6 text-sm">
-              <Link to="#" className="text-tuv-gray-400 hover:text-white transition-colors">
-                Privacy Policy
-              </Link>
-              <Link to="#" className="text-tuv-gray-400 hover:text-white transition-colors">
-                Terms of Service
-              </Link>
-              <Link to="#" className="text-tuv-gray-400 hover:text-white transition-colors">
-                Cookie Policy
-              </Link>
-              <Link to="#" className="text-tuv-gray-400 hover:text-white transition-colors">
-                Legal Notice
-              </Link>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <button className="text-tuv-gray-400 hover:text-white transition-colors">
+                    Privacy Policy
+                  </button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl">
+                  <DialogHeader>
+                    <DialogTitle>Privacy Policy</DialogTitle>
+                    <DialogDescription>
+                      How we collect, use, and protect your information.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="max-h-[60vh] overflow-y-auto space-y-4 text-sm text-tuv-gray-300">
+                    <p>
+                      We collect personal information you provide directly to us, such as when you contact us, subscribe to updates, or use our services. This may include your name, email address, phone number, company, and any message content you submit.
+                    </p>
+                    <p>
+                      We use this information to provide and improve our services, respond to inquiries, send relevant communications, and maintain security. We do not sell your personal data. We may share data with service providers who assist us in operations, subject to confidentiality and security obligations.
+                    </p>
+                    <p>
+                      You may request access, correction, or deletion of your personal data. For any privacy requests, contact us at Support@cbm360tiv.com.
+                    </p>
+                    <p className="text-tuv-gray-400">
+                      Last updated: {new Date().toLocaleDateString()}
+                    </p>
+                  </div>
+                </DialogContent>
+              </Dialog>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <button className="text-tuv-gray-400 hover:text-white transition-colors">
+                    Terms of Service
+                  </button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl">
+                  <DialogHeader>
+                    <DialogTitle>Terms of Service</DialogTitle>
+                    <DialogDescription>
+                      The rules for using our website and services.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="max-h-[60vh] overflow-y-auto space-y-4 text-sm text-tuv-gray-300">
+                    <p>
+                      By accessing or using our website, you agree to comply with these Terms. You may use the site only for lawful purposes and in accordance with applicable laws. All content is provided as-is for informational purposes without warranties.
+                    </p>
+                    <p>
+                      Intellectual property rights to site content belong to CBM or its licensors. You may not reproduce, distribute, or create derivative works without prior written permission.
+                    </p>
+                    <p>
+                      We may update these Terms from time to time. Continued use of the site after changes constitutes acceptance of the updated Terms. For questions, contact info@cbm360tiv.com.
+                    </p>
+                    <p className="text-tuv-gray-400">
+                      Last updated: {new Date().toLocaleDateString()}
+                    </p>
+                  </div>
+                </DialogContent>
+              </Dialog>
+              <span className="hidden lg:inline text-tuv-gray-600">|</span>
+              <a
+                href="https://www.buildyourvision.in/"
+                className="text-tuv-gray-300 hover:text-white transition-colors font-medium tracking-wide whitespace-nowrap"
+                aria-label="Developed by BUILD YOUR VISION"
+              >
+                Developed by BUILD YOUR VISION
+              </a>
             </div>
           </div>
         </div>
