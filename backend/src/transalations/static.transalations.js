@@ -40,6 +40,7 @@ const translations = {
             "Manufacturing",
             "Aerospace",
             "Food & Agriculture",
+            "Defence"
           ],
         },
         contact: {
@@ -433,7 +434,8 @@ const translations = {
             "Construction",
             "Fabrication",
             "Aérospatiale",
-            "Alimentation et Agriculture"
+            "Alimentation et Agriculture",
+            "Défense"
           ]
           
         },
@@ -829,7 +831,8 @@ const translations = {
             "Construção",
             "Manufatura",
             "Aeroespacial",
-            "Alimentos e Agricultura"
+            "Alimentos e Agricultura",
+            "Defesa"
           ],
           
         },
@@ -1224,7 +1227,8 @@ const translations = {
             "Construcción",
             "Fabricación",
             "Aeroespacial",
-            "Alimentos y Agricultura"
+            "Alimentos y Agricultura",
+            "Defensa"
           ],          
         },
         contact: {
@@ -1618,7 +1622,8 @@ const translations = {
             "Строительство",
             "Производство",
             "Аэрокосмическая промышленность",
-            "Пищевая промышленность и сельское хозяйство"
+            "Пищевая промышленность и сельское хозяйство",
+            "Оборона"
           ],          
         },
         contact: {
@@ -2012,7 +2017,8 @@ const translations = {
             "建筑",
             "制造业",
             "航空航天",
-            "食品与农业"
+            "食品与农业",
+            "防御", 
           ],
           
         },

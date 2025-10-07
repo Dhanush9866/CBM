@@ -1,15 +1,8 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
 
-// ✅ Define Vite env types for TypeScript
-interface ImportMetaEnv {
-  readonly VITE_API_BASE_URL?: string;
-}
-interface ImportMeta {
-  readonly env: ImportMetaEnv;
-}
 
 // ✅ Compute base URL from env
-const apiBaseURL = (import.meta as any)?.env?.VITE_API_BASE_URL || "https://api2.brelis.in" || 'http://localhost:8000';
+const apiBaseURL = import.meta.env.VITE_API_BASE_URL || "https://api2.brelis.in"||  'http://localhost:8000';
 
 // ✅ Create Axios instance
 export const api = axios.create({
