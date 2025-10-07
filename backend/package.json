@@ -30,7 +30,16 @@
     "list:careers": "node src/scripts/translate-careers.js list",
     "check:career-translations": "node src/scripts/translate-careers.js status",
     "translate:sections": "node src/scripts/translate-sections-by-id.js translate",
-    "status:sections": "node src/scripts/translate-sections-by-id.js status"
+    "status:sections": "node src/scripts/translate-sections-by-id.js status",
+    "scaffold:new-services": "node src/scripts/scaffold-new-service-folders.js",
+    "upload:new-services": "node src/scripts/upload-new-service-images.js",
+    "check:new-services": "node src/scripts/check-new-service-images.js",
+    "attach:new-sections": "node src/scripts/attach-new-sections-to-pages.js",
+    "revert:new-services": "node src/scripts/revert-new-service-images.js",
+    "covers:new-services": "node src/scripts/update-new-services-cover.js",
+    "export:covers": "node src/scripts/export-new-covers-to-frontend.js",
+    "export:inside": "node src/scripts/export-new-inside-to-frontend.js",
+    "images:new-services": "node src/scripts/update-new-services-inside.js"
   },
   "engines": {
     "node": ">=18.0.0"

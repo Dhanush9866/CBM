@@ -1,0 +1,31 @@
+{
+  "testing": [
+    "road-condition-testing-rct",
+    "bridge-condition-testing-bct",
+    "material-testing-mt",
+    "corrosion-testing-ct",
+    "mine-shaft-crane-wire-rope-testing-wrt",
+    "hydro-testing-ht",
+    "post-weld-heat-treatment-testing-pwht"
+  ],
+  "inspection": [
+    "fire-equipment-line-inspection",
+    "aerospace-aviation-components-inspection-aci",
+    "railway-mechanical-electrical-equipment-inspection-rei",
+    "railway-line-survey-rls",
+    "hvac-inspection-hi",
+    "fmcg-equipment-inspection-fei",
+    "sugar-plant-equipment-inspection-sei",
+    "cement-plant-equipment-inspection-cei",
+    "dams-hydropower-plant-equipment-inspection-dhei",
+    "electrical-lines-survey-inspection-esi",
+    "bearing-condition-fitness-inspection-bcfi"
+  ],
+  "auditing": [
+    "government-audit"
+  ],
+  "verification-certification": [
+    "dams-hydropower-plants-fitness-verification-certification"
+  ]
+}
+
