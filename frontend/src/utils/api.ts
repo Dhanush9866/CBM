@@ -1,7 +1,7 @@
 import axios from 'axios';
 const isLocal = typeof window !== 'undefined' && window.location.hostname === 'localhost';
 
-const apiBaseURL = (import.meta as any)?.env?.VITE_API_BASE_URL || "https://api2.brelis.in" || 'http://localhost:8000';
+const apiBaseURL = (import.meta as any)?.env?.VITE_API_BASE_URL ||  'http://localhost:8000';
 // When developing locally, target the local backend; otherwise use the deployed backend
 
 export const apiClient = axios.create({

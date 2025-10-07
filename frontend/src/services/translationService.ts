@@ -68,6 +68,92 @@ export interface StaticTranslations {
       title: string;
       description: string;
       applyNow: string;
+      hiringProcess?: {
+        title: string;
+        description: string;
+        steps: {
+          review: {
+            title: string;
+            description: string;
+          };
+          interview: {
+            title: string;
+            description: string;
+          };
+          assessment: {
+            title: string;
+            description: string;
+          };
+          final: {
+            title: string;
+            description: string;
+          };
+        };
+      };
+      currentOpenings?: {
+        loadingText: string;
+        generalApplicationText: string;
+        submitGeneralApplication: string;
+      };
+      applicationDialog?: {
+        title: string;
+        positionDetails: {
+          title: string;
+          position: string;
+          department: string;
+          location: string;
+          type: string;
+        };
+        personalInformation: string;
+        experience: string;
+        resumeUpload: string;
+        coverLetter: string;
+        submitApplication: string;
+        reset: string;
+        submitting: string;
+        labels: {
+          firstName: string;
+          lastName: string;
+          email: string;
+          phone: string;
+          experience: string;
+          resume: string;
+          coverLetter: string;
+        };
+        placeholders: {
+          experience: string;
+          coverLetter: string;
+        };
+        fileUpload: {
+          clickToUpload: string;
+          maxFileSize: string;
+          chooseFile: string;
+          fileSelected: string;
+        };
+        validation: {
+          resumeRequired: string;
+          missingFields: string;
+          invalidEmail: string;
+          invalidFileType: string;
+          fileTooLarge: string;
+        };
+        success: {
+          title: string;
+          description: string;
+        };
+        error: {
+          title: string;
+          description: string;
+        };
+        experienceLevels: {
+          "0-1": string;
+          "2-3": string;
+          "4-5": string;
+          "6-8": string;
+          "9-12": string;
+          "13+": string;
+        };
+      };
     };
     blog?: {
       title: string;
@@ -125,6 +211,8 @@ export interface StaticTranslations {
       heading: string;
       subheading: string;
     };
+    learnMore: string;
+    viewDetails: string;
     servicesList: Array<{
       id: number;
       title: string;

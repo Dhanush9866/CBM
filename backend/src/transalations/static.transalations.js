@@ -176,6 +176,65 @@ const translations = {
             loadingText: "Loading careers...",
             generalApplicationText: "Don't see the right role? We're always looking for talented individuals.",
             submitGeneralApplication: "Submit General Application"
+          },
+          applicationDialog: {
+            title: "Apply for {position}",
+            positionDetails: {
+              title: "Position Details",
+              position: "Position",
+              department: "Department", 
+              location: "Location",
+              type: "Type"
+            },
+            personalInformation: "Personal Information",
+            experience: "Years of Experience",
+            resumeUpload: "Resume/CV",
+            coverLetter: "Cover Letter",
+            submitApplication: "Submit Application",
+            reset: "Reset",
+            submitting: "Submitting...",
+            labels: {
+              firstName: "First Name *",
+              lastName: "Last Name *",
+              email: "Email *",
+              phone: "Phone *",
+              experience: "Years of Experience *",
+              resume: "Resume/CV *",
+              coverLetter: "Cover Letter *"
+            },
+            placeholders: {
+              experience: "Select experience level",
+              coverLetter: "Tell us why you're interested in this position and how your experience aligns with the role..."
+            },
+            fileUpload: {
+              clickToUpload: "Click to upload your resume (PDF, DOC, DOCX)",
+              maxFileSize: "Maximum file size: 5MB",
+              chooseFile: "Choose File",
+              fileSelected: "File selected"
+            },
+            validation: {
+              resumeRequired: "Please upload your resume/CV.",
+              missingFields: "Please fill in: {fields}",
+              invalidEmail: "Please enter a valid email address.",
+              invalidFileType: "Please upload PDF, DOC, or DOCX files only.",
+              fileTooLarge: "File size must be less than 5MB."
+            },
+            success: {
+              title: "Application submitted!",
+              description: "Thank you for your application. We'll be in touch soon."
+            },
+            error: {
+              title: "Submission failed",
+              description: "Failed to submit application. Please try again."
+            },
+            experienceLevels: {
+              "0-1": "0-1 years",
+              "2-3": "2-3 years",
+              "4-5": "4-5 years",
+              "6-8": "6-8 years",
+              "9-12": "9-12 years",
+              "13+": "13+ years"
+            }
           }
         },
         blog: {
@@ -234,6 +293,8 @@ const translations = {
           heading: "Complete Service Portfolio",
           subheading: "From product testing to regulatory compliance, we provide comprehensive solutions to help you succeed in global markets.",
         },
+        learnMore: "Learn More",
+        viewDetails: "View Details",
         servicesList: [
           {
             id: 1,
@@ -511,6 +572,65 @@ const translations = {
             loadingText: "Chargement des offres...",
             generalApplicationText: "Vous ne trouvez pas le bon poste ? Nous recherchons toujours des talents.",
             submitGeneralApplication: "Envoyer une candidature spontanée"
+          },
+          applicationDialog: {
+            title: "Postuler pour {position}",
+            positionDetails: {
+              title: "Détails du poste",
+              position: "Poste",
+              department: "Département", 
+              location: "Lieu",
+              type: "Type"
+            },
+            personalInformation: "Informations personnelles",
+            experience: "Années d'expérience",
+            resumeUpload: "CV",
+            coverLetter: "Lettre de motivation",
+            submitApplication: "Soumettre la candidature",
+            reset: "Réinitialiser",
+            submitting: "Soumission...",
+            labels: {
+              firstName: "Prénom *",
+              lastName: "Nom *",
+              email: "Email *",
+              phone: "Téléphone *",
+              experience: "Années d'expérience *",
+              resume: "CV *",
+              coverLetter: "Lettre de motivation *"
+            },
+            placeholders: {
+              experience: "Sélectionner le niveau d'expérience",
+              coverLetter: "Dites-nous pourquoi vous êtes intéressé par ce poste et comment votre expérience correspond au rôle..."
+            },
+            fileUpload: {
+              clickToUpload: "Cliquez pour télécharger votre CV (PDF, DOC, DOCX)",
+              maxFileSize: "Taille maximale du fichier : 5MB",
+              chooseFile: "Choisir un fichier",
+              fileSelected: "Fichier sélectionné"
+            },
+            validation: {
+              resumeRequired: "Veuillez télécharger votre CV.",
+              missingFields: "Veuillez remplir : {fields}",
+              invalidEmail: "Veuillez entrer une adresse email valide.",
+              invalidFileType: "Veuillez télécharger uniquement des fichiers PDF, DOC ou DOCX.",
+              fileTooLarge: "La taille du fichier doit être inférieure à 5MB."
+            },
+            success: {
+              title: "Candidature soumise !",
+              description: "Merci pour votre candidature. Nous vous contacterons bientôt."
+            },
+            error: {
+              title: "Échec de la soumission",
+              description: "Échec de la soumission de la candidature. Veuillez réessayer."
+            },
+            experienceLevels: {
+              "0-1": "0-1 ans",
+              "2-3": "2-3 ans",
+              "4-5": "4-5 ans",
+              "6-8": "6-8 ans",
+              "9-12": "9-12 ans",
+              "13+": "13+ ans"
+            }
           }
         },
         blog: {
@@ -569,6 +689,8 @@ const translations = {
           heading: "Portfolio de services complet",
           subheading: "Des tests de produits à la conformité réglementaire, nous fournissons des solutions complètes pour vous aider à réussir sur les marchés mondiaux.",
         },
+        learnMore: "En savoir plus",
+        viewDetails: "Voir les détails",
         servicesList: [
           {
             id: 1,
@@ -845,6 +967,65 @@ const translations = {
             loadingText: "Carregando vagas...",
             generalApplicationText: "Não encontrou a vaga ideal? Estamos sempre em busca de talentos.",
             submitGeneralApplication: "Enviar candidatura geral"
+          },
+          applicationDialog: {
+            title: "Candidatar-se para {position}",
+            positionDetails: {
+              title: "Detalhes da Posição",
+              position: "Posição",
+              department: "Departamento", 
+              location: "Localização",
+              type: "Tipo"
+            },
+            personalInformation: "Informações Pessoais",
+            experience: "Anos de Experiência",
+            resumeUpload: "Currículo",
+            coverLetter: "Carta de Apresentação",
+            submitApplication: "Enviar Candidatura",
+            reset: "Limpar",
+            submitting: "Enviando...",
+            labels: {
+              firstName: "Nome *",
+              lastName: "Sobrenome *",
+              email: "Email *",
+              phone: "Telefone *",
+              experience: "Anos de Experiência *",
+              resume: "Currículo *",
+              coverLetter: "Carta de Apresentação *"
+            },
+            placeholders: {
+              experience: "Selecionar nível de experiência",
+              coverLetter: "Conte-nos por que você está interessado nesta posição e como sua experiência se alinha com a função..."
+            },
+            fileUpload: {
+              clickToUpload: "Clique para enviar seu currículo (PDF, DOC, DOCX)",
+              maxFileSize: "Tamanho máximo do arquivo: 5MB",
+              chooseFile: "Escolher Arquivo",
+              fileSelected: "Arquivo selecionado"
+            },
+            validation: {
+              resumeRequired: "Por favor, envie seu currículo.",
+              missingFields: "Por favor, preencha: {fields}",
+              invalidEmail: "Por favor, insira um endereço de email válido.",
+              invalidFileType: "Por favor, envie apenas arquivos PDF, DOC ou DOCX.",
+              fileTooLarge: "O tamanho do arquivo deve ser menor que 5MB."
+            },
+            success: {
+              title: "Candidatura enviada!",
+              description: "Obrigado pela sua candidatura. Entraremos em contato em breve."
+            },
+            error: {
+              title: "Falha no envio",
+              description: "Falha ao enviar candidatura. Tente novamente."
+            },
+            experienceLevels: {
+              "0-1": "0-1 anos",
+              "2-3": "2-3 anos",
+              "4-5": "4-5 anos",
+              "6-8": "6-8 anos",
+              "9-12": "9-12 anos",
+              "13+": "13+ anos"
+            }
           }
         },
         blog: {
@@ -903,6 +1084,8 @@ const translations = {
           heading: "Portfólio Completo de Serviços",
           subheading: "Desde testes de produtos até conformidade regulatória, fornecemos soluções abrangentes para ajudá-lo a ter sucesso nos mercados globais.",
         },
+        learnMore: "Saiba mais",
+        viewDetails: "Ver detalhes",
         servicesList: [
           {
             id: 1,
@@ -1178,6 +1361,65 @@ const translations = {
             loadingText: "Cargando vacantes...",
             generalApplicationText: "¿No ves el puesto adecuado? Siempre buscamos personas con talento.",
             submitGeneralApplication: "Enviar candidatura general"
+          },
+          applicationDialog: {
+            title: "Postular para {position}",
+            positionDetails: {
+              title: "Detalles del Puesto",
+              position: "Puesto",
+              department: "Departamento", 
+              location: "Ubicación",
+              type: "Tipo"
+            },
+            personalInformation: "Información Personal",
+            experience: "Años de Experiencia",
+            resumeUpload: "Currículum",
+            coverLetter: "Carta de Presentación",
+            submitApplication: "Enviar Solicitud",
+            reset: "Limpiar",
+            submitting: "Enviando...",
+            labels: {
+              firstName: "Nombre *",
+              lastName: "Apellido *",
+              email: "Email *",
+              phone: "Teléfono *",
+              experience: "Años de Experiencia *",
+              resume: "Currículum *",
+              coverLetter: "Carta de Presentación *"
+            },
+            placeholders: {
+              experience: "Seleccionar nivel de experiencia",
+              coverLetter: "Cuéntanos por qué estás interesado en este puesto y cómo tu experiencia se alinea con el rol..."
+            },
+            fileUpload: {
+              clickToUpload: "Haz clic para subir tu currículum (PDF, DOC, DOCX)",
+              maxFileSize: "Tamaño máximo del archivo: 5MB",
+              chooseFile: "Elegir Archivo",
+              fileSelected: "Archivo seleccionado"
+            },
+            validation: {
+              resumeRequired: "Por favor, sube tu currículum.",
+              missingFields: "Por favor, completa: {fields}",
+              invalidEmail: "Por favor, ingresa una dirección de email válida.",
+              invalidFileType: "Por favor, sube solo archivos PDF, DOC o DOCX.",
+              fileTooLarge: "El tamaño del archivo debe ser menor a 5MB."
+            },
+            success: {
+              title: "¡Solicitud enviada!",
+              description: "Gracias por tu solicitud. Nos pondremos en contacto pronto."
+            },
+            error: {
+              title: "Error al enviar",
+              description: "Error al enviar la solicitud. Inténtalo de nuevo."
+            },
+            experienceLevels: {
+              "0-1": "0-1 años",
+              "2-3": "2-3 años",
+              "4-5": "4-5 años",
+              "6-8": "6-8 años",
+              "9-12": "9-12 años",
+              "13+": "13+ años"
+            }
           }
         },
         blog: {
@@ -1236,6 +1478,8 @@ const translations = {
           heading: "Portafolio Completo de Servicios",
           subheading: "Desde pruebas de productos hasta cumplimiento regulatorio, proporcionamos soluciones integrales para ayudarle a tener éxito en los mercados globales.",
         },
+        learnMore: "Saber más",
+        viewDetails: "Ver detalles",
         servicesList: [
           {
             id: 1,
@@ -1511,6 +1755,65 @@ const translations = {
             loadingText: "Загрузка вакансий...",
             generalApplicationText: "Не нашли подходящую роль? Мы всегда рады талантливым специалистам.",
             submitGeneralApplication: "Отправить общую заявку"
+          },
+          applicationDialog: {
+            title: "Подать заявку на {position}",
+            positionDetails: {
+              title: "Детали позиции",
+              position: "Позиция",
+              department: "Отдел", 
+              location: "Местоположение",
+              type: "Тип"
+            },
+            personalInformation: "Личная информация",
+            experience: "Годы опыта",
+            resumeUpload: "Резюме",
+            coverLetter: "Сопроводительное письмо",
+            submitApplication: "Отправить заявку",
+            reset: "Очистить",
+            submitting: "Отправка...",
+            labels: {
+              firstName: "Имя *",
+              lastName: "Фамилия *",
+              email: "Email *",
+              phone: "Телефон *",
+              experience: "Годы опыта *",
+              resume: "Резюме *",
+              coverLetter: "Сопроводительное письмо *"
+            },
+            placeholders: {
+              experience: "Выберите уровень опыта",
+              coverLetter: "Расскажите, почему вас интересует эта позиция и как ваш опыт соответствует роли..."
+            },
+            fileUpload: {
+              clickToUpload: "Нажмите, чтобы загрузить резюме (PDF, DOC, DOCX)",
+              maxFileSize: "Максимальный размер файла: 5MB",
+              chooseFile: "Выбрать файл",
+              fileSelected: "Файл выбран"
+            },
+            validation: {
+              resumeRequired: "Пожалуйста, загрузите ваше резюме.",
+              missingFields: "Пожалуйста, заполните: {fields}",
+              invalidEmail: "Пожалуйста, введите действительный адрес электронной почты.",
+              invalidFileType: "Пожалуйста, загружайте только файлы PDF, DOC или DOCX.",
+              fileTooLarge: "Размер файла должен быть менее 5MB."
+            },
+            success: {
+              title: "Заявка отправлена!",
+              description: "Спасибо за вашу заявку. Мы свяжемся с вами в ближайшее время."
+            },
+            error: {
+              title: "Ошибка отправки",
+              description: "Не удалось отправить заявку. Попробуйте еще раз."
+            },
+            experienceLevels: {
+              "0-1": "0-1 год",
+              "2-3": "2-3 года",
+              "4-5": "4-5 лет",
+              "6-8": "6-8 лет",
+              "9-12": "9-12 лет",
+              "13+": "13+ лет"
+            }
           }
         },
         blog: {
@@ -1569,6 +1872,8 @@ const translations = {
           heading: "Полный портфель услуг",
           subheading: "От тестирования продуктов до соблюдения нормативных требований, мы предоставляем комплексные решения для успеха на глобальных рынках.",
         },
+        learnMore: "Узнать больше",
+        viewDetails: "Посмотреть детали",
         servicesList: [
           {
             id: 1,
@@ -1854,6 +2159,65 @@ const translations = {
               "没有找到合适的职位？我们一直在寻找有才华的人才。",
             submitGeneralApplication: "提交通用申请",
           },
+          applicationDialog: {
+            title: "申请 {position}",
+            positionDetails: {
+              title: "职位详情",
+              position: "职位",
+              department: "部门", 
+              location: "地点",
+              type: "类型"
+            },
+            personalInformation: "个人信息",
+            experience: "工作经验",
+            resumeUpload: "简历",
+            coverLetter: "求职信",
+            submitApplication: "提交申请",
+            reset: "重置",
+            submitting: "提交中...",
+            labels: {
+              firstName: "名 *",
+              lastName: "姓 *",
+              email: "邮箱 *",
+              phone: "电话 *",
+              experience: "工作经验 *",
+              resume: "简历 *",
+              coverLetter: "求职信 *"
+            },
+            placeholders: {
+              experience: "选择经验水平",
+              coverLetter: "告诉我们您为什么对这个职位感兴趣，以及您的经验如何与这个角色相匹配..."
+            },
+            fileUpload: {
+              clickToUpload: "点击上传您的简历 (PDF, DOC, DOCX)",
+              maxFileSize: "最大文件大小：5MB",
+              chooseFile: "选择文件",
+              fileSelected: "已选择文件"
+            },
+            validation: {
+              resumeRequired: "请上传您的简历。",
+              missingFields: "请填写：{fields}",
+              invalidEmail: "请输入有效的邮箱地址。",
+              invalidFileType: "请只上传 PDF、DOC 或 DOCX 文件。",
+              fileTooLarge: "文件大小必须小于 5MB。"
+            },
+            success: {
+              title: "申请已提交！",
+              description: "感谢您的申请。我们会尽快与您联系。"
+            },
+            error: {
+              title: "提交失败",
+              description: "提交申请失败。请重试。"
+            },
+            experienceLevels: {
+              "0-1": "0-1年",
+              "2-3": "2-3年",
+              "4-5": "4-5年",
+              "6-8": "6-8年",
+              "9-12": "9-12年",
+              "13+": "13年以上"
+            }
+          }
         },
         blog: {
           title: "最新文章",
@@ -1916,6 +2280,8 @@ const translations = {
           subheading:
             "从产品测试到法规遵从，我们提供全面的解决方案，帮助您在全球市场取得成功。",
         },
+        learnMore: "了解更多",
+        viewDetails: "查看详情",
         servicesList: [
           {
             id: 1,

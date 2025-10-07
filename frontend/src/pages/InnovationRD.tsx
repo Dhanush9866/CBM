@@ -10,11 +10,29 @@ import LoadingAnimation from '@/components/Common/LoadingAnimation';
 
 export default function InnovationRD() {
   const navigate = useNavigate();
-  const { currentLanguage } = useTranslation();
+  const { currentLanguage, translations } = useTranslation();
   const [sections, setSections] = useState<SectionDto[]>([]);
   const [pageData, setPageData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Helper function to get translation with fallback
+  const t = (key: string) => {
+    if (!translations) return key;
+    
+    const keys = key.split('.');
+    let value: any = translations;
+    
+    for (const k of keys) {
+      if (value && typeof value === 'object' && k in value) {
+        value = value[k];
+      } else {
+        return key; // Return key if translation not found
+      }
+    }
+    
+    return typeof value === 'string' ? value : key;
+  };
 
   // Cover photos will be read from backend (s.coverPhoto)
 
@@ -128,7 +146,7 @@ export default function InnovationRD() {
                       to={`/services/innovation-rd/${s.sectionId || toSlug(s.title)}`}
                       state={{ sectionData: s, serviceType: 'innovation-rd', serviceDisplayName: 'Innovation & R&D' }}
                     >
-                      View Details
+                      {t('services.viewDetails')}
                     </Link>
                   </Button>
                 </CardFooter>

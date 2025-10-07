@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { submitJobApplication, JobApplicationData } from '@/utils/api';
+import { useTranslation } from '@/contexts/TranslationContext';
 import { ArrowRight, Upload, X } from 'lucide-react';
 
 interface JobApplicationDialogProps {
@@ -37,6 +38,33 @@ export function JobApplicationDialog({ job, children }: JobApplicationDialogProp
   });
   
   const { toast } = useToast();
+  const { translations } = useTranslation();
+
+  // Helper function to get translation with fallback
+  const t = (key: string, params?: Record<string, string>) => {
+    if (!translations) return key;
+    
+    const keys = key.split('.');
+    let value: any = translations;
+    
+    for (const k of keys) {
+      if (value && typeof value === 'object' && k in value) {
+        value = value[k];
+      } else {
+        return key; // Return key if translation not found
+      }
+    }
+    
+    if (typeof value === 'string') {
+      // Replace placeholders with params
+      if (params) {
+        return value.replace(/\{(\w+)\}/g, (match, param) => params[param] || match);
+      }
+      return value;
+    }
+    
+    return key;
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -45,8 +73,8 @@ export function JobApplicationDialog({ job, children }: JobApplicationDialogProp
       const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
       if (!allowedTypes.includes(file.type)) {
         toast({
-          title: "Invalid file type",
-          description: "Please upload PDF, DOC, or DOCX files only.",
+          title: t('pages.careers.applicationDialog.validation.invalidFileType'),
+          description: t('pages.careers.applicationDialog.validation.invalidFileType'),
           variant: "destructive",
         });
         return;
@@ -55,8 +83,8 @@ export function JobApplicationDialog({ job, children }: JobApplicationDialogProp
       // Validate file size (5MB)
       if (file.size > 5 * 1024 * 1024) {
         toast({
-          title: "File too large",
-          description: "File size must be less than 5MB.",
+          title: t('pages.careers.applicationDialog.validation.fileTooLarge'),
+          description: t('pages.careers.applicationDialog.validation.fileTooLarge'),
           variant: "destructive",
         });
         return;
@@ -78,8 +106,8 @@ export function JobApplicationDialog({ job, children }: JobApplicationDialogProp
     
     if (!resumeFile) {
       toast({
-        title: "Resume required",
-        description: "Please upload your resume/CV.",
+        title: t('pages.careers.applicationDialog.validation.resumeRequired'),
+        description: t('pages.careers.applicationDialog.validation.resumeRequired'),
         variant: "destructive",
       });
       return;
@@ -91,8 +119,8 @@ export function JobApplicationDialog({ job, children }: JobApplicationDialogProp
     
     if (missingFields.length > 0) {
       toast({
-        title: "Missing information",
-        description: `Please fill in: ${missingFields.join(', ')}`,
+        title: t('pages.careers.applicationDialog.validation.missingFields', { fields: missingFields.join(', ') }),
+        description: t('pages.careers.applicationDialog.validation.missingFields', { fields: missingFields.join(', ') }),
         variant: "destructive",
       });
       return;
@@ -102,8 +130,8 @@ export function JobApplicationDialog({ job, children }: JobApplicationDialogProp
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
       toast({
-        title: "Invalid email",
-        description: "Please enter a valid email address.",
+        title: t('pages.careers.applicationDialog.validation.invalidEmail'),
+        description: t('pages.careers.applicationDialog.validation.invalidEmail'),
         variant: "destructive",
       });
       return;
@@ -116,8 +144,8 @@ export function JobApplicationDialog({ job, children }: JobApplicationDialogProp
       
       if (result.success) {
         toast({
-          title: "Application submitted!",
-          description: "Thank you for your application. We'll be in touch soon.",
+          title: t('pages.careers.applicationDialog.success.title'),
+          description: t('pages.careers.applicationDialog.success.description'),
         });
         setOpen(false);
         // Reset form
@@ -133,12 +161,12 @@ export function JobApplicationDialog({ job, children }: JobApplicationDialogProp
         });
         setResumeFile(null);
       } else {
-        throw new Error(result.message || 'Failed to submit application');
+        throw new Error(result.message || t('pages.careers.applicationDialog.error.description'));
       }
     } catch (error: any) {
       toast({
-        title: "Submission failed",
-        description: error.response?.data?.message || error.message || "Failed to submit application. Please try again.",
+        title: t('pages.careers.applicationDialog.error.title'),
+        description: error.response?.data?.message || error.message || t('pages.careers.applicationDialog.error.description'),
         variant: "destructive",
       });
     } finally {
@@ -167,28 +195,28 @@ export function JobApplicationDialog({ job, children }: JobApplicationDialogProp
       </DialogTrigger>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">Apply for {job.title}</DialogTitle>
+          <DialogTitle className="text-2xl font-bold">{t('pages.careers.applicationDialog.title', { position: job.title })}</DialogTitle>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Job Details */}
           <div className="bg-muted/50 p-4 rounded-lg">
-            <h3 className="font-semibold mb-2">Position Details</h3>
+            <h3 className="font-semibold mb-2">{t('pages.careers.applicationDialog.positionDetails.title')}</h3>
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <span className="text-muted-foreground">Position:</span>
+                <span className="text-muted-foreground">{t('pages.careers.applicationDialog.positionDetails.position')}:</span>
                 <p className="font-medium">{job.title}</p>
               </div>
               <div>
-                <span className="text-muted-foreground">Department:</span>
+                <span className="text-muted-foreground">{t('pages.careers.applicationDialog.positionDetails.department')}:</span>
                 <p className="font-medium">{job.department}</p>
               </div>
               <div>
-                <span className="text-muted-foreground">Location:</span>
+                <span className="text-muted-foreground">{t('pages.careers.applicationDialog.positionDetails.location')}:</span>
                 <p className="font-medium">{job.location}</p>
               </div>
               <div>
-                <span className="text-muted-foreground">Type:</span>
+                <span className="text-muted-foreground">{t('pages.careers.applicationDialog.positionDetails.type')}:</span>
                 <p className="font-medium">{job.type}</p>
               </div>
             </div>
@@ -196,10 +224,10 @@ export function JobApplicationDialog({ job, children }: JobApplicationDialogProp
 
           {/* Personal Information */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Personal Information</h3>
+            <h3 className="text-lg font-semibold">{t('pages.careers.applicationDialog.personalInformation')}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="firstName">First Name *</Label>
+                <Label htmlFor="firstName">{t('pages.careers.applicationDialog.labels.firstName')}</Label>
                 <Input
                   id="firstName"
                   value={formData.firstName}
@@ -208,7 +236,7 @@ export function JobApplicationDialog({ job, children }: JobApplicationDialogProp
                 />
               </div>
               <div>
-                <Label htmlFor="lastName">Last Name *</Label>
+                <Label htmlFor="lastName">{t('pages.careers.applicationDialog.labels.lastName')}</Label>
                 <Input
                   id="lastName"
                   value={formData.lastName}
@@ -217,7 +245,7 @@ export function JobApplicationDialog({ job, children }: JobApplicationDialogProp
                 />
               </div>
               <div>
-                <Label htmlFor="email">Email *</Label>
+                <Label htmlFor="email">{t('pages.careers.applicationDialog.labels.email')}</Label>
                 <Input
                   id="email"
                   type="email"
@@ -227,7 +255,7 @@ export function JobApplicationDialog({ job, children }: JobApplicationDialogProp
                 />
               </div>
               <div>
-                <Label htmlFor="phone">Phone *</Label>
+                <Label htmlFor="phone">{t('pages.careers.applicationDialog.labels.phone')}</Label>
                 <Input
                   id="phone"
                   type="tel"
@@ -241,25 +269,25 @@ export function JobApplicationDialog({ job, children }: JobApplicationDialogProp
 
           {/* Experience */}
           <div>
-            <Label htmlFor="experience">Years of Experience *</Label>
+            <Label htmlFor="experience">{t('pages.careers.applicationDialog.labels.experience')}</Label>
             <Select value={formData.experience} onValueChange={(value) => handleInputChange('experience', value)}>
               <SelectTrigger>
-                <SelectValue placeholder="Select experience level" />
+                <SelectValue placeholder={t('pages.careers.applicationDialog.placeholders.experience')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="0-1">0-1 years</SelectItem>
-                <SelectItem value="2-3">2-3 years</SelectItem>
-                <SelectItem value="4-5">4-5 years</SelectItem>
-                <SelectItem value="6-8">6-8 years</SelectItem>
-                <SelectItem value="9-12">9-12 years</SelectItem>
-                <SelectItem value="13+">13+ years</SelectItem>
+                <SelectItem value="0-1">{t('pages.careers.applicationDialog.experienceLevels.0-1')}</SelectItem>
+                <SelectItem value="2-3">{t('pages.careers.applicationDialog.experienceLevels.2-3')}</SelectItem>
+                <SelectItem value="4-5">{t('pages.careers.applicationDialog.experienceLevels.4-5')}</SelectItem>
+                <SelectItem value="6-8">{t('pages.careers.applicationDialog.experienceLevels.6-8')}</SelectItem>
+                <SelectItem value="9-12">{t('pages.careers.applicationDialog.experienceLevels.9-12')}</SelectItem>
+                <SelectItem value="13+">{t('pages.careers.applicationDialog.experienceLevels.13+')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           {/* Resume Upload */}
           <div>
-            <Label htmlFor="resume">Resume/CV *</Label>
+            <Label htmlFor="resume">{t('pages.careers.applicationDialog.labels.resume')}</Label>
             <div className="mt-2">
               {resumeFile ? (
                 <div className="flex items-center justify-between p-3 border rounded-lg bg-muted/50">
@@ -280,10 +308,10 @@ export function JobApplicationDialog({ job, children }: JobApplicationDialogProp
                 <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-6 text-center hover:border-muted-foreground/50 transition-colors">
                   <Upload className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
                   <p className="text-sm text-muted-foreground mb-2">
-                    Click to upload your resume (PDF, DOC, DOCX)
+                    {t('pages.careers.applicationDialog.fileUpload.clickToUpload')}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    Maximum file size: 5MB
+                    {t('pages.careers.applicationDialog.fileUpload.maxFileSize')}
                   </p>
                   <Input
                     id="resume"
@@ -299,7 +327,7 @@ export function JobApplicationDialog({ job, children }: JobApplicationDialogProp
                     className="mt-2"
                     onClick={() => document.getElementById('resume')?.click()}
                   >
-                    Choose File
+                    {t('pages.careers.applicationDialog.fileUpload.chooseFile')}
                   </Button>
                 </div>
               )}
@@ -308,10 +336,10 @@ export function JobApplicationDialog({ job, children }: JobApplicationDialogProp
 
           {/* Cover Letter */}
           <div>
-            <Label htmlFor="coverLetter">Cover Letter *</Label>
+            <Label htmlFor="coverLetter">{t('pages.careers.applicationDialog.labels.coverLetter')}</Label>
             <Textarea
               id="coverLetter"
-              placeholder="Tell us why you're interested in this position and how your experience aligns with the role..."
+              placeholder={t('pages.careers.applicationDialog.placeholders.coverLetter')}
               value={formData.coverLetter}
               onChange={(e) => handleInputChange('coverLetter', e.target.value)}
               rows={6}
@@ -327,7 +355,7 @@ export function JobApplicationDialog({ job, children }: JobApplicationDialogProp
               onClick={resetForm}
               disabled={isSubmitting}
             >
-              Reset
+              {t('pages.careers.applicationDialog.reset')}
             </Button>
             <Button
               type="submit"
@@ -336,12 +364,12 @@ export function JobApplicationDialog({ job, children }: JobApplicationDialogProp
             >
               {isSubmitting ? (
                 <>
-                  Submitting...
+                  {t('pages.careers.applicationDialog.submitting')}
                   <div className="ml-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                 </>
               ) : (
                 <>
-                  Submit Application
+                  {t('pages.careers.applicationDialog.submitApplication')}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </>
               )}
