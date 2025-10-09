@@ -136,7 +136,7 @@ export default function Services() {
       <VideoHero
         slides={slidesData || fallbackSlides}
         videoUrls={[
-          'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475287/slide-1_eqslb6.mp4',
+          'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1760030966/slide-1-cbm_zt8xmu.mp4',
           'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475275/slide-2_jl5ldp.mp4',
           'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475290/slide-3_rayaoy.mp4',
           'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475303/slide-4_izmzsr.mp4',
