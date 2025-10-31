@@ -69,6 +69,15 @@ export default function TestingInspection() {
 
   const toSlug = (text: string) =>
     text.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
+  const toPreview = (text?: string, max = 140) => {
+    if (!text) return '';
+    return text
+      .replace(/^#{1,6}\s+/gm, '')
+      .replace(/#/g, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .slice(0, max);
+  };
   return (
     <div>
       <section className="section pb-2">
@@ -136,7 +145,7 @@ export default function TestingInspection() {
                   <CardTitle className="text-xl">{s.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground text-sm leading-relaxed">{s.bodyText?.slice(0, 140) || ''}</p>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{toPreview(s.bodyText, 180)}</p>
                 </CardContent>
                 <CardFooter>
                   <Button asChild variant="outline" className="w-full">
