@@ -218,53 +218,30 @@ export default function Careers() {
             <div className="text-center text-destructive">{error}</div>
           )}
           {!loading && !error && (
-            <div className="grid grid-cols-1 gap-6">
-            {jobs.map((job) => (
-              <div key={job._id} className="bg-white border border-border rounded-lg p-6 hover:shadow-lg transition-shadow">
-                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-                  <div className="flex-1">
-                    <div className="flex flex-wrap items-center gap-3 mb-3">
-                      <h3 className="text-xl font-semibold">{job.title}</h3>
-                      <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm">
-                        {job.level}
-                      </span>
-                    {job.postedAt && (
-                      <span className="text-sm text-muted-foreground">
-                        Posted on {formatDate(job.postedAt)}
-                      </span>
-                    )}
-                    </div>
-                    
-                    <p className="text-muted-foreground mb-4">{job.description}</p>
-                    
-                    <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                      <div className="flex items-center space-x-2">
-                        <Briefcase className="h-4 w-4" />
-                        <span>{job.department}</span>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <MapPin className="h-4 w-4" />
-                        <span>{job.location}</span>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Clock className="h-4 w-4" />
-                        <span>{job.type}</span>
+            <div className="grid grid-cols-1 gap-4">
+              {jobs.map((job) => (
+                <Link key={job._id} to={`/careers/${job._id}`} className="block">
+                  <div className="bg-white border border-border rounded-lg p-4 hover:bg-tuv-gray-50 transition-colors">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-lg font-semibold text-primary hover:underline">{job.title}</h3>
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                        <div className="hidden sm:flex items-center space-x-2">
+                          <Briefcase className="h-4 w-4" />
+                          <span>{job.department}</span>
+                        </div>
+                        <div className="hidden sm:flex items-center space-x-2">
+                          <MapPin className="h-4 w-4" />
+                          <span>{job.location}</span>
+                        </div>
+                        <div className="hidden sm:flex items-center space-x-2">
+                          <Clock className="h-4 w-4" />
+                          <span>{job.type}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div className="mt-4 lg:mt-0 lg:ml-6">
-                    <JobApplicationDialog job={job}>
-                      <Button 
-                        className="w-full lg:w-auto"
-                      >
-                        {translations?.pages?.careers?.applyNow || 'Apply Now'}
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </JobApplicationDialog>
-                  </div>
-                </div>
-              </div>
-            ))}
+                </Link>
+              ))}
             </div>
           )}
           
