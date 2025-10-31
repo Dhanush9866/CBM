@@ -275,7 +275,19 @@ const createBlog = async (req, res) => {
         blogData.featuredImage = uploadResult.url;
       } catch (uploadError) {
         console.warn('❌ Cloudinary upload failed:', uploadError);
+        // Fallback: use data URL so creation can proceed in dev environments
+        try {
+          if (req.file?.buffer) {
+            blogData.featuredImage = `data:image/jpeg;base64,${req.file.buffer.toString('base64')}`;
+            console.log('⚠️ Using inline base64 featured image fallback');
+          }
+        } catch {}
       }
+    }
+
+    // Validate that a featured image will be present
+    if (!blogData.featuredImage || !String(blogData.featuredImage).trim()) {
+      return res.status(400).json({ success: false, message: 'Featured image is required' });
     }
 
     // Parse JSON fields
@@ -299,8 +311,8 @@ const createBlog = async (req, res) => {
       }
     }
 
-    // Generate slug if missing
-    if (!blogData.slug && blogData.title) {
+    // Generate slug if missing and ensure uniqueness
+    if ((!blogData.slug || !blogData.slug.trim()) && blogData.title) {
       blogData.slug = blogData.title
         .toLowerCase()
         .replace(/[^a-z0-9\s-]/g, '')
@@ -308,6 +320,21 @@ const createBlog = async (req, res) => {
         .replace(/\s+/g, '-')
         .replace(/-+/g, '-');
       console.log('🔹 Generated slug:', blogData.slug);
+    }
+
+    // Ensure unique slug by appending numeric suffix if needed
+    if (blogData.slug) {
+      let baseSlug = blogData.slug;
+      let uniqueSlug = baseSlug;
+      let counter = 2;
+      while (await Blog.exists({ slug: uniqueSlug })) {
+        uniqueSlug = `${baseSlug}-${counter}`;
+        counter++;
+      }
+      if (uniqueSlug !== blogData.slug) {
+        console.log(`🔹 Adjusted slug to ensure uniqueness: ${uniqueSlug}`);
+        blogData.slug = uniqueSlug;
+      }
     }
 
     // Initialize translations map

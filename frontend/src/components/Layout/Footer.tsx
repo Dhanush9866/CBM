@@ -40,16 +40,16 @@ export function Footer() {
                 {translations?.footer.description || 'Leading provider of testing, inspection, certification, and advisory services. Committed to safety, security, and sustainability worldwide.'}
               </p>
               <div className="flex space-x-4">
-                <a href="#" className="text-tuv-gray-400 hover:text-white transition-colors">
+                <a href="https://www.linkedin.com/company/cbm-360%C2%B0-tiv%E2%84%A2/?viewAsMember=true" target="_blank" rel="noopener noreferrer" className="text-tuv-gray-400 hover:text-white transition-colors" aria-label="LinkedIn">
                   <Linkedin className="h-5 w-5" />
                 </a>
-                <a href="#" className="text-tuv-gray-400 hover:text-white transition-colors">
+                <a href="https://x.com/CBM360TIV" target="_blank" rel="noopener noreferrer" className="text-tuv-gray-400 hover:text-white transition-colors" aria-label="Twitter (X)">
                   <Twitter className="h-5 w-5" />
                 </a>
                 <a href="#" className="text-tuv-gray-400 hover:text-white transition-colors">
                   <Facebook className="h-5 w-5" />
                 </a>
-                <a href="#" className="text-tuv-gray-400 hover:text-white transition-colors">
+                <a href="https://www.youtube.com/@CBM360TIV" target="_blank" rel="noopener noreferrer" className="text-tuv-gray-400 hover:text-white transition-colors" aria-label="YouTube">
                   <Youtube className="h-5 w-5" />
                 </a>
               </div>
