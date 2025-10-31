@@ -1,13 +1,12 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
 
 
-// ✅ Compute base URL from env
-const apiBaseURL = import.meta.env.VITE_API_BASE_URL || "https://api2.brelis.in"||  'http://localhost:8000';
+// ✅ Compute base URL from env (default to local dev)
+const apiBaseURL =   import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
-// ✅ Create Axios instance
+// ✅ Create Axios instance (no default Content-Type so FormData works)
 export const api = axios.create({
   baseURL: apiBaseURL,
-  headers: { 'Content-Type': 'application/json' },
 });
 
 // ✅ Use correct interceptor typing (Axios v1+)
