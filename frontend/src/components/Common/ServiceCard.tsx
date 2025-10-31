@@ -17,6 +17,14 @@ export function ServiceCard({ title, description, icon: Icon, link, features, im
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
   const { translations } = useTranslation();
 
+  const sanitizeText = (text?: string) => {
+    if (!text) return '';
+    return text
+      .replace(/^#{1,6}\s+/gm, '') // remove markdown heading prefixes
+      .replace(/#/g, '') // strip stray hashes
+      .trim();
+  };
+
   // Helper function to get translation with fallback
   const t = (key: string) => {
     if (!translations) return key;
@@ -50,7 +58,7 @@ export function ServiceCard({ title, description, icon: Icon, link, features, im
       </div>
       
       <p className={`mb-4 leading-relaxed${imageLoaded ? ' relative z-10 text-white/90' : ' text-muted-foreground'}`}>
-        {description}
+        {sanitizeText(description)}
       </p>
 
       {features && features.length > 0 && (
@@ -61,7 +69,7 @@ export function ServiceCard({ title, description, icon: Icon, link, features, im
               className={`flex items-center text-sm ${imageLoaded ? 'text-white/90' : 'text-muted-foreground'}`}
             >
               <div className="w-2 h-2 bg-primary rounded-full mr-3 flex-shrink-0" />
-              {feature}
+              {sanitizeText(feature)}
             </li>
           ))}
         </ul>
