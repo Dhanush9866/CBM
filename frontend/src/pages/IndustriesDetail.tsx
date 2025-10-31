@@ -74,10 +74,50 @@ export default function IndustriesDetail() {
     );
   }
 
-  const paragraphs = (section.bodyText || '')
-    .split(/\n{2,}/)
-    .map(p => p.trim())
-    .filter(Boolean);
+  const renderRichText = (text: string) => {
+    const lines = (text || '').split(/\r?\n/);
+    const nodes: JSX.Element[] = [];
+    let buffer: string[] = [];
+
+    const flushParagraph = () => {
+      if (buffer.length) {
+        nodes.push(
+          <p key={`p-${nodes.length}`} className="text-lg leading-8 text-gray-700 dark:text-gray-300 text-justify">
+            {buffer.join(' ')}
+          </p>
+        );
+        buffer = [];
+      }
+    };
+
+    lines.forEach((raw, idx) => {
+      const line = raw.trim();
+      if (!line) {
+        flushParagraph();
+        return;
+      }
+      const match = line.match(/^(#{1,6})\s+(.*)$/); // markdown-style heading
+      if (match) {
+        flushParagraph();
+        const hashes = match[1].length;
+        const title = match[2];
+        const commonClass = "font-semibold text-gray-900 dark:text-gray-100 mb-4 mt-8 first:mt-0";
+        if (hashes === 1) {
+          nodes.push(<h2 key={`h2-${idx}`} className={`text-3xl ${commonClass}`}>{title}</h2>);
+        } else if (hashes === 2) {
+          nodes.push(<h3 key={`h3-${idx}`} className={`text-2xl ${commonClass}`}>{title}</h3>);
+        } else if (hashes === 3) {
+          nodes.push(<h4 key={`h4-${idx}`} className={`text-xl ${commonClass}`}>{title}</h4>);
+        } else {
+          nodes.push(<h5 key={`h5-${idx}`} className={`text-lg ${commonClass}`}>{title}</h5>);
+        }
+        return;
+      }
+      buffer.push(line);
+    });
+    flushParagraph();
+    return nodes;
+  };
 
   return (
     <div>
@@ -127,26 +167,7 @@ export default function IndustriesDetail() {
               })()}
 
               {/* Enhanced content styling */}
-              <div className="space-y-6 md:px-4">
-                {paragraphs.map((p, idx) => {
-                  // Check if paragraph contains a heading pattern
-                  const isHeading = p.length < 100 && (p.includes(':') || p.includes('Focus') || p.includes('Benefits') || p.includes('Industry'));
-                  
-                  if (isHeading) {
-                    return (
-                      <h2 key={idx} className="text-2xl md:text-3xl font-semibold text-gray-900 dark:text-gray-100 mb-4 mt-8 first:mt-0">
-                        {p}
-                      </h2>
-                    );
-                  }
-                  
-                  return (
-                    <p key={idx} className="text-lg leading-8 text-gray-700 dark:text-gray-300 text-justify">
-                      {p}
-                    </p>
-                  );
-                })}
-              </div>
+              <div className="space-y-6 md:px-4">{renderRichText(section.bodyText || '')}</div>
 
               {/* Second image - diagonal alignment based on index */}
               {(() => {
@@ -200,26 +221,7 @@ export default function IndustriesDetail() {
                 })()
               )}
               {/* Enhanced content styling for single image layout */}
-              <div className="space-y-6">
-                {paragraphs.map((p, idx) => {
-                  // Check if paragraph contains a heading pattern
-                  const isHeading = p.length < 100 && (p.includes(':') || p.includes('Focus') || p.includes('Benefits') || p.includes('Industry'));
-                  
-                  if (isHeading) {
-                    return (
-                      <h2 key={idx} className="text-2xl md:text-3xl font-semibold text-gray-900 dark:text-gray-100 mb-4 mt-8 first:mt-0">
-                        {p}
-                      </h2>
-                    );
-                  }
-                  
-                  return (
-                    <p key={idx} className="text-lg leading-8 text-gray-700 dark:text-gray-300 text-justify">
-                      {p}
-                    </p>
-                  );
-                })}
-              </div>
+              <div className="space-y-6">{renderRichText(section.bodyText || '')}</div>
             </>
           )}
         </div>
