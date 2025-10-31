@@ -17,6 +17,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { fetchContactOffices, sendContactInquiry } from '@/services/contactOffices';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from '@/contexts/TranslationContext';
@@ -25,6 +26,7 @@ import { useTranslation } from '@/contexts/TranslationContext';
 
 export default function Contact() {
   const { currentLanguage, translations } = useTranslation();
+  const location = useLocation();
   const [groups, setGroups] = useState<{ region_name: string; offices: any[] }[]>([]);
   const { toast } = useToast();
 
@@ -83,6 +85,25 @@ export default function Contact() {
         setGroups([]);
       });
   }, [currentLanguage]);
+
+  // Ensure navigating to /contact#contact-form scrolls to the form immediately
+  useEffect(() => {
+    const tryScroll = () => {
+      if (location.hash === '#contact-form') {
+        const el = document.getElementById('contact-form');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          return true;
+        }
+      }
+      return false;
+    };
+    // Try immediately and after content (offices) loads
+    if (!tryScroll()) {
+      const id = window.setTimeout(tryScroll, 100);
+      return () => window.clearTimeout(id);
+    }
+  }, [location.hash, groups]);
   return (
     <div>
       {/* Hero Section */}

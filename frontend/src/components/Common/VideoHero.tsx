@@ -122,7 +122,7 @@ export function VideoHero({
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             {slides[currentSlide]?.primaryCTA && (
               <Button size="lg" className="w-full sm:w-auto bg-white text-primary hover:bg-white/90 text-base sm:text-lg px-6 py-3 sm:px-8 sm:py-4" asChild>
-                <a href={slides[currentSlide].primaryCTA!.href}>
+                <a href={(slides[currentSlide].primaryCTA!.href || '').startsWith('/contact') ? '/contact#contact-form' : slides[currentSlide].primaryCTA!.href}>
                   {slides[currentSlide].primaryCTA!.text}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </a>
@@ -134,7 +134,7 @@ export function VideoHero({
                 variant="outline" 
                 className="w-full sm:w-auto border-white text-white  text-primary text-base sm:text-lg px-6 py-3 sm:px-8 sm:py-4" asChild
               >
-                <a href={slides[currentSlide].secondaryCTA!.href}>
+                <a href={(slides[currentSlide].secondaryCTA!.href || '').startsWith('/contact') ? '/contact#contact-form' : slides[currentSlide].secondaryCTA!.href}>
                   {slides[currentSlide].secondaryCTA!.text}
                 </a>
               </Button>
