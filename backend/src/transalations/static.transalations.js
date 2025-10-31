@@ -286,6 +286,29 @@ const translations = {
           cta: {
             send: "Send Message",
             sending: "Sending..."
+          },
+          industryOptions: {
+            mining: "Mining & Metals",
+            oilgas: "Oil and Gas",
+            marine: "Marine",
+            automotive: "Automotive",
+            healthcare: "Healthcare & Medical",
+            energy: "Energy & Utilities",
+            manufacturing: "Manufacturing",
+            construction: "Construction",
+            food: "Food & Agriculture",
+            aerospace: "Aerospace & Defense",
+            technology: "Technology & Electronics",
+            defence: "Defence",
+            other: "Other"
+          },
+          serviceOptions: {
+            testing: "Testing & Inspection",
+            certification: "Certification Services",
+            consulting: "Consulting & Advisory",
+            training: "Training & Education",
+            digital: "Digital Solutions",
+            other: "Other Services"
           }
         },
       },
@@ -683,6 +706,29 @@ const translations = {
           cta: {
             send: "Envoyer le message",
             sending: "Envoi..."
+          },
+          industryOptions: {
+            mining: "Mines et Métaux",
+            oilgas: "Pétrole et Gaz",
+            marine: "Marine",
+            automotive: "Automobile",
+            healthcare: "Santé et Médical",
+            energy: "Énergie et Services Publics",
+            manufacturing: "Fabrication",
+            construction: "Construction",
+            food: "Alimentation et Agriculture",
+            aerospace: "Aérospatiale et Défense",
+            technology: "Technologie et Électronique",
+            defence: "Défense",
+            other: "Autre"
+          },
+          serviceOptions: {
+            testing: "Tests et Inspection",
+            certification: "Services de Certification",
+            consulting: "Conseil et Services Conseil",
+            training: "Formation et Éducation",
+            digital: "Solutions Numériques",
+            other: "Autres Services"
           }
         },
       },
@@ -1079,6 +1125,29 @@ const translations = {
           cta: {
             send: "Enviar mensagem",
             sending: "Enviando..."
+          },
+          industryOptions: {
+            mining: "Mineração e Metais",
+            oilgas: "Petróleo e Gás",
+            marine: "Marinha",
+            automotive: "Automotivo",
+            healthcare: "Saúde e Medicina",
+            energy: "Energia e Utilidades",
+            manufacturing: "Manufatura",
+            construction: "Construção",
+            food: "Alimentos e Agricultura",
+            aerospace: "Aeroespacial e Defesa",
+            technology: "Tecnologia e Eletrônicos",
+            defence: "Defesa",
+            other: "Outro"
+          },
+          serviceOptions: {
+            testing: "Testes e Inspeção",
+            certification: "Serviços de Certificação",
+            consulting: "Consultoria e Assessoria",
+            training: "Treinamento e Educação",
+            digital: "Soluções Digitais",
+            other: "Outros Serviços"
           }
         },
       },
@@ -1474,6 +1543,29 @@ const translations = {
           cta: {
             send: "Enviar mensaje",
             sending: "Enviando..."
+          },
+          industryOptions: {
+            mining: "Minería y Metales",
+            oilgas: "Petróleo y Gas",
+            marine: "Marina",
+            automotive: "Automotriz",
+            healthcare: "Salud y Medicina",
+            energy: "Energía y Servicios Públicos",
+            manufacturing: "Fabricación",
+            construction: "Construcción",
+            food: "Alimentos y Agricultura",
+            aerospace: "Aeroespacial y Defensa",
+            technology: "Tecnología y Electrónica",
+            defence: "Defensa",
+            other: "Otro"
+          },
+          serviceOptions: {
+            testing: "Pruebas e Inspección",
+            certification: "Servicios de Certificación",
+            consulting: "Consultoría y Asesoría",
+            training: "Capacitación y Educación",
+            digital: "Soluciones Digitales",
+            other: "Otros Servicios"
           }
         },
       },
@@ -1869,6 +1961,29 @@ const translations = {
           cta: {
             send: "Отправить сообщение",
             sending: "Отправка..."
+          },
+          industryOptions: {
+            mining: "Горное дело и металлургия",
+            oilgas: "Нефть и газ",
+            marine: "Морская промышленность",
+            automotive: "Автомобильная промышленность",
+            healthcare: "Здравоохранение и медицина",
+            energy: "Энергетика и коммунальные услуги",
+            manufacturing: "Производство",
+            construction: "Строительство",
+            food: "Пищевая промышленность и сельское хозяйство",
+            aerospace: "Аэрокосмическая промышленность и оборона",
+            technology: "Технологии и электроника",
+            defence: "Оборона",
+            other: "Другое"
+          },
+          serviceOptions: {
+            testing: "Тестирование и инспекция",
+            certification: "Сертификационные услуги",
+            consulting: "Консультирование и консалтинг",
+            training: "Обучение и образование",
+            digital: "Цифровые решения",
+            other: "Другие услуги"
           }
         },
       },
@@ -2278,6 +2393,29 @@ const translations = {
             send: "发送消息",
             sending: "正在发送...",
           },
+          industryOptions: {
+            mining: "采矿与金属",
+            oilgas: "石油与天然气",
+            marine: "海洋",
+            automotive: "汽车",
+            healthcare: "医疗保健",
+            energy: "能源与公用事业",
+            manufacturing: "制造业",
+            construction: "建筑",
+            food: "食品与农业",
+            aerospace: "航空航天与国防",
+            technology: "技术与电子",
+            defence: "国防",
+            other: "其他"
+          },
+          serviceOptions: {
+            testing: "测试与检验",
+            certification: "认证服务",
+            consulting: "咨询与顾问",
+            training: "培训与教育",
+            digital: "数字解决方案",
+            other: "其他服务"
+          }
         },
       },
       services: {
