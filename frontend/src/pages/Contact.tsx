@@ -293,15 +293,19 @@ export default function Contact() {
                         <SelectValue placeholder={translations?.pages?.contact?.placeholders?.selectIndustry || 'Select Industry'} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="automotive">Automotive</SelectItem>
-                        <SelectItem value="healthcare">Healthcare & Medical</SelectItem>
-                        <SelectItem value="energy">Energy & Utilities</SelectItem>
-                        <SelectItem value="manufacturing">Manufacturing</SelectItem>
-                        <SelectItem value="construction">Construction</SelectItem>
-                        <SelectItem value="food">Food & Agriculture</SelectItem>
-                        <SelectItem value="aerospace">Aerospace & Defense</SelectItem>
-                        <SelectItem value="technology">Technology & Electronics</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
+                        <SelectItem value="mining">{translations?.pages?.contact?.industryOptions?.mining || 'Mining & Metals'}</SelectItem>
+                        <SelectItem value="oilgas">{translations?.pages?.contact?.industryOptions?.oilgas || 'Oil and Gas'}</SelectItem>
+                        <SelectItem value="marine">{translations?.pages?.contact?.industryOptions?.marine || 'Marine'}</SelectItem>
+                        <SelectItem value="automotive">{translations?.pages?.contact?.industryOptions?.automotive || 'Automotive'}</SelectItem>
+                        <SelectItem value="healthcare">{translations?.pages?.contact?.industryOptions?.healthcare || 'Healthcare & Medical'}</SelectItem>
+                        <SelectItem value="energy">{translations?.pages?.contact?.industryOptions?.energy || 'Energy & Utilities'}</SelectItem>
+                        <SelectItem value="manufacturing">{translations?.pages?.contact?.industryOptions?.manufacturing || 'Manufacturing'}</SelectItem>
+                        <SelectItem value="construction">{translations?.pages?.contact?.industryOptions?.construction || 'Construction'}</SelectItem>
+                        <SelectItem value="food">{translations?.pages?.contact?.industryOptions?.food || 'Food & Agriculture'}</SelectItem>
+                        <SelectItem value="aerospace">{translations?.pages?.contact?.industryOptions?.aerospace || 'Aerospace & Defense'}</SelectItem>
+                        <SelectItem value="technology">{translations?.pages?.contact?.industryOptions?.technology || 'Technology & Electronics'}</SelectItem>
+                        <SelectItem value="defence">{translations?.pages?.contact?.industryOptions?.defence || 'Defence'}</SelectItem>
+                        <SelectItem value="other">{translations?.pages?.contact?.industryOptions?.other || 'Other'}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -312,12 +316,12 @@ export default function Contact() {
                         <SelectValue placeholder={translations?.pages?.contact?.placeholders?.selectService || 'Select Service'} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="testing">Testing & Inspection</SelectItem>
-                        <SelectItem value="certification">Certification Services</SelectItem>
-                        <SelectItem value="consulting">Consulting & Advisory</SelectItem>
-                        <SelectItem value="training">Training & Education</SelectItem>
-                        <SelectItem value="digital">Digital Solutions</SelectItem>
-                        <SelectItem value="other">Other Services</SelectItem>
+                        <SelectItem value="testing">{translations?.pages?.contact?.serviceOptions?.testing || 'Testing & Inspection'}</SelectItem>
+                        <SelectItem value="certification">{translations?.pages?.contact?.serviceOptions?.certification || 'Certification Services'}</SelectItem>
+                        <SelectItem value="consulting">{translations?.pages?.contact?.serviceOptions?.consulting || 'Consulting & Advisory'}</SelectItem>
+                        <SelectItem value="training">{translations?.pages?.contact?.serviceOptions?.training || 'Training & Education'}</SelectItem>
+                        <SelectItem value="digital">{translations?.pages?.contact?.serviceOptions?.digital || 'Digital Solutions'}</SelectItem>
+                        <SelectItem value="other">{translations?.pages?.contact?.serviceOptions?.other || 'Other Services'}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
