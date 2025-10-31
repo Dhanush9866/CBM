@@ -13,12 +13,12 @@ import { useTranslation } from '@/contexts/TranslationContext';
 import { Logo } from '@/components/Common/Logo';
 
 const languages = [
-  { code: 'en', name: 'English', flag: '🇺🇸' },
-  { code: 'fr', name: 'Français', flag: '🇫🇷' },
-  { code: 'pt', name: 'Português', flag: '🇵🇹' },
-  { code: 'es', name: 'Español', flag: '🇪🇸' },
-  { code: 'ru', name: 'Русский', flag: '🇷🇺' },
-  { code: 'zh', name: '中文', flag: '🇨🇳' },
+  { code: 'en', name: 'English', flag: '🇺🇸', flagUrl: 'https://flagcdn.com/us.svg' },
+  { code: 'fr', name: 'Français', flag: '🇫🇷', flagUrl: 'https://flagcdn.com/fr.svg' },
+  { code: 'pt', name: 'Português', flag: '🇵🇹', flagUrl: 'https://flagcdn.com/pt.svg' },
+  { code: 'es', name: 'Español', flag: '🇪🇸', flagUrl: 'https://flagcdn.com/es.svg' },
+  { code: 'ru', name: 'Русский', flag: '🇷🇺', flagUrl: 'https://flagcdn.com/ru.svg' },
+  { code: 'zh', name: '中文', flag: '🇨🇳', flagUrl: 'https://flagcdn.com/cn.svg' },
 ];
 
 export function Navbar() {
@@ -88,7 +88,11 @@ export function Navbar() {
                     disabled={isLoading}
                   >
                     <Globe className="h-4 w-4 mr-2" />
-                    <span className="mr-1">{selectedLanguage.flag}</span>
+                    {selectedLanguage.flagUrl ? (
+                      <img src={selectedLanguage.flagUrl} alt="flag" className="w-4 h-3 mr-1 rounded-sm" />
+                    ) : (
+                      <span className="mr-1">{selectedLanguage.flag}</span>
+                    )}
                     <span className="text-xs">{selectedLanguage.code.toUpperCase()}</span>
                     {isLoading ? (
                       <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin ml-1" />
@@ -109,7 +113,11 @@ export function Navbar() {
                       }`}
                       disabled={isLoading}
                     >
-                      <span className="text-lg">{language.flag}</span>
+                      {language.flagUrl ? (
+                        <img src={language.flagUrl} alt="flag" className="w-5 h-4 rounded-sm" />
+                      ) : (
+                        <span className="text-lg">{language.flag}</span>
+                      )}
                       <span className="flex-1">{language.name}</span>
                       {selectedLanguage.code === language.code && (
                         <div className="w-2 h-2 bg-primary rounded-full" />

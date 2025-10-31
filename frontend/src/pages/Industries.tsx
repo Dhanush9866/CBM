@@ -54,6 +54,16 @@ export default function Industries() {
 
   const toSlug = (text: string) =>
     text.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
+  const toPreview = (text?: string, max = 140) => {
+    if (!text) return '';
+    // Strip markdown hash headings and collapse whitespace
+    const cleaned = text
+      .replace(/^#{1,6}\s+/gm, '')
+      .replace(/#+\s*/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+    return cleaned.slice(0, max);
+  };
   return (
     <div>
       <section className="section pb-2">
@@ -180,7 +190,7 @@ export default function Industries() {
                   <CardTitle className="text-xl">{s.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground text-sm leading-relaxed">{s.bodyText?.slice(0, 140) || ''}</p>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{toPreview(s.bodyText, 180)}</p>
                 </CardContent>
                 <CardFooter>
                   <Button asChild variant="outline" className="w-full">
