@@ -23,6 +23,7 @@ import VerificationCertification from "./pages/VerificationCertification";
 import InnovationRD from "./pages/InnovationRD";
 import ServiceDetail from "./pages/ServiceDetail";
 import IndustriesDetail from "./pages/IndustriesDetail";
+import WhatsApp from "./pages/WhatsApp";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +54,7 @@ const App = () => (
               <Route path="/careers/:id" element={<CareerDetail />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/whatsapp" element={<WhatsApp />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Layout>

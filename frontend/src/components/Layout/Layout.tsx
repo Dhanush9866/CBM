@@ -2,6 +2,7 @@
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 import ScrollReveal from '../Common/ScrollReveal';
+import FloatingWhatsApp from '../Common/FloatingWhatsApp';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -16,6 +17,7 @@ export function Layout({ children }: LayoutProps) {
         {children}
       </main>
       <Footer />
+      <FloatingWhatsApp />
     </div>
   );
 }
