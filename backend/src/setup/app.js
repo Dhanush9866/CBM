@@ -18,6 +18,7 @@ const contactRoutes = require('../routes/contact.routes');
 const inquiryRoutes = require('../routes/inquiry.routes');
 const adminAuthRoutes = require('../routes/admin-auth.routes');
 const blogRoutes = require('../routes/blog.routes');
+const industryStatRoutes = require('../routes/industryStat.routes');
 
 
 function createApp() {
@@ -104,6 +105,7 @@ function createApp() {
   app.use('/api', inquiryRoutes);
   app.use('/api/admin/auth', adminAuthRoutes);
   app.use('/api/blogs', blogRoutes);
+  app.use('/api/industry-stats', industryStatRoutes);
 
 
   // 404 and error handler

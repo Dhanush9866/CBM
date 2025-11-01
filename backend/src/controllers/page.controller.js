@@ -58,7 +58,8 @@ async function getPageById(req, res, next) {
     if (populate === 'true') {
       query = query.populate({
         path: 'sections',
-        select: 'title bodyText images coverPhoto language pageNumber sectionId translations'
+        select: 'title bodyText images coverPhoto language pageNumber sectionId translations createdAt',
+        options: { sort: { createdAt: 1 } } // Oldest first
       });
     }
 
@@ -165,9 +166,10 @@ async function getPageBySlug(req, res, next) {
                 pageNumber: 1,
                 sectionId: 1,
                 translations: 1,
+                createdAt: 1,
               },
             },
-            { $sort: { pageNumber: 1 } },
+            { $sort: { createdAt: 1 } }, // Oldest first
           ],
           as: "sections",
         },
@@ -231,8 +233,8 @@ async function getPages(req, res, next) {
     if (populate === 'true') {
       query = query.populate({
         path: 'sections',
-        select: 'title bodyText images coverPhoto language pageNumber sectionId',
-        options: { limit: 5 }
+        select: 'title bodyText images coverPhoto language pageNumber sectionId createdAt',
+        options: { limit: 5, sort: { createdAt: 1 } } // Oldest first
       });
     }
 
@@ -403,7 +405,8 @@ async function getPageWithSectionsByName(req, res, next) {
       isActive: true
     }).populate({
       path: 'sections',
-      select: 'title bodyText images coverPhoto language pageNumber sectionId translations'
+      select: 'title bodyText images coverPhoto language pageNumber sectionId translations createdAt',
+      options: { sort: { createdAt: 1 } } // Oldest first
     });
 
     if (!page) {
@@ -416,7 +419,15 @@ async function getPageWithSectionsByName(req, res, next) {
         section.title.toLowerCase().includes(sectionName.toLowerCase()) ||
         section.sectionId.toLowerCase().includes(sectionName.toLowerCase())
       );
-      
+    }
+
+    // Ensure sections are sorted by createdAt (oldest first) in case filter was applied
+    if (page.sections && page.sections.length > 0) {
+      page.sections.sort((a, b) => {
+        const aDate = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+        const bDate = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+        return aDate - bDate; // Oldest first
+      });
     }
 
     // Handle language translation with English fallback (no dynamic translation)

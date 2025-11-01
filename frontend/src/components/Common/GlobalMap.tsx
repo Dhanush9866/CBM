@@ -17,6 +17,7 @@ const officeNameToCoords: Record<string, { lat: number; lon: number }> = {
   "CBM 360 TIV – Russia Ltd OOO": { lat: 55.7646, lon: 37.5838 },
   "CBM 360 TIV – Ukraine LLC/TOV": { lat: 49.658, lon: 28.752 },
   "CBM 360 TIV Emirates - Dubai – UAE": { lat: 25.129, lon: 55.219 },
+  "CBM 360 TIV Arabia LLD": { lat: 24.7136, lon: 46.6753 }, // Riyadh, Saudi Arabia
   "CBM 360 TIV - South Africa Pty Ltd": { lat: -25.98, lon: 28.127 },
   "CBM 360 TIV - Namibia Pty Ltd": { lat: -22.559, lon: 17.057 },
   "CBM 360 TIV - Botswana Pty Ltd": { lat: -24.639, lon: 25.901 },
@@ -85,7 +86,7 @@ const officeNameToCoords: Record<string, { lat: number; lon: number }> = {
 
 interface OfficeMarkerProps {
   office: RemoteOfficeData;
-  onClick: (office: OfficeData) => void;
+  onClick: (office: RemoteOfficeData) => void;
   colorScheme: any;
   isRegionalHQ?: boolean;
 }
@@ -99,9 +100,9 @@ const OfficeMarker: React.FC<OfficeMarkerProps> = ({ office, onClick, colorSchem
   };
 
   const getMarkerSize = () => {
-    if (office.region === "Corporate Office") return 6;
-    if (office.is_lab_facility) return 5;
-    return 4;
+    if (office.region === "Corporate Office") return 2;
+    if (office.is_lab_facility) return 2;
+    return 2;
   };
 
   const getStrokeColor = (colorScheme: any) => {
@@ -114,10 +115,29 @@ const OfficeMarker: React.FC<OfficeMarkerProps> = ({ office, onClick, colorSchem
   return (
     <Marker
       coordinates={(() => {
+        // Priority 1: Hardcoded coordinates by exact office name match
         const exact = officeNameToCoords[office.office_name];
-        const lon = exact?.lon ?? office.longitude ?? getLongitudeForCountry(office.country) ?? 0;
-        const lat = exact?.lat ?? office.latitude ?? getLatitudeForCountry(office.country) ?? 0;
-        return [lon, lat] as [number, number];
+        if (exact) {
+          return [exact.lon, exact.lat] as [number, number];
+        }
+        
+        // Priority 2: Database coordinates (from auto-geocoding)
+        if (office.longitude != null && office.latitude != null && 
+            office.longitude !== 0 && office.latitude !== 0) {
+          return [office.longitude, office.latitude] as [number, number];
+        }
+        
+        // Priority 3: Country-level fallback coordinates
+        const countryLon = getLongitudeForCountry(office.country);
+        const countryLat = getLatitudeForCountry(office.country);
+        if (countryLon !== 0 && countryLat !== 0) {
+          console.warn(`⚠️ Using country-level coordinates for ${office.office_name} in ${office.country}. Address: ${office.address}`);
+          return [countryLon, countryLat] as [number, number];
+        }
+        
+        // Priority 4: Default to [0, 0] (shouldn't happen, but log it)
+        console.error(`❌ No coordinates found for office: ${office.office_name} (${office.country})`);
+        return [0, 0] as [number, number];
       })()}
       onClick={() => onClick(office)}
       style={{ cursor: 'pointer' }}
@@ -258,81 +278,65 @@ const GlobalMap: React.FC<GlobalMapProps> = ({ className = "" }) => {
   // Get all offices from fetched groups
   const allOffices = officeGroups.flatMap(group => group.offices);
 
-  // Exact coordinates by office_name (approximate to address city-level)
-  const officeNameToCoords: Record<string, { lat: number; lon: number }> = {
-    "CBM 360 TIV – UK": { lat: 51.4928, lon: -0.1639 },
-    "CBM 360 TIV - Germany GmbH & Co. KG": { lat: 53.8069, lon: 10.6869 },
-    "CBM 360 TIV - France SARL": { lat: 48.8006, lon: 2.4236 },
-    "CBM 360 TIV - Portugal Lda": { lat: 38.7578, lon: -9.2323 },
-    "CBM 360 TIV - Spain S. L": { lat: 40.3840, lon: -3.7390 },
-    "CBM 360 TIV – Russia Ltd OOO": { lat: 55.7646, lon: 37.5838 },
-    "CBM 360 TIV – Ukraine LLC/TOV": { lat: 49.6580, lon: 28.7520 },
-    "CBM 360 TIV Emirates - Dubai – UAE": { lat: 25.1290, lon: 55.2190 },
-    "CBM 360 TIV - South Africa Pty Ltd": { lat: -25.98, lon: 28.127 },
-    "CBM 360 TIV - Namibia Pty Ltd": { lat: -22.559, lon: 17.057 },
-    "CBM 360 TIV - Botswana Pty Ltd": { lat: -24.639, lon: 25.901 },
-    "CBM 360 TIV - Zimbabwe LLC": { lat: -20.157, lon: 28.588 },
-    "CBM 360 TIV - Angola SA": { lat: -8.838, lon: 13.234 },
-    "CBM 360 TIV - DR Congo SARL": { lat: -4.331, lon: 15.322 },
-    "CBM 360 TIV - Madagascar SARL": { lat: -18.879, lon: 47.507 },
-    "CBM 360 TIV - Mozambique SA": { lat: -15.116, lon: 39.266 },
-    "CBM 360 TIV - Zambia PVT LTD": { lat: -15.416, lon: 28.282 },
-    "CBM 360 TIV - Malawi PVT LTD": { lat: -13.963, lon: 33.787 },
-    "CBM 360 TIV - Tanzania LLC": { lat: -2.516, lon: 32.918 },
-    "CBM 360 TIV - Rwanda LLC": { lat: -1.944, lon: 30.061 },
-    "CBM 360 TIV - Republic of Congo SARL": { lat: -4.263, lon: 15.242 },
-    "CBM 360 TIV - Gabon SARL": { lat: 0.39, lon: 9.453 },
-    "CBM 360 TIV - Uganda LTD": { lat: 0.315, lon: 32.582 },
-    "CBM 360 TIV - Kenya LTD": { lat: -1.292, lon: 36.822 },
-    "CBM 360 TIV - Ethiopia PLC": { lat: 9.01, lon: 38.761 },
-    "CBM 360 TIV - Eritrea LLC": { lat: 15.322, lon: 38.925 },
-    "CBM 360 TIV - South Sudan LLC": { lat: 4.852, lon: 31.582 },
-    "CBM 360 TIV - Chad SARL": { lat: 12.134, lon: 15.055 },
-    "CBM 360 TIV - Cameroon SARL": { lat: 3.848, lon: 11.502 },
-    "CBM 360 TIV - Equatorial Guinea SARL": { lat: 1.863, lon: 9.767 },
-    "CBM 360 TIV - Nigeria LLC": { lat: 9.06, lon: 7.492 },
-    "CBM 360 TIV - Niger PVT": { lat: 13.511, lon: 2.125 },
-    "CBM 360 TIV - Ghana LTD": { lat: 5.56, lon: -0.205 },
-    "CBM 360 TIV - Burkina Faso SARL": { lat: 12.371, lon: -1.519 },
-    "CBM 360 TIV - Benin SARL LLC": { lat: 6.37, lon: 2.433 },
-    "CBM 360 TIV - Togo SARL": { lat: 6.137, lon: 1.212 },
-    "CBM 360 TIV - Côte d'Ivoire SARL": { lat: 5.345, lon: -4.024 },
-    "CBM 360 TIV - Mali SARL": { lat: 12.639, lon: -7.999 },
-    "CBM 360 TIV - Sierra Leone PVT LTD": { lat: 8.465, lon: -13.231 },
-    "CBM 360 TIV - Guinea SARL": { lat: 9.641, lon: -13.578 },
-    "CBM 360 TIV - Senegal SARL": { lat: 14.716, lon: -17.467 },
-    "CBM 360 TIV – Mauritania SARL": { lat: 18.079, lon: -15.965 },
-    "CBM 360 TIV - Hong Kong": { lat: 22.281, lon: 114.155 },
-    "CBM 360 TIV - China LLC": { lat: 31.162, lon: 121.436 },
-    "CBM 360 TIV - Kazakhstan LLP": { lat: 51.169, lon: 71.449 },
-    "CBM 360 TIV - Mongolia LLC": { lat: 47.921, lon: 106.918 },
-    "CBM 360 TIV - India PVT LTD": { lat: 18.957, lon: 72.842 },
-    "CBM 360 TIV - South Korea LLC": { lat: 37.533, lon: 126.978 },
-    "CBM 360 TIV - Myanmar PLC": { lat: 17.336, lon: 96.481 },
-    "CBM 360 TIV - Malaysia PLC": { lat: 3.155, lon: 101.714 },
-    "CBM 360 TIV - Thailand PLC": { lat: 13.752, lon: 100.494 },
-    "CBM 360 TIV - Indonesia PT": { lat: -6.244, lon: 106.799 },
-    "CBM 360 TIV - Philippines LLC": { lat: 14.602, lon: 121.004 },
-    "CBM 360 TIV - Australia Pty LTD": { lat: -27.488, lon: 153.089 },
-    "CBM 360 TIV - Papua New Guinea LLC": { lat: -9.443, lon: 147.18 },
-    "CBM 360 TIV – Brazil Ltda": { lat: -22.926, lon: -43.249 },
-    "CBM 360 TIV - USA LLC": { lat: 38.878, lon: -77.113 },
-    "CBM 360 TIV – Canada Inc": { lat: 45.514, lon: -73.682 },
-    "CBM 360 TIV - México S. de R. L": { lat: 19.432, lon: -99.133 },
-    "CBM 360 TIV – Dominican Republic SRL": { lat: 18.486, lon: -69.931 },
-    "CBM 360 TIV - Venezuela PLC (S.A.)": { lat: 10.488, lon: -66.879 },
-    "CBM 360 TIV – Trinidad & Tobago (Ltd.)": { lat: 10.66, lon: -61.51 },
-    "CBM 360 TIV - French Guiana SARL": { lat: 4.922, lon: -52.326 },
-    "CBM 360 TIV – Suriname NV": { lat: 5.852, lon: -55.167 },
-    "CBM 360 TIV - Guyana (PLLC)": { lat: 6.801, lon: -58.155 },
-    "CBM 360 TIV – Colombia (SAS)": { lat: 4.692, lon: -74.064 },
-    "CBM 360 TIV - Peru (S.R.L.)": { lat: -12.046, lon: -77.042 },
-    "CBM 360 TIV – Bolivia (SRL)": { lat: -16.5, lon: -68.15 },
-    "CBM 360 TIV - Ecuador (Cia. Ltda.)": { lat: -0.18, lon: -78.467 },
-    "CBM 360 TIV – Chile SRL": { lat: -33.448, lon: -70.669 },
-    "CBM 360 TIV - Argentina SA": { lat: -34.608, lon: -58.561 },
-    "CBM 360 TIV – Paraguay SRL": { lat: -25.296, lon: -57.668 }
+  // Helper function to get coordinates for an office (same logic as OfficeMarker)
+  const getOfficeCoordinates = (office: RemoteOfficeData): { coords: [number, number] | null; source: string } => {
+    // Priority 1: Hardcoded coordinates
+    const exact = officeNameToCoords[office.office_name];
+    if (exact) {
+      return { coords: [exact.lon, exact.lat], source: 'hardcoded' };
+    }
+    
+    // Priority 2: Database coordinates
+    if (office.longitude != null && office.latitude != null && 
+        office.longitude !== 0 && office.latitude !== 0) {
+      return { coords: [office.longitude, office.latitude], source: 'database' };
+    }
+    
+    // Priority 3: Country-level fallback
+    const countryLon = getLongitudeForCountry(office.country);
+    const countryLat = getLatitudeForCountry(office.country);
+    if (countryLon !== 0 && countryLat !== 0) {
+      return { coords: [countryLon, countryLat], source: 'country-fallback' };
+    }
+    
+    return { coords: null, source: 'none' };
   };
+
+  // Identify offices with missing or invalid coordinates
+  const officesWithInvalidCoords = useMemo(() => {
+    return allOffices.filter(office => {
+      const { coords } = getOfficeCoordinates(office);
+      return coords === null || (coords[0] === 0 && coords[1] === 0);
+    });
+  }, [allOffices]);
+
+  // Offices with only country-level coordinates (less accurate)
+  const officesWithCountryFallback = useMemo(() => {
+    return allOffices.filter(office => {
+      const { source } = getOfficeCoordinates(office);
+      return source === 'country-fallback';
+    });
+  }, [allOffices]);
+
+  // Log missing offices for debugging
+  React.useEffect(() => {
+    if (officesWithInvalidCoords.length > 0) {
+      console.warn('⚠️ Offices without valid map markers:', officesWithInvalidCoords.map(o => ({
+        office_name: o.office_name,
+        country: o.country,
+        address: o.address
+      })));
+    }
+    if (officesWithCountryFallback.length > 0) {
+      console.info('ℹ️ Offices using country-level coordinates (may need better geocoding):', 
+        officesWithCountryFallback.map(o => ({
+          office_name: o.office_name,
+          country: o.country,
+          address: o.address
+        }))
+      );
+    }
+  }, [officesWithInvalidCoords, officesWithCountryFallback]);
 
   // Identify Regional Head Office entries (three HQs)
   const regionalHQOfficeNames = useMemo(() => {
@@ -363,7 +367,7 @@ const GlobalMap: React.FC<GlobalMapProps> = ({ className = "" }) => {
     };
   }, [allOffices, officeGroups]);
 
-  const handleOfficeClick = (office: OfficeData) => {
+  const handleOfficeClick = (office: RemoteOfficeData) => {
     setSelectedOffice(office);
   };
 
@@ -388,6 +392,55 @@ const GlobalMap: React.FC<GlobalMapProps> = ({ className = "" }) => {
 
   return (
     <div className={`relative ${className}`}>
+      {/* Missing Offices Warning */}
+      {(officesWithInvalidCoords.length > 0 || officesWithCountryFallback.length > 0) && (
+        <div className="absolute top-2 right-2 sm:top-6 sm:right-6 z-20 bg-yellow-50 border border-yellow-200 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-lg max-w-xs sm:max-w-sm">
+          <div className="flex items-start gap-2 sm:gap-3">
+            <div className="flex-shrink-0 mt-0.5">
+              <div className="w-5 h-5 sm:w-6 sm:h-6 bg-yellow-400 rounded-full flex items-center justify-center">
+                <span className="text-yellow-900 text-xs sm:text-sm font-bold">
+                  {officesWithInvalidCoords.length + officesWithCountryFallback.length}
+                </span>
+              </div>
+            </div>
+            <div className="flex-1 min-w-0">
+              <h4 className="text-xs sm:text-sm font-semibold text-yellow-900 mb-1">
+                Map Coverage Notice
+              </h4>
+              {officesWithInvalidCoords.length > 0 && (
+                <p className="text-xs text-yellow-800 mb-1">
+                  {officesWithInvalidCoords.length} {officesWithInvalidCoords.length === 1 ? 'office' : 'offices'} missing from map
+                </p>
+              )}
+              {officesWithCountryFallback.length > 0 && (
+                <p className="text-xs text-yellow-800">
+                  {officesWithCountryFallback.length} {officesWithCountryFallback.length === 1 ? 'office' : 'offices'} using approximate location
+                </p>
+              )}
+              <details className="mt-2 text-xs">
+                <summary className="cursor-pointer text-yellow-700 hover:text-yellow-900 font-medium">
+                  View Details
+                </summary>
+                <div className="mt-2 space-y-1 max-h-32 overflow-y-auto">
+                  {officesWithInvalidCoords.map((office, idx) => (
+                    <div key={idx} className="text-yellow-700 bg-yellow-100/50 p-1.5 rounded">
+                      <div className="font-medium">{office.office_name}</div>
+                      <div className="text-xs opacity-75">{office.country}</div>
+                    </div>
+                  ))}
+                  {officesWithCountryFallback.map((office, idx) => (
+                    <div key={idx} className="text-yellow-700 bg-yellow-100/50 p-1.5 rounded">
+                      <div className="font-medium">{office.office_name}</div>
+                      <div className="text-xs opacity-75">{office.country} • Approximate</div>
+                    </div>
+                  ))}
+                </div>
+              </details>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Legend */}
       <div className="absolute top-2 left-2 sm:top-6 sm:left-6 z-10 bg-white/95 backdrop-blur-sm rounded-lg sm:rounded-2xl p-3 sm:p-6 shadow-2xl border border-gray-200/50 max-w-[calc(100vw-1rem)] sm:max-w-none">
         <h3 className="text-sm sm:text-xl font-bold text-gray-900 mb-2 sm:mb-5 flex items-center gap-1 sm:gap-2">
@@ -483,7 +536,13 @@ const GlobalMap: React.FC<GlobalMapProps> = ({ className = "" }) => {
               }}
             </Geographies>
             
-            {allOffices.map((office, index) => (
+            {allOffices
+              .filter(office => {
+                // Only show offices with valid coordinates (not [0, 0])
+                const { coords } = getOfficeCoordinates(office);
+                return coords !== null && !(coords[0] === 0 && coords[1] === 0);
+              })
+              .map((office, index) => (
               <OfficeMarker
                 key={index}
                 office={office}

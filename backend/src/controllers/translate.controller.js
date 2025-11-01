@@ -1,6 +1,7 @@
 'use strict';
 
 const Section = require('../models/Section');
+const IndustryStat = require('../models/IndustryStat');
 const { ApiError } = require('../utils/error');
 const { translateText } = require('../services/translation');
 const translations = require('../transalations/static.transalations.js');
@@ -51,14 +52,64 @@ async function getStaticTranslations(req, res, next) {
       throw new ApiError(404, 'Translations not found for the specified language');
     }
 
-    res.json({
-      success: true,
-      data: {
-        language: lang,
-        translations: staticTexts,
-        timestamp: new Date().toISOString()
-      }
-    });
+    // Fetch industry stats from database
+    try {
+      const stats = await IndustryStat.find({ isActive: true }).sort({ order: 1, createdAt: -1 });
+      const statsObj = stats.map(stat => {
+        const statObj = stat.toObject();
+        
+        // Handle language translation for stats
+        if (lang !== 'en') {
+          let translations = null;
+          
+          if (stat.translations instanceof Map) {
+            translations = stat.translations.get(lang);
+          } else if (statObj.translations && typeof statObj.translations === 'object') {
+            translations = statObj.translations[lang];
+          }
+
+          if (translations) {
+            return {
+              number: statObj.number,
+              label: translations.label || statObj.label,
+              description: translations.description || statObj.description
+            };
+          }
+        }
+        
+        return {
+          number: statObj.number,
+          label: statObj.label,
+          description: statObj.description
+        };
+      });
+
+      // Merge industry stats into translations object
+      const result = {
+        ...staticTexts,
+        industryStats: statsObj.length > 0 ? statsObj : (staticTexts.industryStats || [])
+      };
+
+      res.json({
+        success: true,
+        data: {
+          language: lang,
+          translations: result,
+          timestamp: new Date().toISOString()
+        }
+      });
+    } catch (statsError) {
+      console.error('Error fetching industry stats:', statsError);
+      // Fallback to static translations if DB fetch fails
+      res.json({
+        success: true,
+        data: {
+          language: lang,
+          translations: staticTexts,
+          timestamp: new Date().toISOString()
+        }
+      });
+    }
   } catch (err) {
     next(err);
   }
