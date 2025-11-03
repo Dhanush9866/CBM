@@ -34,6 +34,8 @@ function createApp() {
       "https://cbm-ky2n.onrender.com",
       "https://cbm-admin-7dbj.onrender.com",
       "https://api.cbm360tiv.com",
+    "https://cbm360tiv.com",
+    "https://admin.cbm360tiv.com".
       // Add your production frontend URL here
       // "https://yourdomain.com",
       // "https://www.yourdomain.com",
