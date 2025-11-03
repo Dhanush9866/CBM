@@ -193,14 +193,35 @@ async function getCareerById(req, res) {
 
     const careerObj = career.toObject();
 
+    // Handle language translation - support both Map and Object formats
     if (lang && lang !== 'en' && ['fr', 'pt', 'es', 'ru', 'zh'].includes(lang)) {
-      const translations = career.translations?.get(lang);
+      let translations = null;
+      
+      // Handle Map format
+      if (career.translations instanceof Map) {
+        translations = career.translations.get(lang);
+      } 
+      // Handle Object format (from toObject conversion)
+      else if (careerObj.translations && typeof careerObj.translations === 'object') {
+        translations = careerObj.translations[lang];
+      }
+
       if (translations) {
         return res.json({
           success: true,
           data: {
             ...careerObj,
-            ...translations,
+            title: translations.title || careerObj.title,
+            description: translations.description || careerObj.description,
+            department: translations.department || careerObj.department,
+            location: translations.location || careerObj.location,
+            type: translations.type || careerObj.type,
+            level: translations.level || careerObj.level,
+            workArrangement: translations.workArrangement || careerObj.workArrangement,
+            responsibilities: translations.responsibilities || careerObj.responsibilities,
+            requirements: translations.requirements || careerObj.requirements,
+            benefits: translations.benefits || careerObj.benefits,
+            tags: translations.tags || careerObj.tags,
             translations: careerObj.translations
           }
         });

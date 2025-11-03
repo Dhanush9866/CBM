@@ -8,7 +8,8 @@ const {
   getContactOfficeById,
   updateContactOffice,
   deleteContactOffice,
-  getContactOfficesGrouped
+  getContactOfficesGrouped,
+  geocodeContactOffice
 } = require('../controllers/contactOffice.controller');
 const multer = require('multer');
 
@@ -38,6 +39,7 @@ router.get('/admin', getContactOffices);
 router.get('/admin/:id', getContactOfficeById);
 router.post('/admin', upload.single('image'), createContactOffice);
 router.put('/admin/:id', upload.single('image'), updateContactOffice);
+router.post('/admin/:id/geocode', geocodeContactOffice);
 router.delete('/admin/:id', deleteContactOffice);
 
 module.exports = router;

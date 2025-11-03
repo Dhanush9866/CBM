@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { ContactOffice, listContactOffices, createContactOffice, updateContactOffice, deleteContactOffice } from '@/services/contactOffices';
+import { IndustryStat, listIndustryStats, createIndustryStat, updateIndustryStat, deleteIndustryStat } from '@/services/industryStats';
 
 const emptyContactOffice: ContactOffice = {
   region_name: '',
@@ -14,6 +15,16 @@ const emptyContactOffice: ContactOffice = {
   image_url: '',
   region_order: 0,
   office_order: 0,
+  latitude: null,
+  longitude: null,
+};
+
+const emptyIndustryStat: IndustryStat = {
+  number: '',
+  label: '',
+  description: '',
+  order: 0,
+  isActive: true,
 };
 
 export default function Contacts() {
@@ -30,6 +41,14 @@ export default function Contacts() {
   const [selectedCountry, setSelectedCountry] = useState('');
   const [selectedRegion, setSelectedRegion] = useState('');
   const [selectedLabFacility, setSelectedLabFacility] = useState('');
+  
+  // Industry Stats states
+  const [industryStats, setIndustryStats] = useState<IndustryStat[]>([]);
+  const [statsLoading, setStatsLoading] = useState(true);
+  const [statsError, setStatsError] = useState<string | null>(null);
+  const [editingStat, setEditingStat] = useState<IndustryStat | null>(null);
+  const [statForm, setStatForm] = useState<IndustryStat>(emptyIndustryStat);
+  const [activeTab, setActiveTab] = useState<'offices' | 'stats'>('offices');
 
   const load = async () => {
     setLoading(true);
@@ -44,7 +63,23 @@ export default function Contacts() {
     }
   };
 
-  useEffect(() => { load(); }, []);
+  const loadStats = async () => {
+    setStatsLoading(true);
+    setStatsError(null);
+    try {
+      const data = await listIndustryStats();
+      setIndustryStats(data);
+    } catch (err: any) {
+      setStatsError(err?.response?.data?.message || err?.message || 'Failed to load industry stats');
+    } finally {
+      setStatsLoading(false);
+    }
+  };
+
+  useEffect(() => { 
+    load(); 
+    loadStats();
+  }, []);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -79,6 +114,8 @@ export default function Contacts() {
       image_url: item.image_url,
       region_order: item.region_order,
       office_order: item.office_order,
+      latitude: item.latitude ?? null,
+      longitude: item.longitude ?? null,
     });
     setImagePreview(item.image_url || '');
     setImageFile(null);
@@ -146,16 +183,239 @@ export default function Contacts() {
     setSelectedLabFacility('');
   };
 
+  // Industry Stats handlers
+  const handleStatSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      if (editingStat && editingStat._id) {
+        await updateIndustryStat(editingStat._id, statForm);
+      } else {
+        await createIndustryStat(statForm);
+      }
+      setStatForm(emptyIndustryStat);
+      setEditingStat(null);
+      await loadStats();
+    } catch (err: any) {
+      alert(err?.response?.data?.message || err?.message || 'Save failed');
+    }
+  };
+
+  const startEditStat = (stat: IndustryStat) => {
+    setEditingStat(stat);
+    setStatForm({
+      number: stat.number,
+      label: stat.label,
+      description: stat.description,
+      order: stat.order,
+      isActive: stat.isActive,
+    });
+  };
+
+  const removeStat = async (stat: IndustryStat) => {
+    if (!stat._id) return;
+    if (!confirm('Delete this industry stat?')) return;
+    try {
+      await deleteIndustryStat(stat._id);
+      await loadStats();
+    } catch (err: any) {
+      alert(err?.response?.data?.message || err?.message || 'Delete failed');
+    }
+  };
+
   return (
     <div>
       <div style={{ marginBottom: '24px' }}>
         <h1 style={{ fontSize: '28px', fontWeight: '700', margin: '0 0 8px 0', color: '#111827' }}>
-          Contact Offices
+          Contacts & Stats
         </h1>
         <p style={{ color: '#6b7280', margin: 0 }}>
-          Manage global contact offices and their information.
+          Manage global contact offices and industry statistics.
         </p>
       </div>
+
+      {/* Tabs */}
+      <div style={{ display: 'flex', gap: '8px', marginBottom: '24px', borderBottom: '1px solid #e5e7eb' }}>
+        <button
+          onClick={() => setActiveTab('offices')}
+          style={{
+            padding: '12px 24px',
+            border: 'none',
+            borderBottom: activeTab === 'offices' ? '2px solid #111827' : '2px solid transparent',
+            backgroundColor: 'transparent',
+            cursor: 'pointer',
+            fontWeight: activeTab === 'offices' ? '600' : '400',
+            color: activeTab === 'offices' ? '#111827' : '#6b7280'
+          }}
+        >
+          Contact Offices
+        </button>
+        <button
+          onClick={() => setActiveTab('stats')}
+          style={{
+            padding: '12px 24px',
+            border: 'none',
+            borderBottom: activeTab === 'stats' ? '2px solid #111827' : '2px solid transparent',
+            backgroundColor: 'transparent',
+            cursor: 'pointer',
+            fontWeight: activeTab === 'stats' ? '600' : '400',
+            color: activeTab === 'stats' ? '#111827' : '#6b7280'
+          }}
+        >
+          Industry Stats
+        </button>
+      </div>
+
+      {/* Industry Stats Tab */}
+      {activeTab === 'stats' && (
+        <div>
+          {/* Add/Edit Form */}
+          <div style={{ border: '1px solid #e5e7eb', borderRadius: 8, padding: 16, marginBottom: 24 }}>
+            <h2 style={{ marginBottom: 12, fontWeight: 600 }}>{editingStat ? 'Edit Industry Stat' : 'Add Industry Stat'}</h2>
+            <form onSubmit={handleStatSubmit} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+              <div>
+                <label>Number *</label>
+                <input 
+                  value={statForm.number} 
+                  onChange={(e) => setStatForm({ ...statForm, number: e.target.value })} 
+                  placeholder="e.g., 72+, 7,000+"
+                  required 
+                  style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 6 }} 
+                />
+              </div>
+              <div>
+                <label>Order</label>
+                <input 
+                  type="number"
+                  value={statForm.order} 
+                  onChange={(e) => setStatForm({ ...statForm, order: parseInt(e.target.value) || 0 })} 
+                  style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 6 }} 
+                />
+              </div>
+              <div style={{ gridColumn: '1 / -1' }}>
+                <label>Label *</label>
+                <input 
+                  value={statForm.label} 
+                  onChange={(e) => setStatForm({ ...statForm, label: e.target.value })} 
+                  placeholder="e.g., Countries Served"
+                  required 
+                  style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 6 }} 
+                />
+              </div>
+              <div style={{ gridColumn: '1 / -1' }}>
+                <label>Description *</label>
+                <textarea 
+                  value={statForm.description} 
+                  onChange={(e) => setStatForm({ ...statForm, description: e.target.value })} 
+                  placeholder="e.g., Global presence with local expertise"
+                  rows={2} 
+                  required 
+                  style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 6 }} 
+                />
+              </div>
+              <div>
+                <label>
+                  <input 
+                    type="checkbox" 
+                    checked={!!statForm.isActive} 
+                    onChange={(e) => setStatForm({ ...statForm, isActive: e.target.checked })} 
+                  /> 
+                  Active
+                </label>
+              </div>
+              <div style={{ alignSelf: 'end', justifySelf: 'end', gridColumn: '1 / -1' }}>
+                <button 
+                  type="button" 
+                  onClick={() => { 
+                    setEditingStat(null); 
+                    setStatForm(emptyIndustryStat); 
+                  }} 
+                  style={{ marginRight: 8, padding: '8px 12px', borderRadius: 6, border: '1px solid #d1d5db' }}
+                >
+                  Clear
+                </button>
+                <button 
+                  type="submit" 
+                  style={{ padding: '8px 12px', borderRadius: 6, background: '#111827', color: 'white' }}
+                >
+                  {editingStat ? 'Update' : 'Create'}
+                </button>
+              </div>
+            </form>
+          </div>
+
+          {/* Industry Stats Table */}
+          {statsLoading ? (
+            <div>Loading...</div>
+          ) : statsError ? (
+            <div style={{ color: 'crimson' }}>{statsError}</div>
+          ) : (
+            <div style={{ border: '1px solid #e5e7eb', borderRadius: 8 }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <thead>
+                  <tr>
+                    {['Number', 'Label', 'Description', 'Order', 'Status', 'Actions'].map(h => (
+                      <th key={h} style={{ textAlign: 'left', padding: 12, borderBottom: '1px solid #e5e7eb' }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {industryStats.length === 0 ? (
+                    <tr>
+                      <td colSpan={6} style={{ 
+                        padding: 40, 
+                        textAlign: 'center', 
+                        color: '#6b7280',
+                        fontStyle: 'italic'
+                      }}>
+                        No industry stats found
+                      </td>
+                    </tr>
+                  ) : (
+                    industryStats.map(stat => (
+                      <tr key={stat._id}>
+                        <td style={{ padding: 12, borderBottom: '1px solid #f3f4f6', fontWeight: '600' }}>{stat.number}</td>
+                        <td style={{ padding: 12, borderBottom: '1px solid #f3f4f6' }}>{stat.label}</td>
+                        <td style={{ padding: 12, borderBottom: '1px solid #f3f4f6' }}>{stat.description}</td>
+                        <td style={{ padding: 12, borderBottom: '1px solid #f3f4f6' }}>{stat.order}</td>
+                        <td style={{ padding: 12, borderBottom: '1px solid #f3f4f6' }}>
+                          <span style={{
+                            padding: '4px 8px',
+                            borderRadius: '4px',
+                            fontSize: '12px',
+                            fontWeight: '500',
+                            backgroundColor: stat.isActive ? '#10b98120' : '#6b728020',
+                            color: stat.isActive ? '#10b981' : '#6b7280'
+                          }}>
+                            {stat.isActive ? 'Active' : 'Inactive'}
+                          </span>
+                        </td>
+                        <td style={{ padding: 12, borderBottom: '1px solid #f3f4f6' }}>
+                          <button 
+                            onClick={() => startEditStat(stat)} 
+                            style={{ marginRight: 8, padding: '6px 10px', borderRadius: 6, border: '1px solid #d1d5db' }}
+                          >
+                            Edit
+                          </button>
+                          <button 
+                            onClick={() => removeStat(stat)} 
+                            style={{ padding: '6px 10px', borderRadius: 6, border: '1px solid #d1d5db' }}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Contact Offices Tab */}
+      {activeTab === 'offices' && (
+        <>
 
       {/* Stats Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '32px' }}>
@@ -232,6 +492,34 @@ export default function Contacts() {
               onChange={(e) => setForm({ ...form, address: e.target.value })} 
               rows={2} 
               required 
+              style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 6 }} 
+            />
+          </div>
+          <div>
+            <label>
+              Latitude (optional)
+            </label>
+            <input 
+              type="number"
+              step="any"
+              value={form.latitude ?? ''} 
+              onChange={(e) => setForm({ ...form, latitude: e.target.value ? parseFloat(e.target.value) : null })} 
+              placeholder="e.g., 24.7136"
+              style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 6 }} 
+            />
+          </div>
+          <div>
+            <label>
+              Longitude (optional)
+              <span style={{ marginLeft: 8, fontSize: '12px', color: '#6b7280', fontWeight: 'normal' }}>
+              </span>
+            </label>
+            <input 
+              type="number"
+              step="any"
+              value={form.longitude ?? ''} 
+              onChange={(e) => setForm({ ...form, longitude: e.target.value ? parseFloat(e.target.value) : null })} 
+              placeholder="e.g., 46.6753"
               style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 6 }} 
             />
           </div>
@@ -563,6 +851,8 @@ export default function Contacts() {
             </tbody>
           </table>
         </div>
+      )}
+        </>
       )}
     </div>
   );

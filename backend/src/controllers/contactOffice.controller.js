@@ -27,7 +27,9 @@ async function createContactOffice(req, res, next) {
       notes = '',
       image_url = '',
       region_order = 0,
-      office_order = 0
+      office_order = 0,
+      latitude,
+      longitude
     } = req.body;
 
     // Validate required fields
@@ -70,6 +72,14 @@ async function createContactOffice(req, res, next) {
       translations: {}
     };
 
+    // Handle manual coordinates if provided
+    if (latitude !== undefined && latitude !== '' && latitude !== null) {
+      officeData.latitude = parseFloat(latitude);
+    }
+    if (longitude !== undefined && longitude !== '' && longitude !== null) {
+      officeData.longitude = parseFloat(longitude);
+    }
+
     // Translate fields into other languages
     const TARGET_LANGUAGES = SUPPORTED.filter(l => l !== 'en');
     for (const lang of TARGET_LANGUAGES) {
@@ -100,6 +110,7 @@ async function createContactOffice(req, res, next) {
 
     const contactOffice = await ContactOffice.create(officeData);
     console.log(`✅ Contact office created successfully: ID ${contactOffice._id}`);
+    console.log(`📍 Coordinates: [${contactOffice.latitude}, ${contactOffice.longitude}]`);
 
     res.status(201).json({ success: true, data: contactOffice });
 
@@ -166,7 +177,9 @@ async function updateContactOffice(req, res, next) {
       notes,
       image_url,
       region_order,
-      office_order
+      office_order,
+      latitude,
+      longitude
     } = req.body;
 
     if (!region_name || !region || !country || !office_name || !address || !phone) {
@@ -187,6 +200,14 @@ async function updateContactOffice(req, res, next) {
       office_order,
       translations: existingOffice.translations || {}
     };
+
+    // Handle manual coordinates if provided (allow null to clear coordinates)
+    if (latitude !== undefined) {
+      updates.latitude = latitude === '' || latitude === null ? null : parseFloat(latitude);
+    }
+    if (longitude !== undefined) {
+      updates.longitude = longitude === '' || longitude === null ? null : parseFloat(longitude);
+    }
 
     // Handle image upload
     if (req.file) {
@@ -235,13 +256,134 @@ async function updateContactOffice(req, res, next) {
       }
     }
 
-    const updatedOffice = await ContactOffice.findByIdAndUpdate(id, updates, { new: true });
+    // Use $set to ensure geocoding hook runs properly
+    const updatePayload = { $set: updates };
+    
+    const updatedOffice = await ContactOffice.findByIdAndUpdate(id, updatePayload, { 
+      new: true, 
+      runValidators: true 
+    });
+    
     console.log(`✅ Contact office updated successfully: ID ${updatedOffice._id}`);
+    console.log(`📍 Coordinates: [${updatedOffice.latitude}, ${updatedOffice.longitude}]`);
 
     res.json({ success: true, data: updatedOffice });
 
   } catch (err) {
     console.error('❌ Error updating contact office:', err);
+    next(err);
+  }
+}
+
+/**
+ * Manually trigger geocoding for an existing office
+ */
+async function geocodeContactOffice(req, res, next) {
+  try {
+    const { id } = req.params;
+    const office = await ContactOffice.findById(id);
+    
+    if (!office) {
+      throw new ApiError(404, 'Contact office not found');
+    }
+
+    if (!office.address) {
+      throw new ApiError(400, 'Office address is required for geocoding');
+    }
+
+    console.log(`🔍 Manually geocoding office: ${office.office_name} (${office.address})`);
+    
+    // Use the same geocoding logic as the model
+    const fetch = require('node-fetch');
+    
+    const geocodeAddressWithFallback = async (address) => {
+      if (!address) return null;
+      
+      // Generate alternative address formats for fallback
+      const addressVariants = [];
+      
+      // 1. Original address
+      addressVariants.push(address);
+      
+      // 2. Remove Plus Codes (format: G9RP+PGF or similar patterns)
+      const withoutPlusCode = address.replace(/[A-Z0-9]{2,}\+[A-Z0-9]{2,}/gi, '').trim();
+      if (withoutPlusCode !== address && withoutPlusCode) {
+        addressVariants.push(withoutPlusCode);
+      }
+      
+      // 3. Extract city and country
+      const parts = address.split(',').map(p => p.trim()).filter(p => p);
+      if (parts.length >= 2) {
+        const cityAndCountry = parts.slice(0, -1).join(', ');
+        if (cityAndCountry !== address && cityAndCountry !== withoutPlusCode) {
+          addressVariants.push(cityAndCountry);
+        }
+        // Just city (first part)
+        const justCity = parts[0];
+        if (justCity && justCity.length > 2 && justCity !== address) {
+          addressVariants.push(justCity);
+        }
+      }
+      
+      // Try each variant
+      for (let i = 0; i < addressVariants.length; i++) {
+        const variant = addressVariants[i].replace(/\s+/g, ' ').trim();
+        if (!variant) continue;
+        
+        try {
+          if (i > 0) {
+            await new Promise(resolve => setTimeout(resolve, 1100));
+          }
+          
+          const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(variant)}&limit=1&addressdetails=1`;
+          const res = await fetch(url, {
+            headers: {
+              'User-Agent': 'CBM-Backend/1.0 (contact@cbm360tiv.com)'
+            }
+          });
+          
+          if (!res.ok) continue;
+          
+          const data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+            const first = data[0];
+            const lat = parseFloat(first.lat);
+            const lon = parseFloat(first.lon);
+            if (Number.isFinite(lat) && Number.isFinite(lon)) {
+              const usedVariant = i === 0 ? 'original' : `variant ${i + 1}`;
+              console.log(`✅ Geocoded successfully using ${usedVariant}: "${variant}" → [${lat}, ${lon}]`);
+              return { latitude: lat, longitude: lon };
+            }
+          }
+        } catch (err) {
+          console.error(`Geocoding error for variant ${i + 1}: ${err.message}`);
+          continue;
+        }
+      }
+      
+      return null;
+    };
+
+    const result = await geocodeAddressWithFallback(office.address);
+    
+    if (result) {
+      office.latitude = result.latitude;
+      office.longitude = result.longitude;
+      await office.save();
+      
+      console.log(`✅ Coordinates set: [${result.latitude}, ${result.longitude}]`);
+      res.json({ 
+        success: true, 
+        data: office,
+        message: 'Coordinates geocoded successfully'
+      });
+    } else {
+      res.status(400).json({ 
+        success: false, 
+        message: 'Geocoding failed. Please check the address format.' 
+      });
+    }
+  } catch (err) {
     next(err);
   }
 }
@@ -286,5 +428,6 @@ module.exports = {
   getContactOfficeById,
   updateContactOffice,
   deleteContactOffice,
-  getContactOfficesGrouped
+  getContactOfficesGrouped,
+  geocodeContactOffice
 };

@@ -14,6 +14,8 @@ export interface ContactOffice {
   image_url: string;
   region_order: number;
   office_order: number;
+  latitude?: number | null;
+  longitude?: number | null;
   createdAt?: string;
   updatedAt?: string;
 }

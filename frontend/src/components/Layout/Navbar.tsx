@@ -161,7 +161,7 @@ export function Navbar() {
                 </Link>
               </Button> */}
               <Button className="btn-primary" asChild>
-                <Link to="/contact#contact-form">
+                <Link to="/contact">
                   {translations?.navbar.contactUs || 'Get Quote'}
                 </Link>
               </Button>

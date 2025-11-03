@@ -22,8 +22,12 @@ export default function CareerDetail() {
         if (!id) {
           throw new Error('Missing career id');
         }
+        // Force refetch by including currentLanguage in the request
         const data = await getCareerById(id, currentLanguage);
-        if (isMounted) setJob(data);
+        if (isMounted) {
+          setJob(data);
+          setError(null);
+        }
       } catch (err: any) {
         if (isMounted) setError(err?.message || 'Failed to load career');
       } finally {
@@ -116,7 +120,7 @@ export default function CareerDetail() {
           </div>
 
           <div className="prose prose-neutral max-w-none mt-6">
-            <h2 className="text-xl font-semibold mb-2">Job Description</h2>
+            {/* <h2 className="text-xl font-semibold mb-2">Job Description</h2> */}
             {renderFormattedDescription(job.description)}
 
             {job.responsibilities && job.responsibilities.length > 0 && (
