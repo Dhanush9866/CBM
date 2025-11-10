@@ -337,12 +337,12 @@ export default function Contact() {
                         <SelectValue placeholder={translations?.pages?.contact?.placeholders?.selectService || 'Select Service'} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="testing">{translations?.pages?.contact?.serviceOptions?.testing || 'Testing & Inspection'}</SelectItem>
-                        <SelectItem value="certification">{translations?.pages?.contact?.serviceOptions?.certification || 'Certification Services'}</SelectItem>
-                        <SelectItem value="consulting">{translations?.pages?.contact?.serviceOptions?.consulting || 'Consulting & Advisory'}</SelectItem>
+                        <SelectItem value="testing">{translations?.pages?.contact?.serviceOptions?.testing || 'Testing & Certification'}</SelectItem>
+                        <SelectItem value="certification">{translations?.pages?.contact?.serviceOptions?.certification || 'Inspection Services'}</SelectItem>
+                        <SelectItem value="consulting">{translations?.pages?.contact?.serviceOptions?.consulting || 'Audit & Assessment'}</SelectItem>
                         <SelectItem value="training">{translations?.pages?.contact?.serviceOptions?.training || 'Training & Education'}</SelectItem>
                         <SelectItem value="digital">{translations?.pages?.contact?.serviceOptions?.digital || 'Digital Solutions'}</SelectItem>
-                        <SelectItem value="other">{translations?.pages?.contact?.serviceOptions?.other || 'Other Services'}</SelectItem>
+                        <SelectItem value="other">{translations?.pages?.contact?.serviceOptions?.other || 'Consulting Services'}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

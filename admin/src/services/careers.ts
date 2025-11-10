@@ -18,7 +18,8 @@ export async function listCareers() {
 
 export async function createCareer(payload: Career) {
   const { data } = await api.post('/api/careers', payload);
-  return data.data as Career;
+  // Return the full response so callers can access message/linkedinPostId
+  return data as { success: boolean; data: Career; message?: string; linkedinPostId?: string; linkedinError?: string };
 }
 
 export async function updateCareer(id: string, payload: Partial<Career>) {

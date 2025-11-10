@@ -40,22 +40,14 @@ export default function Inspection() {
     let isMounted = true;
     const load = async () => {
       try {
-        console.log('Loading inspection sections for language:', currentLanguage);
         setLoading(true);
         setError(null);
         const page = await getPageWithSections('inspection', undefined, currentLanguage);
-        console.log('Received page data:', page);
         if (isMounted) {
           setSections(page.sections || []);
           setPageData(page);
         }
       } catch (e) {
-        console.error('Error loading inspection sections:', e);
-        console.error('Error details:', {
-          message: e instanceof Error ? e.message : 'Unknown error',
-          stack: e instanceof Error ? e.stack : undefined,
-          response: (e as any)?.response?.data
-        });
         if (isMounted) setError('Failed to load inspection sections');
       } finally {
         if (isMounted) setLoading(false);

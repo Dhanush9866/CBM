@@ -36,9 +36,8 @@ export function Navbar() {
   const handleLanguageChange = async (language: typeof languages[0]) => {
     try {
       await changeLanguage(language.code);
-      console.log(`Language changed to: ${language.name} (${language.code})`);
     } catch (err) {
-      console.error('Failed to change language:', err);
+      // Silently ignore language change errors
     }
   };
 

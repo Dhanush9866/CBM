@@ -9,6 +9,15 @@ import { MapPin, Clock, Briefcase, ArrowLeft } from 'lucide-react';
 export default function CareerDetail() {
   const { id } = useParams();
   const { currentLanguage, translations } = useTranslation();
+  const formatDate = (dateString: string) => {
+    if (!dateString) return '';
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      timeZone: 'UTC',
+    });
+  };
   const [job, setJob] = useState<CareerDto | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -107,6 +116,10 @@ export default function CareerDetail() {
                 <div className="flex items-center space-x-2">
                   <Clock className="h-4 w-4" />
                   <span>{job.type} • {job.level}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Clock className="h-4 w-4" />
+                  <span>Posted {formatDate(job.postedAt)}</span>
                 </div>
               </div>
             </div>

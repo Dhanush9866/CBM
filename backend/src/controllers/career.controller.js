@@ -4,6 +4,7 @@ const emailService = require('../services/email');
 const { logger } = require('../setup/logger');
 const Career = require('../models/Career');
 const { translateText } = require('../services/translation');
+const linkedinService = require('../services/linkedin');
 
 /**
  * Submit a job application
@@ -299,7 +300,45 @@ async function createCareer(req, res) {
     }
 
     const created = await Career.create(payload);
-    res.status(201).json({ success: true, data: created });
+    
+    // Post to LinkedIn after successful job creation
+    let linkedinPostId = null;
+    let linkedinError = null;
+    
+    try {
+      const linkedinResult = await linkedinService.postJobToLinkedIn({
+        title: created.title,
+        description: created.description,
+        applicationUrl: created.applicationUrl,
+        applyLink: created.applicationUrl // Support both field names
+      });
+      
+      linkedinPostId = linkedinResult.postId;
+      logger.info('Job posted to LinkedIn successfully', {
+        careerId: created._id,
+        linkedinPostId: linkedinPostId
+      });
+    } catch (linkedinErr) {
+      // Log error but don't fail the job creation
+      linkedinError = linkedinErr.message;
+      logger.error('Failed to post job to LinkedIn (job still created)', {
+        careerId: created._id,
+        error: linkedinError
+      });
+    }
+
+    // Return success response with LinkedIn posting status
+    const response = {
+      success: true,
+      data: created,
+      message: linkedinPostId 
+        ? 'Job created successfully and posted to LinkedIn'
+        : 'Job created successfully (LinkedIn posting failed)',
+      ...(linkedinPostId && { linkedinPostId: linkedinPostId }),
+      ...(linkedinError && { linkedinError: linkedinError })
+    };
+
+    res.status(201).json(response);
 
   } catch (error) {
     logger.error('Error creating career:', error);

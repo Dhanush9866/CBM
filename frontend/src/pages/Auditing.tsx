@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getPageWithSections, SectionDto } from '@/utils/api';
 import { useTranslation } from '@/contexts/TranslationContext';
+import LoadingAnimation from '@/components/Common/LoadingAnimation';
 
 export default function Auditing() {
   const navigate = useNavigate();
@@ -38,22 +39,14 @@ export default function Auditing() {
     let isMounted = true;
     const load = async () => {
       try {
-        console.log('Loading auditing sections for language:', currentLanguage);
         setLoading(true);
         setError(null);
         const page = await getPageWithSections('auditing', undefined, currentLanguage);
-        console.log('Received page data:', page);
         if (isMounted) {
           setSections(page.sections || []);
           setPageData(page);
         }
       } catch (e) {
-        console.error('Error loading auditing sections:', e);
-        console.error('Error details:', {
-          message: e instanceof Error ? e.message : 'Unknown error',
-          stack: e instanceof Error ? e.stack : undefined,
-          response: (e as any)?.response?.data
-        });
         if (isMounted) setError('Failed to load auditing sections');
       } finally {
         if (isMounted) setLoading(false);
@@ -85,11 +78,9 @@ export default function Auditing() {
 
           <div className="mt-6 text-center">
             {loading ? (
-              <div className="animate-pulse">
-                <div className="h-10 bg-gray-200 rounded mb-3 mx-auto max-w-md"></div>
-                <div className="h-6 bg-gray-200 rounded mb-2 mx-auto max-w-4xl"></div>
-                <div className="h-6 bg-gray-200 rounded mb-2 mx-auto max-w-4xl"></div>
-                <div className="h-6 bg-gray-200 rounded mx-auto max-w-3xl"></div>
+              <div className="flex flex-col items-center">
+                <LoadingAnimation size="md" text="Loading" />
+                <p className="text-muted-foreground mt-4">Loading page...</p>
               </div>
             ) : (
               <>
@@ -108,9 +99,6 @@ export default function Auditing() {
       <section className="section pt-6">
         <div className="container-responsive">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {loading && (
-              <div className="col-span-full text-center text-muted-foreground">Loading...</div>
-            )}
             {error && !loading && (
               <div className="col-span-full text-center text-destructive">{error}</div>
             )}

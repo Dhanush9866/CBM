@@ -1535,7 +1535,6 @@ class ImageService {
         throw new Error('Failed to fetch images');
       }
     } catch (error) {
-      console.error('Error fetching images:', error);
       return [];
     }
   }
@@ -1551,7 +1550,7 @@ class ImageService {
         return images;
       }
     } catch (error) {
-      console.log('API not available, using fallback images');
+      // Fallback handled below
     }
     
     // Return fallback images if API is not available
@@ -1583,7 +1582,7 @@ class ImageService {
         return images;
       }
     } catch (error) {
-      console.log(`API not available for ${subService}, trying fallback images`);
+      // Fallback handled below
     }
     
     // Return fallback images if available
@@ -1605,7 +1604,7 @@ class ImageService {
         return images;
       }
     } catch (error) {
-      console.log(`API not available for CBM ${subService}, trying fallback images`);
+      // Fallback handled below
     }
     
     // Return fallback images if available
@@ -1627,7 +1626,7 @@ class ImageService {
         return images;
       }
     } catch (error) {
-      console.log(`API not available for inspection ${subService}, trying fallback images`);
+      // Fallback handled below
     }
     
     // Return fallback images if available
@@ -1649,7 +1648,7 @@ class ImageService {
         return images;
       }
     } catch (error) {
-      console.log(`API not available for auditing ${subService}, trying fallback images`);
+      // Fallback handled below
     }
     
     // Return fallback images if available
@@ -1671,7 +1670,6 @@ class ImageService {
         return images;
       }
     } catch (error) {
-      console.log(`API not available for verification-certification ${subService}, trying fallback images`);
     }
     
     // Return fallback images if available

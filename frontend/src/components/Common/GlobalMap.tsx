@@ -131,12 +131,10 @@ const OfficeMarker: React.FC<OfficeMarkerProps> = ({ office, onClick, colorSchem
         const countryLon = getLongitudeForCountry(office.country);
         const countryLat = getLatitudeForCountry(office.country);
         if (countryLon !== 0 && countryLat !== 0) {
-          console.warn(`⚠️ Using country-level coordinates for ${office.office_name} in ${office.country}. Address: ${office.address}`);
           return [countryLon, countryLat] as [number, number];
         }
         
-        // Priority 4: Default to [0, 0] (shouldn't happen, but log it)
-        console.error(`❌ No coordinates found for office: ${office.office_name} (${office.country})`);
+        // Priority 4: Default to [0, 0]
         return [0, 0] as [number, number];
       })()}
       onClick={() => onClick(office)}
@@ -317,26 +315,6 @@ const GlobalMap: React.FC<GlobalMapProps> = ({ className = "" }) => {
       return source === 'country-fallback';
     });
   }, [allOffices]);
-
-  // Log missing offices for debugging
-  React.useEffect(() => {
-    if (officesWithInvalidCoords.length > 0) {
-      console.warn('⚠️ Offices without valid map markers:', officesWithInvalidCoords.map(o => ({
-        office_name: o.office_name,
-        country: o.country,
-        address: o.address
-      })));
-    }
-    if (officesWithCountryFallback.length > 0) {
-      console.info('ℹ️ Offices using country-level coordinates (may need better geocoding):', 
-        officesWithCountryFallback.map(o => ({
-          office_name: o.office_name,
-          country: o.country,
-          address: o.address
-        }))
-      );
-    }
-  }, [officesWithInvalidCoords, officesWithCountryFallback]);
 
   // Identify Regional Head Office entries (three HQs)
   const regionalHQOfficeNames = useMemo(() => {

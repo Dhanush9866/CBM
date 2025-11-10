@@ -53,9 +53,6 @@ export default function Blog() {
           getBlogTags()
         ]);
 
-        console.log('Blog API Response:', blogsResponse);
-        console.log('Blog posts:', blogsResponse.blogs);
-
         // Apply translations if available and language is not English
         const localizedPosts: BlogPostDto[] = blogsResponse.blogs.map((post) => {
           const tr = post.translations?.[currentLanguage];
@@ -81,7 +78,6 @@ export default function Blog() {
           loading: false
         }));
       } catch (error) {
-        console.error('Error loading blog data:', error);
         setBlogState(prev => ({
           ...prev,
           error: 'Failed to load blog posts. Please try again later.',
@@ -109,7 +105,6 @@ export default function Blog() {
           const localizedContent = tr && currentLanguage !== 'en' ? (tr.content || fullPost.content) : fullPost.content;
           setPostsWithContent(prev => new Map(prev).set(postId, localizedContent));
         } catch (error) {
-          console.error('Error loading blog content:', error);
         } finally {
           setLoadingContent(prev => {
             const newSet = new Set(prev);
