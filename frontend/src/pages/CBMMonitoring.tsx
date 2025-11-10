@@ -40,22 +40,14 @@ export default function CBMMonitoring() {
     let isMounted = true;
     const load = async () => {
       try {
-        console.log('Loading CBM sections for language:', currentLanguage);
         setLoading(true);
         setError(null);
         const page = await getPageWithSections('cbm', undefined, currentLanguage);
-        console.log('Received page data:', page);
         if (isMounted) {
           setSections(page.sections || []);
           setPageData(page);
         }
       } catch (e) {
-        console.error('Error loading CBM sections:', e);
-        console.error('Error details:', {
-          message: e instanceof Error ? e.message : 'Unknown error',
-          stack: e instanceof Error ? e.stack : undefined,
-          response: (e as any)?.response?.data
-        });
         if (isMounted) setError('Failed to load CBM sections');
       } finally {
         if (isMounted) setLoading(false);

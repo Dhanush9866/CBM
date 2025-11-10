@@ -303,12 +303,12 @@ const translations = {
             other: "Other"
           },
           serviceOptions: {
-            testing: "Testing & Inspection",
-            certification: "Certification Services",
-            consulting: "Consulting & Advisory",
+            testing: "Testing & Certification",
+            certification: "Inspection Services",
+            consulting: "Audit & Assessment",
             training: "Training & Education",
             digital: "Digital Solutions",
-            other: "Other Services"
+            other: "Consulting Services"
           }
         },
       },
@@ -723,12 +723,12 @@ const translations = {
             other: "Autre"
           },
           serviceOptions: {
-            testing: "Tests et Inspection",
-            certification: "Services de Certification",
-            consulting: "Conseil et Services Conseil",
+            testing: "Tests et Certification",
+            certification: "Services d'Inspection",
+            consulting: "Audit et Évaluation",
             training: "Formation et Éducation",
             digital: "Solutions Numériques",
-            other: "Autres Services"
+            other: "Services de Conseil"
           }
         },
       },
@@ -1142,12 +1142,12 @@ const translations = {
             other: "Outro"
           },
           serviceOptions: {
-            testing: "Testes e Inspeção",
-            certification: "Serviços de Certificação",
-            consulting: "Consultoria e Assessoria",
+            testing: "Testes e Certificação",
+            certification: "Serviços de Inspeção",
+            consulting: "Auditoria e Avaliação",
             training: "Treinamento e Educação",
             digital: "Soluções Digitais",
-            other: "Outros Serviços"
+            other: "Serviços de Consultoria"
           }
         },
       },
@@ -1560,12 +1560,12 @@ const translations = {
             other: "Otro"
           },
           serviceOptions: {
-            testing: "Pruebas e Inspección",
-            certification: "Servicios de Certificación",
-            consulting: "Consultoría y Asesoría",
+            testing: "Pruebas y Certificación",
+            certification: "Servicios de Inspección",
+            consulting: "Auditoría y Evaluación",
             training: "Capacitación y Educación",
             digital: "Soluciones Digitales",
-            other: "Otros Servicios"
+            other: "Servicios de Consultoría"
           }
         },
       },
@@ -1978,12 +1978,12 @@ const translations = {
             other: "Другое"
           },
           serviceOptions: {
-            testing: "Тестирование и инспекция",
-            certification: "Сертификационные услуги",
-            consulting: "Консультирование и консалтинг",
+            testing: "Тестирование и сертификация",
+            certification: "Инспекционные услуги",
+            consulting: "Аудит и оценка",
             training: "Обучение и образование",
             digital: "Цифровые решения",
-            other: "Другие услуги"
+            other: "Консалтинговые услуги"
           }
         },
       },
@@ -2409,12 +2409,12 @@ const translations = {
             other: "其他"
           },
           serviceOptions: {
-            testing: "测试与检验",
-            certification: "认证服务",
-            consulting: "咨询与顾问",
+            testing: "测试与认证",
+            certification: "检验服务",
+            consulting: "审计与评估",
             training: "培训与教育",
             digital: "数字解决方案",
-            other: "其他服务"
+            other: "咨询服务"
           }
         },
       },

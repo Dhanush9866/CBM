@@ -40,22 +40,14 @@ export default function InnovationRD() {
     let isMounted = true;
     const load = async () => {
       try {
-        console.log('Loading innovation R&D sections for language:', currentLanguage);
         setLoading(true);
         setError(null);
         const page = await getPageWithSections('innovation-rd', undefined, currentLanguage);
-        console.log('Received page data:', page);
         if (isMounted) {
           setSections(page.sections || []);
           setPageData(page);
         }
       } catch (e) {
-        console.error('Error loading innovation R&D sections:', e);
-        console.error('Error details:', {
-          message: e instanceof Error ? e.message : 'Unknown error',
-          stack: e instanceof Error ? e.stack : undefined,
-          response: (e as any)?.response?.data
-        });
         if (isMounted) setError('Failed to load innovation & R&D sections');
       } finally {
         if (isMounted) setLoading(false);

@@ -17,6 +17,11 @@ export default function Careers() {
   const [error, setError] = useState<string | null>(null);
   const [editing, setEditing] = useState<Career | null>(null);
   const [form, setForm] = useState<Career>(emptyCareer);
+  const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const showToast = (type: 'success' | 'error', message: string) => {
+    setToast({ type, message });
+    setTimeout(() => setToast(null), 3500);
+  };
 
   const load = async () => {
     setLoading(true);
@@ -38,14 +43,18 @@ export default function Careers() {
     try {
       if (editing && editing._id) {
         await updateCareer(editing._id, form);
+        showToast('success', 'Career updated successfully');
       } else {
-        await createCareer(form);
+        const resp = await createCareer(form);
+        const msg = resp?.message || 'Career created successfully';
+        showToast('success', msg);
       }
       setForm(emptyCareer);
       setEditing(null);
       await load();
     } catch (err: any) {
-      alert(err?.response?.data?.message || err?.message || 'Save failed');
+      const msg = err?.response?.data?.message || err?.message || 'Save failed';
+      showToast('error', msg);
     }
   };
 
@@ -76,6 +85,24 @@ export default function Careers() {
 
   return (
     <div>
+      {toast && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 16,
+            right: 16,
+            zIndex: 1000,
+            padding: '12px 14px',
+            borderRadius: 8,
+            color: toast.type === 'success' ? '#065f46' : '#7f1d1d',
+            background: toast.type === 'success' ? '#ecfdf5' : '#fee2e2',
+            border: `1px solid ${toast.type === 'success' ? '#10b981' : '#ef4444'}`,
+            boxShadow: '0 8px 24px rgba(0,0,0,0.12)'
+          }}
+        >
+          {toast.message}
+        </div>
+      )}
       <div style={{ marginBottom: '24px' }}>
         <h1 style={{ fontSize: '28px', fontWeight: '700', margin: '0 0 8px 0', color: '#111827' }}>
           Careers

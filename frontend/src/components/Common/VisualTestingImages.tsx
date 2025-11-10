@@ -12,9 +12,7 @@ export default function VisualTestingImages() {
         setIsLoading(true);
         const visualTestingImages = await imageService.getVisualTestingImages();
         setImages(visualTestingImages);
-        console.log('Visual Testing Images loaded:', visualTestingImages);
       } catch (error) {
-        console.error('Error fetching Visual Testing images:', error);
       } finally {
         setIsLoading(false);
       }

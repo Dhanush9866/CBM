@@ -31,7 +31,6 @@ export default function Services() {
         const slides = await translationService.getSlidesData(currentLanguage);
         setSlidesData(slides);
       } catch (error) {
-        console.error('Error fetching slides:', error);
         // Fallback to static data if API fails
         setSlidesData(translations?.pages?.services?.slides || null);
       } finally {

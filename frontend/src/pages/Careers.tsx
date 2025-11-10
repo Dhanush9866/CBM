@@ -226,6 +226,10 @@ export default function Careers() {
                       <h3 className="text-lg font-semibold text-primary hover:underline">{job.title}</h3>
                       <div className="flex items-center gap-4 text-sm text-muted-foreground">
                         <div className="hidden sm:flex items-center space-x-2">
+                          <span>Posted</span>
+                          <span>{formatDate(job.postedAt)}</span>
+                        </div>
+                        <div className="hidden sm:flex items-center space-x-2">
                           <Briefcase className="h-4 w-4" />
                           <span>{job.department}</span>
                         </div>

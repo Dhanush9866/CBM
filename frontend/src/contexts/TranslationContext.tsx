@@ -27,13 +27,7 @@ export const TranslationProvider: React.FC<TranslationProviderProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [supportedLanguages] = useState(['en', 'fr', 'pt', 'es', 'ru', 'zh']);
 
-  // Debug currentLanguage changes
-  useEffect(() => {
-    console.log('currentLanguage state changed to:', currentLanguage);
-  }, [currentLanguage]);
-
   const changeLanguage = async (language: string) => {
-    console.log('changeLanguage called with:', language);
     if (!supportedLanguages.includes(language)) {
       setError(`Unsupported language: ${language}`);
       return;
@@ -46,7 +40,6 @@ export const TranslationProvider: React.FC<TranslationProviderProps> = ({
       // Check cache first
       const cached = translationService.getCachedTranslations(language);
       if (cached) {
-        console.log('Using cached translations for:', language);
         setTranslations(cached);
         setCurrentLanguage(language);
         localStorage.setItem('preferredLanguage', language);
@@ -54,15 +47,12 @@ export const TranslationProvider: React.FC<TranslationProviderProps> = ({
       }
 
       // Fetch from API
-      console.log('Fetching new translations for:', language);
       const newTranslations = await translationService.getStaticTranslations(language);
       setTranslations(newTranslations);
       setCurrentLanguage(language);
       localStorage.setItem('preferredLanguage', language);
-      console.log('Language changed to:', language);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to change language');
-      console.error('Error changing language:', err);
     } finally {
       setIsLoading(false);
     }

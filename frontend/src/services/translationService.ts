@@ -301,7 +301,6 @@ class TranslationService {
         throw new Error('Failed to fetch translations');
       }
     } catch (error) {
-      console.error(`Error fetching translations for ${language}:`, error);
       throw error;
     }
   }
@@ -326,7 +325,6 @@ class TranslationService {
         throw new Error('Failed to fetch all translations');
       }
     } catch (error) {
-      console.error('Error fetching all translations:', error);
       throw error;
     }
   }
@@ -357,7 +355,6 @@ class TranslationService {
         throw new Error('Failed to fetch slides data');
       }
     } catch (error) {
-      console.error(`Error fetching slides data for ${language}:`, error);
       throw error;
     }
   }

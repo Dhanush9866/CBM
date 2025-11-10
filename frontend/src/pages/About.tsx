@@ -187,10 +187,9 @@ export default function About() {
     setError(null);
     getPageWithSections('about', undefined, currentLanguage)
       .then((data) => {
-        if (mounted) {console.log("data", data);setPage(data);}
+        if (mounted) {setPage(data);}
       })
-      .catch((err) => {
-        console.error('Failed to load About page:', err);
+      .catch(() => {
         if (mounted) setError('Failed to load content');
       })
       .finally(() => mounted && setLoading(false));

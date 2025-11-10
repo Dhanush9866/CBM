@@ -6,82 +6,70 @@ require('dotenv').config();
 const Section = require('../models/Section');
 const Page = require('../models/Page');
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/cbm';
+const MONGODB_URI = "mongodb+srv://cbm360tiv:MiiFze4xYGr6XNji@cluster0.sf6iagh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"  || process.env.MONGODB_URI || 'mongodb://localhost:27017/cbm';
 
-const PAGE_SLUG = 'testing';
-const SECTION_ID = 'ultrasonic-testing';
+const PAGE_SLUG = 'inspection';
+const SECTION_ID = 'it-maintenance-services';
 
 const DATA = {
-  service: 'Ultrasonic Testing (UT)',
-  sections: [
+  "service": "IT Maintenance Services",
+  "sections": [
     {
-      heading: 'Ultrasonic Testing (UT)',
-      content:
-        'From CBM 360 TIV - Known as Condition Based Monitoring 360° Technical Industrial Verification – Deliver precise ultrasonic testing solutions for Mining and Metal Plants, Oil & Gas Facilities, FPSO/FSO Vessels, Industrial Plants, and Power & Utility Infrastructure.\n\nUltrasonic Testing (UT) uses high-frequency sound waves to detect internal flaws, measure thickness, and evaluate material properties. It is widely applied to ensure weld quality, detect cracks, corrosion, laminations, and inclusions.'
+      "heading": "Overview",
+      "content": "At CBM 360 TIV, we deliver comprehensive inspection, monitoring, and verification solutions for IT infrastructure and data systems, ensuring continuous uptime, cybersecurity integrity, and compliance with global IT service standards. Our services cover the full lifecycle of data centres, servers, networking systems, communication lines, and control centres—supporting mission-critical digital operations for industrial, defence, and enterprise clients worldwide."
     },
     {
-      heading: 'Why Choose UT from CBM 360 TIV?',
-      content: [
-        'Detects both surface and subsurface defects',
-        'Provides accurate flaw depth and size measurements',
-        'Non-hazardous and portable for on-site inspections',
-        'Thickness gauging for corrosion monitoring',
-        'Applicable to a wide range of materials and geometries'
+      "heading": "Industry Focus",
+      "content": [
+        "Data Centres",
+        "Control Rooms",
+        "Communication Systems",
+        "Cloud Infrastructure",
+        "Networking Equipment",
+        "Industrial Automation Systems",
+        "Edge Computing Units",
+        "Server Farms",
+        "SCADA & PLC Systems",
+        "Cybersecurity Monitoring"
       ]
     },
     {
-      heading: 'Key Features and Benefits of Conventional UT:',
-      content: [
-        'Accurate detection of internal discontinuities',
-        'Capable of sizing flaws and determining depth',
-        'Immediate results during inspection',
-        'Minimal surface preparation required',
-        'Non-hazardous and safe for operators',
-        'Portable equipment suitable for field inspections'
+      "heading": "About the Sector",
+      "content": "Modern industries rely on digital connectivity and uninterrupted IT systems to maintain safety, production, and operational control. Unplanned downtime, hardware degradation, or security breaches can disrupt operations and lead to major financial and compliance risks. Through Condition-Based Monitoring (CBM), Preventive Maintenance, and Infrastructure Verification, CBM 360 TIV ensures IT systems perform reliably, efficiently, and securely—minimizing failures and extending equipment lifespan."
+    },
+    {
+      "heading": "Key Benefits of CBM 360 TIV IT Services",
+      "content": [
+        "Operational Continuity: Ensures 24/7 system reliability through proactive health checks and performance monitoring.",
+        "Predictive Maintenance: Utilizes data-driven insights (vibration, thermal, and electrical analysis) to forecast hardware or cooling failures.",
+        "Cyber-Physical Integrity: Monitors both digital and physical layers for threats, electrical anomalies, or equipment degradation.",
+        "Regulatory Compliance: Aligns with ISO 20000 (IT Service Management), ISO 27001 (Information Security), and ISO 22301 (Business Continuity).",
+        "Energy Efficiency & Sustainability: Implements optimized cooling, power usage, and environmental monitoring strategies to reduce carbon footprint.",
+        "Independent Third-Party Verification: Provides unbiased inspection and validation of IT hardware, UPS systems, data cabling, and environmental controls.",
+        "Lifecycle Assurance: Manages continuous performance verification and upgrade audits for long-term infrastructure reliability."
       ]
     },
     {
-      heading: 'UT Inspection Services Include:',
-      content: [
-        'Weld inspection for cracks, lack of fusion, porosity',
-        'Thickness gauging for corrosion monitoring',
-        'Lamination checks in plates and forgings',
-        'Detection of inclusions and voids in castings',
-        'Inspection of composite materials',
-        'In-service inspection of pressure vessels, storage tanks, pipelines'
+      "heading": "Service Scope",
+      "content": [
+        "Data Centre Inspection & Certification: Environmental, power, and redundancy audits for Tier I–IV data centres.",
+        "Condition-Based Monitoring (CBM 360°): Real-time monitoring of electrical systems, cooling fans, UPS units, and server performance parameters.",
+        "Thermal & Electrical Analysis: Thermal imaging, electrical load testing, and harmonic distortion monitoring to detect overheating or imbalance.",
+        "Network Infrastructure Testing: Cable certification, connectivity audits, and latency verification for high-availability networks.",
+        "Server & Hardware Maintenance: Component-level testing, firmware verification, and lifecycle management of servers and storage systems.",
+        "Power & Cooling System Verification: UPS, HVAC, and backup generator performance assessment to ensure stable IT operations.",
+        "Cybersecurity & Compliance Audits: Review of system integrity, access control, and disaster recovery readiness.",
+        "Calibration & Measurement Assurance: Precision calibration of sensors, meters, and environmental monitoring equipment."
       ]
     },
     {
-      heading: 'Trusted UT by Industry Experts',
-      content:
-        'CBM 360 TIV\'s certified inspectors use advanced UT equipment and techniques including straight-beam, angle-beam, and immersion testing, delivering reliable inspection results with detailed reporting.'
-    },
-    {
-      heading: 'Applications Across Industries',
-      content: [
-        'Mining & Metals – Crushers, pipelines, and weld integrity',
-        'Industrial Plants – Boilers, pressure vessels, reactors',
-        'Oil & Gas – Subsea structures, risers, storage tanks',
-        'FPSO/FSO Vessels – Hull integrity, cargo tanks',
-        'Power & Utilities – Turbine blades, boiler tubes, pipelines'
-      ]
-    },
-    {
-      heading: 'Standards We Follow:',
-      content: [
-        'ASNT SNT-TC-1A – Personnel qualification and certification',
-        'ISO 16810 – General principles of ultrasonic testing',
-        'ISO 17640 – Ultrasonic testing of welds',
-        'ASME BPVC Section V – UT methods'
-      ]
-    },
-    {
-      heading: 'Ready to Inspect with UT?',
-      content:
-        'Trust CBM 360 TIV\'s Ultrasonic Testing services to enhance your asset integrity, reliability, and compliance.\n\nContact CBM 360 TIV today to schedule an ultrasonic inspection.'
+      "heading": "Our Commitment",
+      "content": "CBM 360 TIV – Ensuring Reliable, Secure, and Efficient IT Infrastructure Through Technical Verification and Predictive Maintenance."
     }
   ]
-};
+}
+
+
 
 function toMarkdown(data) {
   const lines = [];
