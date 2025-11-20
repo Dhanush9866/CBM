@@ -1,7 +1,7 @@
 import axios from 'axios';
 const isLocal = typeof window !== 'undefined' && window.location.hostname === 'localhost';
 
-const apiBaseURL =  'https://api.cbm360tiv.com';
+const apiBaseURL = isLocal ? 'http://localhost:8020' : 'https://api.cbm360tiv.com';
 // When developing locally, target the local backend; otherwise use the deployed backend
 
 export const apiClient = axios.create({

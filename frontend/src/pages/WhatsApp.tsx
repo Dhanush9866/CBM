@@ -23,9 +23,22 @@ export default function WhatsApp() {
   const phoneNumber = '+44 7934 980214';
   // Remove spaces and + for WhatsApp URL
   const whatsappNumber = phoneNumber.replace(/\s+/g, '').replace('+', '');
-  const whatsappUrl = `https://wa.me/${whatsappNumber}`;
+  const presetMessages = [
+    'Hello! I would like to know more about your services.',
+    'Hi team, could you share more details about your offerings?',
+    'Hello CBM team, I am interested in learning about your services.',
+    'Hi there! I would like to discuss your inspection and certification services.',
+    'Hello! Can you provide more information about how you can support our project?'
+  ];
+
+  const getRandomMessage = () => {
+    const index = Math.floor(Math.random() * presetMessages.length);
+    return presetMessages[index];
+  };
 
   const handleWhatsAppClick = () => {
+    const message = encodeURIComponent(getRandomMessage());
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
     window.open(whatsappUrl, '_blank');
   };
 

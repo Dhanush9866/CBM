@@ -60,18 +60,29 @@ class CloudinaryService {
    */
   async uploadFromBuffer(buffer, options = {}) {
     try {
+      const mimetype = options.mimetype || 'image/jpeg';
+      const resourceType = options.resource_type || (mimetype.startsWith('image/') ? 'image' : 'raw');
+
+      const uploadOptions = {
+        folder: options.folder || 'cbm/contact-offices',
+        public_id: options.public_id,
+        resource_type: resourceType,
+        tags: options.tags || ['contact-offices', 'cbm'],
+        use_filename: options.use_filename
+      };
+
+      if (resourceType === 'image') {
+        uploadOptions.transformation = options.transformation || [
+          { quality: 'auto:good' },
+          { fetch_format: 'auto' }
+        ];
+      }
+
+      const dataUri = `data:${mimetype};base64,${buffer.toString('base64')}`;
+
       const result = await cloudinary.uploader.upload(
-        `data:image/jpeg;base64,${buffer.toString('base64')}`,
-        {
-          folder: options.folder || 'cbm/contact-offices',
-          public_id: options.public_id,
-          resource_type: 'auto',
-          transformation: options.transformation || [
-            { quality: 'auto:good' },
-            { fetch_format: 'auto' }
-          ],
-          tags: options.tags || ['contact-offices', 'cbm']
-        }
+        dataUri,
+        uploadOptions
       );
 
       logger.info(`Image uploaded from buffer successfully: ${result.secure_url}`);

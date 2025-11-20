@@ -48,11 +48,11 @@ export default function Blogs() {
   // ✅ FIXED: Explicitly cast blogData as CreateBlogData for create
   const handleCreateBlog = async (
     blogData: CreateBlogData | UpdateBlogData,
-    featuredImageFile?: File
+    files?: { featuredImageFile?: File; pdfFile?: File }
   ) => {
     try {
       setFormLoading(true);
-      await blogService.createBlog(blogData as CreateBlogData, featuredImageFile);
+      await blogService.createBlog(blogData as CreateBlogData, files);
       setViewMode('list');
       await loadBlogs();
     } catch (err) {
@@ -65,7 +65,7 @@ export default function Blogs() {
   // ✅ FIXED: Explicitly ensure blog ID exists and cast as UpdateBlogData
   const handleUpdateBlog = async (
     blogData: CreateBlogData | UpdateBlogData,
-    featuredImageFile?: File
+    files?: { featuredImageFile?: File; pdfFile?: File }
   ) => {
     try {
       setFormLoading(true);
@@ -77,7 +77,7 @@ export default function Blogs() {
       console.log('Updating blog with ID:', selectedBlog._id);
       console.log('Update data:', blogData);
 
-      await blogService.updateBlog(selectedBlog._id, blogData as UpdateBlogData, featuredImageFile);
+      await blogService.updateBlog(selectedBlog._id, blogData as UpdateBlogData, files);
       setViewMode('list');
       setSelectedBlog(null);
       await loadBlogs();
@@ -226,6 +226,28 @@ export default function Blogs() {
                 borderRadius: '8px',
               }}
             />
+          </div>
+        )}
+
+        {selectedBlog.pdfUrl && (
+          <div style={{ marginBottom: '24px' }}>
+            <a
+              href={selectedBlog.pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '10px 16px',
+                backgroundColor: '#111827',
+                color: '#fff',
+                borderRadius: '6px',
+                textDecoration: 'none'
+              }}
+            >
+              Download PDF
+            </a>
           </div>
         )}
 

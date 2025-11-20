@@ -1,38 +1,62 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+type LogoSize = 'sm' | 'md' | 'lg' | 'xl';
+
 interface LogoProps {
   className?: string;
   showTagline?: boolean;
-  size?: 'sm' | 'md' | 'lg';
+  size?: LogoSize;
 }
 
-export function Logo({ className = '', showTagline = false, size = 'md' }: LogoProps) {
-  const sizeClasses = {
-    sm: 'text-lg',
-    md: 'text-2xl',
-    lg: 'text-3xl'
-  };
+const sizeClasses: Record<LogoSize, string> = {
+  sm: 'text-lg',
+  md: 'text-2xl',
+  lg: 'text-3xl',
+  xl: 'text-4xl'
+};
 
-  const taglineSizeClasses = {
-    sm: 'text-xs',
-    md: 'text-sm',
-    lg: 'text-base'
-  };
+const taglineSizeClasses: Record<LogoSize, string> = {
+  sm: 'text-[11px]',
+  md: 'text-xs',
+  lg: 'text-sm',
+  xl: 'text-base'
+};
+
+const spacingClasses: Record<LogoSize, string> = {
+  sm: 'space-x-2',
+  md: 'space-x-2',
+  lg: 'space-x-3',
+  xl: 'space-x-4'
+};
+
+const circleSizeClasses: Record<LogoSize, { outer: string; middle: string; inner: string; text: string }> = {
+  sm: { outer: 'w-10 h-10', middle: 'w-8 h-8', inner: 'w-6 h-6', text: 'text-[11px]' },
+  md: { outer: 'w-12 h-12', middle: 'w-10 h-10', inner: 'w-8 h-8', text: 'text-xs' },
+  lg: { outer: 'w-14 h-14', middle: 'w-12 h-12', inner: 'w-10 h-10', text: 'text-sm' },
+  xl: { outer: 'w-16 h-16', middle: 'w-14 h-14', inner: 'w-12 h-12', text: 'text-base' }
+};
+
+export function Logo({ className = '', showTagline = false, size = 'md' }: LogoProps) {
+  const containerAlignment = showTagline ? 'items-start text-left' : 'items-start';
+  const spacingClass = spacingClasses[size] || spacingClasses.md;
+  const sizeClass = sizeClasses[size] || sizeClasses.md;
+  const circleSizes = circleSizeClasses[size] || circleSizeClasses.md;
+  const taglineSize = taglineSizeClasses[size] || taglineSizeClasses.md;
 
   return (
-    <Link to="/services" className={`flex flex-col items-start ${className}`}>
+    <Link to="/services" className={`flex flex-col ${containerAlignment} ${className}`}>
       {/* Main Logo */}
-      <div className={`flex items-center space-x-2 ${sizeClasses[size]}`}>
+      <div className={`flex items-center ${spacingClass} ${sizeClass}`}>
         {/* CBM */}
         <span className="font-bold text-purple-400">CBM</span>
         
         {/* 360° Circle */}
         <div className="relative">
-          <div className="w-12 h-12 md:w-14 md:h-14 lg:w-14 lg:h-14 rounded-full border-2 border-purple-400 flex items-center justify-center">
-            <div className="w-10 h-10 md:w-12 md:h-12 lg:w-12 lg:h-12 rounded-full border border-gray-400 flex items-center justify-center">
-              <div className="w-8 h-8 md:w-10 md:h-10 lg:w-10 lg:h-10 rounded-full border border-purple-400 flex items-center justify-center">
-                <span className="text-gray-600 text-xs md:text-sm lg:text-l font-medium">360°</span>
+          <div className={`${circleSizes.outer} rounded-full border-2 border-purple-400 flex items-center justify-center`}>
+            <div className={`${circleSizes.middle} rounded-full border border-gray-400 flex items-center justify-center`}>
+              <div className={`${circleSizes.inner} rounded-full border border-purple-400 flex items-center justify-center`}>
+                <span className={`text-gray-600 font-medium ${circleSizes.text}`}>360°</span>
               </div>
             </div>
           </div>
@@ -47,7 +71,7 @@ export function Logo({ className = '', showTagline = false, size = 'md' }: LogoP
       
       {/* Tagline */}
       {showTagline && (
-        <div className={`text-gray-600 font-medium mt-1 ${taglineSizeClasses[size]}`}>
+        <div className={`text-gray-500 font-medium mt-2 tracking-wide ${taglineSize}`}>
           Inspection Integrity Innovation
         </div>
       )}

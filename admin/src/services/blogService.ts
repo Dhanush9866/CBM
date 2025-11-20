@@ -9,6 +9,7 @@ export interface Blog {
   publishedAt: string;
   tags: string[];
   featuredImage: string;
+  pdfUrl?: string;
   images: Array<{
     url: string;
     alt?: string;
@@ -30,6 +31,7 @@ export interface CreateBlogData {
   content: string;
   tags: string[];
   featuredImage: string;
+  pdfUrl?: string;
   images?: Array<{
     url: string;
     alt?: string;
@@ -142,8 +144,11 @@ class BlogService {
   }
 
   // Create new blog
-  async createBlog(blogData: CreateBlogData, featuredImageFile?: File): Promise<BlogResponse> {
-    if (featuredImageFile) {
+  async createBlog(
+    blogData: CreateBlogData,
+    files?: { featuredImageFile?: File; pdfFile?: File }
+  ): Promise<BlogResponse> {
+    if (files?.featuredImageFile || files?.pdfFile) {
       const formData = new FormData();
       Object.entries(blogData).forEach(([key, value]) => {
         if (key === 'images' && Array.isArray(value)) {
@@ -154,7 +159,12 @@ class BlogService {
           formData.append(key, value as string);
         }
       });
-      formData.append('featuredImageFile', featuredImageFile);
+      if (files?.featuredImageFile) {
+        formData.append('featuredImageFile', files.featuredImageFile);
+      }
+      if (files?.pdfFile) {
+        formData.append('pdfFile', files.pdfFile);
+      }
       // Let Axios set the correct multipart headers
       return this.request<BlogResponse>('', {
         method: 'POST',
@@ -171,8 +181,12 @@ class BlogService {
   }
 
   // Update blog
-  async updateBlog(id: string, blogData: Partial<CreateBlogData>, featuredImageFile?: File): Promise<BlogResponse> {
-    if (featuredImageFile) {
+  async updateBlog(
+    id: string,
+    blogData: Partial<CreateBlogData>,
+    files?: { featuredImageFile?: File; pdfFile?: File }
+  ): Promise<BlogResponse> {
+    if (files?.featuredImageFile || files?.pdfFile) {
       const formData = new FormData();
       Object.entries(blogData).forEach(([key, value]) => {
         if (value !== undefined) {
@@ -185,7 +199,12 @@ class BlogService {
           }
         }
       });
-      formData.append('featuredImageFile', featuredImageFile);
+      if (files?.featuredImageFile) {
+        formData.append('featuredImageFile', files.featuredImageFile);
+      }
+      if (files?.pdfFile) {
+        formData.append('pdfFile', files.pdfFile);
+      }
       return this.request<BlogResponse>(`/${id}`, {
         method: 'PUT',
         body: formData,

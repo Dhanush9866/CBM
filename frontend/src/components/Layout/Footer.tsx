@@ -46,7 +46,7 @@ export function Footer() {
             {/* Company Info */}
             <div className="lg:col-span-1">
               <div className="mb-6">
-                <Logo size="lg" showTagline={true} className="text-white" />
+                <Logo size="xl" showTagline={true} className="text-white" />
               </div>
               <p className="text-tuv-gray-400 mb-6 leading-relaxed">
                 {translations?.footer.description || 'Leading provider of testing, inspection, certification, and advisory services. Committed to safety, security, and sustainability worldwide.'}
