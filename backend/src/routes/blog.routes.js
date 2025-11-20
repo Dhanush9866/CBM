@@ -19,14 +19,10 @@ const upload = multer({
   fileFilter: (req, file, cb) => {
     const imageFields = ['featuredImageFile'];
     const isImageField = imageFields.includes(file.fieldname);
-    const isPdfField = file.fieldname === 'pdfFile';
 
     const allowedImageMimes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
 
     if (isImageField && allowedImageMimes.includes(file.mimetype)) {
-      return cb(null, true);
-    }
-    if (isPdfField && file.mimetype === 'application/pdf') {
       return cb(null, true);
     }
     cb(new Error('Invalid file type uploaded.'), false);
@@ -43,12 +39,10 @@ router.get('/:id', getBlogById);
 
 // Admin routes (you can add authentication middleware here)
 router.post('/', upload.fields([
-  { name: 'featuredImageFile', maxCount: 1 },
-  { name: 'pdfFile', maxCount: 1 }
+  { name: 'featuredImageFile', maxCount: 1 }
 ]), createBlog);
 router.put('/:id', upload.fields([
-  { name: 'featuredImageFile', maxCount: 1 },
-  { name: 'pdfFile', maxCount: 1 }
+  { name: 'featuredImageFile', maxCount: 1 }
 ]), updateBlog);
 router.delete('/:id', deleteBlog);
 
