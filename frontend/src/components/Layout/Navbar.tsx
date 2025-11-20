@@ -152,16 +152,16 @@ export function Navbar() {
               ))}
             </div>
 
-            {/* CTA Button */}
-            <div className="hidden lg:flex items-center space-x-4">
-              {/* <Button variant="outline" size="sm" asChild>
-                <Link to="/contact">
-                  {translations?.navbar.getQuote || 'Get Quote'}
-                </Link>
-              </Button> */}
+            {/* CTA Buttons */}
+            <div className="hidden lg:flex items-center space-x-3">
               <Button className="btn-primary" asChild>
                 <Link to="/contact">
-                  {translations?.navbar.contactUs || 'Get Quote'}
+                  {translations?.navbar.contactUs || 'Contact Us'}
+                </Link>
+              </Button>
+              <Button className="btn-primary" asChild>
+                <Link to="/contact#contact-form">
+                  {translations?.navbar.getQuote || 'Get Quote'}
                 </Link>
               </Button>
             </div>
@@ -232,14 +232,14 @@ export function Navbar() {
                   </div>
                   
                   <div className="flex flex-col space-y-2">
-                    <Button variant="outline" asChild>
+                    <Button className="btn-primary" asChild>
                       <Link to="/contact" onClick={() => setIsOpen(false)}>
-                        {translations?.navbar.getQuote || 'Get Quote'}
+                        {translations?.navbar.contactUs || 'Contact Us'}
                       </Link>
                     </Button>
                     <Button className="btn-primary" asChild>
                       <Link to="/contact#contact-form" onClick={() => setIsOpen(false)}>
-                        {translations?.navbar.contactUs || 'Contact Us'}
+                        {translations?.navbar.getQuote || 'Get Quote'}
                       </Link>
                     </Button>
                   </div>

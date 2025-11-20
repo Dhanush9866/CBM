@@ -11,7 +11,8 @@ import {
   ChevronUp,
   Share2,
   Bookmark,
-  Loader2
+  Loader2,
+  Download
 } from 'lucide-react';
 import LoadingAnimation from '@/components/Common/LoadingAnimation';
 import { getBlogs, getBlogTags, getBlogById, BlogPostDto } from '@/services/blogService';
@@ -238,25 +239,41 @@ export default function Blog() {
                       </div>
                       
                       {/* Toggle Button and Actions */}
-                      <div className="flex items-center justify-between">
-                        <Button 
-                          variant="outline" 
-                            onClick={() => toggleExpanded(post._id)}
-                          className="flex items-center space-x-2"
-                        >
-                          {isExpanded ? (
-                            <>
-                              <span>Show Less</span>
-                              <ChevronUp className="h-4 w-4" />
-                            </>
-                          ) : (
-                            <>
-                              <span>Read Full Article</span>
-                              <ChevronDown className="h-4 w-4" />
-                            </>
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <div className="flex items-center gap-3">
+                          <Button 
+                            variant="outline" 
+                              onClick={() => toggleExpanded(post._id)}
+                            className="flex items-center space-x-2"
+                          >
+                            {isExpanded ? (
+                              <>
+                                <span>Show Less</span>
+                                <ChevronUp className="h-4 w-4" />
+                              </>
+                            ) : (
+                              <>
+                                <span>Read Full Article</span>
+                                <ChevronDown className="h-4 w-4" />
+                              </>
+                            )}
+                          </Button>
+                          {post.pdfUrl && (
+                            <Button
+                              asChild
+                              className="flex items-center space-x-2"
+                            >
+                              <a
+                                href={post.pdfUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                <span>Download PDF</span>
+                                <Download className="h-4 w-4" />
+                              </a>
+                            </Button>
                           )}
-                        </Button>
-                        
+                        </div>
                       </div>
                       
                       {/* Expanded Content */}

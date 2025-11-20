@@ -13,19 +13,23 @@ const {
   deleteBlog
 } = require('../controllers/blog.controller');
 
-// Create upload middleware for blog images using memory storage for Cloudinary
+// Create upload middleware for blog assets using memory storage for Cloudinary
 const upload = multer({
-  storage: multer.memoryStorage(), // Store in memory for Cloudinary upload
-  limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB limit
-  },
+  storage: multer.memoryStorage(),
   fileFilter: (req, file, cb) => {
-    const allowedMimes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
-    if (allowedMimes.includes(file.mimetype)) {
-      cb(null, true);
-    } else {
-      cb(new Error('Invalid file type. Only images are allowed.'), false);
+    const imageFields = ['featuredImageFile'];
+    const isImageField = imageFields.includes(file.fieldname);
+    const isPdfField = file.fieldname === 'pdfFile';
+
+    const allowedImageMimes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+
+    if (isImageField && allowedImageMimes.includes(file.mimetype)) {
+      return cb(null, true);
     }
+    if (isPdfField && file.mimetype === 'application/pdf') {
+      return cb(null, true);
+    }
+    cb(new Error('Invalid file type uploaded.'), false);
   }
 });
 
@@ -38,8 +42,14 @@ router.get('/tag/:tag', getBlogsByTag);
 router.get('/:id', getBlogById);
 
 // Admin routes (you can add authentication middleware here)
-router.post('/', upload.single('featuredImageFile'), createBlog);
-router.put('/:id', upload.single('featuredImageFile'), updateBlog);
+router.post('/', upload.fields([
+  { name: 'featuredImageFile', maxCount: 1 },
+  { name: 'pdfFile', maxCount: 1 }
+]), createBlog);
+router.put('/:id', upload.fields([
+  { name: 'featuredImageFile', maxCount: 1 },
+  { name: 'pdfFile', maxCount: 1 }
+]), updateBlog);
 router.delete('/:id', deleteBlog);
 
 module.exports = router;
