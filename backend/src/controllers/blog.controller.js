@@ -261,12 +261,10 @@ const createBlog = async (req, res) => {
   try {
     const blogData = req.body;
     const featuredImageFile = getUploadedFile(req, 'featuredImageFile');
-    const pdfFile = getUploadedFile(req, 'pdfFile');
 
     console.log('🟢 Create blog request received:', {
       bodyKeys: Object.keys(req.body || {}),
       hasFeaturedImageFile: !!featuredImageFile,
-      hasPdfFile: !!pdfFile,
       headers: req.headers
     });
 
@@ -297,25 +295,6 @@ const createBlog = async (req, res) => {
             console.log('⚠️ Using inline base64 featured image fallback');
           }
         } catch {}
-      }
-    }
-
-    // Handle optional PDF upload
-    if (pdfFile) {
-      try {
-        const publicId = `blog-pdf-${Date.now()}`;
-        console.log('🔹 Uploading blog PDF to Cloudinary with publicId:', publicId);
-        const uploadResult = await cloudinaryService.uploadFromBuffer(pdfFile.buffer, {
-          folder: 'cbm/blog/pdfs',
-          public_id: publicId,
-          resource_type: 'raw',
-          tags: ['blog', 'pdf', 'cbm'],
-          mimetype: pdfFile.mimetype
-        });
-        blogData.pdfUrl = uploadResult.url;
-        console.log('✅ Blog PDF uploaded:', uploadResult.url);
-      } catch (uploadError) {
-        console.warn('❌ PDF upload failed:', uploadError.message);
       }
     }
 
@@ -430,12 +409,10 @@ const updateBlog = async (req, res) => {
     const { id } = req.params;
     const updateData = req.body;
     const featuredImageFile = getUploadedFile(req, 'featuredImageFile');
-    const pdfFile = getUploadedFile(req, 'pdfFile');
 
     console.log(`🔹 Update blog request received for ID: ${id}`);
     console.log('Update payload keys:', Object.keys(updateData));
     console.log('Includes featured image file:', !!featuredImageFile);
-    console.log('Includes pdf file:', !!pdfFile);
 
     const existingBlog = await Blog.findById(id);
     if (!existingBlog) {
@@ -463,24 +440,6 @@ const updateBlog = async (req, res) => {
         console.log(`✅ Featured image uploaded: ${updateData.featuredImage}`);
       } catch (uploadError) {
         console.warn('⚠️ Cloudinary upload failed:', uploadError);
-      }
-    }
-
-    if (pdfFile) {
-      try {
-        const publicId = `blog-pdf-${Date.now()}`;
-        console.log(`🔹 Uploading blog PDF to Cloudinary with publicId: ${publicId}`);
-        const uploadResult = await cloudinaryService.uploadFromBuffer(pdfFile.buffer, {
-          folder: 'cbm/blog/pdfs',
-          public_id: publicId,
-          resource_type: 'raw',
-          tags: ['blog', 'pdf', 'cbm'],
-          mimetype: pdfFile.mimetype
-        });
-        updateData.pdfUrl = uploadResult.url;
-        console.log(`✅ Blog PDF uploaded: ${updateData.pdfUrl}`);
-      } catch (uploadError) {
-        console.warn('⚠️ PDF upload failed:', uploadError.message);
       }
     }
 

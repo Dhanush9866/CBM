@@ -5,7 +5,7 @@ interface BlogFormProps {
   blog?: Blog;
   onSave: (
     blogData: CreateBlogData | UpdateBlogData,
-    files?: { featuredImageFile?: File; pdfFile?: File }
+    files?: { featuredImageFile?: File }
   ) => Promise<void>;
   onCancel: () => void;
   isLoading?: boolean;
@@ -22,8 +22,7 @@ export default function BlogForm({ blog, onSave, onCancel, isLoading = false }: 
     isPublished: true,
     isFeatured: false,
     metaDescription: '',
-    slug: '',
-    pdfUrl: ''
+    slug: ''
   });
 
   const [tagInput, setTagInput] = useState('');
@@ -31,7 +30,6 @@ export default function BlogForm({ blog, onSave, onCancel, isLoading = false }: 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [featuredImageFile, setFeaturedImageFile] = useState<File | null>(null);
   const [featuredImagePreview, setFeaturedImagePreview] = useState<string>('');
-  const [pdfFile, setPdfFile] = useState<File | null>(null);
 
   useEffect(() => {
     if (blog) {
@@ -45,13 +43,11 @@ export default function BlogForm({ blog, onSave, onCancel, isLoading = false }: 
         isPublished: blog.isPublished ?? true,
         isFeatured: blog.isFeatured ?? false,
         metaDescription: blog.metaDescription || '',
-        slug: blog.slug || '',
-        pdfUrl: blog.pdfUrl || ''
+        slug: blog.slug || ''
       };
       setFormData(initialFormData);
       setFeaturedImagePreview(blog.featuredImage || '');
       setFeaturedImageFile(null);
-      setPdfFile(null);
     } else {
       setFormData({
         title: '',
@@ -63,12 +59,10 @@ export default function BlogForm({ blog, onSave, onCancel, isLoading = false }: 
         isPublished: true,
         isFeatured: false,
         metaDescription: '',
-        slug: '',
-        pdfUrl: ''
+        slug: ''
       });
       setFeaturedImagePreview('');
       setFeaturedImageFile(null);
-      setPdfFile(null);
     }
     setErrors({});
   }, [blog]);
@@ -162,22 +156,6 @@ export default function BlogForm({ blog, onSave, onCancel, isLoading = false }: 
     }
   };
 
-  const handlePdfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.type !== 'application/pdf') {
-        alert('Only PDF files are allowed.');
-        return;
-      }
-      setPdfFile(file);
-    }
-  };
-
-  const handleClearPdf = () => {
-    setPdfFile(null);
-    setFormData(prev => ({ ...prev, pdfUrl: '' }));
-  };
-
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
@@ -216,8 +194,7 @@ export default function BlogForm({ blog, onSave, onCancel, isLoading = false }: 
       };
 
       await onSave(submitData, {
-        featuredImageFile: featuredImageFile ?? undefined,
-        pdfFile: pdfFile ?? undefined
+        featuredImageFile: featuredImageFile ?? undefined
       });
     } catch (error) {
       console.error('Error saving blog:', error);
@@ -257,38 +234,6 @@ export default function BlogForm({ blog, onSave, onCancel, isLoading = false }: 
           </ul>
         </div>
       )}
-
-      {/* Blog PDF */}
-      <div style={{ marginBottom: 16 }}>
-        <label style={{ display: 'block', fontSize: 13, color: '#374151', marginBottom: 6 }}>Supporting PDF</label>
-        <input type="file" accept="application/pdf" onChange={handlePdfChange} />
-        <div style={{ fontSize: 12, color: '#6b7280', marginTop: 6 }}>
-          Upload a PDF file (no size limit). Uploading a file will replace the current link.
-        </div>
-        {(pdfFile || formData.pdfUrl) && (
-          <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', gap: 12 }}>
-            {pdfFile ? (
-              <span style={{ fontSize: 12, color: '#111827' }}>Selected: {pdfFile.name}</span>
-            ) : (
-              <a href={formData.pdfUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: '#2563eb' }}>
-                View current PDF
-              </a>
-            )}
-            <button type="button" onClick={handleClearPdf} style={{ padding: '6px 10px', border: '1px solid #e5e7eb', borderRadius: 6, background: '#fff', cursor: 'pointer' }}>
-              Remove PDF
-            </button>
-          </div>
-        )}
-        <div style={{ marginTop: 8 }}>
-          <input
-            name="pdfUrl"
-            value={formData.pdfUrl || ''}
-            onChange={handleInputChange}
-            placeholder="Or paste an existing PDF URL"
-            style={{ width: '100%', padding: '10px 12px', border: '1px solid #e5e7eb', borderRadius: 6 }}
-          />
-        </div>
-      </div>
 
       <form onSubmit={handleSubmit} style={{ backgroundColor: 'white', padding: '24px', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
         {/* Title */}

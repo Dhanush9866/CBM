@@ -11,8 +11,7 @@ import {
   ChevronUp,
   Share2,
   Bookmark,
-  Loader2,
-  Download
+  Loader2
 } from 'lucide-react';
 import LoadingAnimation from '@/components/Common/LoadingAnimation';
 import { getBlogs, getBlogTags, getBlogById, BlogPostDto } from '@/services/blogService';
@@ -258,21 +257,6 @@ export default function Blog() {
                               </>
                             )}
                           </Button>
-                          {post.pdfUrl && (
-                            <Button
-                              asChild
-                              className="flex items-center space-x-2"
-                            >
-                              <a
-                                href={post.pdfUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                <span>Download PDF</span>
-                                <Download className="h-4 w-4" />
-                              </a>
-                            </Button>
-                          )}
                         </div>
                       </div>
                       

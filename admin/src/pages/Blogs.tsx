@@ -48,7 +48,7 @@ export default function Blogs() {
   // ✅ FIXED: Explicitly cast blogData as CreateBlogData for create
   const handleCreateBlog = async (
     blogData: CreateBlogData | UpdateBlogData,
-    files?: { featuredImageFile?: File; pdfFile?: File }
+    files?: { featuredImageFile?: File }
   ) => {
     try {
       setFormLoading(true);
@@ -65,7 +65,7 @@ export default function Blogs() {
   // ✅ FIXED: Explicitly ensure blog ID exists and cast as UpdateBlogData
   const handleUpdateBlog = async (
     blogData: CreateBlogData | UpdateBlogData,
-    files?: { featuredImageFile?: File; pdfFile?: File }
+    files?: { featuredImageFile?: File }
   ) => {
     try {
       setFormLoading(true);
@@ -226,28 +226,6 @@ export default function Blogs() {
                 borderRadius: '8px',
               }}
             />
-          </div>
-        )}
-
-        {selectedBlog.pdfUrl && (
-          <div style={{ marginBottom: '24px' }}>
-            <a
-              href={selectedBlog.pdfUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '10px 16px',
-                backgroundColor: '#111827',
-                color: '#fff',
-                borderRadius: '6px',
-                textDecoration: 'none'
-              }}
-            >
-              Download PDF
-            </a>
           </div>
         )}
 

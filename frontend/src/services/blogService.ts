@@ -8,7 +8,6 @@ export type BlogPostDto = {
   publishedAt: string;
   tags: string[];
   featuredImage: string;
-  pdfUrl?: string;
   images: Array<{
     url: string;
     alt?: string;
