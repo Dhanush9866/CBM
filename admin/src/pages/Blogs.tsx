@@ -48,7 +48,7 @@ export default function Blogs() {
   // ✅ FIXED: Explicitly cast blogData as CreateBlogData for create
   const handleCreateBlog = async (
     blogData: CreateBlogData | UpdateBlogData,
-    files?: { featuredImageFile?: File }
+    files?: { featuredImageFile?: File; pdfFile?: File }
   ) => {
     try {
       setFormLoading(true);
@@ -65,7 +65,7 @@ export default function Blogs() {
   // ✅ FIXED: Explicitly ensure blog ID exists and cast as UpdateBlogData
   const handleUpdateBlog = async (
     blogData: CreateBlogData | UpdateBlogData,
-    files?: { featuredImageFile?: File }
+    files?: { featuredImageFile?: File; pdfFile?: File }
   ) => {
     try {
       setFormLoading(true);

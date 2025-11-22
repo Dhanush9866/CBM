@@ -3,7 +3,6 @@ const isLocal = typeof window !== 'undefined' && window.location.hostname === 'l
 
 const apiBaseURL = isLocal ? 'http://localhost:8020' : 'https://api.cbm360tiv.com';
 // When developing locally, target the local backend; otherwise use the deployed backend
-
 export const apiClient = axios.create({
   baseURL: apiBaseURL,
   headers: { 'Content-Type': 'application/json' },

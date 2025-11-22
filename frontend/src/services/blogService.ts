@@ -19,6 +19,7 @@ export type BlogPostDto = {
   viewCount: number;
   slug: string;
   metaDescription?: string;
+  pdfLink?: string;
   readingTime: number;
   formattedPublishedAt: string;
   createdAt: string;

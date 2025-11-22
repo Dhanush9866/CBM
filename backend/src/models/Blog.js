@@ -96,6 +96,10 @@ const BlogSchema = new mongoose.Schema(
       trim: true,
       maxlength: 160
     },
+    pdfLink: {
+      type: String,
+      trim: true
+    },
     readingTime: { 
       type: Number, 
       default: 5 // in minutes
