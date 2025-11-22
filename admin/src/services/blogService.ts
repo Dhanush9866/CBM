@@ -19,6 +19,7 @@ export interface Blog {
   isFeatured: boolean;
   viewCount: number;
   metaDescription?: string;
+  pdfLink?: string;
   readingTime?: number;
   createdAt: string;
   updatedAt: string;
@@ -144,9 +145,9 @@ class BlogService {
   // Create new blog
   async createBlog(
     blogData: CreateBlogData,
-    files?: { featuredImageFile?: File }
+    files?: { featuredImageFile?: File; pdfFile?: File }
   ): Promise<BlogResponse> {
-    if (files?.featuredImageFile) {
+    if (files?.featuredImageFile || files?.pdfFile) {
       const formData = new FormData();
       Object.entries(blogData).forEach(([key, value]) => {
         if (key === 'images' && Array.isArray(value)) {
@@ -159,6 +160,9 @@ class BlogService {
       });
       if (files?.featuredImageFile) {
         formData.append('featuredImageFile', files.featuredImageFile);
+      }
+      if (files?.pdfFile) {
+        formData.append('pdfFile', files.pdfFile);
       }
       // Let Axios set the correct multipart headers
       return this.request<BlogResponse>('', {
@@ -179,9 +183,9 @@ class BlogService {
   async updateBlog(
     id: string,
     blogData: Partial<CreateBlogData>,
-    files?: { featuredImageFile?: File }
+    files?: { featuredImageFile?: File; pdfFile?: File }
   ): Promise<BlogResponse> {
-    if (files?.featuredImageFile) {
+    if (files?.featuredImageFile || files?.pdfFile) {
       const formData = new FormData();
       Object.entries(blogData).forEach(([key, value]) => {
         if (value !== undefined) {
@@ -196,6 +200,9 @@ class BlogService {
       });
       if (files?.featuredImageFile) {
         formData.append('featuredImageFile', files.featuredImageFile);
+      }
+      if (files?.pdfFile) {
+        formData.append('pdfFile', files.pdfFile);
       }
       return this.request<BlogResponse>(`/${id}`, {
         method: 'PUT',

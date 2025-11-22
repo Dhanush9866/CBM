@@ -5,7 +5,7 @@ interface BlogFormProps {
   blog?: Blog;
   onSave: (
     blogData: CreateBlogData | UpdateBlogData,
-    files?: { featuredImageFile?: File }
+    files?: { featuredImageFile?: File; pdfFile?: File }
   ) => Promise<void>;
   onCancel: () => void;
   isLoading?: boolean;
@@ -30,6 +30,8 @@ export default function BlogForm({ blog, onSave, onCancel, isLoading = false }: 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [featuredImageFile, setFeaturedImageFile] = useState<File | null>(null);
   const [featuredImagePreview, setFeaturedImagePreview] = useState<string>('');
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
+  const [pdfFileName, setPdfFileName] = useState<string>('');
 
   useEffect(() => {
     if (blog) {
@@ -48,6 +50,8 @@ export default function BlogForm({ blog, onSave, onCancel, isLoading = false }: 
       setFormData(initialFormData);
       setFeaturedImagePreview(blog.featuredImage || '');
       setFeaturedImageFile(null);
+      setPdfFile(null);
+      setPdfFileName(blog.pdfLink ? 'Existing PDF' : '');
     } else {
       setFormData({
         title: '',
@@ -63,6 +67,8 @@ export default function BlogForm({ blog, onSave, onCancel, isLoading = false }: 
       });
       setFeaturedImagePreview('');
       setFeaturedImageFile(null);
+      setPdfFile(null);
+      setPdfFileName('');
     }
     setErrors({});
   }, [blog]);
@@ -156,6 +162,19 @@ export default function BlogForm({ blog, onSave, onCancel, isLoading = false }: 
     }
   };
 
+  const handlePdfFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.type === 'application/pdf') {
+        setPdfFile(file);
+        setPdfFileName(file.name);
+      } else {
+        alert('Please select a PDF file');
+        e.target.value = '';
+      }
+    }
+  };
+
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
@@ -194,7 +213,8 @@ export default function BlogForm({ blog, onSave, onCancel, isLoading = false }: 
       };
 
       await onSave(submitData, {
-        featuredImageFile: featuredImageFile ?? undefined
+        featuredImageFile: featuredImageFile ?? undefined,
+        pdfFile: pdfFile ?? undefined
       });
     } catch (error) {
       console.error('Error saving blog:', error);
@@ -334,6 +354,29 @@ export default function BlogForm({ blog, onSave, onCancel, isLoading = false }: 
               <img src={featuredImagePreview} alt="Preview" style={{ maxWidth: '100%', borderRadius: 8 }} />
             </div>
           )}
+        </div>
+
+        {/* PDF Upload */}
+        <div style={{ marginBottom: 16 }}>
+          <label style={{ display: 'block', fontSize: 13, color: '#374151', marginBottom: 6 }}>PDF Document</label>
+          <div style={{ border: '1px solid #e5e7eb', padding: 16, borderRadius: 8, marginBottom: 8 }}>
+            <input 
+              type="file" 
+              accept="application/pdf" 
+              onChange={handlePdfFileChange}
+              style={{ marginBottom: 8 }}
+            />
+            {pdfFileName && (
+              <div style={{ fontSize: 12, color: '#6b7280', marginTop: 8 }}>
+                Selected: {pdfFileName}
+              </div>
+            )}
+            {blog?.pdfLink && !pdfFile && (
+              <div style={{ fontSize: 12, color: '#10b981', marginTop: 8 }}>
+                Current PDF: <a href={blog.pdfLink} target="_blank" rel="noopener noreferrer" style={{ color: '#10b981' }}>View PDF</a>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Gallery images */}

@@ -3,6 +3,7 @@
 const Blog = require('../models/Blog');
 const cloudinaryService = require('../services/cloudinary');
 const { translateText, translateArraySafely, SUPPORTED } = require('../services/translation');
+const googleDriveService = require('../services/googleDrive');
 
 const getUploadedFile = (req, fieldName) => {
   if (req?.files && typeof req.files === 'object') {
@@ -261,10 +262,12 @@ const createBlog = async (req, res) => {
   try {
     const blogData = req.body;
     const featuredImageFile = getUploadedFile(req, 'featuredImageFile');
+    const pdfFile = getUploadedFile(req, 'pdfFile');
 
     console.log('🟢 Create blog request received:', {
       bodyKeys: Object.keys(req.body || {}),
       hasFeaturedImageFile: !!featuredImageFile,
+      hasPdfFile: !!pdfFile,
       headers: req.headers
     });
 
@@ -295,6 +298,30 @@ const createBlog = async (req, res) => {
             console.log('⚠️ Using inline base64 featured image fallback');
           }
         } catch {}
+      }
+    }
+
+    // Handle PDF upload to Google Drive
+    if (pdfFile) {
+      try {
+        const timestamp = Date.now();
+        const fileName = `blog-${timestamp}-${blogData.slug || 'document'}.pdf`;
+        console.log('🔹 Uploading PDF to Google Drive:', fileName);
+
+        const uploadResult = await googleDriveService.uploadPDF(
+          pdfFile.buffer,
+          fileName
+        );
+
+        console.log('✅ PDF uploaded to Google Drive:', uploadResult.downloadLink);
+        blogData.pdfLink = uploadResult.downloadLink;
+      } catch (uploadError) {
+        console.error('❌ Google Drive upload failed:', uploadError);
+        return res.status(500).json({
+          success: false,
+          message: 'Failed to upload PDF to Google Drive',
+          error: uploadError.message
+        });
       }
     }
 
@@ -409,10 +436,12 @@ const updateBlog = async (req, res) => {
     const { id } = req.params;
     const updateData = req.body;
     const featuredImageFile = getUploadedFile(req, 'featuredImageFile');
+    const pdfFile = getUploadedFile(req, 'pdfFile');
 
     console.log(`🔹 Update blog request received for ID: ${id}`);
     console.log('Update payload keys:', Object.keys(updateData));
     console.log('Includes featured image file:', !!featuredImageFile);
+    console.log('Includes PDF file:', !!pdfFile);
 
     const existingBlog = await Blog.findById(id);
     if (!existingBlog) {
@@ -440,6 +469,30 @@ const updateBlog = async (req, res) => {
         console.log(`✅ Featured image uploaded: ${updateData.featuredImage}`);
       } catch (uploadError) {
         console.warn('⚠️ Cloudinary upload failed:', uploadError);
+      }
+    }
+
+    // Handle PDF upload to Google Drive
+    if (pdfFile) {
+      try {
+        const timestamp = Date.now();
+        const fileName = `blog-${timestamp}-${existingBlog.slug || 'document'}.pdf`;
+        console.log('🔹 Uploading PDF to Google Drive:', fileName);
+
+        const uploadResult = await googleDriveService.uploadPDF(
+          pdfFile.buffer,
+          fileName
+        );
+
+        console.log('✅ PDF uploaded to Google Drive:', uploadResult.downloadLink);
+        updateData.pdfLink = uploadResult.downloadLink;
+      } catch (uploadError) {
+        console.error('❌ Google Drive upload failed:', uploadError);
+        return res.status(500).json({
+          success: false,
+          message: 'Failed to upload PDF to Google Drive',
+          error: uploadError.message
+        });
       }
     }
 
