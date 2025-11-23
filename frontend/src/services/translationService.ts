@@ -54,6 +54,18 @@ export interface StaticTranslations {
           href: string;
         };
       }>;
+      globalNetwork?: {
+        title: string;
+        description: string;
+        legend?: {
+          title: string;
+          titleShort: string;
+          corporate: string;
+          regional: string;
+          branch: string;
+          labs: string;
+        };
+      };
     };
     about?: {
       title: string;
