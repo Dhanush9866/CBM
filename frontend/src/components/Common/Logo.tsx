@@ -7,6 +7,8 @@ interface LogoProps {
   className?: string;
   showTagline?: boolean;
   size?: LogoSize;
+  align?: 'left' | 'center' | 'right';
+  taglineSize?: string;
 }
 
 const sizeClasses: Record<LogoSize, string> = {
@@ -37,12 +39,17 @@ const circleSizeClasses: Record<LogoSize, { outer: string; middle: string; inner
   xl: { outer: 'w-16 h-16', middle: 'w-14 h-14', inner: 'w-12 h-12', text: 'text-base' }
 };
 
-export function Logo({ className = '', showTagline = false, size = 'md' }: LogoProps) {
-  const containerAlignment = showTagline ? 'items-start text-left' : 'items-start';
+export function Logo({ className = '', showTagline = false, size = 'md', align = 'left', taglineSize: customTaglineSize }: LogoProps) {
+  const alignmentClasses = {
+    left: 'items-start text-left',
+    center: 'items-center text-center',
+    right: 'items-end text-right'
+  };
+  const containerAlignment = showTagline ? alignmentClasses[align] : alignmentClasses[align].split(' ')[0];
   const spacingClass = spacingClasses[size] || spacingClasses.md;
   const sizeClass = sizeClasses[size] || sizeClasses.md;
   const circleSizes = circleSizeClasses[size] || circleSizeClasses.md;
-  const taglineSize = taglineSizeClasses[size] || taglineSizeClasses.md;
+  const taglineSize = customTaglineSize || taglineSizeClasses[size] || taglineSizeClasses.md;
 
   return (
     <Link to="/services" className={`flex flex-col ${containerAlignment} ${className}`}>

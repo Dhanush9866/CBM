@@ -133,9 +133,9 @@ export function Navbar() {
       {/* Main Navigation */}
       <nav className="bg-white shadow-tuv-sm sticky top-0 z-50">
         <div className="container-responsive">
-          <div className="flex justify-between items-center h-16 lg:h-20">
+          <div className="flex justify-between items-center h-20 lg:h-24">
             {/* Logo */}
-            <Logo size="md" />
+            <Logo size="md" showTagline={true} align="center" taglineSize="text-[11px]" />
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-8">

@@ -45,13 +45,13 @@ export function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Company Info */}
             <div className="lg:col-span-1">
-              <div className="mb-6">
-                <Logo size="xl" showTagline={true} className="text-white" />
+              <div className="mb-6 flex justify-center">
+                <Logo size="xl" showTagline={true} className="text-white" align="center" />
               </div>
-              <p className="text-tuv-gray-400 mb-6 leading-relaxed">
+              <p className="text-tuv-gray-400 mb-6 leading-relaxed text-center">
                 {translations?.footer.description || 'Leading provider of testing, inspection, certification, and advisory services. Committed to safety, security, and sustainability worldwide.'}
               </p>
-              <div className="flex space-x-4">
+              <div className="flex space-x-4 justify-center">
                 <a href="https://www.linkedin.com/company/cbm-360%C2%B0-tiv%E2%84%A2/?viewAsMember=true" target="_blank" rel="noopener noreferrer" className="text-tuv-gray-400 hover:text-white transition-colors" aria-label="LinkedIn">
                   <Linkedin className="h-5 w-5" />
                 </a>

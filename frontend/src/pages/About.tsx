@@ -261,25 +261,11 @@ export default function About() {
           <p className="text-lg text-muted-foreground mb-8">{page.description}</p>
         )}
         <div className="space-y-2">
-          {(() => {
-            const insertIndex = Math.floor(blocks.length / 2);
-            const midImage = mainSection?.images && mainSection.images[1];
-            return blocks.map((b, i) => (
-              <div key={i}>
-                {midImage && i === insertIndex && (
-                  <div className="my-12 max-w-6xl mx-auto">
-                    <img
-                      src={midImage}
-                      alt="About mid content image"
-                      className="w-full h-64 md:h-80 lg:h-96 object-cover rounded-lg shadow-lg"
-                      loading="lazy"
-                    />
-                  </div>
-                )}
-                {b.content}
-              </div>
-            ));
-          })()}
+          {blocks.map((b, i) => (
+            <div key={i}>
+              {b.content}
+            </div>
+          ))}
         </div>
         </article>
       </div>
