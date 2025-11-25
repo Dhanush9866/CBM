@@ -20,22 +20,15 @@ interface SlideContent {
 interface VideoHeroProps {
   slides: SlideContent[];
   videoUrls: string[];
-  autoPlaySeconds?: number;
 }
 
-export function VideoHero({
-  slides,
-  videoUrls,
-  autoPlaySeconds = 5,
-}: VideoHeroProps) {
+export function VideoHero({ slides, videoUrls }: VideoHeroProps) {
   const [api, setApi] = React.useState<CarouselApi | null>(null);
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const videoRefs = React.useRef<(HTMLVideoElement | null)[]>([]);
-  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
-  const isManualNavigation = React.useRef(false);
   const handlersRef = React.useRef<Array<(() => void) | null>>([]);
 
-  // Handle video end and auto-advance with 3-second gap
+  // Auto-advance only after the active video finishes playing
   React.useEffect(() => {
     if (!api || videoUrls.length <= 1) return;
 
@@ -43,17 +36,10 @@ export function VideoHero({
     if (prefersReduced) return;
 
     const handleVideoEnd = (videoIndex: number) => {
-      // Clear any existing timeout
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-
-      // Wait 3 seconds, then advance to next slide
-      timeoutRef.current = setTimeout(() => {
-        if (api) {
-          api.scrollNext();
-        }
-      }, 3000);
+      if (!api) return;
+      const isActiveSlide = api.selectedScrollSnap() === videoIndex;
+      if (!isActiveSlide) return;
+      api.scrollNext();
     };
 
     // Cleanup previous handlers
@@ -84,9 +70,6 @@ export function VideoHero({
           video.removeEventListener('ended', handlersRef.current[index]!);
         }
       });
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
     };
   }, [api, videoUrls]);
 
@@ -96,16 +79,7 @@ export function VideoHero({
     const onSelect = () => {
       const newSlide = api.selectedScrollSnap();
       setCurrentSlide(newSlide);
-      
-      // Clear any pending auto-advance timeout when manually navigating
-      if (isManualNavigation.current && timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-        timeoutRef.current = null;
-      }
-      
-      // Reset manual navigation flag when a new video starts
-      isManualNavigation.current = false;
-      
+
       // Pause all videos first
       videoRefs.current.forEach((video) => {
         if (video) {
@@ -128,27 +102,6 @@ export function VideoHero({
 
     return () => {
       api.off('select', onSelect);
-    };
-  }, [api]);
-
-  // Mark manual navigation when user clicks prev/next buttons
-  React.useEffect(() => {
-    if (!api) return;
-
-    const handleManualNav = () => {
-      isManualNavigation.current = true;
-      // Clear any pending auto-advance
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-        timeoutRef.current = null;
-      }
-    };
-
-    // Listen for manual navigation events
-    api.on('settle', handleManualNav);
-
-    return () => {
-      api.off('settle', handleManualNav);
     };
   }, [api]);
   return (
