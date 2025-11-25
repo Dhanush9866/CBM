@@ -141,8 +141,6 @@ export default function Services() {
           'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475303/slide-4_izmzsr.mp4',
           'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475289/slide-5_rff1ml.mp4',
         ]}
-        autoPlaySeconds={120}
-
       />
 
       {/* Trust Indicators */}
