@@ -44,6 +44,10 @@ function createApp() {
     ];
   // Middlewares
   app.use(helmet());
+    app.use(compression());
+  app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
+
   app.use(cors({  origin: function (origin, callback) {
       // Allow requests with no origin (like mobile apps or curl requests)
       if (!origin) return callback(null, true);
@@ -56,9 +60,7 @@ function createApp() {
     },
     credentials: true, // Allow credentials (cookies, authorization headers, etc.)
   }));
-  app.use(compression());
-  app.use(express.json({ limit: '10mb' }));
-  app.use(express.urlencoded({ extended: true }));
+
 
   // Global request duration middleware
   app.use((req, res, next) => {
