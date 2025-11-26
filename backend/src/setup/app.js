@@ -50,13 +50,13 @@ app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
   app.use(cors({  origin: function (origin, callback) {
       // Allow requests with no origin (like mobile apps or curl requests)
-      if (!origin) return callback(null, true);
+     console.log("Request Origin:", origin);
 
-      if (allowedOrigins.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
     },
     credentials: true, // Allow credentials (cookies, authorization headers, etc.)
   }));
