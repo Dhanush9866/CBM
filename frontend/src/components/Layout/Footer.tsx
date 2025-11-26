@@ -150,7 +150,7 @@ export function Footer() {
                     ) : (
                       <>
                         <p>CBM 360 TIV – UK</p>
-                        <p>79 Denyer St, London SW3 2NY, UK</p>
+                        <p>79 Denyer St, London SW3 2NY, United Kingdom</p>
                       </>
                     )}
                   </div>
