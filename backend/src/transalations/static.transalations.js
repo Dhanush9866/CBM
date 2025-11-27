@@ -1,5 +1,4 @@
 
-
 const translations = {
     en: {
       navbar: {
@@ -68,7 +67,7 @@ const translations = {
               title: "Our Global Network",
               titleShort: "Network",
               corporate: "Corporate",
-              regional: "Regional offices with Laboratories",
+              regional: "Government Business with Regional Head Office",
               branch: "Branch offices",
               labs: "Branch offices with Laboratories"
             }
@@ -262,6 +261,9 @@ const translations = {
           responsePhone: "Phone inquiries answered within 3 rings",
           responseEmail: "Email responses within 24 hours",
           responseQuote: "Quote requests processed within 48 hours",
+          regionalHeadOfficeEmirates: "Government Business With Regional Head Office – Emirates (Dubai, UAE)",
+          regionalHeadOfficeHongKong: "Government Business With Regional Head Office – Hong Kong",
+          regionalHeadOfficeBrazil: "Government Business With Regional Head Office – Brazil",
           labels: {
             firstName: "First Name *",
             lastName: "Last Name *",
@@ -488,7 +490,7 @@ const translations = {
               "title": "Notre Réseau Mondial",
               "titleShort": "Réseau",
               "corporate": "Siège Social",
-              "regional": "Bureaux régionaux avec laboratoires",
+              "regional": "Activités gouvernementales avec le siège régional",
               "branch": "Bureaux de succursale",
               "labs": "Succursales avec laboratoires"
             }            
@@ -682,6 +684,9 @@ const translations = {
           responsePhone: "Appels répondus en moins de 3 sonneries",
           responseEmail: "Réponses aux emails sous 24 heures",
           responseQuote: "Devis traités sous 48 heures",
+          regionalHeadOfficeEmirates: "Affaires gouvernementales avec le siège régional – Émirats (Dubaï, EAU)",
+          regionalHeadOfficeHongKong: "Affaires gouvernementales avec le siège régional – Hong Kong",
+          regionalHeadOfficeBrazil: "Affaires gouvernementales avec le siège régional – Brésil",
           labels: {
             firstName: "Prénom *",
             lastName: "Nom *",
@@ -907,7 +912,7 @@ const translations = {
               "title": "Nossa Rede Global",
               "titleShort": "Rede",
               "corporate": "Corporativo",
-              "regional": "Escritórios regionais com laboratórios",
+              "regional": "Negócios governamentais com o Escritório Regional",
               "branch": "Filiais",
               "labs": "Filiais com laboratórios"
             }            
@@ -1101,6 +1106,9 @@ const translations = {
           responsePhone: "Ligações atendidas em até 3 toques",
           responseEmail: "Respostas por e-mail em até 24 horas",
           responseQuote: "Solicitações de cotação processadas em até 48 horas",
+          regionalHeadOfficeEmirates: "Negócios governamentais com o Escritório Regional – Emirados (Dubai, EAU)",
+          regionalHeadOfficeHongKong: "Negócios governamentais com o Escritório Regional – Hong Kong",
+          regionalHeadOfficeBrazil: "Negócios governamentais com o Escritório Regional – Brasil",
           labels: {
             firstName: "Nome *",
             lastName: "Sobrenome *",
@@ -1325,7 +1333,7 @@ const translations = {
               "title": "Nuestra Red Global",
               "titleShort": "Red",
               "corporate": "Corporativo",
-              "regional": "Oficinas regionales con laboratorios",
+              "regional": "Negocios gubernamentales con la Sede Regional",
               "branch": "Sucursales",
               "labs": "Sucursales con laboratorios"
             }            
@@ -1519,6 +1527,9 @@ const translations = {
           responsePhone: "Llamadas respondidas dentro de 3 timbres",
           responseEmail: "Respuestas por correo dentro de 24 horas",
           responseQuote: "Solicitudes de cotización procesadas dentro de 48 horas",
+          regionalHeadOfficeEmirates: "Negocios gubernamentales con la Sede Regional – Emiratos (Dubái, EAU)",
+          regionalHeadOfficeHongKong: "Negocios gubernamentales con la Sede Regional – Hong Kong",
+          regionalHeadOfficeBrazil: "Negocios gubernamentales con la Sede Regional – Brasil",
           labels: {
             firstName: "Nombre *",
             lastName: "Apellido *",
@@ -1743,7 +1754,7 @@ const translations = {
               "title": "Наша Глобальная Сеть",
               "titleShort": "Сеть",
               "corporate": "Корпоративный офис",
-              "regional": "Региональные офисы с лабораториями",
+              "regional": "Государственное сотрудничество с региональным головным офисом",
               "branch": "Филиалы",
               "labs": "Филиалы с лабораториями"
             }            
@@ -1937,6 +1948,9 @@ const translations = {
           responsePhone: "Ответ на звонки в течение 3 гудков",
           responseEmail: "Ответ по электронной почте в течение 24 часов",
           responseQuote: "Обработка запросов на расчет в течение 48 часов",
+          regionalHeadOfficeEmirates: "Государственное сотрудничество с региональным головным офисом – Эмираты (Дубай, ОАЭ)",
+          regionalHeadOfficeHongKong: "Государственное сотрудничество с региональным головным офисом – Гонконг",
+          regionalHeadOfficeBrazil: "Государственное сотрудничество с региональным головным офисом – Бразилия",
           labels: {
             firstName: "Имя *",
             lastName: "Фамилия *",
@@ -2163,7 +2177,7 @@ const translations = {
               "title": "我们的全球网络",
               "titleShort": "网络",
               "corporate": "总部",
-              "regional": "设有实验室的区域办事处",
+              "regional": "与区域总部开展政府业务",
               "branch": "分支办事处",
               "labs": "设有实验室的分支办事处"
             }            
@@ -2367,6 +2381,9 @@ const translations = {
           responsePhone: "电话咨询在 3 声响铃内得到答复",
           responseEmail: "24小时内回复电子邮件",
           responseQuote: "报价请求在 48 小时内处理",
+          regionalHeadOfficeEmirates: "与区域总部 – 阿联酋（迪拜，阿联酋）开展政府业务",
+          regionalHeadOfficeHongKong: "与区域总部 – 香港开展政府业务",
+          regionalHeadOfficeBrazil: "与区域总部 – 巴西开展政府业务",
           labels: {
             firstName: "名 *",
             lastName: "姓 *",

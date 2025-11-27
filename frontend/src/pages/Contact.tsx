@@ -27,7 +27,7 @@ import { useTranslation } from '@/contexts/TranslationContext';
 export default function Contact() {
   const { currentLanguage, translations } = useTranslation();
   const location = useLocation();
-  const [groups, setGroups] = useState<{ region_name: string; offices: any[] }[]>([]);
+  const [groups, setGroups] = useState<{ region_name: string; originalRegionName?: string; offices: any[] }[]>([]);
   const { toast } = useToast();
 
   const [form, setForm] = useState({
@@ -53,11 +53,56 @@ export default function Contact() {
       form.consent === true
     );
   }, [form]);
+  const regionalHeadOfficeConfigs = useMemo(() => ([
+    {
+      baseName: 'regional head office – emirates (dubai, uae)',
+      translation: translations?.pages?.contact?.regionalHeadOfficeEmirates,
+      defaultLabel: 'Government Business With Regional Head Office – Emirates (Dubai, UAE)',
+    },
+    {
+      baseName: 'regional head office – hong kong',
+      translation: translations?.pages?.contact?.regionalHeadOfficeHongKong,
+      defaultLabel: 'Government Business With Regional Head Office – Hong Kong',
+    },
+    {
+      baseName: 'regional head office – brazil',
+      translation: translations?.pages?.contact?.regionalHeadOfficeBrazil,
+      defaultLabel: 'Government Business With Regional Head Office – Brazil',
+    }
+  ]), [translations]);
+
+  const getRegionHeading = (group: { region_name?: string; originalRegionName?: string }) => {
+    const currentName = group.region_name || '';
+    const originalName = group.originalRegionName?.toLowerCase() || '';
+
+    const matchedConfig = regionalHeadOfficeConfigs.find(config =>
+      originalName.includes(config.baseName)
+    );
+
+    if (!matchedConfig) {
+      return currentName;
+    }
+
+    if (matchedConfig.translation) {
+      return matchedConfig.translation;
+    }
+
+    if (currentName.toLowerCase().startsWith('government business with')) {
+      return currentName;
+    }
+
+    if (currentName) {
+      return `Government Business With ${currentName}`;
+    }
+
+    return matchedConfig.defaultLabel;
+  };
   useEffect(() => {
     fetchContactOffices()
       .then((data) => {
         // Apply translations per current language for groups and offices
         const localized = data.map(group => {
+          const originalRegionName = group.region_name;
           const offices = group.offices.map((office: any) => {
             const tr = office.translations?.[currentLanguage];
             if (tr && currentLanguage !== 'en') {
@@ -75,6 +120,7 @@ export default function Contact() {
           });
           return {
             ...group,
+            originalRegionName,
             region_name: offices[0]?.region_name || group.region_name,
             offices,
           };
@@ -191,7 +237,7 @@ export default function Contact() {
           <div className="space-y-12">
             {groups.map((group, index) => (
               <div key={index}>
-                <h3 className="text-2xl font-bold mb-8 text-center">{group.region_name}</h3>
+                <h3 className="text-2xl font-bold mb-8 text-center">{getRegionHeading(group)}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {group.offices.map((office, officeIndex) => (
                     <div key={officeIndex} className="bg-white border border-border rounded-lg p-0 hover:shadow-lg transition-shadow overflow-hidden">
