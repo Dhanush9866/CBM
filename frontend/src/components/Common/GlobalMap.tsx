@@ -432,9 +432,9 @@ const GlobalMap: React.FC<GlobalMapProps> = ({ className = "" }) => {
             <span className="text-xs sm:text-sm font-semibold text-gray-800">{`${legend?.corporate || 'Corporate'} (${corporateCount})`}</span>
           </div>
           <div className="flex items-center gap-2 sm:gap-3 group">
-  <div className="w-3 h-3 sm:w-5 sm:h-5 bg-yellow-400 border border-gray-400 sm:border-2 rounded-full shadow-lg group-hover:scale-110 transition-transform"></div>
-  <span className="text-xs sm:text-sm font-semibold text-gray-800">{`${legend?.regional || 'Regional'} (${regionalHQCount})`}</span>
-</div>
+            <div className="w-3 h-3 sm:w-5 sm:h-5 bg-yellow-400 border border-gray-400 sm:border-2 rounded-full shadow-lg group-hover:scale-110 transition-transform"></div>
+            <span className="text-xs sm:text-sm font-semibold text-gray-800">{legend?.regional || 'Regional'}</span>
+          </div>
 
           <div className="flex items-center gap-2 sm:gap-3 group">
             <div className="w-3 h-3 sm:w-5 sm:h-5 bg-gradient-to-br from-white to-gray-100 border border-gray-400 sm:border-2 rounded-full shadow-lg group-hover:scale-110 transition-transform"></div>

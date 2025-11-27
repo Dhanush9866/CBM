@@ -191,6 +191,9 @@ export interface StaticTranslations {
       responsePhone: string;
       responseEmail: string;
       responseQuote: string;
+      regionalHeadOfficeEmirates?: string;
+      regionalHeadOfficeHongKong?: string;
+      regionalHeadOfficeBrazil?: string;
       labels: {
         firstName: string;
         lastName: string;
@@ -211,6 +214,29 @@ export interface StaticTranslations {
         selectIndustry: string;
         selectService: string;
         message: string;
+      };
+      industryOptions?: {
+        mining: string;
+        oilgas: string;
+        marine: string;
+        automotive: string;
+        healthcare: string;
+        energy: string;
+        manufacturing: string;
+        construction: string;
+        food: string;
+        aerospace: string;
+        technology: string;
+        defence: string;
+        other: string;
+      };
+      serviceOptions?: {
+        testing: string;
+        certification: string;
+        consulting: string;
+        training: string;
+        digital: string;
+        other: string;
       };
       cta: {
         send: string;
