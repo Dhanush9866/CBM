@@ -24,6 +24,7 @@ import InnovationRD from "./pages/InnovationRD";
 import ServiceDetail from "./pages/ServiceDetail";
 import IndustriesDetail from "./pages/IndustriesDetail";
 import WhatsApp from "./pages/WhatsApp";
+import VerifyDoc from "./pages/VerifyDoc";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +56,7 @@ const App = () => (
               <Route path="/blog" element={<Blog />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/whatsapp" element={<WhatsApp />} />
+              <Route path="/verify-doc" element={<VerifyDoc />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Layout>

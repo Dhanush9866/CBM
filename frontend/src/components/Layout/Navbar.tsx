@@ -164,6 +164,11 @@ export function Navbar() {
                   {translations?.navbar.getQuote || 'Get Quote'}
                 </Link>
               </Button>
+              <Button variant="outline" className="text-primary border-primary" asChild>
+                <Link to="/verify-doc">
+                  {translations?.navbar?.verifyDocs || 'Verify Documents'}
+                </Link>
+              </Button>
             </div>
 
             {/* Mobile menu button */}
@@ -242,6 +247,11 @@ export function Navbar() {
                         {translations?.navbar.getQuote || 'Get Quote'}
                       </Link>
                     </Button>
+                  <Button variant="outline" asChild>
+                    <Link to="/verify-doc" onClick={() => setIsOpen(false)}>
+                      {translations?.navbar?.verifyDocs || 'Verify Documents'}
+                    </Link>
+                  </Button>
                   </div>
                 </div>
               </div>
