@@ -17,6 +17,11 @@ class EmailService {
   async sendContactInquiry(inquiryData) {
     try {
       const adminEmail = process.env.ADMIN_EMAIL || 'admin@cbm.com';
+      console.log('[EmailService] Preparing contact inquiry email', {
+        adminEmail,
+        from: inquiryData.email,
+        company: inquiryData.company,
+      });
 
       const emailContent = this.generateContactEmail(inquiryData);
 
@@ -32,6 +37,7 @@ class EmailService {
       logger.info('Contact inquiry email sent successfully', {
         messageId: result.messageId,
         from: inquiryData.email,
+        adminEmail,
       });
 
       return { success: true, messageId: result.messageId };
@@ -126,6 +132,120 @@ class EmailService {
           </div>
           <div class="footer">
             This inquiry was submitted from the CBM website contact form. Please respond directly to the sender by replying to this email.
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+  }
+
+  /**
+   * Send verification request email with attachments
+   * @param {Object} verificationData
+   * @param {Array<{buffer: Buffer, originalname: string, mimetype: string}>} documents
+   */
+  async sendDocumentVerification(verificationData, documents) {
+    try {
+      const adminEmail = process.env.ADMIN_EMAIL || 'admin@cbm.com';
+      console.log('[EmailService] Preparing document verification email', {
+        adminEmail,
+        requester: `${verificationData.firstName} ${verificationData.lastName}`,
+        attachmentCount: documents?.length || 0,
+      });
+
+      const emailContent = this.generateVerificationEmail(verificationData);
+
+      const attachments = (documents || []).map((doc) => ({
+        filename: doc.originalname,
+        content: doc.buffer,
+        contentType: this.getContentType(doc.originalname, doc.mimetype),
+      }));
+
+      const mailOptions = {
+        from: `"CBM Verification" <${process.env.SMTP_USER}>`,
+        to: adminEmail,
+        replyTo: verificationData.email,
+        subject: `Document Verification Request - ${verificationData.firstName} ${verificationData.lastName}`,
+        html: emailContent,
+        attachments,
+      };
+
+      const result = await this.transporter.sendMail(mailOptions);
+      logger.info('Verification request email sent successfully', {
+        messageId: result.messageId,
+        requester: `${verificationData.firstName} ${verificationData.lastName}`,
+        adminEmail,
+      });
+
+      return { success: true, messageId: result.messageId };
+    } catch (error) {
+      logger.error('Failed to send verification request email:', error);
+      throw new Error('Failed to send verification request email');
+    }
+  }
+
+  generateVerificationEmail(data) {
+    const safe = (value) => (value ? String(value) : '—');
+    return `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8" />
+        <title>Document Verification Request</title>
+        <style>
+          body { font-family: Arial, sans-serif; background-color: #f8fafc; color: #0f172a; }
+          .container { max-width: 680px; margin: 24px auto; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 12px 34px rgba(15,23,42,0.12); }
+          .header { background: linear-gradient(120deg, #4f46e5, #0ea5e9); color: white; padding: 28px 32px; }
+          .header h1 { margin: 0; font-size: 22px; }
+          .content { padding: 28px 32px; }
+          .grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 16px; }
+          .card { border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 16px; background: #f8fafc; }
+          .label { font-size: 12px; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+          .value { font-size: 15px; font-weight: 600; color: #0f172a; }
+          .message { margin-top: 20px; border-left: 4px solid #4f46e5; background: #f8fafc; padding: 18px; border-radius: 8px; white-space: pre-wrap; }
+          .footer { padding: 20px 28px; background: #f1f5f9; font-size: 12px; color: #475569; text-align: center; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>New Document Verification Request</h1>
+            <p>Received on ${new Date().toLocaleString()}</p>
+          </div>
+          <div class="content">
+            <div class="grid">
+              <div class="card">
+                <div class="label">First Name</div>
+                <div class="value">${safe(data.firstName)}</div>
+              </div>
+              <div class="card">
+                <div class="label">Last Name</div>
+                <div class="value">${safe(data.lastName)}</div>
+              </div>
+              <div class="card">
+                <div class="label">Email</div>
+                <div class="value">${safe(data.email)}</div>
+              </div>
+              <div class="card">
+                <div class="label">Location</div>
+                <div class="value">${safe(data.location)}</div>
+              </div>
+              <div class="card">
+                <div class="label">Company</div>
+                <div class="value">${safe(data.companyName)}</div>
+              </div>
+              <div class="card">
+                <div class="label">Job Title</div>
+                <div class="value">${safe(data.jobTitle)}</div>
+              </div>
+            </div>
+            <div class="message">
+              <div class="label" style="margin-bottom:8px;">Comments / Notes</div>
+              ${safe(data.comments)}
+            </div>
+          </div>
+          <div class="footer">
+            The requester attached documents that need verification. Please reply directly to initiate follow-up.
           </div>
         </div>
       </body>
@@ -275,16 +395,20 @@ initializeTransporter() {
   /**
    * Get content type based on file extension
    * @param {string} fileName - File name with extension
+   * @param {string} fallbackMime - fallback mime type
    * @returns {string} MIME content type
    */
-  getContentType(fileName) {
+  getContentType(fileName, fallbackMime) {
     const extension = fileName.split('.').pop().toLowerCase();
     const contentTypes = {
       'pdf': 'application/pdf',
       'doc': 'application/msword',
-      'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'jpg': 'image/jpeg',
+      'jpeg': 'image/jpeg',
+      'png': 'image/png'
     };
-    return contentTypes[extension] || 'application/octet-stream';
+    return contentTypes[extension] || fallbackMime || 'application/octet-stream';
   }
 
   /**
