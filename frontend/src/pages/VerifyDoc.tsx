@@ -1,4 +1,4 @@
-import { FormEvent, useMemo, useState } from 'react';
+import { FormEvent, useMemo, useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -13,31 +13,45 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { submitVerificationRequest } from '@/services/verifyDoc';
 import { FileCheck2, Loader2, ShieldCheck, UploadCloud } from 'lucide-react';
-
-const locationOptions = [
-  'Global',
-  'United Arab Emirates',
-  'Saudi Arabia',
-  'Qatar',
-  'United Kingdom',
-  'European Union',
-  'United States',
-  'Asia Pacific',
-  'Africa',
-  'Latin America',
-];
+import { useTranslation } from '@/contexts/TranslationContext';
 
 export default function VerifyDoc() {
   const { toast } = useToast();
+  const { translations } = useTranslation();
+  const verifyDoc = translations?.pages?.verifyDoc;
+  
+  const locationOptions = useMemo(() => {
+    if (!verifyDoc?.locations) return ['Global'];
+    return [
+      verifyDoc.locations.global,
+      verifyDoc.locations.uae,
+      verifyDoc.locations.saudi,
+      verifyDoc.locations.qatar,
+      verifyDoc.locations.uk,
+      verifyDoc.locations.eu,
+      verifyDoc.locations.usa,
+      verifyDoc.locations.asia,
+      verifyDoc.locations.africa,
+      verifyDoc.locations.latin,
+    ];
+  }, [verifyDoc]);
+
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
     email: '',
     companyName: '',
     jobTitle: '',
-    location: locationOptions[0],
+    location: '',
     comments: '',
   });
+
+  // Update location when translations load
+  useEffect(() => {
+    if (locationOptions.length > 0 && !form.location) {
+      setForm((prev) => ({ ...prev, location: locationOptions[0] }));
+    }
+  }, [locationOptions, form.location]);
   const [documents, setDocuments] = useState<File[]>([]);
   const [submitting, setSubmitting] = useState(false);
 
@@ -68,8 +82,8 @@ export default function VerifyDoc() {
     event.preventDefault();
     if (!canSubmit) {
       toast({
-        title: 'Incomplete details',
-        description: 'Please fill the required fields and attach at least one document.',
+        title: verifyDoc?.toast?.incomplete?.title || 'Incomplete details',
+        description: verifyDoc?.toast?.incomplete?.description || 'Please fill the required fields and attach at least one document.',
       });
       return;
     }
@@ -88,8 +102,8 @@ export default function VerifyDoc() {
         documents
       );
       toast({
-        title: 'Request sent',
-        description: 'Your documents were shared with our verification team.',
+        title: verifyDoc?.toast?.success?.title || 'Request sent',
+        description: verifyDoc?.toast?.success?.description || 'Your documents were shared with our verification team.',
       });
       setForm({
         firstName: '',
@@ -97,7 +111,7 @@ export default function VerifyDoc() {
         email: '',
         companyName: '',
         jobTitle: '',
-        location: locationOptions[0],
+        location: locationOptions[0] || 'Global',
         comments: '',
       });
       setDocuments([]);
@@ -105,9 +119,9 @@ export default function VerifyDoc() {
       const description =
         error?.response?.data?.message ||
         error?.response?.data?.error ||
-        'Unable to send your request. Please try again later.';
+        verifyDoc?.toast?.error?.description || 'Unable to send your request. Please try again later.';
       toast({
-        title: 'Submission failed',
+        title: verifyDoc?.toast?.error?.title || 'Submission failed',
         description,
         variant: 'destructive',
       });
@@ -129,24 +143,23 @@ export default function VerifyDoc() {
         <div className="relative container-responsive py-20 lg:py-32">
           <div className="max-w-3xl space-y-6">
             <span className="inline-flex items-center rounded-full bg-white/10 px-4 py-1 text-sm font-semibold tracking-wide">
-              Trusted Compliance Desk
+              {verifyDoc?.hero?.badge || 'Trusted Compliance Desk'}
             </span>
             <h1 className="text-4xl font-bold tracking-tight text-balance lg:text-5xl">
-              Verify Your Certificates & Technical Documents
+              {verifyDoc?.hero?.title || 'Verify Your Certificates & Technical Documents'}
             </h1>
             <p className="text-lg text-white/80">
-              Upload inspection reports, compliance certificates, or calibration records securely.
-              Our admin team will validate authenticity and respond with next steps within 24 hours.
+              {verifyDoc?.hero?.description || 'Upload inspection reports, compliance certificates, or calibration records securely. Our admin team will validate authenticity and respond with next steps within 24 hours.'}
             </p>
             <div className="flex flex-wrap gap-4">
               <a href="#verify-form">
                 <Button size="lg" className="bg-white text-primary hover:bg-white/90">
-                  Start Verification
+                  {verifyDoc?.hero?.cta || 'Start Verification'}
                 </Button>
               </a>
               <div className="flex items-center text-sm text-white/80">
                 <ShieldCheck className="mr-2 h-5 w-5 text-emerald-300" />
-                Encrypted & handled by admin only
+                {verifyDoc?.hero?.security || 'Encrypted & handled by admin only'}
               </div>
             </div>
           </div>
@@ -158,30 +171,29 @@ export default function VerifyDoc() {
         <div className="container-responsive grid gap-10 lg:grid-cols-[2fr,1fr]">
           <div className="rounded-2xl border border-border bg-white p-6 shadow-tuv-sm lg:p-10">
             <div className="mb-8">
-              <h2 className="text-3xl font-bold">Submit documents for manual verification</h2>
+              <h2 className="text-3xl font-bold">{verifyDoc?.form?.title || 'Submit documents for manual verification'}</h2>
               <p className="text-muted-foreground mt-3">
-                Provide the basic contact details and attach the certificates or reports that need
-                validation. You can add up to 5 files (PDF, DOC/DOCX, JPG, PNG) per submission.
+                {verifyDoc?.form?.description || 'Provide the basic contact details and attach the certificates or reports that need validation. You can add up to 5 files (PDF, DOC/DOCX, JPG, PNG) per submission.'}
               </p>
             </div>
 
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="grid gap-6 md:grid-cols-2">
                 <div>
-                  <Label htmlFor="firstName">First Name *</Label>
+                  <Label htmlFor="firstName">{verifyDoc?.form?.labels?.firstName || 'First Name *'}</Label>
                   <Input
                     id="firstName"
-                    placeholder="Jane"
+                    placeholder={verifyDoc?.form?.placeholders?.firstName || 'Jane'}
                     value={form.firstName}
                     onChange={(event) => setForm((prev) => ({ ...prev, firstName: event.target.value }))}
                     required
                   />
                 </div>
                 <div>
-                  <Label htmlFor="lastName">Last Name *</Label>
+                  <Label htmlFor="lastName">{verifyDoc?.form?.labels?.lastName || 'Last Name *'}</Label>
                   <Input
                     id="lastName"
-                    placeholder="Doe"
+                    placeholder={verifyDoc?.form?.placeholders?.lastName || 'Doe'}
                     value={form.lastName}
                     onChange={(event) => setForm((prev) => ({ ...prev, lastName: event.target.value }))}
                     required
@@ -191,24 +203,24 @@ export default function VerifyDoc() {
 
               <div className="grid gap-6 md:grid-cols-2">
                 <div>
-                  <Label htmlFor="email">Official Email *</Label>
+                  <Label htmlFor="email">{verifyDoc?.form?.labels?.email || 'Official Email *'}</Label>
                   <Input
                     id="email"
                     type="email"
-                    placeholder="you@company.com"
+                    placeholder={verifyDoc?.form?.placeholders?.email || 'you@company.com'}
                     value={form.email}
                     onChange={(event) => setForm((prev) => ({ ...prev, email: event.target.value }))}
                     required
                   />
                 </div>
                 <div>
-                  <Label htmlFor="location">Location *</Label>
+                  <Label htmlFor="location">{verifyDoc?.form?.labels?.location || 'Location *'}</Label>
                   <Select
                     value={form.location}
                     onValueChange={(value) => setForm((prev) => ({ ...prev, location: value }))}
                   >
                     <SelectTrigger id="location">
-                      <SelectValue placeholder="Select a region" />
+                      <SelectValue placeholder={verifyDoc?.form?.placeholders?.location || 'Select a region'} />
                     </SelectTrigger>
                     <SelectContent>
                       {locationOptions.map((option) => (
@@ -223,10 +235,10 @@ export default function VerifyDoc() {
 
               <div className="grid gap-6 md:grid-cols-2">
                 <div>
-                  <Label htmlFor="companyName">Company Name (optional)</Label>
+                  <Label htmlFor="companyName">{verifyDoc?.form?.labels?.companyName || 'Company Name (optional)'}</Label>
                   <Input
                     id="companyName"
-                    placeholder="CBM 360 Global"
+                    placeholder={verifyDoc?.form?.placeholders?.companyName || 'CBM 360 Global'}
                     value={form.companyName}
                     onChange={(event) =>
                       setForm((prev) => ({ ...prev, companyName: event.target.value }))
@@ -234,10 +246,10 @@ export default function VerifyDoc() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="jobTitle">Job Title (optional)</Label>
+                  <Label htmlFor="jobTitle">{verifyDoc?.form?.labels?.jobTitle || 'Job Title (optional)'}</Label>
                   <Input
                     id="jobTitle"
-                    placeholder="Operations Manager"
+                    placeholder={verifyDoc?.form?.placeholders?.jobTitle || 'Operations Manager'}
                     value={form.jobTitle}
                     onChange={(event) => setForm((prev) => ({ ...prev, jobTitle: event.target.value }))}
                   />
@@ -245,10 +257,10 @@ export default function VerifyDoc() {
               </div>
 
               <div>
-                <Label htmlFor="comments">Comments / Reference (optional)</Label>
+                <Label htmlFor="comments">{verifyDoc?.form?.labels?.comments || 'Comments / Reference (optional)'}</Label>
                 <Textarea
                   id="comments"
-                  placeholder="Add purchase order, certificate IDs, or any special notes..."
+                  placeholder={verifyDoc?.form?.placeholders?.comments || 'Add purchase order, certificate IDs, or any special notes...'}
                   value={form.comments}
                   onChange={(event) => setForm((prev) => ({ ...prev, comments: event.target.value }))}
                   className="min-h-[120px]"
@@ -256,7 +268,7 @@ export default function VerifyDoc() {
               </div>
 
               <div>
-                <Label>Upload documents *</Label>
+                <Label>{verifyDoc?.form?.labels?.upload || 'Upload documents *'}</Label>
                 <div className="mt-3 rounded-2xl border-2 border-dashed border-border p-6 text-center">
                   <input
                     id="documents"
@@ -268,9 +280,9 @@ export default function VerifyDoc() {
                   />
                   <label htmlFor="documents" className="flex cursor-pointer flex-col items-center">
                     <UploadCloud className="mb-3 h-10 w-10 text-primary" />
-                    <p className="font-semibold">Drag & drop or click to upload</p>
+                    <p className="font-semibold">{verifyDoc?.form?.upload?.dragDrop || 'Drag & drop or click to upload'}</p>
                     <p className="text-sm text-muted-foreground">
-                      Up to 5 files • Max 10MB each • PDF, DOC, DOCX, JPG, PNG
+                      {verifyDoc?.form?.upload?.fileInfo || 'Up to 5 files • Max 10MB each • PDF, DOC, DOCX, JPG, PNG'}
                     </p>
                   </label>
                 </div>
@@ -293,7 +305,7 @@ export default function VerifyDoc() {
                           className="text-primary hover:underline"
                           onClick={() => removeFile(index)}
                         >
-                          Remove
+                          {verifyDoc?.form?.upload?.remove || 'Remove'}
                         </button>
                       </li>
                     ))}
@@ -305,10 +317,10 @@ export default function VerifyDoc() {
                 {submitting ? (
                   <>
                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    Sending...
+                    {verifyDoc?.form?.sending || 'Sending...'}
                   </>
                 ) : (
-                  'Send to Admin Team'
+                  verifyDoc?.form?.submit || 'Send to Admin Team'
                 )}
               </Button>
             </form>
@@ -317,27 +329,26 @@ export default function VerifyDoc() {
           <aside className="space-y-6">
             <div className="rounded-2xl bg-gradient-to-br from-slate-900 to-slate-700 p-8 text-white shadow-lg">
               <ShieldCheck className="mb-4 h-10 w-10 text-emerald-300" />
-              <h3 className="text-2xl font-semibold">What happens next?</h3>
+              <h3 className="text-2xl font-semibold">{verifyDoc?.sidebar?.nextSteps?.title || 'What happens next?'}</h3>
               <ul className="mt-6 space-y-4 text-sm text-white/80">
                 <li>
-                  <span className="font-semibold text-white">1. Secure review:</span> Our admin desk
-                  validates file integrity and authenticity.
+                  <span className="font-semibold text-white">{verifyDoc?.sidebar?.nextSteps?.step1?.label || '1. Secure review:'}</span>{' '}
+                  {verifyDoc?.sidebar?.nextSteps?.step1?.text || 'Our admin desk validates file integrity and authenticity.'}
                 </li>
                 <li>
-                  <span className="font-semibold text-white">2. Confirmation email:</span> You will
-                  receive a direct update from Support@cbm360tiv.com.
+                  <span className="font-semibold text-white">{verifyDoc?.sidebar?.nextSteps?.step2?.label || '2. Confirmation email:'}</span>{' '}
+                  {verifyDoc?.sidebar?.nextSteps?.step2?.text || 'You will receive a direct update from Support@cbm360tiv.com.'}
                 </li>
                 <li>
-                  <span className="font-semibold text-white">3. Assisted follow-up:</span> Additional
-                  clarifications or site audits are scheduled if needed.
+                  <span className="font-semibold text-white">{verifyDoc?.sidebar?.nextSteps?.step3?.label || '3. Assisted follow-up:'}</span>{' '}
+                  {verifyDoc?.sidebar?.nextSteps?.step3?.text || 'Additional clarifications or site audits are scheduled if needed.'}
                 </li>
               </ul>
             </div>
             <div className="rounded-2xl border border-border bg-muted/30 p-6">
-              <h4 className="text-lg font-semibold">Need quick assistance?</h4>
+              <h4 className="text-lg font-semibold">{verifyDoc?.sidebar?.assistance?.title || 'Need quick assistance?'}</h4>
               <p className="text-sm text-muted-foreground mt-2">
-                Email Support@cbm360tiv.com or call +44 7934 980214 referencing &ldquo;Verify Doc
-                Portal&rdquo; for priority routing.
+                {verifyDoc?.sidebar?.assistance?.description || 'Email Support@cbm360tiv.com or call +44 7934 980214 referencing "Verify Doc Portal" for priority routing.'}
               </p>
             </div>
           </aside>

@@ -10,6 +10,7 @@ const translations = {
         contact: "Contact",
         getQuote: "Get Quote",
         contactUs: "Contact Us",
+        verifyDocs: "Verify Documents",
       },
       footer: {
         company: "CBM",
@@ -313,6 +314,92 @@ const translations = {
             other: "Consulting Services"
           }
         },
+        verifyDoc: {
+          hero: {
+            badge: "Trusted Compliance Desk",
+            title: "Verify Your Certificates & Technical Documents",
+            description: "Upload inspection reports, compliance certificates, or calibration records securely. Our admin team will validate authenticity and respond with next steps within 24 hours.",
+            cta: "Start Verification",
+            security: "Encrypted & handled by admin only"
+          },
+          form: {
+            title: "Submit documents for manual verification",
+            description: "Provide the basic contact details and attach the certificates or reports that need validation. You can add up to 5 files (PDF, DOC/DOCX, JPG, PNG) per submission.",
+            labels: {
+              firstName: "First Name *",
+              lastName: "Last Name *",
+              email: "Official Email *",
+              location: "Location *",
+              companyName: "Company Name (optional)",
+              jobTitle: "Job Title (optional)",
+              comments: "Comments / Reference (optional)",
+              upload: "Upload documents *"
+            },
+            placeholders: {
+              firstName: "Jane",
+              lastName: "Doe",
+              email: "you@company.com",
+              location: "Select a region",
+              companyName: "CBM 360 Global",
+              jobTitle: "Operations Manager",
+              comments: "Add purchase order, certificate IDs, or any special notes..."
+            },
+            upload: {
+              dragDrop: "Drag & drop or click to upload",
+              fileInfo: "Up to 5 files • Max 10MB each • PDF, DOC, DOCX, JPG, PNG",
+              remove: "Remove"
+            },
+            submit: "Send to Admin Team",
+            sending: "Sending..."
+          },
+          sidebar: {
+            nextSteps: {
+              title: "What happens next?",
+              step1: {
+                label: "1. Secure review:",
+                text: "Our admin desk validates file integrity and authenticity."
+              },
+              step2: {
+                label: "2. Confirmation email:",
+                text: "You will receive a direct update from Support@cbm360tiv.com."
+              },
+              step3: {
+                label: "3. Assisted follow-up:",
+                text: "Additional clarifications or site audits are scheduled if needed."
+              }
+            },
+            assistance: {
+              title: "Need quick assistance?",
+              description: "Email Support@cbm360tiv.com or call +44 7934 980214 referencing \"Verify Doc Portal\" for priority routing."
+            }
+          },
+          toast: {
+            incomplete: {
+              title: "Incomplete details",
+              description: "Please fill the required fields and attach at least one document."
+            },
+            success: {
+              title: "Request sent",
+              description: "Your documents were shared with our verification team."
+            },
+            error: {
+              title: "Submission failed",
+              description: "Unable to send your request. Please try again later."
+            }
+          },
+          locations: {
+            global: "Global",
+            uae: "United Arab Emirates",
+            saudi: "Saudi Arabia",
+            qatar: "Qatar",
+            uk: "United Kingdom",
+            eu: "European Union",
+            usa: "United States",
+            asia: "Asia Pacific",
+            africa: "Africa",
+            latin: "Latin America"
+          }
+        },
       },
       services: {
         completeServicePortfolio: {
@@ -431,6 +518,7 @@ const translations = {
         contact: "Contact",
         getQuote: "Obtenir un devis",
         contactUs: "Contactez-nous",
+        verifyDocs: "Vérifier les Documents",
       },
       footer: {
         company: "CBM",
@@ -736,6 +824,92 @@ const translations = {
             other: "Services de Conseil"
           }
         },
+        verifyDoc: {
+          hero: {
+            badge: "Bureau de Conformité de Confiance",
+            title: "Vérifiez Vos Certificats et Documents Techniques",
+            description: "Téléchargez en toute sécurité des rapports d'inspection, des certificats de conformité ou des enregistrements d'étalonnage. Notre équipe administrative validera l'authenticité et répondra avec les prochaines étapes dans les 24 heures.",
+            cta: "Commencer la Vérification",
+            security: "Chiffré et géré uniquement par l'administrateur"
+          },
+          form: {
+            title: "Soumettre des documents pour vérification manuelle",
+            description: "Fournissez les coordonnées de base et joignez les certificats ou rapports qui nécessitent une validation. Vous pouvez ajouter jusqu'à 5 fichiers (PDF, DOC/DOCX, JPG, PNG) par soumission.",
+            labels: {
+              firstName: "Prénom *",
+              lastName: "Nom *",
+              email: "Email Officiel *",
+              location: "Localisation *",
+              companyName: "Nom de l'Entreprise (optionnel)",
+              jobTitle: "Titre du Poste (optionnel)",
+              comments: "Commentaires / Référence (optionnel)",
+              upload: "Télécharger des documents *"
+            },
+            placeholders: {
+              firstName: "Jean",
+              lastName: "Dupont",
+              email: "vous@entreprise.com",
+              location: "Sélectionner une région",
+              companyName: "CBM 360 Global",
+              jobTitle: "Directeur des Opérations",
+              comments: "Ajouter un bon de commande, des identifiants de certificat ou toute note spéciale..."
+            },
+            upload: {
+              dragDrop: "Glisser-déposer ou cliquer pour télécharger",
+              fileInfo: "Jusqu'à 5 fichiers • Max 10 Mo chacun • PDF, DOC, DOCX, JPG, PNG",
+              remove: "Supprimer"
+            },
+            submit: "Envoyer à l'Équipe Admin",
+            sending: "Envoi..."
+          },
+          sidebar: {
+            nextSteps: {
+              title: "Que se passe-t-il ensuite ?",
+              step1: {
+                label: "1. Examen sécurisé :",
+                text: "Notre bureau administratif valide l'intégrité et l'authenticité des fichiers."
+              },
+              step2: {
+                label: "2. Email de confirmation :",
+                text: "Vous recevrez une mise à jour directe de Support@cbm360tiv.com."
+              },
+              step3: {
+                label: "3. Suivi assisté :",
+                text: "Des clarifications supplémentaires ou des audits sur site sont programmés si nécessaire."
+              }
+            },
+            assistance: {
+              title: "Besoin d'une assistance rapide ?",
+              description: "Envoyez un email à Support@cbm360tiv.com ou appelez le +44 7934 980214 en référençant \"Portail de Vérification de Documents\" pour un routage prioritaire."
+            }
+          },
+          toast: {
+            incomplete: {
+              title: "Détails incomplets",
+              description: "Veuillez remplir les champs requis et joindre au moins un document."
+            },
+            success: {
+              title: "Demande envoyée",
+              description: "Vos documents ont été partagés avec notre équipe de vérification."
+            },
+            error: {
+              title: "Échec de l'envoi",
+              description: "Impossible d'envoyer votre demande. Veuillez réessayer plus tard."
+            }
+          },
+          locations: {
+            global: "Mondial",
+            uae: "Émirats Arabes Unis",
+            saudi: "Arabie Saoudite",
+            qatar: "Qatar",
+            uk: "Royaume-Uni",
+            eu: "Union Européenne",
+            usa: "États-Unis",
+            asia: "Asie-Pacifique",
+            africa: "Afrique",
+            latin: "Amérique Latine"
+          }
+        },
       },
       services: {
         completeServicePortfolio: {
@@ -854,6 +1028,7 @@ const translations = {
         contact: "Contato",
         getQuote: "Solicitar Orçamento",
         contactUs: "Contate-Nos",
+        verifyDocs: "Verificar Documentos",
       },
       footer: {
         company: "CBM",
@@ -1158,6 +1333,92 @@ const translations = {
             other: "Serviços de Consultoria"
           }
         },
+        verifyDoc: {
+          hero: {
+            badge: "Mesa de Conformidade Confiável",
+            title: "Verifique Seus Certificados e Documentos Técnicos",
+            description: "Envie com segurança relatórios de inspeção, certificados de conformidade ou registros de calibração. Nossa equipe administrativa validará a autenticidade e responderá com os próximos passos em até 24 horas.",
+            cta: "Iniciar Verificação",
+            security: "Criptografado e gerenciado apenas pelo administrador"
+          },
+          form: {
+            title: "Enviar documentos para verificação manual",
+            description: "Forneça os dados de contato básicos e anexe os certificados ou relatórios que precisam de validação. Você pode adicionar até 5 arquivos (PDF, DOC/DOCX, JPG, PNG) por envio.",
+            labels: {
+              firstName: "Nome *",
+              lastName: "Sobrenome *",
+              email: "Email Oficial *",
+              location: "Localização *",
+              companyName: "Nome da Empresa (opcional)",
+              jobTitle: "Cargo (opcional)",
+              comments: "Comentários / Referência (opcional)",
+              upload: "Enviar documentos *"
+            },
+            placeholders: {
+              firstName: "João",
+              lastName: "Silva",
+              email: "voce@empresa.com",
+              location: "Selecionar uma região",
+              companyName: "CBM 360 Global",
+              jobTitle: "Gerente de Operações",
+              comments: "Adicionar ordem de compra, IDs de certificado ou quaisquer observações especiais..."
+            },
+            upload: {
+              dragDrop: "Arraste e solte ou clique para enviar",
+              fileInfo: "Até 5 arquivos • Máx 10MB cada • PDF, DOC, DOCX, JPG, PNG",
+              remove: "Remover"
+            },
+            submit: "Enviar para a Equipe Admin",
+            sending: "Enviando..."
+          },
+          sidebar: {
+            nextSteps: {
+              title: "O que acontece a seguir?",
+              step1: {
+                label: "1. Revisão segura:",
+                text: "Nossa mesa administrativa valida a integridade e autenticidade dos arquivos."
+              },
+              step2: {
+                label: "2. Email de confirmação:",
+                text: "Você receberá uma atualização direta de Support@cbm360tiv.com."
+              },
+              step3: {
+                label: "3. Acompanhamento assistido:",
+                text: "Esclarecimentos adicionais ou auditorias no local são agendados se necessário."
+              }
+            },
+            assistance: {
+              title: "Precisa de assistência rápida?",
+              description: "Envie um email para Support@cbm360tiv.com ou ligue para +44 7934 980214 referenciando \"Portal de Verificação de Documentos\" para roteamento prioritário."
+            }
+          },
+          toast: {
+            incomplete: {
+              title: "Detalhes incompletos",
+              description: "Por favor, preencha os campos obrigatórios e anexe pelo menos um documento."
+            },
+            success: {
+              title: "Solicitação enviada",
+              description: "Seus documentos foram compartilhados com nossa equipe de verificação."
+            },
+            error: {
+              title: "Falha no envio",
+              description: "Não foi possível enviar sua solicitação. Por favor, tente novamente mais tarde."
+            }
+          },
+          locations: {
+            global: "Global",
+            uae: "Emirados Árabes Unidos",
+            saudi: "Arábia Saudita",
+            qatar: "Catar",
+            uk: "Reino Unido",
+            eu: "União Europeia",
+            usa: "Estados Unidos",
+            asia: "Ásia-Pacífico",
+            africa: "África",
+            latin: "América Latina"
+          }
+        },
       },
       services: {
         completeServicePortfolio: {
@@ -1276,6 +1537,7 @@ const translations = {
         contact: "Contacto",
         getQuote: "Obtener Cotización",
         contactUs: "Contáctenos",
+        verifyDocs: "Verificar Documentos",
       },
       footer: {
         company: "CBM",
@@ -1579,6 +1841,92 @@ const translations = {
             other: "Servicios de Consultoría"
           }
         },
+        verifyDoc: {
+          hero: {
+            badge: "Mesa de Cumplimiento Confiable",
+            title: "Verifique Sus Certificados y Documentos Técnicos",
+            description: "Cargue de forma segura informes de inspección, certificados de cumplimiento o registros de calibración. Nuestro equipo administrativo validará la autenticidad y responderá con los próximos pasos en 24 horas.",
+            cta: "Iniciar Verificación",
+            security: "Cifrado y manejado solo por el administrador"
+          },
+          form: {
+            title: "Enviar documentos para verificación manual",
+            description: "Proporcione los datos de contacto básicos y adjunte los certificados o informes que necesitan validación. Puede agregar hasta 5 archivos (PDF, DOC/DOCX, JPG, PNG) por envío.",
+            labels: {
+              firstName: "Nombre *",
+              lastName: "Apellido *",
+              email: "Email Oficial *",
+              location: "Ubicación *",
+              companyName: "Nombre de la Empresa (opcional)",
+              jobTitle: "Cargo (opcional)",
+              comments: "Comentarios / Referencia (opcional)",
+              upload: "Subir documentos *"
+            },
+            placeholders: {
+              firstName: "Juan",
+              lastName: "Pérez",
+              email: "usted@empresa.com",
+              location: "Seleccionar una región",
+              companyName: "CBM 360 Global",
+              jobTitle: "Gerente de Operaciones",
+              comments: "Agregar orden de compra, IDs de certificado o cualquier nota especial..."
+            },
+            upload: {
+              dragDrop: "Arrastrar y soltar o hacer clic para subir",
+              fileInfo: "Hasta 5 archivos • Máx 10MB cada uno • PDF, DOC, DOCX, JPG, PNG",
+              remove: "Eliminar"
+            },
+            submit: "Enviar al Equipo Admin",
+            sending: "Enviando..."
+          },
+          sidebar: {
+            nextSteps: {
+              title: "¿Qué sucede después?",
+              step1: {
+                label: "1. Revisión segura:",
+                text: "Nuestra mesa administrativa valida la integridad y autenticidad de los archivos."
+              },
+              step2: {
+                label: "2. Email de confirmación:",
+                text: "Recibirá una actualización directa de Support@cbm360tiv.com."
+              },
+              step3: {
+                label: "3. Seguimiento asistido:",
+                text: "Se programan aclaraciones adicionales o auditorías en el sitio si es necesario."
+              }
+            },
+            assistance: {
+              title: "¿Necesita asistencia rápida?",
+              description: "Envíe un correo a Support@cbm360tiv.com o llame al +44 7934 980214 haciendo referencia al \"Portal de Verificación de Documentos\" para enrutamiento prioritario."
+            }
+          },
+          toast: {
+            incomplete: {
+              title: "Detalles incompletos",
+              description: "Por favor, complete los campos obligatorios y adjunte al menos un documento."
+            },
+            success: {
+              title: "Solicitud enviada",
+              description: "Sus documentos fueron compartidos con nuestro equipo de verificación."
+            },
+            error: {
+              title: "Error en el envío",
+              description: "No se pudo enviar su solicitud. Por favor, intente nuevamente más tarde."
+            }
+          },
+          locations: {
+            global: "Global",
+            uae: "Emiratos Árabes Unidos",
+            saudi: "Arabia Saudita",
+            qatar: "Catar",
+            uk: "Reino Unido",
+            eu: "Unión Europea",
+            usa: "Estados Unidos",
+            asia: "Asia Pacífico",
+            africa: "África",
+            latin: "América Latina"
+          }
+        },
       },
       services: {
         completeServicePortfolio: {
@@ -1697,6 +2045,7 @@ const translations = {
         contact: "Контакты",
         getQuote: "Получить предложение",
         contactUs: "Свяжитесь с нами",
+        verifyDocs: "Проверить Документы",
       },
       footer: {
         company: "CBM",
@@ -2000,6 +2349,92 @@ const translations = {
             other: "Консалтинговые услуги"
           }
         },
+        verifyDoc: {
+          hero: {
+            badge: "Доверенный отдел соответствия",
+            title: "Проверьте Ваши Сертификаты и Технические Документы",
+            description: "Безопасно загружайте отчеты об инспекции, сертификаты соответствия или записи калибровки. Наша административная команда проверит подлинность и ответит с дальнейшими шагами в течение 24 часов.",
+            cta: "Начать Проверку",
+            security: "Зашифровано и обрабатывается только администратором"
+          },
+          form: {
+            title: "Отправить документы для ручной проверки",
+            description: "Укажите основные контактные данные и приложите сертификаты или отчеты, которые требуют проверки. Вы можете добавить до 5 файлов (PDF, DOC/DOCX, JPG, PNG) за отправку.",
+            labels: {
+              firstName: "Имя *",
+              lastName: "Фамилия *",
+              email: "Официальный Email *",
+              location: "Местоположение *",
+              companyName: "Название Компании (необязательно)",
+              jobTitle: "Должность (необязательно)",
+              comments: "Комментарии / Ссылка (необязательно)",
+              upload: "Загрузить документы *"
+            },
+            placeholders: {
+              firstName: "Иван",
+              lastName: "Иванов",
+              email: "вы@компания.com",
+              location: "Выбрать регион",
+              companyName: "CBM 360 Global",
+              jobTitle: "Менеджер по Операциям",
+              comments: "Добавить заказ на покупку, идентификаторы сертификатов или любые специальные примечания..."
+            },
+            upload: {
+              dragDrop: "Перетащите или нажмите для загрузки",
+              fileInfo: "До 5 файлов • Макс 10 МБ каждый • PDF, DOC, DOCX, JPG, PNG",
+              remove: "Удалить"
+            },
+            submit: "Отправить Команде Администраторов",
+            sending: "Отправка..."
+          },
+          sidebar: {
+            nextSteps: {
+              title: "Что происходит дальше?",
+              step1: {
+                label: "1. Безопасная проверка:",
+                text: "Наш административный отдел проверяет целостность и подлинность файлов."
+              },
+              step2: {
+                label: "2. Email подтверждения:",
+                text: "Вы получите прямое обновление от Support@cbm360tiv.com."
+              },
+              step3: {
+                label: "3. Помощь в последующих действиях:",
+                text: "Дополнительные разъяснения или аудиты на месте планируются при необходимости."
+              }
+            },
+            assistance: {
+              title: "Нужна быстрая помощь?",
+              description: "Отправьте email на Support@cbm360tiv.com или позвоните по +44 7934 980214, указав \"Портал Проверки Документов\" для приоритетной маршрутизации."
+            }
+          },
+          toast: {
+            incomplete: {
+              title: "Неполные данные",
+              description: "Пожалуйста, заполните обязательные поля и приложите хотя бы один документ."
+            },
+            success: {
+              title: "Запрос отправлен",
+              description: "Ваши документы были переданы нашей команде проверки."
+            },
+            error: {
+              title: "Ошибка отправки",
+              description: "Не удалось отправить ваш запрос. Пожалуйста, попробуйте позже."
+            }
+          },
+          locations: {
+            global: "Глобальный",
+            uae: "Объединенные Арабские Эмираты",
+            saudi: "Саудовская Аравия",
+            qatar: "Катар",
+            uk: "Соединенное Королевство",
+            eu: "Европейский Союз",
+            usa: "Соединенные Штаты",
+            asia: "Азиатско-Тихоокеанский регион",
+            africa: "Африка",
+            latin: "Латинская Америка"
+          }
+        },
       },
       services: {
         completeServicePortfolio: {
@@ -2118,6 +2553,7 @@ const translations = {
         contact: "接触",
         getQuote: "获取报价",
         contactUs: "联系我们",
+        verifyDocs: "验证文件",
       },
       footer: {
         company: "煤层气",
@@ -2432,6 +2868,92 @@ const translations = {
             training: "培训与教育",
             digital: "数字解决方案",
             other: "咨询服务"
+          }
+        },
+        verifyDoc: {
+          hero: {
+            badge: "值得信赖的合规服务台",
+            title: "验证您的证书和技术文件",
+            description: "安全地上传检查报告、合规证书或校准记录。我们的管理团队将验证真实性，并在24小时内回复后续步骤。",
+            cta: "开始验证",
+            security: "加密且仅由管理员处理"
+          },
+          form: {
+            title: "提交文件进行人工验证",
+            description: "提供基本联系信息并附上需要验证的证书或报告。每次提交最多可添加5个文件（PDF、DOC/DOCX、JPG、PNG）。",
+            labels: {
+              firstName: "名 *",
+              lastName: "姓 *",
+              email: "官方邮箱 *",
+              location: "位置 *",
+              companyName: "公司名称（可选）",
+              jobTitle: "职位（可选）",
+              comments: "评论 / 参考（可选）",
+              upload: "上传文件 *"
+            },
+            placeholders: {
+              firstName: "张",
+              lastName: "三",
+              email: "you@company.com",
+              location: "选择一个地区",
+              companyName: "CBM 360 Global",
+              jobTitle: "运营经理",
+              comments: "添加采购订单、证书ID或任何特殊说明..."
+            },
+            upload: {
+              dragDrop: "拖放或点击上传",
+              fileInfo: "最多5个文件 • 每个最大10MB • PDF、DOC、DOCX、JPG、PNG",
+              remove: "删除"
+            },
+            submit: "发送给管理团队",
+            sending: "发送中..."
+          },
+          sidebar: {
+            nextSteps: {
+              title: "接下来会发生什么？",
+              step1: {
+                label: "1. 安全审查：",
+                text: "我们的管理服务台验证文件的完整性和真实性。"
+              },
+              step2: {
+                label: "2. 确认邮件：",
+                text: "您将收到来自Support@cbm360tiv.com的直接更新。"
+              },
+              step3: {
+                label: "3. 协助跟进：",
+                text: "如需要，将安排额外的澄清或现场审核。"
+              }
+            },
+            assistance: {
+              title: "需要快速协助？",
+              description: "发送邮件至Support@cbm360tiv.com或致电+44 7934 980214，提及\"验证文件门户\"以获得优先处理。"
+            }
+          },
+          toast: {
+            incomplete: {
+              title: "信息不完整",
+              description: "请填写必填字段并至少附加一个文件。"
+            },
+            success: {
+              title: "请求已发送",
+              description: "您的文件已与我们的验证团队共享。"
+            },
+            error: {
+              title: "提交失败",
+              description: "无法发送您的请求。请稍后再试。"
+            }
+          },
+          locations: {
+            global: "全球",
+            uae: "阿拉伯联合酋长国",
+            saudi: "沙特阿拉伯",
+            qatar: "卡塔尔",
+            uk: "英国",
+            eu: "欧盟",
+            usa: "美国",
+            asia: "亚太地区",
+            africa: "非洲",
+            latin: "拉丁美洲"
           }
         },
       },
