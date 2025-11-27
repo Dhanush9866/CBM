@@ -44,7 +44,7 @@ const translations = {
         },
         contact: {
           title: "Contact",
-          address: "CBM 360 TIV – UK\n79 Denyer St, London SW3 2NY, UK",
+          address: "CBM 360 TIV – UK\n79 Denyer St, London SW3 2NY, United Kingdom",
           phone: "+44 7934 980214",
           email: "Support@cbm360tiv.com\ninfo@cbm360tiv.com",
         },
