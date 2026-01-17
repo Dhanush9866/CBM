@@ -120,20 +120,20 @@ const OfficeMarker: React.FC<OfficeMarkerProps> = ({ office, onClick, colorSchem
         if (exact) {
           return [exact.lon, exact.lat] as [number, number];
         }
-        
+
         // Priority 2: Database coordinates (from auto-geocoding)
-        if (office.longitude != null && office.latitude != null && 
-            office.longitude !== 0 && office.latitude !== 0) {
+        if (office.longitude != null && office.latitude != null &&
+          office.longitude !== 0 && office.latitude !== 0) {
           return [office.longitude, office.latitude] as [number, number];
         }
-        
+
         // Priority 3: Country-level fallback coordinates
         const countryLon = getLongitudeForCountry(office.country);
         const countryLat = getLatitudeForCountry(office.country);
         if (countryLon !== 0 && countryLat !== 0) {
           return [countryLon, countryLat] as [number, number];
         }
-        
+
         // Priority 4: Default to [0, 0]
         return [0, 0] as [number, number];
       })()}
@@ -183,7 +183,7 @@ const OfficePopup: React.FC<OfficePopupProps> = ({ office, onClose }) => {
             <X className="h-5 w-5" />
           </button>
         </div>
-        
+
         <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
           <div className="flex items-start gap-4">
             <div className="p-2 bg-red-100 rounded-lg">
@@ -194,14 +194,14 @@ const OfficePopup: React.FC<OfficePopupProps> = ({ office, onClose }) => {
               <p className="text-sm text-gray-600 leading-relaxed">{office.address}</p>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-4">
             <div className="p-2 bg-green-100 rounded-lg">
               <Phone className="h-5 w-5 text-green-600" />
             </div>
             <p className="text-sm text-gray-600 font-semibold">{office.phone}</p>
           </div>
-          
+
           <div className="flex items-start gap-4">
             <div className="p-2 bg-blue-100 rounded-lg">
               <Mail className="h-5 w-5 text-blue-600" />
@@ -212,7 +212,7 @@ const OfficePopup: React.FC<OfficePopupProps> = ({ office, onClose }) => {
               ))}
             </div>
           </div>
-          
+
           {office.notes && (
             <div className="pt-4 border-t border-gray-200">
               <p className="text-sm text-gray-500 italic bg-gray-50 p-3 rounded-lg">{office.notes}</p>
@@ -283,20 +283,20 @@ const GlobalMap: React.FC<GlobalMapProps> = ({ className = "" }) => {
     if (exact) {
       return { coords: [exact.lon, exact.lat], source: 'hardcoded' };
     }
-    
+
     // Priority 2: Database coordinates
-    if (office.longitude != null && office.latitude != null && 
-        office.longitude !== 0 && office.latitude !== 0) {
+    if (office.longitude != null && office.latitude != null &&
+      office.longitude !== 0 && office.latitude !== 0) {
       return { coords: [office.longitude, office.latitude], source: 'database' };
     }
-    
+
     // Priority 3: Country-level fallback
     const countryLon = getLongitudeForCountry(office.country);
     const countryLat = getLatitudeForCountry(office.country);
     if (countryLon !== 0 && countryLat !== 0) {
       return { coords: [countryLon, countryLat], source: 'country-fallback' };
     }
-    
+
     return { coords: null, source: 'none' };
   };
 
@@ -433,7 +433,7 @@ const GlobalMap: React.FC<GlobalMapProps> = ({ className = "" }) => {
           </div>
           <div className="flex items-center gap-2 sm:gap-3 group">
             <div className="w-3 h-3 sm:w-5 sm:h-5 bg-yellow-400 border border-gray-400 sm:border-2 rounded-full shadow-lg group-hover:scale-110 transition-transform"></div>
-            <span className="text-xs sm:text-sm font-semibold text-gray-800">{legend?.regional || 'Regional'}</span>
+            <span className="text-xs sm:text-sm font-semibold text-gray-800">{`${legend?.regional || 'Regional'} (${regionalHQCount})`}</span>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3 group">
@@ -444,13 +444,13 @@ const GlobalMap: React.FC<GlobalMapProps> = ({ className = "" }) => {
             <div className="w-3 h-3 sm:w-5 sm:h-5 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full border border-purple-300 sm:border-2 shadow-lg group-hover:scale-110 transition-transform"></div>
             <span className="text-xs sm:text-sm font-semibold text-gray-800">{`${legend?.labs || 'Branch offices withLaboratories'} (${labCount})`}</span>
           </div>
-          
-          
+
+
         </div>
       </div>
 
       {/* Map */}
-      <div 
+      <div
         className={`w-full h-[400px] sm:h-[600px] bg-gradient-to-br ${colorScheme.map.background} rounded-lg sm:rounded-2xl overflow-hidden border-2 ${colorScheme.map.border} shadow-2xl`}
         onMouseMove={handleMouseMove}
       >
@@ -484,20 +484,20 @@ const GlobalMap: React.FC<GlobalMapProps> = ({ className = "" }) => {
                     stroke="#000"
                     strokeWidth={0.5}
                     style={{
-                      default: { 
+                      default: {
                         fill: colorScheme.map.land,
                         stroke: colorScheme.map.landStroke,
                         strokeWidth: 0.5,
                         outline: "none"
                       },
-                      hover: { 
+                      hover: {
                         fill: colorScheme.map.landHover,
                         stroke: colorScheme.map.landStroke,
                         strokeWidth: 1,
                         outline: "none",
                         cursor: "pointer"
                       },
-                      pressed: { 
+                      pressed: {
                         fill: colorScheme.map.landPressed,
                         stroke: colorScheme.map.landStroke,
                         strokeWidth: 1,
@@ -513,7 +513,7 @@ const GlobalMap: React.FC<GlobalMapProps> = ({ className = "" }) => {
                 ));
               }}
             </Geographies>
-            
+
             {allOffices
               .filter(office => {
                 // Only show offices with valid coordinates (not [0, 0])
@@ -521,14 +521,14 @@ const GlobalMap: React.FC<GlobalMapProps> = ({ className = "" }) => {
                 return coords !== null && !(coords[0] === 0 && coords[1] === 0);
               })
               .map((office, index) => (
-              <OfficeMarker
-                key={index}
-                office={office}
-                onClick={handleOfficeClick}
-                colorScheme={colorScheme}
-                isRegionalHQ={regionalHQOfficeNames.has(office.office_name)}
-              />
-            ))}
+                <OfficeMarker
+                  key={index}
+                  office={office}
+                  onClick={handleOfficeClick}
+                  colorScheme={colorScheme}
+                  isRegionalHQ={regionalHQOfficeNames.has(office.office_name)}
+                />
+              ))}
           </ZoomableGroup>
         </ComposableMap>
       </div>
@@ -581,7 +581,7 @@ const GlobalMap: React.FC<GlobalMapProps> = ({ className = "" }) => {
 
 // Helper function to get country name from geography properties
 function getCountryName(properties: any): string {
-  
+
   // Try the most common property names first
   const commonNames = [
     properties.NAME,
@@ -618,8 +618,8 @@ function getCountryName(properties: any): string {
 
   // Try all other properties that might contain country names
   for (const [key, value] of Object.entries(properties)) {
-    if (value && typeof value === 'string' && value.trim() !== '' && 
-        (key.includes('NAME') || key.includes('ADMIN') || key.includes('SOV') || key.includes('COUNTRY'))) {
+    if (value && typeof value === 'string' && value.trim() !== '' &&
+      (key.includes('NAME') || key.includes('ADMIN') || key.includes('SOV') || key.includes('COUNTRY'))) {
       return value.trim();
     }
   }
@@ -633,7 +633,7 @@ function getCountryName(properties: any): string {
     }
     return countryCode; // Return the code if no mapping found
   }
-  
+
   // Last resort - return a generic name
   return 'Country';
 }
@@ -832,7 +832,7 @@ function getCountryNameFromCode(code: string): string | null {
     'ARM': 'Armenia',
     'AZE': 'Azerbaijan'
   };
-  
+
   return countryCodeMap[code] || null;
 }
 
