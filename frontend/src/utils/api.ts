@@ -1,8 +1,8 @@
 import axios from 'axios';
 const isLocal = typeof window !== 'undefined' && window.location.hostname === 'localhost';
 
-const apiBaseURL = isLocal ? 'http://localhost:8020' : 'https://api.cbm360tiv.com';
-// const apiBaseURL = 'http://localhost:8020';
+// const apiBaseURL = isLocal ? 'http://localhost:8020' : 'https://api.cbm360tiv.com';
+const apiBaseURL = 'http://localhost:8020';
 // When developing locally, target the local backend; otherwise use the deployed backend
 export const apiClient = axios.create({
   baseURL: apiBaseURL,
@@ -84,21 +84,21 @@ export type JobApplicationData = {
 
 export async function submitJobApplication(applicationData: JobApplicationData, resumeFile: File): Promise<any> {
   const formData = new FormData();
-  
+
   // Append all form data
   Object.entries(applicationData).forEach(([key, value]) => {
     formData.append(key, value);
   });
-  
+
   // Append resume file
   formData.append('resume', resumeFile);
-  
+
   const { data } = await apiClient.post('/api/careers/apply', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   });
-  
+
   return data;
 }
 
