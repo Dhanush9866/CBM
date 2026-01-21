@@ -251,9 +251,9 @@ export function Footer() {
               <a
                 href="https://www.buildyourvision.in/"
                 className="text-tuv-gray-300 hover:text-white transition-colors font-medium tracking-wide whitespace-nowrap"
-                aria-label="Developed by BUILD YOUR VISION"
+                aria-label="Developed by BYV"
               >
-                Developed by BUILD YOUR VISION
+                Developed by BYV
               </a>
             </div>
           </div>
