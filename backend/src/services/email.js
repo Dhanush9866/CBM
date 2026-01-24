@@ -1,5 +1,6 @@
 'use strict';
 
+require('dotenv').config();
 const nodemailer = require('nodemailer');
 const { logger } = require('../setup/logger');
 
@@ -254,25 +255,72 @@ class EmailService {
   }
 
 initializeTransporter() {
+  // Get SMTP configuration from environment variables
+  const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com';
+  const smtpPort = parseInt(process.env.SMTP_PORT || '465', 10);
+  const smtpUser = process.env.SMTP_USER;
+  const smtpPass = process.env.SMTP_PASS;
+  const secure = smtpPort === 465; // Port 465 uses SSL/TLS, port 587 uses STARTTLS
+
+  // Debug: Print credentials (masked for security)
+  console.log('================================================');
+  console.log('📧 SMTP Configuration from .env:');
+  console.log('  SMTP_HOST:', smtpHost);
+  console.log('  SMTP_PORT:', smtpPort);
+  console.log('  SMTP_USER:', smtpUser ? `${smtpUser.substring(0, 3)}***${smtpUser.substring(smtpUser.length - 5)}` : 'NOT SET');
+  console.log('  SMTP_PASS:', smtpPass ? `${'*'.repeat(Math.min(smtpPass.length, 4))}***` : 'NOT SET');
+  console.log('  SECURE:', secure);
+  console.log('================================================');
+
+  // Validate required credentials
+  if (!smtpUser || !smtpPass) {
+    console.error('❌ SMTP credentials are missing from .env file!');
+    console.error('   Please set SMTP_USER and SMTP_PASS in your .env file');
+    console.error('   Example:');
+    console.error('   SMTP_HOST=smtp.gmail.com');
+    console.error('   SMTP_PORT=465');
+    console.error('   SMTP_USER=your-email@gmail.com');
+    console.error('   SMTP_PASS=your-app-password');
+    throw new Error('SMTP credentials are not configured. Please set SMTP_USER and SMTP_PASS in .env file');
+  }
+
   this.transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-  port: 465,
-  secure: true, 
-      auth: {
-        user: 'cbm360tiv@gmail.com',
-        pass: 'lyopbpaiupdinnpf',
-      },
+    host: smtpHost,
+    port: smtpPort,
+    secure: secure,
+    auth: {
+      user: smtpUser,
+      pass: smtpPass,
+    },
+    // Performance optimizations for faster email sending
+    pool: true, // Enable connection pooling to reuse connections
+    maxConnections: 3, // Keep 3 connections ready
+    maxMessages: 50, // Messages per connection before recycling
+    // Faster timeouts - fail fast instead of waiting
+    connectionTimeout: 3000, // 3 seconds to establish connection
+    greetingTimeout: 3000, // 3 seconds for greeting
+    socketTimeout: 5000, // 5 seconds socket timeout
+    // TLS optimizations
+    tls: {
+      rejectUnauthorized: false, // Faster connection (for Gmail this is safe)
+      minVersion: 'TLSv1.2'
+    }
   });
 
-  console.log("✅ Transporter created");
+  console.log("✅ Transporter created with environment variables");
 
-  // Skip verify in production to avoid hanging on Render
- 
-    this.transporter.verify((error, success) => {
+  // Verify transporter configuration
+  this.transporter.verify((error, success) => {
       if (error) {
-        console.error('Email service configuration error:', error);
+        console.error('❌ Email service configuration error:', error);
+        console.error('   Error details:', {
+          code: error.code,
+          command: error.command,
+          response: error.response,
+          responseCode: error.responseCode
+        });
       } else {
-        console.log('Email service is ready to send messages');
+        console.log('✅ Email service is ready to send messages');
       }
     });
 

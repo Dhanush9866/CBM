@@ -11,6 +11,7 @@
     "seed:cbm": "node src/scripts/seed-cbm-data.js",
     "seed:cbm:clear": "node src/scripts/seed-cbm-data.js clear",
     "seed:clear": "node -e \"require('./src/scripts/seed-data.js').clearAllData()\"",
+    "seed:admin": "node src/scripts/seed-admin.js",
     "seed:page": "node src/scripts/seed-page-with-sections.js",
     "seed:page:clear": "node src/scripts/seed-page-with-sections.js clear",
     "upload:frontend-images": "node src/scripts/upload-frontend-images-to-cloudinary.js",
@@ -47,6 +48,7 @@
   "dependencies": {
     "@google-cloud/translate": "^6.3.1",
     "axios": "^1.7.2",
+    "bcrypt": "^6.0.0",
     "cloudinary": "^2.7.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",

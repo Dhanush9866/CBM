@@ -10,3 +10,7 @@ export async function verifyOtp(code: string) {
   return data as { success: boolean; data?: { token: string }; message?: string };
 }
 
+export async function loginWithPassword(email: string, password: string) {
+  const { data } = await api.post('/api/admin/auth/login', { email, password });
+  return data as { success: boolean; data?: { token: string; admin?: any }; message?: string };
+}
