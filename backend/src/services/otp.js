@@ -21,9 +21,21 @@ async function sendOtp(email) {
 	const hashed = crypto.createHash('sha256').update(code).digest('hex');
 	otpStore.set(email, { code: hashed, expiresAt });
 
-	// DEVELOPMENT ONLY: Log OTP to console for easy access
+	// Get admin email from .env for logging
+	const adminEmail = process.env.ADMIN_EMAIL || email;
+	const smtpUser = process.env.SMTP_USER;
+	const smtpPass = process.env.SMTP_PASS;
+
+	// Log OTP generation and configuration
 	console.log('================================================');
-	console.log('🔑 ADMIN LOGIN OTP:', code);
+	console.log('📧 OTP Email Sending Process Started');
+	console.log('================================================');
+	console.log('  Admin Email (from .env):', adminEmail);
+	console.log('  Target Email:', email);
+	console.log('  SMTP User:', smtpUser ? `${smtpUser.substring(0, 3)}***${smtpUser.substring(smtpUser.length - 5)}` : 'NOT SET');
+	console.log('  SMTP Pass:', smtpPass ? `${'*'.repeat(Math.min(smtpPass.length, 4))}***` : 'NOT SET');
+	console.log('  Generated OTP:', code);
+	console.log('  OTP Expires in: 5 minutes');
 	console.log('================================================');
 
 	const html = `
@@ -36,22 +48,75 @@ async function sendOtp(email) {
 	`;
 
 	try {
-		if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-			console.warn('⚠️ SMTP credentials missing. OTP email will not be sent.');
+		if (!smtpUser || !smtpPass) {
+			console.error('❌ OTP EMAIL NOT SENT - SMTP credentials missing');
+			console.error('   SMTP_USER:', smtpUser ? 'SET' : 'NOT SET');
+			console.error('   SMTP_PASS:', smtpPass ? 'SET' : 'NOT SET');
+			console.error('   Please configure SMTP_USER and SMTP_PASS in .env file');
+			console.warn('⚠️ OTP email will not be sent. Using console OTP for development.');
+			logger.warn('OTP email not sent - SMTP credentials missing', { adminEmail });
 			return { success: true };
 		}
 
-		await emailService.transporter.sendMail({
-			from: `CBM Admin <${process.env.SMTP_USER}>`,
+		// Check if transporter exists
+		if (!emailService.transporter) {
+			console.error('❌ OTP EMAIL NOT SENT - Transporter not initialized');
+			return { success: false, message: 'Email service not ready' };
+		}
+
+		console.log('📤 Sending OTP email to:', email);
+		const startTime = Date.now();
+		
+		// Send email - this will use connection pool for faster sending
+		const emailResult = await emailService.transporter.sendMail({
+			from: `CBM Admin <${smtpUser}>`,
 			to: email,
 			subject: 'Your CBM Admin OTP Code',
 			html,
 		});
-		logger.info('OTP email sent', { email });
-		return { success: true };
+		
+		const sendDuration = Date.now() - startTime;
+
+		console.log('================================================');
+		console.log('✅ OTP EMAIL SENT SUCCESSFULLY');
+		console.log('================================================');
+		console.log('  To:', email);
+		console.log('  From:', smtpUser);
+		console.log('  Message ID:', emailResult.messageId);
+		console.log('  Response:', emailResult.response || 'N/A');
+		console.log('  Send Duration:', sendDuration + 'ms');
+		console.log('================================================');
+		
+		logger.info('OTP email sent successfully', { 
+			email, 
+			adminEmail,
+			messageId: emailResult.messageId 
+		});
+		
+		return { success: true, messageId: emailResult.messageId };
 	} catch (error) {
-		logger.error('Failed to send OTP email', error);
-		console.warn('⚠️ Email failed to send (likely bad credentials). Using console OTP.');
+		console.log('================================================');
+		console.log('❌ OTP EMAIL FAILED TO SEND');
+		console.log('================================================');
+		console.error('  Error Code:', error.code || 'N/A');
+		console.error('  Error Message:', error.message || 'N/A');
+		console.error('  Error Command:', error.command || 'N/A');
+		console.error('  Error Response:', error.response || 'N/A');
+		console.error('  Response Code:', error.responseCode || 'N/A');
+		console.error('  To Email:', email);
+		console.error('  From Email:', smtpUser || 'NOT SET');
+		console.log('================================================');
+		console.warn('⚠️ Email failed to send. OTP is still available via console for development.');
+		console.log('🔑 ADMIN LOGIN OTP (Console Fallback):', code);
+		console.log('================================================');
+		
+		logger.error('Failed to send OTP email', { 
+			error: error.message,
+			code: error.code,
+			email,
+			adminEmail 
+		});
+		
 		// Don't throw error so client can still verify
 		return { success: true };
 	}
