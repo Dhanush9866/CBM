@@ -32,7 +32,12 @@ const CareerSchema = new mongoose.Schema(
     location: { type: String, required: true, index: true },
     type: { type: String, enum: EmploymentTypes, default: 'Full-time', index: true },
     level: { type: String, enum: SeniorityLevels, required: true, index: true },
-    description: { type: String, required: true },
+    level: { type: String, enum: SeniorityLevels, required: true, index: true },
+    description: { type: String },
+    sections: [{
+      heading: { type: String },
+      content: { type: String }
+    }],
     responsibilities: [{ type: String }],
     requirements: [{ type: String }],
     benefits: [{ type: String }],

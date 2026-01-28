@@ -60,6 +60,62 @@ export default function Careers() {
 
   const startEdit = (item: Career) => {
     setEditing(item);
+
+    let sections = item.sections || [];
+
+    // Auto-migrate legacy description to sections if sections are empty but description exists
+    if (sections.length === 0 && item.description) {
+      const lines = item.description.split(/\r?\n/);
+      const parsedSections: { heading: string; content: string }[] = [];
+
+      let currentHeading = 'Role Overview'; // Default first heading
+      let currentContent: string[] = [];
+
+      // keywords often used in headings
+      const headingKeywords = [
+        'overview', 'responsibility', 'responsibilities', 'requirement', 'requirements',
+        'qualification', 'qualifications', 'benefit', 'benefits', 'about', 'summary', 'role',
+        'what you will do', 'who you are', 'skills', 'experience', 'reporting to', 'reporting',
+        'technical', 'language', 'languages', 'offer', 'apply', 'education', 'knowledge', 'competencies'
+      ];
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) {
+          if (currentContent.length > 0) currentContent.push(''); // Preserve paragraph breaks
+          continue;
+        }
+
+        // Heuristics for a Heading line:
+        // 1. Short (under 60 chars)
+        // 2. Contains a keyword OR ends with colon OR is all caps OR looks like a list header (1., a))
+        // 3. Not a bullet point (- or *)
+        const isShort = line.length < 60;
+        const containsKeyword = headingKeywords.some(kw => line.toLowerCase().includes(kw));
+        const endsWithColon = line.endsWith(':');
+        const isReviewHeader = /^\s*(?:\d+\.|[a-zA-Z]\))\s+/.test(line); // 1. Title or a) Title
+        const isBullet = /^[-*•]\s/.test(line);
+
+        if (isShort && !isBullet && (containsKeyword || endsWithColon || isReviewHeader || (i > 0 && lines[i - 1].trim() === ''))) {
+          // It's a new heading! Push previous section.
+          if (currentContent.length > 0) {
+            parsedSections.push({ heading: currentHeading, content: currentContent.join('\n').trim() });
+          }
+          currentHeading = endsWithColon ? line.slice(0, -1) : line;
+          currentContent = [];
+        } else {
+          currentContent.push(line);
+        }
+      }
+
+      // Push final section
+      if (currentContent.length > 0 || parsedSections.length === 0) {
+        parsedSections.push({ heading: currentHeading, content: currentContent.join('\n').trim() });
+      }
+
+      sections = parsedSections;
+    }
+
     setForm({
       title: item.title,
       department: item.department,
@@ -67,6 +123,7 @@ export default function Careers() {
       type: item.type,
       level: item.level,
       description: item.description,
+      sections: sections,
       isActive: item.isActive,
     });
   };
@@ -130,18 +187,76 @@ export default function Careers() {
           <div>
             <label>Type</label>
             <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })} style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 6 }}>
-              {['Full-time','Part-time','Contract','Internship','Temporary'].map(t => <option key={t} value={t}>{t}</option>)}
+              {['Full-time', 'Part-time', 'Contract', 'Internship', 'Temporary'].map(t => <option key={t} value={t}>{t}</option>)}
             </select>
           </div>
           <div>
             <label>Level</label>
             <select value={form.level} onChange={(e) => setForm({ ...form, level: e.target.value })} style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 6 }}>
-              {['Entry Level','Mid Level','Senior Level','Lead','Manager','Director'].map(l => <option key={l} value={l}>{l}</option>)}
+              {['Entry Level', 'Mid Level', 'Senior Level', 'Lead', 'Manager', 'Director'].map(l => <option key={l} value={l}>{l}</option>)}
             </select>
           </div>
           <div style={{ gridColumn: '1 / -1' }}>
-            <label>Description</label>
-            <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={4} style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 6 }} />
+            <label>Description Sections</label>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {form.sections?.map((section, idx) => (
+                <div key={idx} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr auto', gap: 8, alignItems: 'start' }}>
+                  <input
+                    placeholder="Heading"
+                    value={section.heading}
+                    onChange={(e) => {
+                      const newSections = [...(form.sections || [])];
+                      newSections[idx].heading = e.target.value;
+                      setForm({ ...form, sections: newSections });
+                    }}
+                    style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 6 }}
+                  />
+                  <textarea
+                    placeholder="Content"
+                    value={section.content}
+                    onChange={(e) => {
+                      const newSections = [...(form.sections || [])];
+                      newSections[idx].content = e.target.value;
+                      setForm({ ...form, sections: newSections });
+                    }}
+                    rows={2}
+                    style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 6 }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const newSections = form.sections?.filter((_, i) => i !== idx);
+                      setForm({ ...form, sections: newSections });
+                    }}
+                    style={{ color: 'crimson', padding: 8, border: '1px solid #fee2e2', borderRadius: 6, background: '#fee2e2' }}
+                  >
+                    X
+                  </button>
+                </div>
+              ))}
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button
+                  type="button"
+                  onClick={() => setForm({ ...form, sections: [...(form.sections || []), { heading: '', content: '' }] })}
+                  style={{ padding: '6px 12px', borderRadius: 6, border: '1px solid #d1d5db', background: '#f3f4f6', fontSize: '14px' }}
+                >
+                  + Add Section
+                </button>
+              </div>
+            </div>
+            {/* Keeping description for backward compatibility/fallback during migration, though user wants structure */}
+            {(!form.sections || form.sections.length === 0) && (
+              <p style={{ fontSize: '12px', color: '#6b7280', marginTop: 4 }}>
+                Legacy description will be used if no sections are added.
+                <textarea
+                  value={form.description}
+                  onChange={(e) => setForm({ ...form, description: e.target.value })}
+                  rows={2}
+                  placeholder="Legacy Description (Optional)"
+                  style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 6, marginTop: 4 }}
+                />
+              </p>
+            )}
           </div>
           <div>
             <label>
@@ -164,7 +279,7 @@ export default function Careers() {
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr>
-                {['Title','Department','Location','Type','Level','Active','Actions'].map(h => (
+                {['Title', 'Department', 'Location', 'Type', 'Level', 'Active', 'Actions'].map(h => (
                   <th key={h} style={{ textAlign: 'left', padding: 12, borderBottom: '1px solid #e5e7eb' }}>{h}</th>
                 ))}
               </tr>
