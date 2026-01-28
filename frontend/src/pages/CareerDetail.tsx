@@ -68,18 +68,36 @@ export default function CareerDetail() {
 
   const renderFormattedDescription = (text: string) => {
     const lines = text.split(/\r?\n/);
-    const headingRegex = /^\s*(?:\d+|[a-zA-Z])\s*[\).]\s+/; // 1) or 1. or a) or a.
+
+    // Improved heading detection (matches Admin logic)
+    const headingKeywords = [
+      'overview', 'responsibility', 'responsibilities', 'requirement', 'requirements',
+      'qualification', 'qualifications', 'benefit', 'benefits', 'about', 'summary', 'role',
+      'what you will do', 'who you are', 'skills', 'experience', 'reporting to', 'reporting',
+      'technical', 'language', 'languages', 'offer', 'apply', 'education', 'knowledge', 'competencies'
+    ];
+
     return (
       <div>
         {lines.map((line, idx) => {
-          if (line.trim().length === 0) {
+          const l = line.trim();
+          if (l.length === 0) {
             return <div key={idx} className="h-3" />; // spacing for blank lines
           }
-          if (headingRegex.test(line)) {
+
+          const isShort = l.length < 80;
+          const containsKeyword = headingKeywords.some(kw => l.toLowerCase().includes(kw));
+          const endsWithColon = l.endsWith(':');
+          const isReviewHeader = /^\s*(?:\d+\.|[a-zA-Z]\))\s+/.test(l);
+          const isBullet = /^[-*•]\s/.test(l);
+
+          // If line looks like a heading, style it Bold & Black
+          if (isShort && !isBullet && (containsKeyword || endsWithColon || isReviewHeader)) {
             return (
-              <h3 key={idx} className="text-base font-semibold mt-6 mb-2">{line.trim()}</h3>
+              <h3 key={idx} className="text-base font-bold mt-6 mb-2 text-black" style={{ color: 'black' }}>{l}</h3>
             );
           }
+
           return (
             <p key={idx} className="text-muted-foreground">{line}</p>
           );
@@ -119,6 +137,10 @@ export default function CareerDetail() {
                 </div>
                 <div className="flex items-center space-x-2">
                   <Clock className="h-4 w-4" />
+                  <span>{job.type} • {job.level}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Clock className="h-4 w-4" />
                   <span>Posted {formatDate(job.postedAt)}</span>
                 </div>
               </div>
@@ -134,7 +156,18 @@ export default function CareerDetail() {
 
           <div className="prose prose-neutral max-w-none mt-6">
             {/* <h2 className="text-xl font-semibold mb-2">Job Description</h2> */}
-            {renderFormattedDescription(job.description)}
+            {job.sections && job.sections.length > 0 ? (
+              <div className="space-y-6">
+                {job.sections.map((section, idx) => (
+                  <div key={idx}>
+                    <h3 className="text-base font-bold mt-2 mb-2 text-black" style={{ color: 'black' }}>{section.heading}</h3>
+                    <p className="text-muted-foreground whitespace-pre-wrap">{section.content}</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              renderFormattedDescription(job.description)
+            )}
 
             {job.responsibilities && job.responsibilities.length > 0 && (
               <div className="mt-6">

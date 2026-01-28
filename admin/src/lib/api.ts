@@ -4,7 +4,7 @@ import axios, { InternalAxiosRequestConfig } from 'axios';
 // ✅ Compute base URL from env (default to local dev)
 const envBaseUrl = import.meta.env?.VITE_API_BASE_URL?.trim();
 // Use environment variable if set, otherwise default to localhost
-const apiBaseURL = envBaseUrl || 'http://localhost:8000';
+const apiBaseURL = envBaseUrl || 'http://localhost:8020';
 // Production: "https://api.cbm360tiv.com"
 // ✅ Create Axios instance (no default Content-Type so FormData works)
 export const api = axios.create({
