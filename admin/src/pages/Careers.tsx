@@ -187,7 +187,7 @@ export default function Careers() {
           <div>
             <label>Type</label>
             <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })} style={{ width: '100%', padding: 8, border: '1px solid #d1d5db', borderRadius: 6 }}>
-              {['Full-time', 'Part-time', 'Contract', 'Internship', 'Temporary'].map(t => <option key={t} value={t}>{t}</option>)}
+              {['Remote','Full-time', 'Part-time', 'Contract', 'Internship', 'Temporary'].map(t => <option key={t} value={t}>{t}</option>)}
             </select>
           </div>
           <div>
