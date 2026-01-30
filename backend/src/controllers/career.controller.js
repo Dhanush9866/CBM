@@ -197,11 +197,11 @@ async function getCareerById(req, res) {
     // Handle language translation - support both Map and Object formats
     if (lang && lang !== 'en' && ['fr', 'pt', 'es', 'ru', 'zh'].includes(lang)) {
       let translations = null;
-      
+
       // Handle Map format
       if (career.translations instanceof Map) {
         translations = career.translations.get(lang);
-      } 
+      }
       // Handle Object format (from toObject conversion)
       else if (careerObj.translations && typeof careerObj.translations === 'object') {
         translations = careerObj.translations[lang];
@@ -296,15 +296,16 @@ async function createCareer(req, res) {
 
     console.log("🧩 Final translations:", Object.keys(translations));
     if (Object.keys(translations).length > 0) {
-      payload.translations = translations;
+      if (!payload.translations) payload.translations = {};
+      Object.assign(payload.translations, translations);
     }
 
     const created = await Career.create(payload);
-    
+
     // Post to LinkedIn after successful job creation
     let linkedinPostId = null;
     let linkedinError = null;
-    
+
     try {
       const linkedinResult = await linkedinService.postJobToLinkedIn({
         title: created.title,
@@ -312,7 +313,7 @@ async function createCareer(req, res) {
         applicationUrl: created.applicationUrl,
         applyLink: created.applicationUrl // Support both field names
       });
-      
+
       linkedinPostId = linkedinResult.postId;
       logger.info('Job posted to LinkedIn successfully', {
         careerId: created._id,
@@ -331,7 +332,7 @@ async function createCareer(req, res) {
     const response = {
       success: true,
       data: created,
-      message: linkedinPostId 
+      message: linkedinPostId
         ? 'Job created successfully and posted to LinkedIn'
         : 'Job created successfully (LinkedIn posting failed)',
       ...(linkedinPostId && { linkedinPostId: linkedinPostId }),
@@ -381,21 +382,22 @@ async function updateCareer(req, res) {
         const [titleT, descriptionT, departmentT, locationT, typeT, levelT, workArrangementT,
           responsibilitiesT, requirementsT, benefitsT, tagsT
         ] = await Promise.all([
-          payload.title ? translateText(payload.title, lang) : career.translations?.get(lang)?.title || career.title,
-          payload.description ? translateText(payload.description, lang) : career.translations?.get(lang)?.description || career.description,
-          payload.department ? translateText(payload.department, lang) : career.translations?.get(lang)?.department || career.department,
-          payload.location ? translateText(payload.location, lang) : career.translations?.get(lang)?.location || career.location,
-          payload.type ? translateText(payload.type, lang) : career.translations?.get(lang)?.type || career.type,
-          payload.level ? translateText(payload.level, lang) : career.translations?.get(lang)?.level || career.level,
-          payload.workArrangement ? translateText(payload.workArrangement, lang) : career.translations?.get(lang)?.workArrangement || career.workArrangement,
-          payload.responsibilities ? translateArraySafely(payload.responsibilities, lang) : career.translations?.get(lang)?.responsibilities || career.responsibilities,
-          payload.requirements ? translateArraySafely(payload.requirements, lang) : career.translations?.get(lang)?.requirements || career.requirements,
-          payload.benefits ? translateArraySafely(payload.benefits, lang) : career.translations?.get(lang)?.benefits || career.benefits,
-          payload.tags ? translateArraySafely(payload.tags, lang) : career.translations?.get(lang)?.tags || career.tags
+          payload.title ? translateText(payload.title, lang) : career.translations.get(lang)?.title || career.title,
+          payload.description ? translateText(payload.description, lang) : career.translations.get(lang)?.description || career.description,
+          payload.department ? translateText(payload.department, lang) : career.translations.get(lang)?.department || career.department,
+          payload.location ? translateText(payload.location, lang) : career.translations.get(lang)?.location || career.location,
+          payload.type ? translateText(payload.type, lang) : career.translations.get(lang)?.type || career.type,
+          payload.level ? translateText(payload.level, lang) : career.translations.get(lang)?.level || career.level,
+          payload.workArrangement ? translateText(payload.workArrangement, lang) : career.translations.get(lang)?.workArrangement || career.workArrangement,
+          payload.responsibilities ? translateArraySafely(payload.responsibilities, lang) : career.translations.get(lang)?.responsibilities || career.responsibilities,
+          payload.requirements ? translateArraySafely(payload.requirements, lang) : career.translations.get(lang)?.requirements || career.requirements,
+          payload.benefits ? translateArraySafely(payload.benefits, lang) : career.translations.get(lang)?.benefits || career.benefits,
+          payload.tags ? translateArraySafely(payload.tags, lang) : career.translations.get(lang)?.tags || career.tags
         ]);
 
-        if (!career.translations) career.translations = {};
-        career.translations[lang] = {
+        if (!career.translations) career.translations = new Map();
+
+        career.translations.set(lang, {
           title: titleT,
           description: descriptionT,
           department: departmentT,
@@ -407,7 +409,7 @@ async function updateCareer(req, res) {
           requirements: requirementsT,
           benefits: benefitsT,
           tags: tagsT
-        };
+        });
 
         console.log(`✅ Translated career to ${lang}`);
       } catch (e) {

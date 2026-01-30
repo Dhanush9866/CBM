@@ -94,7 +94,7 @@ export default function CareerDetail() {
           // If line looks like a heading, style it Bold & Black
           if (isShort && !isBullet && (containsKeyword || endsWithColon || isReviewHeader)) {
             return (
-              <h3 key={idx} className="text-base font-bold mt-6 mb-2 text-black" style={{ color: 'black' }}>{l}</h3>
+              <h3 key={idx} className="text-xl font-bold mt-6 mb-2 text-black" style={{ color: 'black' }}>{l}</h3>
             );
           }
 
@@ -119,10 +119,10 @@ export default function CareerDetail() {
         </div>
 
         <div className="bg-white border border-border rounded-lg p-6">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex-1">
-              <h1 className="text-2xl font-bold mb-2">{job.title}</h1>
-              <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-4">
+          <div className="flex flex-col">
+            <div>
+              <h1 className="text-4xl font-bold mb-4 text-primary">{job.title}</h1>
+              <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-6">
                 <div className="flex items-center space-x-2">
                   <Briefcase className="h-4 w-4" />
                   <span>{job.department}</span>
@@ -144,13 +144,14 @@ export default function CareerDetail() {
                   <span>Posted {formatDate(job.postedAt)}</span>
                 </div>
               </div>
-            </div>
-            <div className="mt-4 lg:mt-0 lg:ml-6">
-              <JobApplicationDialog job={job}>
-                <Button className="w-full lg:w-auto">
-                  {translations?.pages?.careers?.applyNow || 'Apply Now'}
-                </Button>
-              </JobApplicationDialog>
+
+              <div className="mb-6">
+                <JobApplicationDialog job={job}>
+                  <Button className="w-full lg:w-auto px-8 bg-primary hover:bg-primary/90">
+                    {translations?.pages?.careers?.applyNow || 'Apply Now'}
+                  </Button>
+                </JobApplicationDialog>
+              </div>
             </div>
           </div>
 
@@ -160,7 +161,7 @@ export default function CareerDetail() {
               <div className="space-y-6">
                 {job.sections.map((section, idx) => (
                   <div key={idx}>
-                    <h3 className="text-base font-bold mt-2 mb-2 text-black" style={{ color: 'black' }}>{section.heading}</h3>
+                    <h3 className="text-xl font-bold mt-2 mb-2 text-black" style={{ color: 'black' }}>{section.heading}</h3>
                     <p className="text-muted-foreground whitespace-pre-wrap">{section.content}</p>
                   </div>
                 ))}
@@ -171,7 +172,7 @@ export default function CareerDetail() {
 
             {job.responsibilities && job.responsibilities.length > 0 && (
               <div className="mt-6">
-                <h3 className="font-semibold mb-2">Responsibilities</h3>
+                <h3 className="text-xl font-bold mb-3">Responsibilities</h3>
                 <ul className="list-disc pl-6 space-y-1">
                   {job.responsibilities.map((item, idx) => (
                     <li key={idx}>{item}</li>
@@ -182,7 +183,7 @@ export default function CareerDetail() {
 
             {job.requirements && job.requirements.length > 0 && (
               <div className="mt-6">
-                <h3 className="font-semibold mb-2">Requirements</h3>
+                <h3 className="text-xl font-bold mb-3">Requirements</h3>
                 <ul className="list-disc pl-6 space-y-1">
                   {job.requirements.map((item, idx) => (
                     <li key={idx}>{item}</li>
@@ -193,7 +194,7 @@ export default function CareerDetail() {
 
             {job.benefits && job.benefits.length > 0 && (
               <div className="mt-6">
-                <h3 className="font-semibold mb-2">Benefits</h3>
+                <h3 className="text-xl font-bold mb-3">Benefits</h3>
                 <ul className="list-disc pl-6 space-y-1">
                   {job.benefits.map((item, idx) => (
                     <li key={idx}>{item}</li>
@@ -201,6 +202,14 @@ export default function CareerDetail() {
                 </ul>
               </div>
             )}
+
+            <div className="mt-12 mb-4">
+              <JobApplicationDialog job={job}>
+                <Button className="w-full sm:w-auto px-8 py-6 text-lg bg-primary hover:bg-primary/90 rounded-md">
+                  Apply for this Position
+                </Button>
+              </JobApplicationDialog>
+            </div>
           </div>
         </div>
       </div>
