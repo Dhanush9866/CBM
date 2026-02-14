@@ -279,6 +279,55 @@ export function Footer() {
                   </div>
                 </div>
               </div>
+
+              {/* AI4CI and EU Co-funded Logos */}
+              <div className="pt-4 mt-4 border-t border-tuv-gray-800 flex flex-row gap-4 justify-center">
+                {/* AI4CI Logo with Hover */}
+                <div className="relative group inline-block">
+                  <div className="flex items-center justify-center w-16 h-16 cursor-pointer">
+                    <img
+                      src="/assets/ai4ci.png"
+                      alt="AI4CI Logo"
+                      className="max-h-full max-w-full object-contain"
+                    />
+                  </div>
+                  {/* Hover Popup */}
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 hidden group-hover:block z-50 w-48 pointer-events-none">
+                    <div className="bg-white p-2 rounded-lg shadow-xl relative animate-in fade-in zoom-in-95 duration-200">
+                      <img
+                        src="/assets/ai4ci.png"
+                        alt="AI4CI Logo"
+                        className="w-full h-auto object-contain rounded-md"
+                      />
+                      {/* Simple Triangle Arrow */}
+                      <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white transform rotate-45"></div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* EU Logo with Hover */}
+                <div className="relative group inline-block">
+                  <div className="flex items-center justify-center w-16 h-16 cursor-pointer">
+                    <img
+                      src="/assets/eu_cofunded.png"
+                      alt="Co-funded by the European Union"
+                      className="max-h-full max-w-full object-contain"
+                    />
+                  </div>
+                  {/* Hover Popup */}
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 hidden group-hover:block z-50 w-48 pointer-events-none">
+                    <div className="bg-white p-2 rounded-lg shadow-xl relative animate-in fade-in zoom-in-95 duration-200">
+                      <img
+                        src="/assets/eu_cofunded.png"
+                        alt="Co-funded by the European Union"
+                        className="w-full h-auto object-contain rounded-md"
+                      />
+                      {/* Simple Triangle Arrow */}
+                      <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white transform rotate-45"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
           </div>
