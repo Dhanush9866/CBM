@@ -9,7 +9,7 @@ let isConnected = false;
 
 async function connectToDatabase() {
   if (isConnected) return;
-  const uri = process.env.MONGODB_URI || "mongodb+srv://cbm360tiv:MiiFze4xYGr6XNji@cluster0.sf6iagh.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster";
+  const uri = process.env.MONGODB_URI;
   if (!uri) {
     throw new Error('MONGODB_URI is not set');
   }
@@ -20,7 +20,7 @@ async function connectToDatabase() {
     maxPoolSize: 20,
     serverSelectionTimeoutMS: 15000,
     // Prefer DB name from the URI; avoid separate dbName to prevent mismatches
-    dbName: undefined,
+    dbName: process.env.MONGODB_DB,
   });
 
   isConnected = true;
