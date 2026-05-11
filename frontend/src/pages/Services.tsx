@@ -134,12 +134,19 @@ export default function Services() {
       {/* Video Hero Section */}
       <VideoHero
         slides={slidesData || fallbackSlides}
-        videoUrls={[
+        {/* videoUrls={[
           'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1760332745/km_20251002_720p_30f_20251013_103845_qbsznb.mp4',
           'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475275/slide-2_jl5ldp.mp4',
           'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475290/slide-3_rayaoy.mp4',
           'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475303/slide-4_izmzsr.mp4',
           'https://res.cloudinary.com/docyipoze/video/upload/q_auto,f_auto,w_1280,h_720,c_fill/v1759475289/slide-5_rff1ml.mp4',
+        ]} */}
+      videoUrls={[
+          'https://media.cbm360tiv.in/cbm/intro-videos/slide-1.mp4',
+          'https://media.cbm360tiv.in/cbm/intro-videos/slide-2.mp4',
+          'https://media.cbm360tiv.in/cbm/intro-videos/slide-3.mp4',
+          'https://media.cbm360tiv.in/cbm/intro-videos/silde-4.mp4',
+          'https://media.cbm360tiv.in/cbm/intro-videos/slide-5.mp4',
         ]}
       />
 
