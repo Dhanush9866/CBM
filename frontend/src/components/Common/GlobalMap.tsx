@@ -234,7 +234,7 @@ const GlobalMap: React.FC<GlobalMapProps> = ({ className = "" }) => {
   const [selectedOffice, setSelectedOffice] = useState<RemoteOfficeData | null>(null);
   const [officeGroups, setOfficeGroups] = useState<Array<{ region_name: string; offices: RemoteOfficeData[] }>>([]);
   const [zoom, setZoom] = useState(1);
-  const [center, setCenter] = useState<[number, number]>([0, 0]);
+  const [center, setCenter] = useState<[number, number]>([-90, 20]);
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
   const [mousePosition, setMousePosition] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   // Elegant Purple Color Scheme

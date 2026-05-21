@@ -2,6 +2,7 @@
 import { HeroSection } from '@/components/Common/HeroSection';
 import { JobApplicationDialog } from '@/components/Common/JobApplicationDialog';
 import { GeneralApplicationDialog } from '@/components/Common/GeneralApplicationDialog';
+import { CareersMap, parseCountry } from '@/components/Careers/CareersMap';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -25,6 +26,7 @@ export default function Careers() {
   const [jobs, setJobs] = useState<CareerDto[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
   const { currentLanguage, translations } = useTranslation();
   const formatDate = (dateString: string) => {
     if (!dateString) return '';
@@ -208,6 +210,12 @@ export default function Careers() {
                 'Explore exciting career opportunities across our global organization. Find the perfect role to advance your career.'}
             </p>
           </div>
+
+          <CareersMap 
+            jobs={jobs} 
+            selectedLocation={selectedLocation} 
+            onSelectLocation={setSelectedLocation} 
+          />
           
           {loading && (
             <div className="text-center text-muted-foreground">
@@ -219,7 +227,9 @@ export default function Careers() {
           )}
           {!loading && !error && (
             <div className="grid grid-cols-1 gap-4">
-              {jobs.map((job) => (
+              {jobs
+                .filter((job) => !selectedLocation || job.location === selectedLocation)
+                .map((job) => (
                 <Link key={job._id} to={`/careers/${job._id}`} className="block">
                   <div className="bg-white border border-border rounded-lg p-4 hover:bg-tuv-gray-50 transition-colors">
                     <div className="flex items-center justify-between">

@@ -1,0 +1,490 @@
+{
+  "Botswana": [
+    24.5928742,
+    -23.1681782
+  ],
+  "Namibia": [
+    17.3231107,
+    -23.2335499
+  ],
+  "Ouagadougou, Burkina Faso": [
+    -1.5270944,
+    12.3681873
+  ],
+  "Oranjemund, Namibia": [
+    16.428415,
+    -28.551932
+  ],
+  "Shakiso, Ethiopia": [
+    38.9028468,
+    5.7746802
+  ],
+  "Quelimane, Mozambique": [
+    36.890216,
+    -17.87751
+  ],
+  "Zimbabwe": [
+    29.7468414,
+    -18.4554963
+  ],
+  "Chile": [
+    -71.3187697,
+    -31.7613365
+  ],
+  "Peru": [
+    -75.0458515,
+    -6.8699697
+  ],
+  "Tanzania": [
+    35.7878438,
+    -6.5247123
+  ],
+  "Angola": [
+    17.5691241,
+    -11.8775768
+  ],
+  "Indonesia": [
+    117.8902853,
+    -2.4833826
+  ],
+  "Ethiopia": [
+    38.6521203,
+    10.2116702
+  ],
+  "Democratic Republic of Congo (DRC)": [
+    28.8549055,
+    -2.4982396
+  ],
+  "Zambia": [
+    27.5589884,
+    -14.5189121
+  ],
+  "South Africa": [
+    24.991639,
+    -28.8166236
+  ],
+  "Kenya": [
+    38.4313975,
+    1.4419683
+  ],
+  "Yacuiba, Bolivia": [
+    -63.6781103,
+    -22.0136831
+  ],
+  "Puerto Natales, Chile": [
+    -72.5059982,
+    -51.7262003
+  ],
+  "Gaborone, Botswana": [
+    25.9088474,
+    -24.6581357
+  ],
+  " Kitui, Kenya": [
+    38.3728116,
+    -1.5642219
+  ],
+  "Tarija, Bolivia": [
+    -63.833333,
+    -21.583333
+  ],
+  "Bartica,Guyana": [
+    -58.6214256,
+    6.4053312
+  ],
+  "Yakutsk, Russia": [
+    129.7319787,
+    62.0274078
+  ],
+  "Macaé & Campos dos Goytacazes, Brazil": [
+    -41.4424576,
+    -21.9532476
+  ],
+  "Timmins,Canada": [
+    -81.330414,
+    48.477473
+  ],
+  "Agadez, Niger": [
+    7.990739,
+    16.972556
+  ],
+  "Sikasso, Mali": [
+    -6.8663259,
+    11.529684
+  ],
+  "Nouadhibou, Mauritania": [
+    -17.0503094,
+    20.9127045
+  ],
+  "Santa Cruz de la Sierra, Bolivia": [
+    -63.1820853,
+    -17.7834217
+  ],
+  "Mboro, Senegal": [
+    -16.8812178,
+    15.1359847
+  ],
+  "Makeni, Sierra Leone": [
+    -12.0441862,
+    8.8881938
+  ],
+  "Lima, Peru": [
+    -77.0305912,
+    -12.0459808
+  ],
+  " Bobo-Dioulasso, Burkina Faso": [
+    -4.2961436,
+    11.1765796
+  ],
+  "Iquique, Chile": [
+    -70.1524646,
+    -20.2140657
+  ],
+  "Tillabéri, Niger": [
+    1.4546006,
+    14.2090125
+  ],
+  "Karaganda, Kazakhstan": [
+    74.1811272,
+    49.1767322
+  ],
+  "Lokichar, Kenya": [
+    35.645987,
+    2.376658
+  ],
+  "Tete, Mozambique": [
+    32.7682742,
+    -15.5205193
+  ],
+  "Doba, Chad ": [
+    16.8538495,
+    8.6592029
+  ],
+  "Tacna, Peru": [
+    -70.2511032,
+    -18.01386
+  ],
+  "Rosh Pinah, Namibia": [
+    16.761083,
+    -27.964239
+  ],
+  "Zarafshan,Uzbekistan": [
+    67.3469505,
+    39.5665657
+  ],
+  "Mekelle,Ethiopia": [
+    39.4768259,
+    13.4966644
+  ],
+  "Sainshand, Mongolia": [
+    110.1431263,
+    44.8883913
+  ],
+  "Banfora, Burkina Faso": [
+    -4.752639,
+    10.642703
+  ],
+  "Accra, Ghana": [
+    -0.2012376,
+    5.5571096
+  ],
+  "Point Fortin, Trinidad and Tobago": [
+    -61.6827286,
+    10.1759283
+  ],
+  "Ambatovy, Madagascar": [
+    47.710745,
+    -22.5411579
+  ],
+  "Pekanbaru, Indonesia": [
+    101.4515727,
+    0.5262455
+  ],
+  "Ciudad del Carmen, Mexico": [
+    -91.81492,
+    18.651739
+  ],
+  "Neuquén, Argentina": [
+    -69.832275,
+    -38.8502546
+  ],
+  "Enugu, Nigeria": [
+    7.4143061,
+    6.5536094
+  ],
+  "Santos, Brazil": [
+    -46.3166316,
+    -23.9609448
+  ],
+  "Fort McMurray, Canada": [
+    -111.3885221,
+    56.7291997
+  ],
+  " Oyem, Gabon": [
+    11.5751003,
+    1.5997904
+  ],
+  "Swakopmund, Namibia": [
+    14.528972,
+    -22.6768424
+  ],
+  "Balikpapan, Indonesia": [
+    116.8593379,
+    -1.2398711
+  ],
+  "Morondava, Madagascar": [
+    44.2786121,
+    -20.2951102
+  ],
+  "Navoi,Uzbekistan": [
+    64,
+    42
+  ],
+  "Jwaneng, Botswana": [
+    24.730277,
+    -24.600417
+  ],
+  " Geita, Tanzania": [
+    32.0855702,
+    -3.1865265
+  ],
+  "Atyrau, Kazakhstan": [
+    50.806203,
+    47.6605827
+  ],
+  "Oruro, Bolivia": [
+    -67.666667,
+    -18.666667
+  ],
+  "Linden, Guyana": [
+    -58.312488,
+    6.0100019
+  ],
+  "Darkhan, Mongolia": [
+    105.9361613,
+    49.4922428
+  ],
+  "Magnitogorsk, Russia": [
+    59.0507322,
+    53.4256867
+  ],
+  "Akokan, Niger": [
+    7.338211,
+    18.710635
+  ],
+  "San Fernando, Trinidad and Tobago": [
+    -61.4645896,
+    10.2807069
+  ],
+  "Tarkwa, Ghana": [
+    -1.992426,
+    5.310935
+  ],
+  "Erdenet, Mongolia": [
+    104.0443867,
+    49.0276045
+  ],
+  "Parauapebas, Brazil": [
+    -49.8903283,
+    -6.0696846
+  ],
+  "Calgary,Canada": [
+    -114.057541,
+    51.0456064
+  ],
+  "Neuquén,Argentina": [
+    -69.832275,
+    -38.8502546
+  ],
+  "Zouérat, Mauritania": [
+    -12.4664916,
+    22.7402065
+  ],
+  "Arequipa, Peru": [
+    -71.5369607,
+    -16.3988667
+  ],
+  "Antofagasta, Chile": [
+    -70.3980033,
+    -23.6463741
+  ],
+  "Ekibastuz, Kazakhstan": [
+    75.3288511,
+    51.7275817
+  ],
+  "Kédougou, Senegal": [
+    -12.2863632,
+    12.8856773
+  ],
+  "Freetown, Sierra Leone": [
+    -13.26795,
+    8.479004
+  ],
+  "Bobo-Dioulasso, Burkina Faso": [
+    -4.2961436,
+    11.1765796
+  ],
+  "Doba,Chad": [
+    16.8538495,
+    8.6592029
+  ],
+  "Arlit, Niger": [
+    7.393331,
+    18.739079
+  ],
+  "Kakamega, Kenya": [
+    34.8015489,
+    0.4957104
+  ],
+  "Potosí, Bolivia": [
+    -65.7534713,
+    -19.5892896
+  ],
+  "Norilsk, Russia": [
+    88.2013217,
+    69.3502367
+  ],
+  "San Juan, Argentina": [
+    -69.1988222,
+    -30.7054363
+  ],
+  "N’Djamena, Chad": [
+    15.0502758,
+    12.1191543
+  ],
+  "Walvis Bay, Namibia": [
+    14.5071125,
+    -22.9557607
+  ],
+  "Orapa, Botswana": [
+    25.364964,
+    -21.3361957
+  ],
+  "St. John's, Canada": [
+    -52.7066964,
+    47.5646794
+  ],
+  "Bukhara, Uzbekistan": [
+    64.415153,
+    39.7759835
+  ],
+  "Dar es Salaam, Tanzania": [
+    39.2803583,
+    -6.8160837
+  ],
+  "Point Lisas, Trinidad and Tobago": [
+    -61.4828808,
+    10.3993799
+  ],
+  "Ulaanbaatar, Mongolia": [
+    106.9177016,
+    47.9184676
+  ],
+  "Toamasina, Madagascar": [
+    49.4098352,
+    -18.1553985
+  ],
+  " Bamako, Mali": [
+    -7.9847391,
+    12.6132656
+  ],
+  "Jos, Nigeria": [
+    8.8979401,
+    9.9175125
+  ],
+  "Port Moresby, Papua New Guinea": [
+    147.1599504,
+    -9.4743301
+  ],
+  "Georgetown, Guyana": [
+    -58.1455403,
+    6.8032561
+  ],
+  " Franceville, Gabon": [
+    13.5894808,
+    -1.6343979
+  ],
+  "Obuasi, Ghana": [
+    -1.6894045,
+    6.211542
+  ],
+  "Salvador, Brazil": [
+    -38.4812772,
+    -12.9822499
+  ],
+  "Niamey, Niger": [
+    2.109823,
+    13.524834
+  ],
+  "Dakar, Senegal": [
+    -17.447938,
+    14.693425
+  ],
+  "Bamako, Mali": [
+    -8.000337,
+    12.649319
+  ],
+  " Jakarta, Indonesia": [
+    106.827168,
+    -6.1754049
+  ],
+  "Addis Ababa, Ethiopia": [
+    38.7524127,
+    9.0358287
+  ],
+  "Santiago, Chile": [
+    -70.6510671,
+    -33.4376995
+  ],
+  "Santiago Chile ": [
+    -70.6510671,
+    -33.4376995
+  ],
+  "Harare, Zimbabwe": [
+    31.0601584,
+    -17.8567035
+  ],
+  "Lusaka, Zambia": [
+    28.2818414,
+    -15.4163395
+  ],
+  "Dodoma, Tanzania": [
+    35.7468174,
+    -6.1791181
+  ],
+  " Accra, Ghana": [
+    -0.2012376,
+    5.5571096
+  ],
+  "Democratic Republic of Congo": [
+    28.289698,
+    -15.4139213
+  ],
+  " Lima, Peru": [
+    -77.0305912,
+    -12.0459808
+  ],
+  "London United Kingdom": [
+    -0.1277653,
+    51.5074456
+  ],
+  "Seattle, WA": [
+    -122.330062,
+    47.6038321
+  ],
+  "Phoenix, AZ": [
+    -112.074141,
+    33.4484367
+  ],
+  "Austin, TX": [
+    -97.7436995,
+    30.2711286
+  ],
+  "San Diego, CA": [
+    -117.162772,
+    32.7174202
+  ],
+  "Detroit, MI": [
+    -83.0466403,
+    42.3315509
+  ]
+}

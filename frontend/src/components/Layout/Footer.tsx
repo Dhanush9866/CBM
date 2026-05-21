@@ -280,11 +280,34 @@ export function Footer() {
                 </div>
               </div>
 
-              {/* AI4CI and EU Co-funded Logos */}
+              {/* AI4CI, AI IoT 360, and Certificates Logos */}
               <div className="pt-4 mt-4 border-t border-tuv-gray-800 flex flex-row gap-4 justify-center">
+                {/* Certification & Services Logo with Hover */}
+                <div className="relative group inline-block">
+                  <div className="flex items-center justify-center w-28 h-16 cursor-pointer bg-white rounded p-1 shadow-sm hover:shadow-md transition-shadow">
+                    <img
+                      src="/certifications-and-services.png"
+                      alt="Certification & Services"
+                      className="max-h-full max-w-full object-contain"
+                    />
+                  </div>
+                  {/* Hover Popup */}
+                  <div className="absolute bottom-full right-0 mb-3 hidden group-hover:block z-50 w-72 pointer-events-none">
+                    <div className="bg-white p-2 rounded-lg shadow-xl relative animate-in fade-in zoom-in-95 duration-200">
+                      <img
+                        src="/certifications-and-services.png"
+                        alt="Certification & Services"
+                        className="w-full h-auto object-contain rounded-md"
+                      />
+                      {/* Simple Triangle Arrow */}
+                      <div className="absolute -bottom-1.5 right-14 translate-x-1/2 w-3 h-3 bg-white transform rotate-45"></div>
+                    </div>
+                  </div>
+                </div>
+
                 {/* AI4CI Logo with Hover */}
                 <div className="relative group inline-block">
-                  <div className="flex items-center justify-center w-16 h-16 cursor-pointer">
+                  <div className="flex items-center justify-center w-28 h-16 cursor-pointer bg-white rounded p-1 shadow-sm hover:shadow-md transition-shadow">
                     <img
                       src="/assets/ai4ci.png"
                       alt="AI4CI Logo"
@@ -292,7 +315,7 @@ export function Footer() {
                     />
                   </div>
                   {/* Hover Popup */}
-                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 hidden group-hover:block z-50 w-48 pointer-events-none">
+                  <div className="absolute bottom-full right-0 mb-3 hidden group-hover:block z-50 w-48 pointer-events-none">
                     <div className="bg-white p-2 rounded-lg shadow-xl relative animate-in fade-in zoom-in-95 duration-200">
                       <img
                         src="/assets/ai4ci.png"
@@ -300,30 +323,53 @@ export function Footer() {
                         className="w-full h-auto object-contain rounded-md"
                       />
                       {/* Simple Triangle Arrow */}
-                      <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white transform rotate-45"></div>
+                      <div className="absolute -bottom-1.5 right-14 translate-x-1/2 w-3 h-3 bg-white transform rotate-45"></div>
                     </div>
                   </div>
                 </div>
 
-                {/* EU Logo with Hover */}
+                {/* AI IoT 360 Logo with Hover */}
                 <div className="relative group inline-block">
-                  <div className="flex items-center justify-center w-16 h-16 cursor-pointer">
+                  <div className="flex items-center justify-center w-28 h-16 cursor-pointer bg-[#0A0A0A] rounded p-1 shadow-sm hover:shadow-md transition-shadow border border-gray-800">
                     <img
-                      src="/assets/eu_cofunded.png"
-                      alt="Co-funded by the European Union"
+                      src="/assets/ai_iot_360.png"
+                      alt="AI IoT 360 Platform"
+                      className="max-h-full max-w-full object-contain rounded"
+                    />
+                  </div>
+                  {/* Hover Popup */}
+                  <div className="absolute bottom-full right-0 mb-3 hidden group-hover:block z-50 w-64 pointer-events-none">
+                    <div className="bg-gray-900 p-2 rounded-lg shadow-xl relative animate-in fade-in zoom-in-95 duration-200 border border-gray-800">
+                      <img
+                        src="/assets/ai_iot_360.png"
+                        alt="AI IoT 360 Platform"
+                        className="w-full h-auto object-contain rounded-md"
+                      />
+                      {/* Simple Triangle Arrow */}
+                      <div className="absolute -bottom-1.5 right-14 translate-x-1/2 w-3 h-3 bg-gray-900 border-b border-r border-gray-800 transform rotate-45"></div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Certificates Logo with Hover */}
+                <div className="relative group inline-block">
+                  <div className="flex items-center justify-center w-28 h-16 cursor-pointer bg-white rounded p-1 shadow-sm hover:shadow-md transition-shadow">
+                    <img
+                      src="/assets/certificates.png"
+                      alt="Certificates & Accreditations"
                       className="max-h-full max-w-full object-contain"
                     />
                   </div>
                   {/* Hover Popup */}
-                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 hidden group-hover:block z-50 w-48 pointer-events-none">
+                  <div className="absolute bottom-full right-0 mb-3 hidden group-hover:block z-50 w-72 pointer-events-none">
                     <div className="bg-white p-2 rounded-lg shadow-xl relative animate-in fade-in zoom-in-95 duration-200">
                       <img
-                        src="/assets/eu_cofunded.png"
-                        alt="Co-funded by the European Union"
+                        src="/assets/certificates.png"
+                        alt="Certificates & Accreditations"
                         className="w-full h-auto object-contain rounded-md"
                       />
                       {/* Simple Triangle Arrow */}
-                      <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-white transform rotate-45"></div>
+                      <div className="absolute -bottom-1.5 right-14 translate-x-1/2 w-3 h-3 bg-white transform rotate-45"></div>
                     </div>
                   </div>
                 </div>
