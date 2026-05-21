@@ -78,8 +78,10 @@ export function Logo({ className = '', showTagline = false, size = 'md', align =
       
       {/* Tagline */}
       {showTagline && (
-        <div className={`text-gray-500 font-medium mt-2 tracking-wide ${taglineSize}`}>
-          Inspection Integrity Innovation
+        <div className={`w-full flex justify-between text-gray-500 font-medium mt-1 ${taglineSize}`}>
+          <span>Inspection</span>
+          <span>Integrity</span>
+          <span>Innovation</span>
         </div>
       )}
     </Link>

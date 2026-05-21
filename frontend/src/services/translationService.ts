@@ -11,6 +11,7 @@ export interface StaticTranslations {
     contact: string;
     getQuote: string;
     contactUs: string;
+    verifyDocs?: string;
   };
   footer: {
     company: string;
