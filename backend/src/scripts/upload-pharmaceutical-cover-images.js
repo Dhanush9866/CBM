@@ -5,7 +5,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-const cloudinaryService = require('../services/cloudinary');
+const cloudService = require('../services/cloud');
 const Section = require('../models/Section');
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/cbm';
@@ -74,7 +74,7 @@ async function uploadCoverImagesForService(serviceType, serviceData) {
     try {
       // Upload to Cloudinary with cover-photo name for the first image
       const imageName = files.indexOf(file) === 0 ? 'cover-photo' : null;
-      const result = await cloudinaryService.uploadImage(
+      const result = await cloudService.uploadImage(
         filePath,
         serviceType,
         folderName,

@@ -1,4 +1,4 @@
-const cloudinaryService = require('../services/cloudinary');
+const cloudService = require('../services/cloud');
 const { getUploadMiddleware, cleanupTempFiles } = require('../middlewares/upload');
 const { logger } = require('../setup/logger');
 
@@ -22,7 +22,7 @@ class ImageController {
       logger.info(`Starting upload of ${req.files.length} images for ${serviceType}/${subService}`);
 
       // Upload images to Cloudinary
-      const uploadResults = await cloudinaryService.uploadMultipleImages(
+      const uploadResults = await cloudService.uploadMultipleImages(
         req.files, 
         serviceType, 
         subService
@@ -70,7 +70,7 @@ class ImageController {
 
       logger.info(`Fetching images for ${serviceType}/${subService}`);
 
-      const images = await cloudinaryService.getImagesFromFolder(
+      const images = await cloudService.getImagesFromFolder(
         serviceType, 
         subService, 
         parseInt(maxResults)
@@ -107,7 +107,7 @@ class ImageController {
 
       logger.info(`Deleting image: ${publicId}`);
 
-      const result = await cloudinaryService.deleteImage(publicId);
+      const result = await cloudService.deleteImage(publicId);
 
       res.status(200).json({
         success: true,
@@ -134,7 +134,7 @@ class ImageController {
     try {
       logger.info('Fetching Cloudinary usage statistics');
 
-      const stats = await cloudinaryService.getUsageStats();
+      const stats = await cloudService.getUsageStats();
 
       res.status(200).json({
         success: true,

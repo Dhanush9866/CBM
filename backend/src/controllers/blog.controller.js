@@ -1,7 +1,7 @@
 'use strict';
 
 const Blog = require('../models/Blog');
-const cloudinaryService = require('../services/cloudinary');
+const cloudService = require('../services/cloud');
 const { translateText, translateArraySafely, SUPPORTED } = require('../services/translation');
 const googleDriveService = require('../services/googleDrive');
 
@@ -278,7 +278,7 @@ const createBlog = async (req, res) => {
         const publicId = `blog-${timestamp}`;
         console.log('🔹 Uploading featured image to Cloudinary with publicId:', publicId);
 
-        const uploadResult = await cloudinaryService.uploadFromBuffer(featuredImageFile.buffer, {
+        const uploadResult = await cloudService.uploadFromBuffer(featuredImageFile.buffer, {
           folder: 'cbm/blog/featured-images',
           public_id: publicId,
           transformation: [{ width: 800, height: 600, crop: 'fit', quality: 'auto' }],
@@ -456,7 +456,7 @@ const updateBlog = async (req, res) => {
         const publicId = `blog-${timestamp}`;
         console.log(`🔹 Uploading featured image to Cloudinary with publicId: ${publicId}`);
 
-        const uploadResult = await cloudinaryService.uploadFromBuffer(featuredImageFile.buffer, {
+        const uploadResult = await cloudService.uploadFromBuffer(featuredImageFile.buffer, {
           folder: 'cbm/blog/featured-images',
           public_id: publicId,
           transformation: [{ width: 800, height: 600, crop: 'fit', quality: 'auto' }],

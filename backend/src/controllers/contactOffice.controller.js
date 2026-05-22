@@ -2,7 +2,7 @@
 
 const ContactOffice = require('../models/ContactOffice');
 const { ApiError } = require('../utils/error');
-const cloudinaryService = require('../services/cloudinary');
+const cloudService = require('../services/cloud');
 const { translateText, SUPPORTED, translateArraySafely } = require('../services/translation');
 
 function parseEmails(emails) {
@@ -43,7 +43,7 @@ async function createContactOffice(req, res, next) {
       try {
         const publicId = `${region.toLowerCase().replace(/\s+/g, '-')}-${country.toLowerCase().replace(/\s+/g, '-')}-${office_name.toLowerCase().replace(/\s+/g, '-')}`;
         console.log(`🔹 Uploading image to Cloudinary with publicId: ${publicId}`);
-        const uploadResult = await cloudinaryService.uploadFromBuffer(req.file.buffer, {
+        const uploadResult = await cloudService.uploadFromBuffer(req.file.buffer, {
           folder: 'cbm/contact-offices',
           public_id: publicId,
           transformation: [{ width: 400, height: 300, crop: 'fit', quality: 'auto' }]
@@ -214,7 +214,7 @@ async function updateContactOffice(req, res, next) {
       try {
         const publicId = `${region.toLowerCase().replace(/\s+/g, '-')}-${country.toLowerCase().replace(/\s+/g, '-')}-${office_name.toLowerCase().replace(/\s+/g, '-')}`;
         console.log(`🔹 Uploading updated image to Cloudinary with publicId: ${publicId}`);
-        const uploadResult = await cloudinaryService.uploadFromBuffer(req.file.buffer, {
+        const uploadResult = await cloudService.uploadFromBuffer(req.file.buffer, {
           folder: 'cbm/contact-offices',
           public_id: publicId,
           transformation: [{ width: 400, height: 300, crop: 'fit', quality: 'auto' }]

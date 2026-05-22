@@ -5,7 +5,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-const cloudinaryService = require('../services/cloudinary');
+const cloudService = require('../services/cloud');
 const Section = require('../models/Section');
 
 const ROOT_UPLOADS_DIR = path.join(__dirname, '../../../uploads');
@@ -48,7 +48,7 @@ async function uploadForService(serviceType, slug) {
 
   let coverUrl = null;
   if (coverFile) {
-    const res = await cloudinaryService.uploadImage(coverFile, serviceType, subServiceFolder, 'cover-photo');
+    const res = await cloudService.uploadImage(coverFile, serviceType, subServiceFolder, 'cover-photo');
     coverUrl = res.url;
     console.log(`✅ Uploaded cover: ${serviceType}/${slug}`);
   } else {
@@ -58,7 +58,7 @@ async function uploadForService(serviceType, slug) {
   const insideUrls = [];
   for (const filePath of insideFiles) {
     const filename = path.basename(filePath);
-    const res = await cloudinaryService.uploadImage(filePath, serviceType, subServiceFolder, filename.replace(/\.[^.]+$/, ''));
+    const res = await cloudService.uploadImage(filePath, serviceType, subServiceFolder, filename.replace(/\.[^.]+$/, ''));
     insideUrls.push(res.url);
   }
   if (insideUrls.length) {

@@ -7,7 +7,7 @@
 
 const path = require('path');
 const fs = require('fs');
-const cloudinaryService = require('./src/services/cloudinary');
+const cloudService = require('./src/services/cloud');
 
 async function seedVisualTestingImages() {
   console.log('🌱 Seeding Visual Testing Images to Cloudinary...\n');
@@ -28,7 +28,7 @@ async function seedVisualTestingImages() {
       console.log(`📤 Uploading ${file}...`);
       
       try {
-        const result = await cloudinaryService.uploadImage(
+        const result = await cloudService.uploadImage(
           filePath,
           'testing',
           'visual-testing',

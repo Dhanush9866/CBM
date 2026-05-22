@@ -7,7 +7,7 @@
 const path = require('path');
 const fs = require('fs');
 const { glob } = require('glob');
-const cloudinaryService = require('../services/cloudinary');
+const cloudService = require('../services/cloud');
 
 
 async function getIndustryFolders(rootDir) {
@@ -38,7 +38,7 @@ async function uploadFolderImages(folderAbsPath, folderName) {
   const uploads = [];
   for (const file of files) {
     const imageName = path.basename(file);
-    const result = await cloudinaryService.uploadImage(
+    const result = await cloudService.uploadImage(
       file,
       serviceType,
       safeSubService,

@@ -10,7 +10,7 @@ require('dotenv').config();
 
 const { connectToDatabase } = require('../setup/database');
 const Section = require('../models/Section');
-const cloudinaryService = require('../services/cloudinary');
+const cloudService = require('../services/cloud');
 
 function sanitizeKey(name) {
   return name
@@ -25,7 +25,7 @@ async function uploadImagesForIndustry(displayName, files) {
   const uploaded = [];
 
   for (const file of files) {
-    const result = await cloudinaryService.uploadImage(
+    const result = await cloudService.uploadImage(
       file,
       serviceType,
       `${safeSubService}`,
