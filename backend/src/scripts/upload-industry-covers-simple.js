@@ -6,7 +6,7 @@
 const path = require('path');
 const fs = require('fs');
 const { glob } = require('glob');
-const cloudinaryService = require('../services/cloudinary');
+const cloudService = require('../services/cloud');
 
 function pathToFileURL(p) {
   const { pathToFileURL: toURL } = require('url');
@@ -35,7 +35,7 @@ async function uploadCoverImagesForIndustry(displayName, files) {
   
   for (const file of files) {
     console.log(`  - Uploading: ${path.basename(file)}`);
-    const result = await cloudinaryService.uploadImage(
+    const result = await cloudService.uploadImage(
       file,
       serviceType,
       `${safeSubService}/covers`,
