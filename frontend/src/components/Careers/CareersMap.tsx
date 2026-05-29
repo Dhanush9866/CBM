@@ -5,7 +5,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { CareerDto } from '@/services/careersService';
 import dynamicCoords from './locationCoords.json';
-import { Plus, Minus, ArrowLeft, ArrowRight, ArrowUp, ArrowDown } from 'lucide-react';
+import { Plus, Minus, ArrowLeft, ArrowRight, ArrowUp, ArrowDown, X } from 'lucide-react';
 
 interface CareersMapProps {
   jobs: CareerDto[];
@@ -232,7 +232,7 @@ export const CareersMap: React.FC<CareersMapProps> = ({ jobs, onSelectLocation, 
   const initialCenter: [number, number] = [20, 0];
 
   return (
-    <div className="w-full h-[400px] sm:h-[500px] rounded-xl overflow-hidden shadow-lg relative mb-12 border border-gray-200">
+    <div className="w-full h-full relative z-10">
       <MapContainer 
         center={initialCenter} 
         zoom={2} 
@@ -277,8 +277,9 @@ export const CareersMap: React.FC<CareersMapProps> = ({ jobs, onSelectLocation, 
       {selectedLocation && (
         <button 
           onClick={() => onSelectLocation(null)}
-          className="absolute top-4 left-4 z-[1000] bg-white px-4 py-2 rounded-md shadow-md text-sm font-medium hover:bg-gray-50 text-gray-800 border border-gray-200"
+          className="absolute top-4 left-4 z-[1000] bg-white hover:bg-gray-50 text-gray-800 border border-gray-200 px-3 py-1.5 rounded-md shadow-md text-sm font-medium transition-all duration-200 flex items-center gap-1.5"
         >
+          <X className="h-4 w-4 text-gray-500" />
           Clear Selection
         </button>
       )}
