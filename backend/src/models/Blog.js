@@ -20,14 +20,12 @@ const BlogSchema = new mongoose.Schema(
       type: String, 
       required: true, 
       index: true,
-      trim: true,
-      maxlength: 200
+      trim: true
     },
     excerpt: { 
       type: String, 
       required: true,
-      trim: true,
-      maxlength: 500
+      trim: true
     },
     content: { 
       type: String, 
@@ -93,8 +91,7 @@ const BlogSchema = new mongoose.Schema(
     },
     metaDescription: { 
       type: String, 
-      trim: true,
-      maxlength: 160
+      trim: true
     },
     pdfLink: {
       type: String,

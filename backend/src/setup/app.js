@@ -20,6 +20,7 @@ const adminAuthRoutes = require('../routes/admin-auth.routes');
 const blogRoutes = require('../routes/blog.routes');
 const industryStatRoutes = require('../routes/industryStat.routes');
 
+const normalizeOrigin = (origin) => origin.trim().replace(/\/+$/, '');
 
 function createApp() {
   const app = express();
@@ -27,39 +28,57 @@ function createApp() {
   // Config
   app.set('trust proxy', 1);
 
-  const allowedOrigins = [
-      "http://localhost:8080", // React development server
-      "http://localhost:8081",
-      "http://localhost:3000", // Fallback for development
-      "http://localhost:5175", // Vite development server
-      "https://cbm-ky2n.onrender.com",
-      "https://cbm-admin-7dbj.onrender.com",
-      "https://api.cbm360tiv.com",
-    "https://cbm360tiv.com",
-    "https://admin.cbm360tiv.com",
-    "https://www.cbm360tiv.com",
-      // Add your production frontend URL here
-      // "https://yourdomain.com",
-      // "https://www.yourdomain.com",
-    ];
-  // Middlewares
-  app.use(helmet());
-    app.use(compression());
-  app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ extended: true, limit: "50mb" }));
+  const defaultAllowedOrigins = [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'http://localhost:5175',
+    'http://localhost:8080',
+    'http://localhost:8081',
+    'https://cbm-ky2n.onrender.com',
+    'https://cbm-admin-7dbj.onrender.com',
+    'https://api.cbm360tiv.com',
+    'https://cbm360tiv.com',
+    'https://www.cbm360tiv.com',
+    'https://admin.cbm360tiv.com',
+    'https://cbm360tiv.in',
+    'https://www.cbm360tiv.in',
+    'https://admin.cbm360tiv.in'
+  ];
+  const envAllowedOrigins = (process.env.CORS_ORIGINS || process.env.ALLOWED_ORIGINS || '')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+  const allowedOrigins = new Set([...defaultAllowedOrigins, ...envAllowedOrigins].map(normalizeOrigin));
 
-  app.use(cors({  origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps or curl requests)
-     console.log("Request Origin:", origin);
+  const corsOptions = {
+    origin(origin, callback) {
+      if (!origin) return callback(null, true);
 
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
+      const normalizedOrigin = normalizeOrigin(origin);
+      const isAllowed =
+        allowedOrigins.has(normalizedOrigin) ||
+        /^https:\/\/[a-z0-9-]+\.onrender\.com$/i.test(normalizedOrigin);
+
+      if (!isAllowed) {
+        console.warn(`CORS blocked origin: ${origin}`);
+        return callback(null, false);
+      }
+
+      return callback(null, true);
     },
-    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
-  }));
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    optionsSuccessStatus: 204
+  };
+  // Middlewares
+  app.use(cors(corsOptions));
+  app.options('*', cors(corsOptions));
+  app.use(helmet());
+  app.use(compression());
+  app.use(express.json({ limit: '100mb' }));
+  app.use(express.urlencoded({ extended: true, limit: '100mb' }));
 
 
   // Global request duration middleware
