@@ -225,7 +225,7 @@ export default function About() {
 
   return (
     <div>
-      <section className="section pb-2">
+      <section className="py-3 lg:py-2">
         <div className="container-responsive">
           <Breadcrumb>
             <BreadcrumbList>
@@ -241,18 +241,18 @@ export default function About() {
         </div>
       </section>
 
-      <div className="container-responsive py-12">
+      <div className="container-responsive pt-3 pb-12">
         <article className="prose max-w-none">
         {(!blocks.some(b => b.type === 'h1')) && (
           <h1 className="text-3xl lg:text-5xl font-bold mb-4">{page?.title || aboutTranslations?.title || 'About'}</h1>
         )}
         {/* Hero banner after first heading */}
         {mainSection?.images && mainSection.images[0] && (
-          <div className="mb-8 max-w-5xl mx-auto">
+          <div className="mb-5 max-w-4xl mx-auto">
             <img
               src={mainSection.images[0]}
               alt="About hero image"
-              className="w-full h-auto object-contain rounded-lg shadow-lg"
+              className="w-full max-h-[42vh] min-h-[240px] object-cover object-top rounded-lg shadow-lg"
               loading="eager"
             />
           </div>
