@@ -30,6 +30,7 @@ export default function Careers() {
   const [error, setError] = useState<string | null>(null);
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
   const { currentLanguage, translations } = useTranslation();
+  const filteredJobs = jobs.filter((job) => !selectedLocation || job.location === selectedLocation);
   const formatDate = (dateString: string) => {
     if (!dateString) return '';
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -202,59 +203,55 @@ export default function Careers() {
 
       {/* Open Positions */}
       <section id="jobs" className="bg-white border-t border-border">
-        <div className="flex flex-col lg:flex-row w-full lg:h-[calc(100vh-96px)] lg:min-h-[600px] lg:overflow-hidden bg-white">
-          {/* Sidebar: Filtered Jobs list */}
-          <div className="w-full lg:w-[400px] xl:w-[450px] shrink-0 border-b lg:border-b-0 lg:border-r border-border bg-white flex flex-col h-full order-2 lg:order-1">
-            {/* Header with Title */}
-            <div className="px-6 py-5 border-b border-border bg-white">
-              <h2 className="text-xl font-bold text-gray-900 leading-tight">
-                {translations?.pages?.careers?.title || 'Current Openings'}
-              </h2>
-              <p className="text-xs text-muted-foreground mt-1.5">
-                Explore exciting global opportunities and build your career with us.
-              </p>
-            </div>
+        <div className="w-full bg-white">
+          <div className="container-responsive py-12 text-center">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-5">
+              {translations?.pages?.careers?.title || 'Current Openings'}
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+              Explore exciting career opportunities across our global organization. Find the perfect role to advance your career.
+            </p>
+          </div>
 
-            {/* Stats display */}
-            <div className="px-6 py-3.5 bg-gray-50/50 border-b border-border flex items-center justify-between">
-              <div className="text-xs text-gray-500 font-medium">
-                Displaying <span className="text-primary font-semibold">{jobs.filter((job) => !selectedLocation || job.location === selectedLocation).length}</span>/{jobs.length} results
-              </div>
-              {selectedLocation && (
-                <button
-                  onClick={() => setSelectedLocation(null)}
-                  className="text-xs text-primary hover:underline font-semibold flex items-center gap-1"
-                >
-                  Clear Filter
-                </button>
-              )}
-            </div>
-
-            {loading && (
-              <div className="flex-1 flex items-center justify-center text-muted-foreground p-8 min-h-[250px]">
-                <div className="flex flex-col items-center gap-2">
-                  <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-                  <span>{translations?.pages?.careers?.currentOpenings?.loadingText || 'Loading careers...'}</span>
+          <div className="flex flex-col lg:flex-row w-full lg:h-[calc(100vh-96px)] lg:min-h-[600px] lg:overflow-hidden bg-white">
+            <div className="w-full lg:w-[400px] xl:w-[450px] shrink-0 border-b lg:border-b-0 lg:border-r border-border bg-white flex flex-col h-full order-2 lg:order-1">
+              <div className="px-6 py-4 bg-gray-50/50 border-b border-border flex items-center justify-between">
+                <div className="text-xs text-gray-500 font-medium">
+                  Displaying <span className="text-primary font-semibold">{filteredJobs.length}</span>/{jobs.length} results
                 </div>
+                {selectedLocation && (
+                  <button
+                    onClick={() => setSelectedLocation(null)}
+                    className="text-xs text-primary hover:underline font-semibold flex items-center gap-1"
+                  >
+                    Clear Filter
+                  </button>
+                )}
               </div>
-            )}
-            
-            {error && (
-              <div className="flex-1 flex items-center justify-center text-destructive p-8 min-h-[250px]">
-                {error}
-              </div>
-            )}
 
-            {!loading && !error && (
-              <div className="flex-1 overflow-y-auto divide-y divide-border lg:max-h-none max-h-[500px] scrollbar-thin pr-1">
-                {jobs.filter((job) => !selectedLocation || job.location === selectedLocation).length === 0 ? (
-                  <div className="text-center py-12 text-muted-foreground bg-white">
-                    No positions found for this location.
+              {loading && (
+                <div className="flex-1 flex items-center justify-center text-muted-foreground p-8 min-h-[250px]">
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                    <span>{translations?.pages?.careers?.currentOpenings?.loadingText || 'Loading careers...'}</span>
                   </div>
-                ) : (
-                  jobs
-                    .filter((job) => !selectedLocation || job.location === selectedLocation)
-                    .map((job) => (
+                </div>
+              )}
+
+              {error && (
+                <div className="flex-1 flex items-center justify-center text-destructive p-8 min-h-[250px]">
+                  {error}
+                </div>
+              )}
+
+              {!loading && !error && (
+                <div className="flex-1 overflow-y-auto divide-y divide-border lg:max-h-none max-h-[500px] scrollbar-thin pr-1">
+                  {filteredJobs.length === 0 ? (
+                    <div className="text-center py-12 text-muted-foreground bg-white">
+                      No positions found for this location.
+                    </div>
+                  ) : (
+                    filteredJobs.map((job) => (
                       <Link key={job._id} to={`/careers/${job._id}`} className="block group">
                         <div className="p-6 bg-white hover:bg-tuv-gray-50/40 transition-colors">
                           <div className="flex flex-col gap-2">
@@ -264,7 +261,7 @@ export default function Careers() {
                             <p className="text-sm text-gray-500 font-medium">
                               {job.location}
                             </p>
-                            
+
                             <div className="flex flex-wrap gap-4 mt-2">
                               <div className="flex items-center gap-1.5 text-xs text-gray-600">
                                 <Coins className="h-4 w-4 text-primary/70 shrink-0" />
@@ -279,18 +276,91 @@ export default function Careers() {
                         </div>
                       </Link>
                     ))
+                  )}
+                </div>
+              )}
+            </div>
+
+            <div className="flex-1 h-[350px] sm:h-[450px] lg:h-full w-full order-1 lg:order-2 relative bg-gray-50">
+              <CareersMap
+                jobs={jobs}
+                selectedLocation={selectedLocation}
+                onSelectLocation={setSelectedLocation}
+              />
+            </div>
+          </div>
+
+          <div className="container-responsive py-16">
+            <div className="text-center mb-10">
+              <div className="text-sm text-muted-foreground">
+                Displaying <span className="font-semibold text-primary">{filteredJobs.length}</span> of {jobs.length} openings
+                {selectedLocation && (
+                  <>
+                    <span> for {selectedLocation}</span>
+                    <button
+                      onClick={() => setSelectedLocation(null)}
+                      className="ml-3 font-semibold text-primary hover:underline"
+                    >
+                      Clear filter
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+
+            {loading && (
+              <div className="flex items-center justify-center text-muted-foreground p-8 min-h-[220px]">
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                  <span>{translations?.pages?.careers?.currentOpenings?.loadingText || 'Loading careers...'}</span>
+                </div>
+              </div>
+            )}
+
+            {error && (
+              <div className="flex items-center justify-center text-destructive p-8 min-h-[220px]">
+                {error}
+              </div>
+            )}
+
+            {!loading && !error && (
+              <div className="space-y-5">
+                {filteredJobs.length === 0 ? (
+                  <div className="text-center py-12 text-muted-foreground border border-border rounded-lg bg-white">
+                    No positions found for this location.
+                  </div>
+                ) : (
+                  filteredJobs.map((job) => (
+                    <Link key={job._id} to={`/careers/${job._id}`} className="block group">
+                      <div className="flex flex-col gap-4 rounded-lg border border-border bg-white px-5 py-5 transition-colors hover:bg-tuv-gray-50/40 lg:flex-row lg:items-center lg:justify-between">
+                        <h3 className="text-lg md:text-xl font-bold text-primary group-hover:underline">
+                          {job.title}
+                        </h3>
+                        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm md:text-base text-muted-foreground">
+                          <div className="flex items-center gap-2">
+                            <Calendar className="h-4 w-4" />
+                            <span>Posted</span>
+                            <span>{formatDate(job.postedAt)}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Briefcase className="h-4 w-4" />
+                            <span>{job.level || job.department}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <MapPin className="h-4 w-4" />
+                            <span>{job.location}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Clock className="h-4 w-4" />
+                            <span>{job.type}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  ))
                 )}
               </div>
             )}
-          </div>
-
-          {/* Map: Right side */}
-          <div className="flex-1 h-[350px] sm:h-[450px] lg:h-full w-full order-1 lg:order-2 relative bg-gray-50">
-            <CareersMap 
-              jobs={jobs} 
-              selectedLocation={selectedLocation} 
-              onSelectLocation={setSelectedLocation} 
-            />
           </div>
         </div>
       </section>
