@@ -353,11 +353,11 @@ export default function ServiceDetail({ sectionData, serviceType, serviceDisplay
                   if (idx === 0 && imageUrls[0]) {
                     finalBlocks.push(
                       <div key={`img-top-0`} className={`flex w-full mb-6 justify-start`}>
-                        <div className="overflow-hidden md:max-w-3xl w-full">
+                        <div className="overflow-hidden md:max-w-2xl w-full">
                           <img
                             src={imageUrls[0]}
                             alt={section?.title || 'Service Image'}
-                            className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
+                            className="w-full h-72 md:h-96 object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
                           />
                         </div>
                       </div>
@@ -371,7 +371,7 @@ export default function ServiceDetail({ sectionData, serviceType, serviceDisplay
                           <img
                             src={imageUrls[1]}
                             alt={section?.title || 'Service Image'}
-                            className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
+                            className="w-full h-72 md:h-96 object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
                           />
                         </div>
                       </div>
@@ -387,7 +387,7 @@ export default function ServiceDetail({ sectionData, serviceType, serviceDisplay
                         <img
                           src={imageUrls[2]}
                           alt={section?.title || 'Service Image'}
-                          className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
+                          className="w-full h-72 md:h-96 object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
                         />
                       </div>
                     </div>
@@ -405,7 +405,7 @@ export default function ServiceDetail({ sectionData, serviceType, serviceDisplay
                           <img
                             src={url}
                             alt={section?.title || 'Service Image'}
-                            className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
+                            className="w-full h-72 md:h-96 object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
                           />
                         </div>
                       </div>
@@ -562,7 +562,7 @@ export default function ServiceDetail({ sectionData, serviceType, serviceDisplay
                             <img
                               src={url}
                               alt={section?.title || 'Service Image'}
-                              className="w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
+                              className="w-full h-72 md:h-96 object-cover hover:scale-[1.02] transition-transform duration-300 rounded-2xl"
                             />
                           </div>
                         </div>
