@@ -82,12 +82,34 @@ export default function IndustriesDetail() {
     const flushParagraph = () => {
       if (buffer.length) {
         nodes.push(
-          <p key={`p-${nodes.length}`} className="text-lg leading-8 text-gray-700 dark:text-gray-300 text-justify">
+          <p key={`p-${nodes.length}`} className="text-base md:text-lg leading-8 text-gray-600 dark:text-gray-300 text-justify">
             {buffer.join(' ')}
           </p>
         );
         buffer = [];
       }
+    };
+
+    // Helper: detect if a plain line looks like a heading.
+    // Catches: **bold**, lines ending with ':', or short lines (<= 80 chars)
+    // that don't end with sentence punctuation (. ? ! " ,) and have no commas
+    // — distinguishes "Mining & Metals Industry Focus" from body sentences.
+    const isHeadingLine = (line: string): boolean => {
+      if (/^\*\*(.*?)\*\*:?$/.test(line)) return true; // **Bold text** or **Bold text**:
+      if (line.endsWith(':') && line.length <= 80) return true; // "Benefits:"
+      // Short line with no sentence-ending punctuation and no commas → treat as heading
+      if (
+        line.length <= 80 &&
+        !/[.,?!"]$/.test(line) &&   // doesn't end like a sentence
+        !line.includes(',') &&       // no commas (body text usually has them)
+        !/^[""]/.test(line)          // not a quoted line
+      ) return true;
+      return false;
+    };
+
+    const extractHeadingText = (line: string): string => {
+      // Strip ** markers and trailing colon
+      return line.replace(/^\*\*/, '').replace(/\*\*:?$/, '').replace(/:$/, '').trim();
     };
 
     lines.forEach((raw, idx) => {
@@ -96,23 +118,44 @@ export default function IndustriesDetail() {
         flushParagraph();
         return;
       }
-      const match = line.match(/^(#{1,6})\s+(.*)$/); // markdown-style heading
+
+      // Skip backend placeholder text that should never be shown to users
+      if (line.toLowerCase().includes('default footer for unmatched sections')) return;
+
+      // Markdown-style heading: # ## ### etc.
+      const match = line.match(/^(#{1,6})\s+(.*)$/);
       if (match) {
         flushParagraph();
         const hashes = match[1].length;
         const title = match[2];
-        const commonClass = "font-semibold text-gray-900 dark:text-gray-100 mb-4 mt-8 first:mt-0";
+        const commonClass = "font-bold text-gray-900 dark:text-white mb-3 mt-8 first:mt-0 border-l-4 border-primary pl-3";
         if (hashes === 1) {
-          nodes.push(<h2 key={`h2-${idx}`} className={`text-3xl ${commonClass}`}>{title}</h2>);
+          nodes.push(<h2 key={`h2-${idx}`} className={`text-2xl md:text-3xl ${commonClass}`}>{title}</h2>);
         } else if (hashes === 2) {
-          nodes.push(<h3 key={`h3-${idx}`} className={`text-2xl ${commonClass}`}>{title}</h3>);
+          nodes.push(<h3 key={`h3-${idx}`} className={`text-xl md:text-2xl ${commonClass}`}>{title}</h3>);
         } else if (hashes === 3) {
-          nodes.push(<h4 key={`h4-${idx}`} className={`text-xl ${commonClass}`}>{title}</h4>);
+          nodes.push(<h4 key={`h4-${idx}`} className={`text-lg md:text-xl ${commonClass}`}>{title}</h4>);
         } else {
-          nodes.push(<h5 key={`h5-${idx}`} className={`text-lg ${commonClass}`}>{title}</h5>);
+          nodes.push(<h5 key={`h5-${idx}`} className={`text-base md:text-lg ${commonClass}`}>{title}</h5>);
         }
         return;
       }
+
+      // Plain-text heading detection (e.g. "Benefits:" or "**Mining Focus**")
+      if (isHeadingLine(line)) {
+        flushParagraph();
+        const title = extractHeadingText(line);
+        nodes.push(
+          <h4
+            key={`ph-${idx}`}
+            className="text-lg md:text-xl font-bold text-gray-900 dark:text-white mt-8 mb-2 first:mt-0 border-l-4 border-primary pl-3"
+          >
+            {title}
+          </h4>
+        );
+        return;
+      }
+
       buffer.push(line);
     });
     flushParagraph();
