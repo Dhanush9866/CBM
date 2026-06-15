@@ -86,7 +86,6 @@ class BlogService {
       return response.data as T;
     } catch (error: any) {
       const message = error?.response?.data?.message || error?.message || 'Blog service error';
-      console.error('Blog service error:', message);
       throw new Error(message);
     }
   }

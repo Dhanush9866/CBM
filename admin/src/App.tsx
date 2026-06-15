@@ -6,11 +6,13 @@ import Blogs from './pages/Blogs';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
 import RouteScrollTop from './route-scroll-top';
+import { ToastViewport } from './lib/toast';
 
 export default function App() {
   return (
     <>
       <RouteScrollTop />
+      <ToastViewport />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route

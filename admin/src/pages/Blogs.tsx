@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { blogService, Blog, CreateBlogData, UpdateBlogData } from '../services/blogService';
 import BlogForm from '../components/BlogForm';
+import { showSuccessToast } from '@/lib/toast';
 
 type ViewMode = 'list' | 'form' | 'view';
 type FormMode = 'create' | 'edit';
@@ -53,6 +54,7 @@ export default function Blogs() {
     try {
       setFormLoading(true);
       await blogService.createBlog(blogData as CreateBlogData, files);
+      showSuccessToast('Blog created successfully');
       setViewMode('list');
       await loadBlogs();
     } catch (err) {
@@ -74,15 +76,12 @@ export default function Blogs() {
         throw new Error('No blog selected for update');
       }
 
-      console.log('Updating blog with ID:', selectedBlog._id);
-      console.log('Update data:', blogData);
-
       await blogService.updateBlog(selectedBlog._id, blogData as UpdateBlogData, files);
+      showSuccessToast('Blog updated successfully');
       setViewMode('list');
       setSelectedBlog(null);
       await loadBlogs();
     } catch (err) {
-      console.error('Update blog error:', err);
       setError(err instanceof Error ? err.message : 'Failed to update blog');
     } finally {
       setFormLoading(false);
@@ -92,6 +91,7 @@ export default function Blogs() {
   const handleDeleteBlog = async (id: string) => {
     try {
       await blogService.deleteBlog(id);
+      showSuccessToast('Blog deleted successfully');
       setShowDeleteConfirm(null);
       await loadBlogs();
     } catch (err) {
