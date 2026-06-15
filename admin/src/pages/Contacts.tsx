@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { ContactOffice, listContactOffices, createContactOffice, updateContactOffice, deleteContactOffice } from '@/services/contactOffices';
 import { IndustryStat, listIndustryStats, createIndustryStat, updateIndustryStat, deleteIndustryStat } from '@/services/industryStats';
+import { extractErrorMessage, showErrorToast, showSuccessToast } from '@/lib/toast';
 
 const emptyContactOffice: ContactOffice = {
   region_name: '',
@@ -93,9 +94,12 @@ export default function Contacts() {
       setEditing(null);
       setImageFile(null);
       setImagePreview('');
+      showSuccessToast(editing ? 'Contact office updated successfully' : 'Contact office created successfully');
       await load();
     } catch (err: any) {
-      alert(err?.response?.data?.message || err?.message || 'Save failed');
+      if (!err?.response) {
+        showErrorToast(extractErrorMessage(err, 'Save failed'));
+      }
     }
   };
 
@@ -127,9 +131,12 @@ export default function Contacts() {
     if (!confirm('Delete this contact office?')) return;
     try {
       await deleteContactOffice(item._id);
+      showSuccessToast('Contact office deleted successfully');
       await load();
     } catch (err: any) {
-      alert(err?.response?.data?.message || err?.message || 'Delete failed');
+      if (!err?.response) {
+        showErrorToast(extractErrorMessage(err, 'Delete failed'));
+      }
     }
   };
 
@@ -195,9 +202,12 @@ export default function Contacts() {
       }
       setStatForm(emptyIndustryStat);
       setEditingStat(null);
+      showSuccessToast(editingStat ? 'Industry stat updated successfully' : 'Industry stat created successfully');
       await loadStats();
     } catch (err: any) {
-      alert(err?.response?.data?.message || err?.message || 'Save failed');
+      if (!err?.response) {
+        showErrorToast(extractErrorMessage(err, 'Save failed'));
+      }
     }
   };
 
@@ -217,9 +227,12 @@ export default function Contacts() {
     if (!confirm('Delete this industry stat?')) return;
     try {
       await deleteIndustryStat(stat._id);
+      showSuccessToast('Industry stat deleted successfully');
       await loadStats();
     } catch (err: any) {
-      alert(err?.response?.data?.message || err?.message || 'Delete failed');
+      if (!err?.response) {
+        showErrorToast(extractErrorMessage(err, 'Delete failed'));
+      }
     }
   };
 

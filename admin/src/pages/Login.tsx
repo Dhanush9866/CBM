@@ -1,6 +1,7 @@
 import { FormEvent, useState } from 'react';
-import { requestOtp, verifyOtp, loginWithPassword } from '@/services/auth';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { requestOtp, verifyOtp, loginWithPassword } from '@/services/auth';
+import { extractErrorMessage, showErrorToast, showSuccessToast } from '@/lib/toast';
 
 export default function Login() {
   const [loginMethod, setLoginMethod] = useState<'otp' | 'password'>('password');
@@ -13,39 +14,32 @@ export default function Login() {
   const navigate = useNavigate();
   const location = useLocation() as any;
 
+  const showMessage = (text: string, type: 'success' | 'error') => {
+    setMessage(text);
+    if (type === 'success') {
+      showSuccessToast(text);
+    } else {
+      showErrorToast(text);
+    }
+  };
+
   const handleRequest = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setMessage(null);
-    
-    console.log('================================================');
-    console.log('🔐 Admin Login - Requesting OTP');
-    console.log('================================================');
-    console.log('  API Endpoint: /api/admin/auth/request-otp');
-    console.log('  Timestamp:', new Date().toISOString());
-    
+
     try {
       const res = await requestOtp();
-      console.log('✅ OTP Request Response:', res);
       if (res.success) {
         setStep('verify');
-        setMessage('OTP sent to your email. Please check your inbox.');
-        console.log('✅ OTP sent successfully');
+        showMessage('OTP sent to your email. Please check your inbox.', 'success');
       } else {
-        console.error('❌ OTP Request Failed:', res.message);
-        setMessage(res.message || 'Failed to send OTP');
+        showMessage(res.message || 'Failed to send OTP', 'error');
       }
-    } catch (err: any) {
-      console.error('❌ OTP Request Error:', err);
-      console.error('  Error Message:', err?.message);
-      console.error('  Response Status:', err?.response?.status);
-      console.error('  Response Data:', err?.response?.data);
-      console.error('  Request URL:', err?.config?.url);
-      console.error('  Base URL:', err?.config?.baseURL);
-      setMessage(err?.response?.data?.message || err?.message || 'Failed to send OTP');
+    } catch (err) {
+      setMessage(extractErrorMessage(err, 'Failed to send OTP'));
     } finally {
       setLoading(false);
-      console.log('================================================');
     }
   };
 
@@ -53,6 +47,7 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
     setMessage(null);
+
     try {
       const res = await verifyOtp(code);
       if (res.success && res.data?.token) {
@@ -60,10 +55,10 @@ export default function Login() {
         const to = location.state?.from?.pathname || '/careers';
         navigate(to, { replace: true });
       } else {
-        setMessage(res.message || 'Invalid code');
+        showMessage(res.message || 'Invalid code', 'error');
       }
-    } catch (err: any) {
-      setMessage(err?.response?.data?.message || err?.message || 'Verification failed');
+    } catch (err) {
+      setMessage(extractErrorMessage(err, 'Verification failed'));
     } finally {
       setLoading(false);
     }
@@ -73,42 +68,27 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
     setMessage(null);
-    
-    console.log('================================================');
-    console.log('🔐 Admin Password Login');
-    console.log('================================================');
-    console.log('  Email:', email);
-    console.log('  Timestamp:', new Date().toISOString());
-    
+
     try {
       const res = await loginWithPassword(email, password);
-      console.log('✅ Login Response:', res);
       if (res.success && res.data?.token) {
         localStorage.setItem('admin_token', res.data.token);
-        console.log('✅ Login successful, redirecting...');
         const to = location.state?.from?.pathname || '/careers';
         navigate(to, { replace: true });
       } else {
-        console.error('❌ Login Failed:', res.message);
-        setMessage(res.message || 'Invalid email or password');
+        showMessage(res.message || 'Invalid email or password', 'error');
       }
-    } catch (err: any) {
-      console.error('❌ Login Error:', err);
-      console.error('  Error Message:', err?.message);
-      console.error('  Response Status:', err?.response?.status);
-      console.error('  Response Data:', err?.response?.data);
-      setMessage(err?.response?.data?.message || err?.message || 'Login failed');
+    } catch (err) {
+      setMessage(extractErrorMessage(err, 'Login failed'));
     } finally {
       setLoading(false);
-      console.log('================================================');
     }
   };
 
   return (
     <div style={{ maxWidth: 420, margin: '80px auto', padding: 24, border: '1px solid #e5e7eb', borderRadius: 8 }}>
       <h1 style={{ fontSize: 22, fontWeight: 700, marginBottom: 16 }}>CBM Admin Login</h1>
-      
-      {/* Login Method Toggle */}
+
       <div style={{ display: 'flex', gap: 8, marginBottom: 20, borderBottom: '1px solid #e5e7eb', paddingBottom: 12 }}>
         <button
           type="button"
@@ -125,7 +105,7 @@ export default function Login() {
             border: '1px solid #d1d5db',
             borderRadius: 6,
             cursor: 'pointer',
-            fontWeight: loginMethod === 'password' ? 600 : 400
+            fontWeight: loginMethod === 'password' ? 600 : 400,
           }}
         >
           Email & Password
@@ -145,7 +125,7 @@ export default function Login() {
             border: '1px solid #d1d5db',
             borderRadius: 6,
             cursor: 'pointer',
-            fontWeight: loginMethod === 'otp' ? 600 : 400
+            fontWeight: loginMethod === 'otp' ? 600 : 400,
           }}
         >
           OTP Login
@@ -153,18 +133,19 @@ export default function Login() {
       </div>
 
       {message && (
-        <div style={{ 
-          marginBottom: 12, 
-          padding: 10, 
-          borderRadius: 6,
-          background: message.includes('success') || message.includes('sent') ? '#d1fae5' : '#fee2e2',
-          color: message.includes('success') || message.includes('sent') ? '#065f46' : '#991b1b'
-        }}>
+        <div
+          style={{
+            marginBottom: 12,
+            padding: 10,
+            borderRadius: 6,
+            background: message.includes('sent') ? '#d1fae5' : '#fee2e2',
+            color: message.includes('sent') ? '#065f46' : '#991b1b',
+          }}
+        >
           {message}
         </div>
       )}
 
-      {/* Password Login Form */}
       {loginMethod === 'password' && (
         <form onSubmit={handlePasswordLogin}>
           <label style={{ display: 'block', marginBottom: 8, fontWeight: 500 }}>Email</label>
@@ -185,9 +166,9 @@ export default function Login() {
             placeholder="Enter your password"
             style={{ width: '100%', padding: 10, border: '1px solid #d1d5db', borderRadius: 6, marginBottom: 12 }}
           />
-          <button 
-            disabled={loading} 
-            type="submit" 
+          <button
+            disabled={loading}
+            type="submit"
             style={{ width: '100%', padding: 12, background: '#111827', color: 'white', borderRadius: 6, fontWeight: 600 }}
           >
             {loading ? 'Logging in...' : 'Login'}
@@ -195,7 +176,6 @@ export default function Login() {
         </form>
       )}
 
-      {/* OTP Login Form */}
       {loginMethod === 'otp' && (
         <>
           {step === 'request' ? (
@@ -227,4 +207,3 @@ export default function Login() {
     </div>
   );
 }
-

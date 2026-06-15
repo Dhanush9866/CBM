@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Blog, CreateBlogData, UpdateBlogData } from '../services/blogService';
+import { showErrorToast } from '@/lib/toast';
 
 interface BlogFormProps {
   blog?: Blog;
@@ -169,7 +170,7 @@ export default function BlogForm({ blog, onSave, onCancel, isLoading = false }: 
         setPdfFile(file);
         setPdfFileName(file.name);
       } else {
-        alert('Please select a PDF file');
+        showErrorToast('Please select a PDF file');
         e.target.value = '';
       }
     }
@@ -202,7 +203,7 @@ export default function BlogForm({ blog, onSave, onCancel, isLoading = false }: 
 
     const isValid = validateForm();
     if (!isValid) {
-      alert('Please fix the form errors before submitting');
+      showErrorToast('Please fix the form errors before submitting');
       return;
     }
 
@@ -216,9 +217,8 @@ export default function BlogForm({ blog, onSave, onCancel, isLoading = false }: 
         featuredImageFile: featuredImageFile ?? undefined,
         pdfFile: pdfFile ?? undefined
       });
-    } catch (error) {
-      console.error('Error saving blog:', error);
-      alert('Error saving blog: ' + (error instanceof Error ? error.message : 'Unknown error'));
+    } catch {
+      showErrorToast('Error saving blog. Please check the message above and try again.');
     }
   };
 
