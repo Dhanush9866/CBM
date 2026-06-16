@@ -83,12 +83,15 @@ export function Footer() {
               </h3>
               <ul className="space-y-4">
                 {(translations?.footer.services.list || [
-                  'Testing & Certification',
-                  'Inspection Services',
-                  'Audit & Assessment',
-                  'Training & Education',
-                  'Digital Solutions',
-                  'Consulting Services'
+                  'Testing',
+                  'Inspection',
+                  'Condition-based monitoring',
+                  'AI + remote IoT-based monitoring',
+                  'Audit and Assessment',
+                  'Verification and certification',
+                  'Training and education',
+                  'Digital solutions',
+                  'Consulting services'
                 ]).map((service, index) => (
                   <li key={index}>
                     <Link
