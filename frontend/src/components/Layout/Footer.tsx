@@ -37,6 +37,17 @@ export function Footer() {
   const { translations } = useTranslation();
   const currentYear = new Date().getFullYear();
 
+  const getServiceRoute = (serviceName: string) => {
+    const name = serviceName.toLowerCase();
+    if (name.includes('testing')) return '/services/testing';
+    if (name.includes('inspection')) return '/services/inspection';
+    if (name.includes('condition-based')) return '/services/cbm';
+    if (name.includes('audit')) return '/services/auditing';
+    if (name.includes('verification') || name.includes('certification')) return '/services/verification-certification';
+    if (name.includes('ai') || name.includes('iot')) return '/services/innovation-rd';
+    return '/services';
+  };
+
   return (
     <footer className="bg-tuv-gray-900 text-white">
       <div className="container-responsive">
@@ -65,7 +76,7 @@ export function Footer() {
                   <Youtube className="h-5 w-5" />
                 </a>
                 <a
-                  href={`https://wa.me/447934980214`}
+                  href={`https://wa.me/447876175141`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-tuv-gray-400 hover:text-white transition-colors"
@@ -95,7 +106,7 @@ export function Footer() {
                 ]).map((service, index) => (
                   <li key={index}>
                     <Link
-                      to="/services"
+                      to={getServiceRoute(service)}
                       className="text-tuv-gray-400 hover:text-white transition-colors flex items-center group"
                     >
                       <ArrowRight className="h-3 w-3 mr-2 opacity-0 group-hover:opacity-100 transition-all duration-200 -translate-x-2 group-hover:translate-x-0" />
@@ -161,7 +172,7 @@ export function Footer() {
                 <div className="flex items-center space-x-3">
                   <Phone className="h-5 w-5 text-tuv-gray-400" />
                   <span className="text-tuv-gray-400">
-                    {translations?.footer.contact.phone || '+44 7934 980214'}
+                    {translations?.footer.contact.phone || '+44 7876175141'}
                   </span>
                 </div>
                 <div className="flex items-start space-x-3">
@@ -209,7 +220,7 @@ export function Footer() {
 
                 {/* WhatsApp QR */}
                 <div className="relative group inline-block">
-                  <a href="https://wa.me/447934980214" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center cursor-pointer">
+                  <a href="https://wa.me/447876175141" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center cursor-pointer">
                     <img
                       src="/assets/qr/whatsapp.png"
                       alt="WhatsApp QR"

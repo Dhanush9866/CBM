@@ -31,7 +31,7 @@ export const contactOfficesData: RegionalOfficeGroup[] = [
         country: "United Kingdom",
         office_name: "CBM 360 TIV – UK",
         address: "79 Denyer St, London SW3 2NY, UK",
-        phone: "+44 7934 980214",
+        phone: "+44 7876 175141",
         emails: ["Support@cbm360tiv.com", "info@cbm360tiv.com"],
         is_lab_facility: false,
         notes: "Corporate Headquarters"
@@ -46,7 +46,7 @@ export const contactOfficesData: RegionalOfficeGroup[] = [
         country: "Germany",
         office_name: "CBM 360 TIV - Germany GmbH & Co. KG",
         address: "Hinter den Kirschkaten 69, 23560 Lübeck, Germany",
-        phone: "+44 7934 980214",
+        phone: "+44 7876 175141",
         emails: ["info@cbm360tiv.com"],
         is_lab_facility: true,
         image_url: "https://res.cloudinary.com/docyipoze/image/upload/v1756965213/cbm/contact-offices/02-Europe-Germany/cbm/contact-offices/02-Europe-Germany/cbm-360-tiv---germany-gmbh---co--kg.png",

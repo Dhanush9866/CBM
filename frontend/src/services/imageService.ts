@@ -1128,11 +1128,11 @@ class ImageService {
         tags: ['inspection', 'hse-inspection', 'cbm']
       },
       {
-        url: 'https://res.cloudinary.com/docyipoze/image/upload/v1755880537/cbm/inspection/hse-inspection/cbm/inspection/hse-inspection/image145.jpg',
-        public_id: 'cbm/inspection/hse-inspection/cbm/inspection/hse-inspection/image145',
+        url: 'https://res.cloudinary.com/docyipoze/image/upload/v1782800328/cbm/inspection/hse-inspection/cover-photo-clean.png',
+        public_id: 'cbm/inspection/hse-inspection/cover-photo-clean',
         width: 698,
         height: 406,
-        format: 'jpg',
+        format: 'png',
         created_at: '2025-08-22T16:08:57Z',
         tags: ['inspection', 'hse-inspection', 'cbm']
       }

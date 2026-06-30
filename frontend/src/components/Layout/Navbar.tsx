@@ -66,7 +66,7 @@ export function Navbar() {
             <div className="flex items-center space-x-6">
               <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4" />
-                <span>+44 7934 980214</span>
+                <span>+44 7876 175141</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4" />

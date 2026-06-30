@@ -49,7 +49,7 @@ const translations = {
         contact: {
           title: "Contact",
           address: "CBM 360 TIV – UK\n79 Denyer St, London SW3 2NY, United Kingdom",
-          phone: "+44 7934 980214",
+          phone: "+44 7876 175141",
           email: "Support@cbm360tiv.com\ninfo@cbm360tiv.com",
         },
         newsletter: "Stay Updated",
@@ -283,7 +283,7 @@ const translations = {
             firstName: "John",
             lastName: "Doe",
             email: "john.doe@company.com",
-            phone: "+44 7934 980214",
+            phone: "+44 7876 175141",
             company: "Your Company Name",
             selectIndustry: "Select Industry",
             selectService: "Select Service",
@@ -373,7 +373,7 @@ const translations = {
             },
             assistance: {
               title: "Need quick assistance?",
-              description: "Email Support@cbm360tiv.com or call +44 7934 980214 referencing \"Verify Doc Portal\" for priority routing."
+              description: "Email Support@cbm360tiv.com or call +44 7876 175141 referencing \"Verify Doc Portal\" for priority routing."
             }
           },
           toast: {
@@ -561,7 +561,7 @@ const translations = {
         contact: {
           "title": "Contact",
           "address": "CBM 360 TIV – UK\n79 Rue Denyer, Londres SW3 2NY, UK",
-          "phone": "+44 7934 980214",
+          "phone": "+44 7876 175141",
           "email": "Support@cbm360tiv.com\ninfo@cbm360tiv.com"
         }
         ,
@@ -886,7 +886,7 @@ const translations = {
             },
             assistance: {
               title: "Besoin d'une assistance rapide ?",
-              description: "Envoyez un email à Support@cbm360tiv.com ou appelez le +44 7934 980214 en référençant \"Portail de Vérification de Documents\" pour un routage prioritaire."
+              description: "Envoyez un email à Support@cbm360tiv.com ou appelez le +44 7876 175141 en référençant \"Portail de Vérification de Documents\" pour un routage prioritaire."
             }
           },
           toast: {
@@ -1074,7 +1074,7 @@ const translations = {
         contact: {
           "title": "Contato",
           "address": "CBM 360 TIV – UK\n79 Rua Denyer, Londres SW3 2NY, UK",
-          "phone": "+44 7934 980214",
+          "phone": "+44 7876 175141",
           "email": "Support@cbm360tiv.com\ninfo@cbm360tiv.com"
         },        
         newsletter: "Fique Atualizado",
@@ -1398,7 +1398,7 @@ const translations = {
             },
             assistance: {
               title: "Precisa de assistência rápida?",
-              description: "Envie um email para Support@cbm360tiv.com ou ligue para +44 7934 980214 referenciando \"Portal de Verificação de Documentos\" para roteamento prioritário."
+              description: "Envie um email para Support@cbm360tiv.com ou ligue para +44 7876 175141 referenciando \"Portal de Verificação de Documentos\" para roteamento prioritário."
             }
           },
           toast: {
@@ -1585,7 +1585,7 @@ const translations = {
         contact: {
           "title": "Contacto",
           "address": "CBM 360 TIV – UK\n79 Calle Denyer, Londres SW3 2NY, UK",
-          "phone": "+44 7934 980214",
+          "phone": "+44 7876 175141",
           "email": "Support@cbm360tiv.com\ninfo@cbm360tiv.com"
         },        
         newsletter: "Mantente Actualizado",
@@ -1909,7 +1909,7 @@ const translations = {
             },
             assistance: {
               title: "¿Necesita asistencia rápida?",
-              description: "Envíe un correo a Support@cbm360tiv.com o llame al +44 7934 980214 haciendo referencia al \"Portal de Verificación de Documentos\" para enrutamiento prioritario."
+              description: "Envíe un correo a Support@cbm360tiv.com o llame al +44 7876 175141 haciendo referencia al \"Portal de Verificación de Documentos\" para enrutamiento prioritario."
             }
           },
           toast: {
@@ -2096,7 +2096,7 @@ const translations = {
         contact: {
           "title": "Контакт",
           "address": "CBM 360 TIV – UK\nул. Деньер 79, Лондон SW3 2NY, UK",
-          "phone": "+44 7934 980214",
+          "phone": "+44 7876 175141",
           "email": "Support@cbm360tiv.com\ninfo@cbm360tiv.com"
         },        
         newsletter: "Будьте в курсе",
@@ -2420,7 +2420,7 @@ const translations = {
             },
             assistance: {
               title: "Нужна быстрая помощь?",
-              description: "Отправьте email на Support@cbm360tiv.com или позвоните по +44 7934 980214, указав \"Портал Проверки Документов\" для приоритетной маршрутизации."
+              description: "Отправьте email на Support@cbm360tiv.com или позвоните по +44 7876 175141, указав \"Портал Проверки Документов\" для приоритетной маршрутизации."
             }
           },
           toast: {
@@ -2608,7 +2608,7 @@ const translations = {
         contact: {
           "title": "联系方式",
           "address": "CBM 360 TIV – UK\n伦敦 丹耶街 79 号 SW3 2NY, UK",
-          "phone": "+44 7934 980214",
+          "phone": "+44 7876 175141",
           "email": "Support@cbm360tiv.com\ninfo@cbm360tiv.com"
         },        
         newsletter: "保持更新",
@@ -2854,7 +2854,7 @@ const translations = {
             firstName: "约翰",
             lastName: "多伊",
             email: "john.doe@company.com",
-            phone: "+44 7934 980214",
+            phone: "+44 7876 175141",
             company: "您的公司名称",
             selectIndustry: "选择行业",
             selectService: "选择服务",
@@ -2944,7 +2944,7 @@ const translations = {
             },
             assistance: {
               title: "需要快速协助？",
-              description: "发送邮件至Support@cbm360tiv.com或致电+44 7934 980214，提及\"验证文件门户\"以获得优先处理。"
+              description: "发送邮件至Support@cbm360tiv.com或致电+44 7876 175141，提及\"验证文件门户\"以获得优先处理。"
             }
           },
           toast: {

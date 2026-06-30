@@ -105,7 +105,18 @@ const createClusterCustomIcon = function (cluster: any) {
 // Component for Map Controls
 const MapControls = () => {
   const map = useMap();
+  const [zoom, setZoom] = React.useState(map.getZoom());
+  
+  React.useEffect(() => {
+    const handleZoom = () => setZoom(map.getZoom());
+    map.on('zoomend', handleZoom);
+    return () => {
+      map.off('zoomend', handleZoom);
+    };
+  }, [map]);
+
   const PAN_AMOUNT = 100;
+  const isMinZoom = zoom <= 2;
 
   return (
     <div className="absolute bottom-6 right-6 z-[1000] flex flex-col gap-2">
@@ -150,11 +161,12 @@ const MapControls = () => {
           <Plus className="h-4 w-4 text-gray-700" />
         </button>
         <button 
-          onClick={() => map.setZoom(map.getZoom() - 1)} 
-          className="p-2 bg-white rounded-md shadow hover:bg-gray-100 border border-gray-200"
+          onClick={() => !isMinZoom && map.setZoom(map.getZoom() - 1)} 
+          disabled={isMinZoom}
+          className={`p-2 rounded-md shadow border transition-colors ${isMinZoom ? 'bg-gray-100 border-gray-200 opacity-50 cursor-not-allowed' : 'bg-white hover:bg-gray-100 border-gray-200 cursor-pointer'}`}
           title="Zoom Out"
         >
-          <Minus className="h-4 w-4 text-gray-700" />
+          <Minus className={`h-4 w-4 ${isMinZoom ? 'text-gray-400' : 'text-gray-700'}`} />
         </button>
       </div>
     </div>
@@ -236,6 +248,12 @@ export const CareersMap: React.FC<CareersMapProps> = ({ jobs, onSelectLocation, 
       <MapContainer 
         center={initialCenter} 
         zoom={2} 
+        minZoom={2}
+        maxBounds={[
+          [-90, -180],
+          [90, 180]
+        ]}
+        maxBoundsViscosity={1.0}
         style={{ width: "100%", height: "100%", zIndex: 1 }}
         zoomControl={false}
         attributionControl={false}
