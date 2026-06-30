@@ -530,7 +530,7 @@ export default function VerifyDoc() {
             <div className="rounded-2xl border border-border bg-muted/30 p-6">
               <h4 className="text-lg font-semibold">{verifyDoc?.sidebar?.assistance?.title || 'Need quick assistance?'}</h4>
               <p className="text-sm text-muted-foreground mt-2">
-                {verifyDoc?.sidebar?.assistance?.description || 'Email Support@cbm360tiv.com or call +44 7934 980214 referencing "Verify Doc Portal" for priority routing.'}
+                {verifyDoc?.sidebar?.assistance?.description || 'Email Support@cbm360tiv.com or call +44 7876 175141 referencing "Verify Doc Portal" for priority routing.'}
               </p>
             </div>
           </aside>

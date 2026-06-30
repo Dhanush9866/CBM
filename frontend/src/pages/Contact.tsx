@@ -343,7 +343,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <Label htmlFor="phone">{translations?.pages?.contact?.labels?.phone || 'Phone Number'}</Label>
-                    <Input id="phone" type="tel" placeholder={translations?.pages?.contact?.placeholders?.phone || '+44 7934 980214'} className="mt-2" value={form.phone} onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))} />
+                    <Input id="phone" type="tel" placeholder={translations?.pages?.contact?.placeholders?.phone || '+44 7876 175141'} className="mt-2" value={form.phone} onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))} />
                   </div>
                 </div>
                 
@@ -436,7 +436,7 @@ export default function Contact() {
                     <p className="text-muted-foreground mb-2">
                       {translations?.pages?.contact?.supportPhoneDesc || 'Speak with our customer service team'}
                     </p>
-                    <p className="font-medium text-primary">+44 7934 980214</p>
+                    <p className="font-medium text-primary">+44 7876 175141</p>
                     <p className="text-sm text-muted-foreground">{translations?.pages?.contact?.supportPhoneHours || 'Mon-Fri: 8:00 AM - 6:00 PM EST'}</p>
                   </div>
                 </div>

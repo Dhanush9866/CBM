@@ -20,7 +20,7 @@ export default function WhatsApp() {
   const { translations } = useTranslation();
   
   // Phone number from navbar - same as in Navbar.tsx
-  const phoneNumber = '+44 7934 980214';
+  const phoneNumber = '+44 7876 175141';
   // Remove spaces and + for WhatsApp URL
   const whatsappNumber = phoneNumber.replace(/\s+/g, '').replace('+', '');
   const presetMessages = [

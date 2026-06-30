@@ -29,8 +29,19 @@ export default function Careers() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   const { currentLanguage, translations } = useTranslation();
   const filteredJobs = jobs.filter((job) => !selectedLocation || job.location === selectedLocation);
+  
+  const totalPages = Math.ceil(filteredJobs.length / itemsPerPage);
+  const paginatedJobs = filteredJobs.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedLocation, jobs]);
+
   const formatDate = (dateString: string) => {
     if (!dateString) return '';
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -330,34 +341,99 @@ export default function Careers() {
                     No positions found for this location.
                   </div>
                 ) : (
-                  filteredJobs.map((job) => (
-                    <Link key={job._id} to={`/careers/${job._id}`} className="block group">
-                      <div className="flex flex-col gap-4 rounded-lg border border-border bg-white px-5 py-5 transition-colors hover:bg-tuv-gray-50/40 lg:flex-row lg:items-center lg:justify-between">
-                        <h3 className="text-lg md:text-xl font-bold text-primary group-hover:underline">
-                          {job.title}
-                        </h3>
-                        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm md:text-base text-muted-foreground">
-                          <div className="flex items-center gap-2">
-                            <Calendar className="h-4 w-4" />
-                            <span>Posted</span>
-                            <span>{formatDate(job.postedAt)}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Briefcase className="h-4 w-4" />
-                            <span>{job.level || job.department}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <MapPin className="h-4 w-4" />
-                            <span>{job.location}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Clock className="h-4 w-4" />
-                            <span>{job.type}</span>
+                  <>
+                    {paginatedJobs.map((job) => (
+                      <Link key={job._id} to={`/careers/${job._id}`} className="block group">
+                        <div className="flex flex-col gap-4 rounded-lg border border-border bg-white px-5 py-5 transition-colors hover:bg-tuv-gray-50/40 lg:flex-row lg:items-center lg:justify-between">
+                          <h3 className="text-lg md:text-xl font-bold text-primary group-hover:underline">
+                            {job.title}
+                          </h3>
+                          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm md:text-base text-muted-foreground">
+                            <div className="flex items-center gap-2">
+                              <Calendar className="h-4 w-4" />
+                              <span>Posted</span>
+                              <span>{formatDate(job.postedAt)}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Briefcase className="h-4 w-4" />
+                              <span>{job.level || job.department}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <MapPin className="h-4 w-4" />
+                              <span>{job.location}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Clock className="h-4 w-4" />
+                              <span>{job.type}</span>
+                            </div>
                           </div>
                         </div>
+                      </Link>
+                    ))}
+
+                    {/* Pagination Controls */}
+                    {totalPages > 1 && (
+                      <div className="flex justify-center items-center gap-2 mt-10 pt-6">
+                        <Button 
+                          variant="outline" 
+                          onClick={() => {
+                            setCurrentPage(prev => Math.max(prev - 1, 1));
+                            document.getElementById('jobs')?.scrollIntoView({ behavior: 'smooth' });
+                          }}
+                          disabled={currentPage === 1}
+                        >
+                          Previous
+                        </Button>
+                        
+                        <div className="flex items-center justify-center gap-1 mx-2">
+                          {Array.from({ length: totalPages }).map((_, i) => {
+                            const pageNumber = i + 1;
+                            const isNearCurrent = Math.abs(pageNumber - currentPage) <= 1;
+                            const isEnd = pageNumber === 1 || pageNumber === totalPages;
+                            
+                            if (isNearCurrent || isEnd) {
+                              return (
+                                <button
+                                  key={pageNumber}
+                                  onClick={() => {
+                                    setCurrentPage(pageNumber);
+                                    document.getElementById('jobs')?.scrollIntoView({ behavior: 'smooth' });
+                                  }}
+                                  className={`w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium transition-colors ${
+                                    currentPage === pageNumber
+                                      ? 'bg-primary text-white'
+                                      : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+                                  }`}
+                                >
+                                  {pageNumber}
+                                </button>
+                              );
+                            }
+                            
+                            if (pageNumber === currentPage - 2 && pageNumber > 1) {
+                              return <span key={`ellipsis-prev`} className="px-1 text-gray-400">...</span>;
+                            }
+                            if (pageNumber === currentPage + 2 && pageNumber < totalPages) {
+                              return <span key={`ellipsis-next`} className="px-1 text-gray-400">...</span>;
+                            }
+                            
+                            return null;
+                          })}
+                        </div>
+
+                        <Button 
+                          variant="outline" 
+                          onClick={() => {
+                            setCurrentPage(prev => Math.min(prev + 1, totalPages));
+                            document.getElementById('jobs')?.scrollIntoView({ behavior: 'smooth' });
+                          }}
+                          disabled={currentPage === totalPages}
+                        >
+                          Next
+                        </Button>
                       </div>
-                    </Link>
-                  ))
+                    )}
+                  </>
                 )}
               </div>
             )}

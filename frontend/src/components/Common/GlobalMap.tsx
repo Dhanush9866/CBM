@@ -245,7 +245,10 @@ const GlobalMap: React.FC<GlobalMapProps> = ({ className = "" }) => {
       land: "#6b21a8",
       landHover: "#8b5cf6",
       landPressed: "#a855f7",
-      landStroke: "#4c1d95"
+      landStroke: "#4c1d95",
+      landAsh: "#cbd5e1",
+      landAshHover: "#94a3b8",
+      landAshPressed: "#64748b"
     },
     pins: {
       corporate: "#1f2937",
@@ -476,7 +479,36 @@ const GlobalMap: React.FC<GlobalMapProps> = ({ className = "" }) => {
                 if (!geographies || geographies.length === 0) {
                   return <text x={400} y={300} textAnchor="middle" fill="red">Loading map data...</text>;
                 }
-                return geographies.map((geo) => (
+
+                // Pre-compute active countries
+                const activeCountries = new Set<string>();
+                allOffices.forEach(office => {
+                  const country = (office.country || '').toLowerCase().trim();
+                  if (country) activeCountries.add(country);
+                  
+                  if (country === 'uk' || country === 'united kingdom') { activeCountries.add('uk'); activeCountries.add('united kingdom'); }
+                  if (country === 'usa' || country === 'united states' || country === 'us') { activeCountries.add('usa'); activeCountries.add('united states'); activeCountries.add('united states of america'); }
+                  if (country === 'uae' || country === 'united arab emirates') { activeCountries.add('uae'); activeCountries.add('united arab emirates'); }
+                  if (country.includes('congo')) { activeCountries.add('democratic republic of the congo'); activeCountries.add('republic of the congo'); activeCountries.add('congo'); }
+                  if (country === 'russia' || country === 'russian federation') { activeCountries.add('russia'); activeCountries.add('russian federation'); }
+                  if (country === 'south korea' || country === 'korea') { activeCountries.add('south korea'); activeCountries.add('republic of korea'); }
+                });
+
+                return geographies.map((geo) => {
+                  const countryName = getCountryName(geo.properties);
+                  const searchName = countryName.toLowerCase().trim();
+                  
+                  let hasBranch = activeCountries.has(searchName);
+                  
+                  if (!hasBranch && searchName.length > 3) {
+                    const regex = new RegExp(`\\b${searchName.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&')}\\b`, 'i');
+                    hasBranch = allOffices.some(office => 
+                      regex.test(office.office_name || '') ||
+                      regex.test(office.country || '')
+                    );
+                  }
+
+                  return (
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
@@ -485,32 +517,31 @@ const GlobalMap: React.FC<GlobalMapProps> = ({ className = "" }) => {
                     strokeWidth={0.5}
                     style={{
                       default: {
-                        fill: colorScheme.map.land,
+                        fill: hasBranch ? colorScheme.map.land : colorScheme.map.landAsh,
                         stroke: colorScheme.map.landStroke,
                         strokeWidth: 0.5,
                         outline: "none"
                       },
                       hover: {
-                        fill: colorScheme.map.landHover,
+                        fill: hasBranch ? colorScheme.map.landHover : colorScheme.map.landAshHover,
                         stroke: colorScheme.map.landStroke,
                         strokeWidth: 1,
                         outline: "none",
                         cursor: "pointer"
                       },
                       pressed: {
-                        fill: colorScheme.map.landPressed,
+                        fill: hasBranch ? colorScheme.map.landPressed : colorScheme.map.landAshPressed,
                         stroke: colorScheme.map.landStroke,
                         strokeWidth: 1,
                         outline: "none"
                       }
                     }}
                     onMouseEnter={(event) => {
-                      const countryName = getCountryName(geo.properties);
                       handleCountryMouseEnter(countryName, event);
                     }}
                     onMouseLeave={handleCountryMouseLeave}
                   />
-                ));
+                )});
               }}
             </Geographies>
 

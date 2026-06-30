@@ -1,4 +1,5 @@
 'use strict';
+// Trigger nodemon restart to clear cache after cover photo restoration
 
 const mongoose = require('mongoose');
 const { logger } = require('./logger');
