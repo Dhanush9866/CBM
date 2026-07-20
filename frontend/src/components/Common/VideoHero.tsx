@@ -159,7 +159,21 @@ export function VideoHero({ slides, videoUrls }: VideoHeroProps) {
           )}
 
           <h1 className="text-2xl sm:text-4xl lg:text-6xl font-bold mb-3 sm:mb-6 text-balance">
-            {slides[currentSlide]?.title || ''}
+            {(() => {
+              const title = slides[currentSlide]?.title || '';
+              if (title.includes('-')) {
+                const parts = title.split('-');
+                const mainPart = parts[0].trim();
+                const subPart = parts.slice(1).join('-').trim();
+                return (
+                  <>
+                    {mainPart}
+                    <span className="block mt-2 font-semibold text-xl sm:text-3xl lg:text-5xl opacity-90">{subPart}</span>
+                  </>
+                );
+              }
+              return title;
+            })()}
           </h1>
 
           <p className="text-sm sm:text-base lg:text-xl text-white/90 mb-5 sm:mb-10 text-pretty max-w-3xl mx-auto">
