@@ -57,7 +57,7 @@ export function Logo({ className = '', showTagline = false, size = 'md', align =
       <div className={`flex items-center ${spacingClass} ${sizeClass}`}>
         {/* CBM */}
         <span className="font-bold text-purple-400">CBM</span>
-        
+
         {/* 360° Circle */}
         <div className="relative">
           <div className={`${circleSizes.outer} rounded-full border-2 border-purple-400 flex items-center justify-center`}>
@@ -68,14 +68,14 @@ export function Logo({ className = '', showTagline = false, size = 'md', align =
             </div>
           </div>
         </div>
-        
+
         {/* TIV™ */}
         <span className="font-bold text-purple-400">
           TIV
-          <sup className="text-gray-600 text-xs">™</sup>
+          <sup className="text-gray-600 text-xs relative -top-[1.4em]">™</sup>
         </span>
       </div>
-      
+
       {/* Tagline */}
       {showTagline && (
         <div className={`w-full flex justify-between text-gray-500 font-medium mt-1 ${taglineSize}`}>
